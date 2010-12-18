@@ -16,7 +16,6 @@ type
     ToolButton1: TToolButton;
     btFullScreen: TToolButton;
     ToolButton2: TToolButton;
-    SoundLevel: TTrackBar;
     ImageList: TImageList;
     btPlayList: TBitBtn;
     lbMusica: TLabel;
@@ -27,7 +26,7 @@ type
     ListBox1: TListBox;
     OpenDialog1: TOpenDialog;
     SpeedButton2: TSpeedButton;
-    SpeedButton3: TSpeedButton;
+    SpeedButton3: TBitBtn;
     edtDirLog: TLabeledEdit;
     SpeedButton4: TSpeedButton;
     ToolButton3: TToolButton;
@@ -205,69 +204,79 @@ var
 begin
   chosenDirectory := 'C:\';
   if SelectDirectory(chosenDirectory, options, 0)  then
+  begin
     edtDirMidia.Text := chosenDirectory;
+    DirMidia := chosenDirectory;
+  end;
 end;
 
 procedure TForm_Configuracao.SpeedButton3Click(Sender: TObject);
-var
-  sDirMidia, sDirLog : String;
-  ArqIni, ArqMidia, ArqLog : string;
-  LocalIni,  local: TextFile;
+//var
+//  sDirMidia, sDirLog : String;
+//  ArqIni, ArqMidia, ArqLog : string;
+//  LocalIni,  local: TextFile;
 begin
+  if not DirectoryExists(DirMidia) then
+    Application.MessageBox('O diretório de mídia ainda não foi configurado. Não é possível recriar o Script de reprodução','Impossível criar script de reprodução',MB_ICONERROR);
 
-  if Trim(edtDirMidia.Text) = '' then
-    raise Exception.Create('Informe o local dos Arquivos de Mídia.');
-  if Trim(edtDirLog.Text) = '' then
-    raise Exception.Create('Informe o local do Arquivo de Log.');
-
-  if not DirectoryExists(Trim(edtDirMidia.Text)) then
-    raise Exception.Create('O diretório informado nãoe existe: ' +Trim(edtDirMidia.Text));
-  if not DirectoryExists(Trim(edtDirLog.Text)) then
-    raise Exception.Create('O diretório informado nãoe existe: ' +Trim(edtDirLog.Text));
-
-  sDirMidia := edtDirMidia.Text;
-  sDirLog   := edtDirLog.Text;
-
-  ArqMidia := sDirMidia;
-  ArqLog   := sDirLog;
-
-
-  sLocalConf := FDiretorioDaAplicacao + '\Config.ini';
-
-  if FileExists(sLocalConf) then  //Verifica se existe o arquivo, deletando se existir
-    DeleteFile(sLocalConf);
-
-  AssignFile(Local, ArqIni);
-
-  if not FileExists(sLocalConf) then
-  begin
-    Rewrite(Local, sLocalConf);
-    Append(Local); //Cria o arquivo
-    WriteLn(Local, '[INI]');
-    WriteLn(Local, 'arq000='+aRQIni);
-
-    WriteLn(Local, '[MIDIA]');
-    WriteLn(Local, 'arq001='+aRQmidia);
-
-    WriteLn(Local, '[LOG]');
-    WriteLn(Local, 'arq002='+arqlog);
-
-  end;
-
-  CloseFile(Local);
-
-  // cria arquivo INI
-  if  Trim(ArqIni) <> '' then
-    if not FileExists(ArqIni+'\Script.ini') then  //Verifica se existe o arquivo, abrindo se existir
-    begin
-      AssignFile(LocalIni, ArqIni+'\Script.ini');
-      Rewrite(LocalIni);
-      WriteLn(LocalIni, '[ARQUIVOSDEMIDIA]');
-      WriteLn(LocalIni, 'ARQ000=nome do arquivo, com a extenção, seguido de |9. Ex: som_do_ceu.flv|9 ');
-      WriteLn(LocalIni, 'ARQ001=nome do arquivo, com a extenção, seguido de |9. Ex: outro_som.flv|9 ');
-      CloseFile(LocalIni);
-    end;
-
+  if FileExists(DirMidia + '\Script.ini') then
+    if Application.MessageBox('Já existe um Script de reprodução no diretório de mídia. Tem certeza de que quer sobrescrevê-lo?','Tem certeza?',MB_ICONQUESTION or MB_YESNO) = IDNO then
+      Exit;
+//  if Trim(edtDirMidia.Text) = '' then
+//    raise Exception.Create('Informe o local dos Arquivos de Mídia.');
+//  if Trim(edtDirLog.Text) = '' then
+//    raise Exception.Create('Informe o local do Arquivo de Log.');
+//
+//  if not DirectoryExists(Trim(edtDirMidia.Text)) then
+//    raise Exception.Create('O diretório informado nãoe existe: ' +Trim(edtDirMidia.Text));
+//  if not DirectoryExists(Trim(edtDirLog.Text)) then
+//    raise Exception.Create('O diretório informado nãoe existe: ' +Trim(edtDirLog.Text));
+//
+//  sDirMidia := edtDirMidia.Text;
+//  sDirLog   := edtDirLog.Text;
+//
+//  ArqMidia := sDirMidia;
+//  ArqLog   := sDirLog;
+//
+//
+//  sLocalConf := FDiretorioDaAplicacao + '\Config.ini';
+//
+//  if FileExists(sLocalConf) then  //Verifica se existe o arquivo, deletando se existir
+//    DeleteFile(sLocalConf);
+//
+//  AssignFile(Local, ArqIni);
+//
+//  if not FileExists(sLocalConf) then
+//  begin
+//    Rewrite(Local, sLocalConf);
+//    Append(Local); //Cria o arquivo
+//    WriteLn(Local, '[INI]');
+//    WriteLn(Local, 'arq000='+aRQIni);
+//
+//    WriteLn(Local, '[MIDIA]');
+//    WriteLn(Local, 'arq001='+aRQmidia);
+//
+//    WriteLn(Local, '[LOG]');
+//    WriteLn(Local, 'arq002='+arqlog);
+//
+//  end;
+//
+//  CloseFile(Local);
+//
+//  // cria arquivo INI
+//  if  Trim(ArqIni) <> '' then
+//    if not FileExists(ArqIni+'\Script.ini') then  //Verifica se existe o arquivo, abrindo se existir
+//    begin
+//      AssignFile(LocalIni, ArqIni+'\Script.ini');
+//      Rewrite(LocalIni);
+//      WriteLn(LocalIni, '[ARQUIVOSDEMIDIA]');
+//      WriteLn(LocalIni, 'ARQ000=nome do arquivo, com a extenção, seguido de |9. Ex: som_do_ceu.flv|9 ');
+//      WriteLn(LocalIni, 'ARQ001=nome do arquivo, com a extenção, seguido de |9. Ex: outro_som.flv|9 ');
+//      CloseFile(LocalIni);
+//    end;
+//
+  Application.MessageBox('Script de reprodução (re)criado!','Feito!',MB_ICONINFORMATION);
+  RecarregarScript;
 end;
 
 procedure TForm_Configuracao.SpeedButton4Click(Sender: TObject);
@@ -277,7 +286,10 @@ var
 begin
   chosenDirectory := 'C:\';
   if SelectDirectory(chosenDirectory, options, 0)  then
+  begin
     edtDirLog.Text := chosenDirectory;
+    DirLog := chosenDirectory;
+  end;
 end;
 
 procedure TForm_Configuracao.p_ValidaArquivosConf;
