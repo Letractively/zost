@@ -157,9 +157,9 @@ object Form_Configuracao: TForm_Configuracao
   object Label4: TLabel
     Left = 6
     Top = 88
-    Width = 95
+    Width = 139
     Height = 13
-    Caption = 'Lista de reprodu'#231#227'o'
+    Caption = 'Lista de reprodu'#231#227'o (Playlist)'
   end
   object SpeedButton2: TSpeedButton
     Left = 477
@@ -173,8 +173,8 @@ object Form_Configuracao: TForm_Configuracao
     OnClick = SpeedButton2Click
   end
   object SpeedButton3: TSpeedButton
-    Left = 551
-    Top = 193
+    Left = 506
+    Top = 37
     Width = 23
     Height = 22
     Hint = 'Salvar Configura'#231#245'es'
@@ -229,7 +229,6 @@ object Form_Configuracao: TForm_Configuracao
     Caption = 'ToolBar'
     Images = ImageList
     TabOrder = 5
-    ExplicitTop = 436
     object btPlay: TToolButton
       Left = 0
       Top = 0
@@ -310,12 +309,12 @@ object Form_Configuracao: TForm_Configuracao
     end
   end
   object btPlayList: TBitBtn
-    Left = 47
-    Top = 304
-    Width = 105
+    Left = 384
+    Top = 222
+    Width = 116
     Height = 25
     Hint = 'Iniciar Lista'
-    Caption = 'Iniciar PlayLista'
+    Caption = 'Iniciar Playlist'
     DoubleBuffered = True
     ParentDoubleBuffered = False
     ParentShowHint = False
@@ -346,7 +345,7 @@ object Form_Configuracao: TForm_Configuracao
     Left = 384
     Top = 88
     Width = 116
-    Height = 159
+    Height = 128
     Caption = ' Exibi'#231#227'o da m'#237'dia '
     ItemIndex = 0
     Items.Strings = (
