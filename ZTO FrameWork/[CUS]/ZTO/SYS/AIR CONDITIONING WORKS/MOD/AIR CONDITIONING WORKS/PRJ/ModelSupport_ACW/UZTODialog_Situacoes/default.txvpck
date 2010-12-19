@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<nodeSet>
+  <view uin="02hlss1hm_v">
+    <property name="$defaultDiagram" value="true" />
+    <property name="$metaclass" value="Package Diagram" />
+    <property name="$name" value="default" />
+    <reference referencedUin="delphi:e_class:src:ACW:UZTODialog_Situacoes.TZTODialog_Situacoes">
+      <property name="$shortcutReference" value="true" />
+    </reference>
+    <reference referencedUin="delphi:e_class:src:ACW:UZTODialog_Situacoes.@unitclass">
+      <property name="$shortcutReference" value="true" />
+    </reference>
+  </view>
+  <link uin="3fkejpbwfliw0rr_l">
+    <property name="$metaclass" value="Dependency Link" />
+    <property name="$name" value="Dependency Link1" />
+    <participant referencedUin="design:view:::02hlss1hm_v" role="Client" />
+    <participant referencedUin="design:view:::jihh600mf_v" role="Supplier" />
+  </link>
+</nodeSet>

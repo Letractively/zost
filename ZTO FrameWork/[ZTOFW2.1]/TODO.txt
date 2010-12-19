@@ -1,0 +1,255 @@
+1. AO CRIAR OS TEMPLATES DE DATAMODULE, INCLUA UMA FORMA VISUAL DE INCLUIR
+   QUERIES. UM TIPO DE COLEÇÃO ONDE CADA ITEM SERIA UMA QUERY COM CAMPOS
+   ESPECIAIS NA FORMA :CAMPO: E QUE PODERIAM SER SUBSITUIDOS POR QUALQUER COISA
+   USANDO A NOTAÇÃO PARAMBYNAME('CAMPO').ASSTRING ETC. COM ISSO VC PODE
+   IMPLEMENTAR UMA FORMA DE COLOCAR NULOS, OU ANULAR UM PARÂMETRO.
+   OBS.: ESTAS QUERIES NÃO SUBSTITUIRIAM AS QUERIES EM UPDATEQUERY, MAS SIM AS
+   CONSTANTES QUE COLOCAMOS NOS DATAMODULES 
+
+Inclua as seguintes funções no framework
+
+função para obter o meu IP local
+
+function TForm2.LocalIP: string;
+type
+   TaPInAddr = array [0..10] of PInAddr;
+   PaPInAddr = ^TaPInAddr;
+var
+    phe: PHostEnt;
+    pptr: PaPInAddr;
+    Buffer: array [0..63] of char;
+    i: Integer;
+    GInitData: TWSADATA;
+begin
+    WSAStartup($101, GInitData);
+    Result := '';
+    GetHostName(Buffer, SizeOf(Buffer));
+    phe :=GetHostByName(buffer);
+    if phe = nil then Exit;
+    pptr := PaPInAddr(Phe^.h_addr_list);
+    i := 0;
+    while pptr^[i] <> nil do
+    begin
+      result:=StrPas(inet_ntoa(pptr^[i]^));
+      Inc(i);
+    end;
+    WSACleanup;
+end;
+
+--------------
+
+uses
+
+  Winsock;
+
+
+
+function GetLocalIP: string;
+
+var
+
+  wsaData: TWSAData;
+
+  addr: TSockAddrIn;
+
+  Phe: PHostEnt;
+
+  szHostName: array[0..128] of Char;
+
+begin
+
+  Result := '';
+
+  if WSAStartup($101, WSAData) <> 0 then
+
+    Exit;
+
+  try
+
+    if GetHostName(szHostName, 128) <> SOCKET_ERROR then
+
+    begin
+
+      Phe := GetHostByName(szHostName);
+
+      if Assigned(Phe) then
+
+      begin
+
+        addr.sin_addr.S_addr := longint(plongint(Phe^.h_addr_list^)^);
+
+        Result := inet_ntoa(addr.sin_addr);
+
+      end;
+
+    end;
+
+  finally
+
+    WSACleanup;
+
+  end;
+
+end;
+
+================================================================================
+
+FUNÇÕES PARA CRIAR GRADIENTES
+
+ uses Math, ...
+ 
+ procedure GradHorizontal(Canvas:TCanvas; Rect:TRect; FromColor, ToColor:TColor) ;
+ var
+   X:integer;
+   dr,dg,db:Extended;
+   C1,C2:TColor;
+   r1,r2,g1,g2,b1,b2:Byte;
+   R,G,B:Byte;
+   cnt:integer;
+ begin
+   C1 := FromColor;
+   R1 := GetRValue(C1) ;
+   G1 := GetGValue(C1) ;
+   B1 := GetBValue(C1) ;
+ 
+   C2 := ToColor;
+   R2 := GetRValue(C2) ;
+   G2 := GetGValue(C2) ;
+   B2 := GetBValue(C2) ;
+ 
+   dr := (R2-R1) / Rect.Right-Rect.Left;
+   dg := (G2-G1) / Rect.Right-Rect.Left;
+   db := (B2-B1) / Rect.Right-Rect.Left;
+ 
+   cnt := 0;
+   for X := Rect.Left to Rect.Right-1 do
+   begin
+     R := R1+Ceil(dr*cnt) ;
+     G := G1+Ceil(dg*cnt) ;
+     B := B1+Ceil(db*cnt) ;
+ 
+     Canvas.Pen.Color := RGB(R,G,B) ;
+     Canvas.MoveTo(X,Rect.Top) ;
+     Canvas.LineTo(X,Rect.Bottom) ;
+     inc(cnt) ;
+   end;
+ end;
+ 
+ procedure GradVertical(Canvas:TCanvas; Rect:TRect; FromColor, ToColor:TColor) ;
+ var
+   Y:integer;
+   dr,dg,db:Extended;
+   C1,C2:TColor;
+   r1,r2,g1,g2,b1,b2:Byte;
+   R,G,B:Byte;
+   cnt:Integer;
+ begin
+    C1 := FromColor;
+    R1 := GetRValue(C1) ;
+    G1 := GetGValue(C1) ;
+    B1 := GetBValue(C1) ;
+ 
+    C2 := ToColor;
+    R2 := GetRValue(C2) ;
+    G2 := GetGValue(C2) ;
+    B2 := GetBValue(C2) ;
+ 
+    dr := (R2-R1) / Rect.Bottom-Rect.Top;
+    dg := (G2-G1) / Rect.Bottom-Rect.Top;
+    db := (B2-B1) / Rect.Bottom-Rect.Top;
+ 
+    cnt := 0;
+    for Y := Rect.Top to Rect.Bottom-1 do
+    begin
+       R := R1+Ceil(dr*cnt) ;
+       G := G1+Ceil(dg*cnt) ;
+       B := B1+Ceil(db*cnt) ;
+ 
+       Canvas.Pen.Color := RGB(R,G,B) ;
+       Canvas.MoveTo(Rect.Left,Y) ;
+       Canvas.LineTo(Rect.Right,Y) ;
+       Inc(cnt) ;
+    end;
+ end;
+ 
+
+For a test drop a TPaintBox (provides a canvas that applications can use for rendering an image) control on a form and handle its OnPaint event:
+
+ begin
+    //horizontal gradient from RED to BLUE
+    GradHorizontal(PaintBox1.Canvas, PaintBox1.ClientRect, clRed, clBlue) ;
+ 
+    PaintBox1.Canvas.Brush.Style := bsClear;
+    PaintBox1.Canvas.TextOut(5,10,'Transparent text') ;
+ end;
+
+ ----------------
+
+ runções de registro
+
+ uses
+  Registry;
+
+{******************************************}
+{2. by Ralph Friedman }
+
+{
+ Question:
+ I want to read out the binary-value "problems" of the path
+ HKEY_DYN_DATA\Config Manager\Enum\[add the key of a hardware component] to
+ detect if a hardware component is troubled and not working right.
+ But I cannot handle the ReadBinaryData-Method of TRegistry correct.
+ Everytime I use it, it always returns "4" as content of the buffer.
+ How do I detect if the content of the binary-key "problems" is
+ not "00 00 00 00" but something else like "16 00 00 00" or such?
+}
+
+{Answer: Here's an example of ReadBinaryData }
+
+
+procedure TFrmReadBinary.Button1Click(Sender: TObject);
+const
+  CKeyName: string = 'System\Setup';
+  CValName: string = 'NetcardDlls';
+var
+  keyGood: boolean;
+  p: integer;
+  regKey: TRegistry;
+  tmpStr: string;
+  vSize: integer;
+begin
+  regKey := TRegistry.Create;
+  try
+    regKey.RootKey := HKEY_LOCAL_MACHINE;
+    keyGood  := regKey.OpenKey(CKeyName, False);
+
+    if (keyGood) then
+    begin
+      vSize := regKey.GetDataSize(CValName);
+
+      if (vSize > 0) then
+      begin
+        SetLength(tmpStr, vSize);
+        regKey.ReadBinaryData(CValName, tmpstr[1], vSize);
+
+        repeat
+          p := Pos(#0, tmpStr);
+
+          if p <> 0 then
+          begin
+            Delete(tmpStr, p, 1);
+            Insert(#13#10, tmpStr, p);
+          end;
+        until p = 0;
+
+        (*StringReplace(tmpStr, #0, #13#10, [rfReplaceAll]); *)
+
+        ListBox1.Items.Text := tmpStr;
+      end;
+    end;
+  finally
+    regKey.Free;
+  end;
+end;
+
+{******************************************}
