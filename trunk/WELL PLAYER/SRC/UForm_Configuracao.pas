@@ -9,16 +9,14 @@ uses
 
 type
   TForm_Configuracao = class(TForm)
-    ToolBar: TToolBar;
-    btPlay: TToolButton;
-    btPause: TToolButton;
-    btStop: TToolButton;
-    ToolButton1: TToolButton;
-    btFullScreen: TToolButton;
-    ToolButton2: TToolButton;
-    ImageList: TImageList;
+    ToolBar_Principal: TToolBar;
+    ToolButton_Play: TToolButton;
+    ToolButton_Pause: TToolButton;
+    ToolButton_Stop: TToolButton;
+    ToolButton_Separador1: TToolButton;
+    ToolButton_Fechar: TToolButton;
+    ImageList_ToolBar: TImageList;
     btPlayList: TBitBtn;
-    lbMusica: TLabel;
     ApplicationEvents1: TApplicationEvents;
     edtDirMidia: TLabeledEdit;
     rgMidia: TRadioGroup;
@@ -29,13 +27,13 @@ type
     SpeedButton3: TBitBtn;
     edtDirLog: TLabeledEdit;
     SpeedButton4: TSpeedButton;
-    ToolButton3: TToolButton;
-    procedure btPlayClick(Sender: TObject);
+    Label_Status: TLabel;
+    procedure ToolButton_PlayClick(Sender: TObject);
     procedure btPlayListClick(Sender: TObject);
-    procedure btPauseClick(Sender: TObject);
-    procedure btStopClick(Sender: TObject);
+    procedure ToolButton_PauseClick(Sender: TObject);
+    procedure ToolButton_StopClick(Sender: TObject);
     procedure ApplicationEvents1Idle(Sender: TObject; var Done: Boolean);
-    procedure btFullScreenClick(Sender: TObject);
+    procedure ToolButton_FecharClick(Sender: TObject);
     procedure SpeedButton2Click(Sender: TObject);
     procedure SpeedButton3Click(Sender: TObject);
     procedure SpeedButton4Click(Sender: TObject);
@@ -44,9 +42,8 @@ type
     procedure FormDestroy(Sender: TObject);
     procedure FormActivate(Sender: TObject);
     procedure FormMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Integer);
-    procedure ToolButton2Click(Sender: TObject);
-    procedure ToolButton3Click(Sender: TObject);
     procedure rgMidiaClick(Sender: TObject);
+    procedure Label_StatusClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -61,8 +58,7 @@ type
     function isFolderEmpty(sPath : String) : Boolean ;
 
     procedure RecarregarScript;
-    procedure ExibirConfiguracoes ;
-    procedure DesabilitaBarraWind;
+    procedure ExibirConfiguracoes;
     procedure HabilitaBarraWin;
     procedure AjustarMonitor;
 
@@ -82,7 +78,7 @@ var
 
 {$R *.dfm}
 
-procedure TForm_Configuracao.btPlayClick(Sender: TObject);
+procedure TForm_Configuracao.ToolButton_PlayClick(Sender: TObject);
 begin
 
    if Form_Player = nil then exit;
@@ -106,9 +102,14 @@ begin
       if Assigned(Form_Player.FilterGraph) and (Form_Player.FilterGraph.State <> gsUninitialized) then
         Exit;
 
-    Application.Createform(TForm_Player,Form_Player);
+    Form_Player := TForm_Player.Create(Self);
 
+    { Ajusta o form de reprodução segundo configurações contidas aqui neste form.
+    Dentro dele, no onShow, tais configurações precisam ser usadas }
     AjustarMonitor;
+
+    { Exibe o form que internamente deve carregar as configurações }
+    Form_Player.Show;
 
   except
     on E: Exception do
@@ -116,13 +117,13 @@ begin
   end;
 end;
 
-procedure TForm_Configuracao.btPauseClick(Sender: TObject);
+procedure TForm_Configuracao.ToolButton_PauseClick(Sender: TObject);
 begin
   if Assigned(Form_Player) and Assigned(Form_Player.FilterGraph) then
     Form_Player.FilterGraph.Pause;
 end;
 
-procedure TForm_Configuracao.btStopClick(Sender: TObject);
+procedure TForm_Configuracao.ToolButton_StopClick(Sender: TObject);
 begin
   if Assigned(Form_Player) and Assigned(Form_Player.FilterGraph) then
     Form_Player.FilterGraph.Stop;
@@ -135,15 +136,15 @@ begin
   if Form_Player <> nil then begin
 
     if Form_Player.FilterGraph = nil then begin
-      lbMusica.Caption := '';
+      Label_Status.Caption := '';
        //ListBox1.Clear;
     end
     else
     begin
        if Form_Player.FilterGraph.State = gsUninitialized then begin
 
-         lbMusica.Caption := '    '+ Form_Player.sTempo ;
-         StrPCopy(S, Form_Player.sMusica);
+         Label_Status.Caption := '    '+ Form_Player.Tempo ;
+         StrPCopy(S, Form_Player.Arquivo);
          with ListBox_Script do
            ItemIndex := Perform(LB_SELECTSTRING, 0, LongInt(@S));
          exit;
@@ -153,9 +154,9 @@ begin
       if (Form_Player.FilterGraph.State = gsStopped) or
          (Form_Player.FilterGraph.State = gsPaused) or
          (Form_Player.FilterGraph.State = gsPlaying)  then begin
-        lbMusica.Caption := '    '+ Form_Player.sTempo ;
+        Label_Status.Caption := '    '+ Form_Player.Tempo ;
 
-        StrPCopy(S, Form_Player.sMusica);
+        StrPCopy(S, Form_Player.Arquivo);
         with ListBox_Script do
           ItemIndex := Perform(LB_SELECTSTRING, 0, LongInt(@S));
         end;
@@ -163,15 +164,16 @@ begin
       end;
     end
     else begin
-      lbMusica.Caption := '';
+      Label_Status.Caption := '';
     end;
 end;
 
-procedure TForm_Configuracao.btFullScreenClick(Sender: TObject);
+procedure TForm_Configuracao.ToolButton_FecharClick(Sender: TObject);
 begin
   if Form_Player <> nil then
     if Form_Player.FilterGraph <> nil then
        Form_Player.Close;
+
   HabilitaBarraWin;       
 end;
 
@@ -257,6 +259,7 @@ begin
   RecarregarScript;
 end;
 
+{ ESTE PROCEDIMENTO ESTÁ OK }
 procedure TForm_Configuracao.SpeedButton4Click(Sender: TObject);
 var
   options : TSelectDirOpts;
@@ -270,6 +273,7 @@ begin
   end;
 end;
 
+{ ESTE PROCEDIMENTO ESTÁ OK }
 procedure TForm_Configuracao.ValidarArquivosDeMidia;
 var
   i, NaoExistentes: Word;
@@ -293,6 +297,7 @@ begin
     raise Exception.Create('Nenhum arquivo da lista foi encontrado. Não é possível inicia a reprodução');
 end;
 
+{ ESTE PROCEDIMENTO ESTÁ OK }
 function TForm_Configuracao.isFolderEmpty(sPath: String): Boolean;
 var
   res: TSearchRec;
@@ -307,15 +312,21 @@ begin
   FindClose(res);
 end;
 
+procedure TForm_Configuracao.Label_StatusClick(Sender: TObject);
+begin
+
+end;
+
+{ ESTE PROCEDIMENTO ESTÁ OK }
 procedure TForm_Configuracao.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
-  if Form_Player <> nil then
-    if Form_Player.FilterGraph <> nil then
+  if Assigned(Form_Player) and Assigned(Form_Player.FilterGraph) then
       Form_Player.Close;
 
   Action := caFree;  
 end;
 
+{ ESTE PROCEDIMENTO ESTÁ OK }
 procedure TForm_Configuracao.RecarregarScript;
 begin
 
@@ -331,11 +342,13 @@ begin
   ExibirConfiguracoes;
 end;
 
+{ ESTE PROCEDIMENTO ESTÁ OK }
 procedure TForm_Configuracao.rgMidiaClick(Sender: TObject);
 begin
   MonitorPrincipal := not Boolean(rgMidia.ItemIndex);
 end;
 
+{ ESTE PROCEDIMENTO ESTÁ OK }
 procedure TForm_Configuracao.ExibirConfiguracoes;
 var
   i: Word;
@@ -375,9 +388,9 @@ begin
   FDiretorioDaAplicacao := ExtractFilePath(Application.ExeName);
 
   RecarregarScript;
-  DesabilitaBarraWind;
 end;
 
+{ ESTE PROCEDIMENTO ESTÁ OK }
 procedure TForm_Configuracao.FormDestroy(Sender: TObject);
 begin
   DirMidia := Form_Configuracao.edtDirMidia.Text;
@@ -385,11 +398,6 @@ begin
 
   FArquivosDeMidias.Free;
   HabilitaBarraWin;
-  ShowCursor(True);
-end;
-
-procedure TForm_Configuracao.DesabilitaBarraWind;
-begin
 end;
 
 procedure TForm_Configuracao.HabilitaBarraWin;
@@ -413,37 +421,11 @@ begin
   ShowCursor(True);
 end;
 
-procedure TForm_Configuracao.ToolButton2Click(Sender: TObject);
-begin 
-  if Form_Player <> nil then
-     if Form_Player.FilterGraph <> nil then
-       if Form_Player.FormStyle <> fsNormal then begin
-         Form_Player.FormStyle := fsNormal;
-       end;
-
-end;
-
-procedure TForm_Configuracao.ToolButton3Click(Sender: TObject);
-begin
-   if Form_Player <> nil then
-     if Form_Player.FilterGraph <> nil then
-       if Form_Player.FormStyle <> fsStayOnTop then
-         Form_Player.FormStyle := fsStayOnTop;
-end;
-
+{ ESTE PROCEDIMENTO ESTÁ OK }
 procedure TForm_Configuracao.AjustarMonitor;
 begin
-  if rgMidia.ItemIndex = 0 then begin
-    if Form_Player <> nil then
-       if Form_Player.FilterGraph <> nil then
-         Form_Player.bMonitorPrincipal := True;
-  end
-  else begin
-    if Form_Player <> nil then
-       if Form_Player.FilterGraph <> nil then
-         Form_Player.bMonitorPrincipal := False;
-  end;
-
+  if Assigned(Form_Player) and Assigned(Form_Player.FilterGraph) then
+    Form_Player.MonitorPrincipal := MonitorPrincipal;
 end;
 
 procedure CarregarConfiguracoes;

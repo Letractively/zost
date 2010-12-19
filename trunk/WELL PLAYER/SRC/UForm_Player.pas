@@ -51,6 +51,23 @@ type
       Y: Integer);
   private
     { Private declarations }
+    FMonitorPrincipal: Boolean;
+    FTempo: String;
+    FArquivo: String;
+    FArquivosDeMidia   : TStringList;
+    FDiretorioDaAplicacao :  WideString;
+    FDiretorioCache       :  WideString;
+    nid                   : TNotifyIconData;
+    iAux, iMJ             : integer;
+    PlayFiles             : array[0..100,0..3] of String;
+//    PlayFilesTMP          : array[0..100,0..3] of String;
+
+    bTocando : boolean;
+
+    sDIRETORIO_CACHE,
+    sDIRETORIO_MIDIA,
+    sDIRETORIO_SCRIPT,
+    sDIRETORIO_LOG : string;
 
     procedure RecarregarScript;
     procedure IconTray (var Msg: TMessage); message wm_IconMessage;
@@ -66,28 +83,15 @@ type
 //    procedure HabilitaBarraWin;
 //    procedure RefreshVideoWindow;
 
-
   public
     { Public declarations }
-    sMusica, sTempo : String;
-    FArquivosDeMidia   : TStringList;
-    FDiretorioDaAplicacao :  WideString;
-    FDiretorioCache       :  WideString;
-    nid                   : TNotifyIconData;
-    iAux, iMJ             : integer;
-    PlayFiles,
-    PlayFilesTMP          : array[0..100,0..3] of String;
-
-    bTocando : boolean;
-
-    sDIRETORIO_CACHE,
-    sDIRETORIO_MIDIA,
-    sDIRETORIO_SCRIPT,
-    sDIRETORIO_LOG : string;
 
     iCont, iCont1 : Cardinal;
-    bMonitorPrincipal : boolean;
 
+    property MonitorPrincipal: Boolean read FMonitorPrincipal write FMonitorPrincipal;
+
+    property Tempo: String read FTempo;
+    property Arquivo: String read FArquivo;
   end;
 
 var
@@ -252,10 +256,6 @@ begin
   ExecutarArqTemp;
 
 //  ajustaform;
-
-  if not bMonitorPrincipal then
-    if (DebugHook <> 0) and (Screen.MonitorCount > 1) then
-      Left := Screen.Monitors[1].Left;
 end;
 
 procedure TForm_Player.FormDestroy(Sender: TObject);
@@ -403,7 +403,7 @@ begin
       else
         FilterGraph.RenderFile(sDIRETORIO_MIDIA+'\'+sNomePlay);
 
-      sMusica := sNomePlay;
+      FArquivo := sNomePlay;
       p_GravaLog(sNomePlay);
     end;
 
@@ -453,7 +453,7 @@ begin
    StatusBar.SimpleText := format('Position: %s Duration: %s',
     [TimeToStr(CurrentPos / MiliSecPerDay), TimeToStr(StopPos / MiliSecPerDay)]);
 
-   sTempo := StatusBar.SimpleText;
+   FTempo := StatusBar.SimpleText;
 
     if TimeToStr(CurrentPos / MiliSecPerDay) =  TimeToStr(StopPos / MiliSecPerDay) then
     begin
@@ -490,8 +490,9 @@ end;
 
 procedure TForm_Player.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
-  if FilterGraph <> nil then
+  if Assigned(FilterGraph) then
     FilterGraph.ClearGraph;
+
   Action := caFree;
 end;
 
@@ -570,9 +571,9 @@ begin
   else begin
     ShockwaveFlash1.Visible := True;
     if (iCont1 - Timer2.Interval) < 60 then
-      sTempo := IntToStr(iCont - Timer2.Interval) + ' ' + 'Segundos de ' +(PlayFiles[iMJ,1]) + ' Segundos.'
+      FTempo := IntToStr(iCont - Timer2.Interval) + ' ' + 'Segundos de ' +(PlayFiles[iMJ,1]) + ' Segundos.'
     else
-      sTempo := IntToStr(iCont - Timer2.Interval) + ' ' + 'Minutos de ' +(PlayFiles[iMJ,1]) + ' Segundos.';
+      FTempo := IntToStr(iCont - Timer2.Interval) + ' ' + 'Minutos de ' +(PlayFiles[iMJ,1]) + ' Segundos.';
   end;
 end;
 
@@ -602,9 +603,9 @@ begin
   end
   else begin
     if (iCont1 - Timer2.Interval) < 60 then
-      sTempo := IntToStr(iCont1 - Timer2.Interval) + ' ' + 'Segundos de ' +(PlayFiles[iMJ,1]) + ' Minutos'
+      FTempo := IntToStr(iCont1 - Timer2.Interval) + ' ' + 'Segundos de ' +(PlayFiles[iMJ,1]) + ' Minutos'
     else
-      sTempo := IntToStr(iCont1 - Timer2.Interval) + ' ' + 'Minutos de ' +(PlayFiles[iMJ,1]) + ' Minutos';
+      FTempo := IntToStr(iCont1 - Timer2.Interval) + ' ' + 'Minutos de ' +(PlayFiles[iMJ,1]) + ' Minutos';
     Image2.Visible := True;
   end;  
 
@@ -632,6 +633,10 @@ end;
 
 procedure TForm_Player.FormShow(Sender: TObject);
 begin
+  if not FMonitorPrincipal then
+    if Screen.MonitorCount > 1 then
+      Left := Screen.Monitors[1].Left;
+
 //  DesabilitaBarraWind;
 end;
 
