@@ -13,6 +13,7 @@ object Form_Configuracao: TForm_Configuracao
   Font.Height = -11
   Font.Name = 'Tahoma'
   Font.Style = []
+  FormStyle = fsStayOnTop
   Icon.Data = {
     0000010002001818000001000800C80600002600000018180000010020008809
     0000EE0600002800000018000000300000000100080000000000400200000000
@@ -205,10 +206,8 @@ object Form_Configuracao: TForm_Configuracao
     ShowHint = True
     TabOrder = 6
     OnClick = SpeedButton3Click
-    ExplicitLeft = 384
-    ExplicitTop = 191
   end
-  object ToolBar: TToolBar
+  object ToolBar_Principal: TToolBar
     Left = 0
     Top = 257
     Width = 583
@@ -216,79 +215,66 @@ object Form_Configuracao: TForm_Configuracao
     AutoSize = True
     ButtonHeight = 30
     ButtonWidth = 31
-    Caption = 'ToolBar'
+    Caption = 'ToolBar_Principal'
     EdgeBorders = [ebTop]
-    Images = ImageList
+    Images = ImageList_ToolBar
     TabOrder = 5
-    ExplicitTop = 256
-    ExplicitWidth = 508
-    object btPlay: TToolButton
+    ExplicitTop = 260
+    object ToolButton_Play: TToolButton
       Left = 0
       Top = 0
       Hint = 'Play'
-      Caption = 'btPlay'
+      Caption = 'ToolButton_Play'
       ImageIndex = 1
       ParentShowHint = False
       ShowHint = True
-      OnClick = btPlayClick
+      OnClick = ToolButton_PlayClick
     end
-    object btPause: TToolButton
+    object ToolButton_Pause: TToolButton
       Left = 31
       Top = 0
       Hint = 'Pause'
-      Caption = 'btPause'
+      Caption = 'ToolButton_Pause'
       ImageIndex = 0
       ParentShowHint = False
       ShowHint = True
-      OnClick = btPauseClick
+      OnClick = ToolButton_PauseClick
     end
-    object btStop: TToolButton
+    object ToolButton_Stop: TToolButton
       Left = 62
       Top = 0
       Hint = 'Stop'
-      Caption = 'btStop'
+      Caption = 'ToolButton_Stop'
       ImageIndex = 2
       ParentShowHint = False
       ShowHint = True
-      OnClick = btStopClick
+      OnClick = ToolButton_StopClick
     end
-    object ToolButton1: TToolButton
+    object ToolButton_Fechar: TToolButton
       Left = 93
       Top = 0
-      Width = 8
-      Caption = 'ToolButton1'
-      ImageIndex = 5
-      Style = tbsSeparator
-    end
-    object btFullScreen: TToolButton
-      Left = 101
-      Top = 0
       Hint = 'Fecha Play'
-      Caption = 'btFullScreen'
+      Caption = 'ToolButton_Fechar'
       ImageIndex = 3
       ParentShowHint = False
       ShowHint = True
-      OnClick = btFullScreenClick
+      OnClick = ToolButton_FecharClick
     end
-    object ToolButton2: TToolButton
-      Left = 132
+    object ToolButton_Separador1: TToolButton
+      Left = 124
       Top = 0
-      Caption = 'ToolButton2'
-      ImageIndex = 9
-      OnClick = ToolButton2Click
+      Width = 6
+      ImageIndex = 5
+      Style = tbsSeparator
     end
-    object ToolButton3: TToolButton
-      Left = 163
+    object Label_Status: TLabel
+      Left = 130
       Top = 0
-      Caption = 'ToolButton3'
-      ImageIndex = 7
-      OnClick = ToolButton3Click
-    end
-    object lbMusica: TLabel
-      Left = 194
-      Top = 0
-      Width = 3
+      Width = 62
       Height = 30
+      Caption = 'Label_Status'
+      Layout = tlCenter
+      OnClick = Label_StatusClick
     end
   end
   object btPlayList: TBitBtn
@@ -305,8 +291,6 @@ object Form_Configuracao: TForm_Configuracao
     ShowHint = True
     TabOrder = 4
     OnClick = btPlayListClick
-    ExplicitLeft = 384
-    ExplicitTop = 222
   end
   object edtDirMidia: TLabeledEdit
     Left = 6
@@ -329,7 +313,6 @@ object Form_Configuracao: TForm_Configuracao
     ReadOnly = True
     ShowHint = True
     TabOrder = 0
-    ExplicitWidth = 465
   end
   object rgMidia: TRadioGroup
     Left = 459
@@ -344,8 +327,6 @@ object Form_Configuracao: TForm_Configuracao
       'Segundo Monitor')
     TabOrder = 2
     OnClick = rgMidiaClick
-    ExplicitLeft = 384
-    ExplicitHeight = 97
   end
   object ListBox_Script: TListBox
     Left = 6
@@ -361,8 +342,6 @@ object Form_Configuracao: TForm_Configuracao
     ItemHeight = 14
     ParentFont = False
     TabOrder = 3
-    ExplicitWidth = 372
-    ExplicitHeight = 144
   end
   object edtDirLog: TLabeledEdit
     Left = 6
@@ -385,15 +364,14 @@ object Form_Configuracao: TForm_Configuracao
     ReadOnly = True
     ShowHint = True
     TabOrder = 1
-    ExplicitWidth = 465
   end
-  object ImageList: TImageList
+  object ImageList_ToolBar: TImageList
     Height = 24
     Width = 24
     Left = 130
     Top = 152
     Bitmap = {
-      494C010104001800580018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C0101040018005C0018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
