@@ -1,0 +1,15 @@
+TYPE=VIEW
+query=select `acw`.`situacoes`.`TI_SITUACOES_ID` AS `TI_SITUACOES_ID` from `acw`.`situacoes` where (`acw`.`situacoes`.`VA_DESCRICAO` in (\'GANHA\',\'PERDIDA\',\'SUSPENSA\'))
+md5=564f0980b5c63c4795d537dfd6e2d9e4
+updatable=1
+algorithm=0
+definer_user=ODBC
+definer_host=localhost
+suid=1
+with_check_option=0
+timestamp=2010-03-02 23:38:01
+create-version=1
+source=SELECT SITUACOES.TI_SITUACOES_ID AS TI_SITUACOES_ID FROM SITUACOES WHERE (SITUACOES.VA_DESCRICAO IN (\'GANHA\',\'PERDIDA\',\'SUSPENSA\'))
+client_cs_name=utf8
+connection_cl_name=utf8_general_ci
+view_body_utf8=select `acw`.`situacoes`.`TI_SITUACOES_ID` AS `TI_SITUACOES_ID` from `acw`.`situacoes` where (`acw`.`situacoes`.`VA_DESCRICAO` in (\'GANHA\',\'PERDIDA\',\'SUSPENSA\'))

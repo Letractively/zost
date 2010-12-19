@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<nodeSet>
+  <view uin="12iofes5lnk0x6r_v">
+    <property name="$defaultDiagram" value="true" />
+    <property name="$metaclass" value="Package Diagram" />
+    <property name="$name" value="default" />
+    <reference referencedUin="delphi:e_class:src:ACW:Mdl.Lib.ZTODialog_TaskBar.@unitclass">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="0,0,172,77" />
+    </reference>
+    <reference referencedUin="delphi:e_class:src:ACW:Mdl.Lib.ZTODialog_TaskBar.TZTODialog_TaskBar">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="180,0,255,98" />
+      <reference referencedUin="delphi:e_method:src:ACW:Mdl.Lib.ZTODialog_TaskBar.TZTODialog_TaskBar.CreateParams(ref@Controls.TCreateParams)" />
+    </reference>
+  </view>
+</nodeSet>

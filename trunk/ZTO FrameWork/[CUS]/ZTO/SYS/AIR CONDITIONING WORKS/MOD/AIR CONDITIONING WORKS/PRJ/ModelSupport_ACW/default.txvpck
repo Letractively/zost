@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<nodeSet>
+  <view uin="r6hmrlzbr_v">
+    <property name="$defaultDiagram" value="true" />
+    <property name="$metaclass" value="Package Diagram" />
+    <property name="$name" value="default" />
+    <property name="@stereotype" value="" />
+    <reference referencedUin="design:view:::03h05ojnt_v">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="0,0,138,143" />
+      <reference referencedUin="delphi:e_class:src:ACW:UForm_Splash.@unitclass" />
+      <reference referencedUin="delphi:e_class:src:ACW:UForm_Splash.TForm_Splash" />
+      <reference referencedUin="design:link:::yhilc8mkm_l">
+        <property name="sourceAnchor" value="138,63" />
+        <property name="targetAnchor" value="180,63" />
+        <property name="bendpoints" value="" />
+      </reference>
+    </reference>
+    <reference referencedUin="design:view:::26h13wjvq_v">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="160,640,74,113" />
+      <reference referencedUin="design:view:::9sg45aeko_v" />
+    </reference>
+    <reference referencedUin="design:view:::b4harqqdj_v">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="180,0,185,143" />
+      <reference referencedUin="delphi:e_class:src:ACW:UDataModule_Principal.@unitclass" />
+      <reference referencedUin="delphi:e_class:src:ACW:UDataModule_Principal.TDataModule_Principal" />
+      <reference referencedUin="design:link:::jsi7fv8bs_l">
+        <property name="sourceAnchor" value="186,143" />
+        <property name="targetAnchor" value="186,200" />
+        <property name="bendpoints" value="" />
+      </reference>
+      <reference referencedUin="design:link:::3xhuqj0we_l">
+        <property name="sourceAnchor" value="256,32" />
+        <property name="targetAnchor" value="303,236" />
+        <property name="bendpoints" value="" />
+      </reference>
+      <reference referencedUin="design:link:::swhre260l_l">
+        <property name="sourceAnchor" value="270,33" />
+        <property name="targetAnchor" value="315,229" />
+        <property name="bendpoints" value="" />
+      </reference>
+      <reference referencedUin="design:link:::ruhrmlwbl_l">
+        <property name="sourceAnchor" value="277,30" />
+        <property name="targetAnchor" value="513,47" />
+        <property name="bendpoints" value="" />
+      </reference>
+      <reference referencedUin="design:link:::nhi8oc0391vq6mf_l">
+        <property name="sourceAnchor" value="245,33" />
+        <property name="targetAnchor" value="297,228" />
+        <property name="bendpoints" value="" />
+      </reference>
+      <reference referencedUin="design:link:::tzfjswfvo_l">
+        <property name="sourceAnchor" value="334,163" />
+        <property name="targetAnchor" value="334,220" />
+        <property name="bendpoints" value="" />
+      </reference>
+      <reference referencedUin="design:link:::0nj9vmcehw0cuum_l">
+        <property name="sourceAnchor" value="284,143" />
+        <property name="targetAnchor" value="284,180" />
+        <property name="bendpoints" value="" />
+      </reference>
+      <reference referencedUin="design:link:::0jjejmq5pz41flr_l">
+        <property name="sourceAnchor" value="180,71" />
+        <property name="targetAnchor" value="138,71" />
+        <property name="bendpoints" value="" />
+      </reference>
+    </reference>
+    <reference referencedUin="design:view:::05hfd00lm_v">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="60,640,74,113" />
+      <reference referencedUin="design:view:::wv1yircuk_v" />
+    </reference>
+    <reference referencedUin="design:view:::02hlss1hm_v">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="220,380,185,143" />
+      <reference referencedUin="delphi:e_class:src:ACW:UZTODialog_Situacoes.@unitclass" />
+      <reference referencedUin="delphi:e_class:src:ACW:UZTODialog_Situacoes.TZTODialog_Situacoes" />
+      <reference referencedUin="design:link:::bwh4purnj_l">
+        <property name="sourceAnchor" value="340,415" />
+        <property name="targetAnchor" value="335,229" />
+        <property name="bendpoints" value="" />
+      </reference>
+      <reference referencedUin="design:link:::cwhofw0ip_l">
+        <property name="sourceAnchor" value="342,410" />
+        <property name="targetAnchor" value="339,227" />
+        <property name="bendpoints" value="" />
+      </reference>
+      <reference referencedUin="design:link:::enh03s36r_l">
+        <property name="sourceAnchor" value="341,416" />
+        <property name="targetAnchor" value="205,433" />
+        <property name="bendpoints" value="" />
+      </reference>
+      <reference referencedUin="design:link:::giio1oy4068pwqp_l">
+        <property name="sourceAnchor" value="312,414" />
+        <property name="targetAnchor" value="305,270" />
+        <property name="bendpoints" value="" />
+      </reference>
+      <reference referencedUin="design:link:::vqhf65lve_l">
+        <property name="sourceAnchor" value="372,420" />
+        <property name="targetAnchor" value="372,363" />
+        <property name="bendpoints" value="" />
+      </reference>
+      <reference referencedUin="design:link:::3fkejpbwfliw0rr_l">
+        <property name="sourceAnchor" value="312,400" />
+        <property name="targetAnchor" value="312,323" />
+        <property name="bendpoints" value="" />
+      </reference>
+    </reference>
+    <reference referencedUin="design:view:::r5hrocpsj_v">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="0,180,208,143" />
+      <reference referencedUin="delphi:e_class:src:ACW:UZTODataModule_Regioes.TZTODataModule_Regioes" />
+      <reference referencedUin="delphi:e_class:src:ACW:UZTODataModule_Regioes.@unitclass" />
+      <reference referencedUin="design:link:::dmipaaruh_l">
+        <property name="sourceAnchor" value="80,323" />
+        <property name="targetAnchor" value="80,400" />
+        <property name="bendpoints" value="" />
+      </reference>
+      <reference referencedUin="design:link:::nsigqq3mr_l">
+        <property name="sourceAnchor" value="194,200" />
+        <property name="targetAnchor" value="194,143" />
+        <property name="bendpoints" value="" />
+      </reference>
+    </reference>
+    <reference referencedUin="design:view:::e6hw01ggi_v">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="0,380,176,143" />
+      <reference referencedUin="delphi:e_class:src:ACW:UZTODialog_Regioes.@unitclass" />
+      <reference referencedUin="delphi:e_class:src:ACW:UZTODialog_Regioes.TZTODialog_Regioes" />
+      <reference referencedUin="design:link:::0mijido0g_l">
+        <property name="sourceAnchor" value="88,400" />
+        <property name="targetAnchor" value="88,323" />
+        <property name="bendpoints" value="" />
+      </reference>
+    </reference>
+    <reference referencedUin="design:view:::38hki0von_v">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="260,640,74,109" />
+      <property name="hideModule" value="True" />
+      <reference referencedUin="delphi:e_class:src:ACW:ACW.@unitclass" />
+    </reference>
+    <reference referencedUin="design:view:::jihh600mf_v">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="220,180,217,143" />
+      <reference referencedUin="delphi:e_class:src:ACW:UZTODataModule_Situacoes.TZTODataModule_Situacoes" />
+      <reference referencedUin="delphi:e_class:src:ACW:UZTODataModule_Situacoes.@unitclass" />
+      <reference referencedUin="design:link:::awhumz62r_l">
+        <property name="sourceAnchor" value="305,234" />
+        <property name="targetAnchor" value="258,30" />
+        <property name="bendpoints" value="" />
+      </reference>
+      <reference referencedUin="design:link:::jvhj1tr0i_l">
+        <property name="sourceAnchor" value="334,232" />
+        <property name="targetAnchor" value="334,408" />
+        <property name="bendpoints" value="" />
+      </reference>
+      <reference referencedUin="design:link:::fiivo4i08s2fv0k_l">
+        <property name="sourceAnchor" value="318,228" />
+        <property name="targetAnchor" value="279,26" />
+        <property name="bendpoints" value="" />
+      </reference>
+      <reference referencedUin="design:link:::g0h6t1o0r8a851r_l">
+        <property name="sourceAnchor" value="342,220" />
+        <property name="targetAnchor" value="342,163" />
+        <property name="bendpoints" value="" />
+      </reference>
+      <reference referencedUin="design:link:::0shg0lx6l_l">
+        <property name="sourceAnchor" value="364,363" />
+        <property name="targetAnchor" value="364,420" />
+        <property name="bendpoints" value="" />
+      </reference>
+      <reference referencedUin="design:link:::zmjziv6fgqdsren_l">
+        <property name="sourceAnchor" value="304,323" />
+        <property name="targetAnchor" value="304,400" />
+        <property name="bendpoints" value="" />
+      </reference>
+      <reference referencedUin="design:link:::jek4p90xgwhqysg_l">
+        <property name="sourceAnchor" value="292,180" />
+        <property name="targetAnchor" value="292,143" />
+        <property name="bendpoints" value="" />
+      </reference>
+    </reference>
+  </view>
+</nodeSet>

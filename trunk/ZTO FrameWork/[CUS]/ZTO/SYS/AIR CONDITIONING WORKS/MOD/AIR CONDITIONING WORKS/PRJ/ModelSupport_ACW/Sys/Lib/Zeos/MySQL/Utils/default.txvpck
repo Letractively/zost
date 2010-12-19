@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<nodeSet>
+  <view uin="k8j75tex3mf32zq_v">
+    <property name="$defaultDiagram" value="true" />
+    <property name="$metaclass" value="Package Diagram" />
+    <property name="$name" value="default" />
+    <reference referencedUin="delphi:e_class:src:ACW:Sys.Lib.Zeos.MySQL.Utils.@unitclass">
+      <property name="$shortcutReference" value="true" />
+      <reference referencedUin="delphi:e_method:src:ACW:Sys.Lib.Zeos.MySQL.Utils.MySQLExecuteScriptFile(ZConnection.TZConnection,SysUtils.TFileName,Sys.Lib.Zeos.Types.TExecuteScriptCallBack,Sys.Lib.Zeos.Types.TSplitScriptCallBack)" />
+      <reference referencedUin="delphi:e_method:src:ACW:Sys.Lib.Zeos.MySQL.Utils.SplitScript(ZSQLProcessor.TZSQLProcessor,Sys.Lib.Types.TScriptParts,System.String,Sys.Lib.Zeos.Types.TSplitScriptCallBack)" />
+      <reference referencedUin="delphi:e_method:src:ACW:Sys.Lib.Zeos.MySQL.Utils.MySQLExecuteScriptText(ZConnection.TZConnection,System.String,Sys.Lib.Zeos.Types.TExecuteScriptCallBack,Sys.Lib.Zeos.Types.TSplitScriptCallBack)" />
+    </reference>
+  </view>
+</nodeSet>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<nodeSet>
+  <view uin="z6jcgmhh3n33lcm_v">
+    <property name="$defaultDiagram" value="true" />
+    <property name="$metaclass" value="Package Diagram" />
+    <property name="$name" value="default" />
+    <reference referencedUin="delphi:e_class:src:ACW:Sys.Lib.Zeos.Types.TExecuteScriptCallBack">
+      <property name="$shortcutReference" value="true" />
+    </reference>
+    <reference referencedUin="delphi:e_class:src:ACW:Sys.Lib.Zeos.Types.TSplitScriptEvent">
+      <property name="$shortcutReference" value="true" />
+      <reference referencedUin="delphi:e_field:src:ACW:Sys.Lib.Zeos.Types.TSplitScriptEvent.sseBeforeParse" />
+      <reference referencedUin="delphi:e_field:src:ACW:Sys.Lib.Zeos.Types.TSplitScriptEvent.sseAfterParse" />
+      <reference referencedUin="delphi:e_field:src:ACW:Sys.Lib.Zeos.Types.TSplitScriptEvent.sseBeforeSplitOperation" />
+      <reference referencedUin="delphi:e_field:src:ACW:Sys.Lib.Zeos.Types.TSplitScriptEvent.sseBeforeSplit" />
+      <reference referencedUin="delphi:e_field:src:ACW:Sys.Lib.Zeos.Types.TSplitScriptEvent.sseAfterSplit" />
+      <reference referencedUin="delphi:e_field:src:ACW:Sys.Lib.Zeos.Types.TSplitScriptEvent.sseAfterSplitOperation" />
+    </reference>
+    <reference referencedUin="delphi:e_class:src:ACW:Sys.Lib.Zeos.Types.TSplitScriptCallBack">
+      <property name="$shortcutReference" value="true" />
+    </reference>
+    <reference referencedUin="delphi:e_class:src:ACW:Sys.Lib.Zeos.Types.TProcessorEvents">
+      <property name="$shortcutReference" value="true" />
+      <reference referencedUin="delphi:e_field:src:ACW:Sys.Lib.Zeos.Types.TProcessorEvents.FProgressBarCurrent" />
+      <reference referencedUin="delphi:e_field:src:ACW:Sys.Lib.Zeos.Types.TProcessorEvents.FLabelCurrentValue" />
+      <reference referencedUin="delphi:e_field:src:ACW:Sys.Lib.Zeos.Types.TProcessorEvents.FLabelCurrentDescription" />
+      <reference referencedUin="delphi:e_method:src:ACW:Sys.Lib.Zeos.Types.TProcessorEvents.Create(ComCtrls.TProgressBar,StdCtrls.TLabel,StdCtrls.TLabel)" />
+      <reference referencedUin="delphi:e_method:src:ACW:Sys.Lib.Zeos.Types.TProcessorEvents.DoAfterExecute(ZSQLProcessor.TZSQLProcessor,System.Int32)" />
+      <reference referencedUin="delphi:e_method:src:ACW:Sys.Lib.Zeos.Types.TProcessorEvents.DoBeforeExecute(ZSQLProcessor.TZSQLProcessor,System.Int32)" />
+    </reference>
+    <reference referencedUin="delphi:e_class:src:ACW:Sys.Lib.Zeos.Types.@unitclass">
+      <property name="$shortcutReference" value="true" />
+    </reference>
+    <reference referencedUin="delphi:e_class:src:ACW:Sys.Lib.Zeos.Types.TExecuteScriptEvent">
+      <property name="$shortcutReference" value="true" />
+      <reference referencedUin="delphi:e_field:src:ACW:Sys.Lib.Zeos.Types.TExecuteScriptEvent.eseBeforeExecuteScript" />
+      <reference referencedUin="delphi:e_field:src:ACW:Sys.Lib.Zeos.Types.TExecuteScriptEvent.eseBeforeExecuteScriptPart" />
+      <reference referencedUin="delphi:e_field:src:ACW:Sys.Lib.Zeos.Types.TExecuteScriptEvent.eseAfterExecuteScriptPart" />
+      <reference referencedUin="delphi:e_field:src:ACW:Sys.Lib.Zeos.Types.TExecuteScriptEvent.eseAfterExecuteScript" />
+    </reference>
+  </view>
+</nodeSet>
