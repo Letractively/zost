@@ -70,8 +70,6 @@ object Form_Player: TForm_Player
     Align = alClient
     TabStop = False
     OnMouseMove = VideoWindowMouseMove
-    ExplicitWidth = 719
-    ExplicitHeight = 460
   end
   object StatusBar: TStatusBar
     Left = 16
