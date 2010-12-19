@@ -103,6 +103,7 @@
 						<VersionInfoKeys Name="FileVersion">1.0.0.0</VersionInfoKeys>
 					</VersionInfoKeys>
 				</Delphi.Personality>
+				<ModelSupport>False</ModelSupport>
 			</BorlandProject>
 			<ProjectFileVersion>12</ProjectFileVersion>
 		</ProjectExtensions>

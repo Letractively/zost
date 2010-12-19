@@ -338,7 +338,7 @@ var
 begin
   iAux := FArquivosDeMidia.Count;
 
-  Form_Configuracao.ListBox1.Clear;
+  Form_Configuracao.ListBox_Script.Clear;
 
   for i := 0 to FArquivosDeMidia.Count - 1 do
   begin
@@ -353,7 +353,7 @@ begin
     PlayFiles[i,1] := copy(sAux1,pos('|',saux1)+1,length(saux1)-1);
     PlayFiles[i,2] := copy(sAux1,pos('|',saux1)-3,3); // Extensão do arquivo
 
-    Form_Configuracao.ListBox1.Items.Add(PlayFiles[i,0]);
+    Form_Configuracao.ListBox_Script.Items.Add(PlayFiles[i,0]);
   end;
 
 end;

@@ -23,7 +23,7 @@ type
     edtDirMidia: TLabeledEdit;
     rgMidia: TRadioGroup;
     Label4: TLabel;
-    ListBox1: TListBox;
+    ListBox_Script: TListBox;
     OpenDialog1: TOpenDialog;
     SpeedButton2: TSpeedButton;
     SpeedButton3: TBitBtn;
@@ -46,6 +46,7 @@ type
     procedure FormMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Integer);
     procedure ToolButton2Click(Sender: TObject);
     procedure ToolButton3Click(Sender: TObject);
+    procedure rgMidiaClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -56,14 +57,14 @@ type
 
     iCont : Integer;
 
-    procedure p_ValidaArquivosConf;
+    procedure ValidarArquivosDeMidia;
     function isFolderEmpty(sPath : String) : Boolean ;
 
     procedure RecarregarScript;
-    procedure CarregarItemConfiguracao ;
+    procedure ExibirConfiguracoes ;
     procedure DesabilitaBarraWind;
     procedure HabilitaBarraWin;
-    procedure p_AjustaMonitor;
+    procedure AjustarMonitor;
 
   end;
 
@@ -77,6 +78,7 @@ uses UForm_Player, Inifiles, RTLConsts;
 var
   DirMidia: String;
   DirLog: String;
+  MonitorPrincipal: Boolean;
 
 {$R *.dfm}
 
@@ -96,61 +98,37 @@ begin
 end;
 
 procedure TForm_Configuracao.btPlayListClick(Sender: TObject);
-//var
-//    i, j : integer;
-//    sTexto : String;
 begin
-
-// j := 0;
-
- {
- if ListBox1.Count = 1 then
-   ListBox1.Items[0].clear
- else begin
-   for j:=0 to ListBox1.Count - 1 then
-     ListBox1.Items[j].clear;
- end;
-  }
-  ListBox1.Items.Clear;
-
-  p_ValidaArquivosConf;
+  ValidarArquivosDeMidia;
 
   try
-    if Form_Player <> nil then
-      if (Form_Player.FilterGraph <> nil) and
-         (Form_Player.FilterGraph.State <> gsUninitialized) then Exit;
+    if Assigned(Form_Player) then
+      if Assigned(Form_Player.FilterGraph) and (Form_Player.FilterGraph.State <> gsUninitialized) then
+        Exit;
 
     Application.Createform(TForm_Player,Form_Player);
 
-    p_AjustaMonitor; 
-    {
-    for i:=0 to Principal.FArquivosDeMidia.Count - 1 do begin
-      sTExto := Principal.PlayFiles[i,0];
-      ListBox1.Items.Add(sTexto);
-    end;
-    }
+    AjustarMonitor;
 
-  except on
-       E:Exception do ShowMessage('Não foi possível iniciar o SlideShow.'+#13+#10+E.Message);
+  except
+    on E: Exception do
+      ShowMessage('Não foi possível iniciar o SlideShow.'#13#10 + E.Message);
   end;
 end;
 
 procedure TForm_Configuracao.btPauseClick(Sender: TObject);
 begin
-   if Form_Player = nil then exit;
-   if Form_Player.FilterGraph <> nil then
-     Form_Player.FilterGraph.Pause;
+  if Assigned(Form_Player) and Assigned(Form_Player.FilterGraph) then
+    Form_Player.FilterGraph.Pause;
 end;
 
 procedure TForm_Configuracao.btStopClick(Sender: TObject);
 begin
-   if Form_Player = nil then exit;
-   if Form_Player.FilterGraph <> nil then
-     Form_Player.FilterGraph.Stop;
+  if Assigned(Form_Player) and Assigned(Form_Player.FilterGraph) then
+    Form_Player.FilterGraph.Stop;
 end;
 
-procedure TForm_Configuracao.ApplicationEvents1Idle(Sender: TObject;
-var Done: Boolean);
+procedure TForm_Configuracao.ApplicationEvents1Idle(Sender: TObject; var Done: Boolean);
 var
   S : Array[0..255] of Char;
 begin
@@ -166,7 +144,7 @@ begin
 
          lbMusica.Caption := '    '+ Form_Player.sTempo ;
          StrPCopy(S, Form_Player.sMusica);
-         with ListBox1 do
+         with ListBox_Script do
            ItemIndex := Perform(LB_SELECTSTRING, 0, LongInt(@S));
          exit;
 
@@ -178,7 +156,7 @@ begin
         lbMusica.Caption := '    '+ Form_Player.sTempo ;
 
         StrPCopy(S, Form_Player.sMusica);
-        with ListBox1 do
+        with ListBox_Script do
           ItemIndex := Perform(LB_SELECTSTRING, 0, LongInt(@S));
         end;
 
@@ -292,37 +270,27 @@ begin
   end;
 end;
 
-procedure TForm_Configuracao.p_ValidaArquivosConf;
+procedure TForm_Configuracao.ValidarArquivosDeMidia;
 var
-   icont, i : integer;
-   iPos1, iPos2 : integer;
-   sAux, sAux1 : string;
+  i, NaoExistentes: Word;
+  Arquivo: String;
 begin
-  iCont := 0;
+  NaoExistentes := 0;
 
-  ListBox1.Items.Clear;
+  if FArquivosDeMidias.Count = 0 then
+    raise Exception.Create('O script de reprodução não existe ou não contém arquivos');
 
-  if isFolderEmpty(edtDirMidia.Text) then
-    raise Exception.Create('Não existem arquivos em: '+ edtDirMidia.Text );
-
-  for i := 0 to FArquivosDeMidias.Count - 1 do
+  for i := 0 to Pred(FArquivosDeMidias.Count) do
   begin
-    // localizar o parametro
-    sAux := FArquivosDeMidias[i];
-    iPos1 := Pos('=',sAux);
-    iPos2 := Pos('|',sAux);
+    Arquivo := Copy(FArquivosDeMidias[i],Succ(Pos('=',FArquivosDeMidias[i])), Length(FArquivosDeMidias[i]));
+    Arquivo := Copy(Arquivo,1,Pred(Pos('|',Arquivo)));
 
-    // Ex: ARQ001=\ARQUIVO1.FLV|0
-    sAux1 := Trim(Copy(sAux,iPos1+1,iPos2-1));
-    ListBox1.Items.Add(copy(sAux1,1,pos('|',saux1)-1));
-
-    if not FileExists(edtDirMidia.Text+'\'+copy(sAux1,1,pos('|',saux1)-1)) then
-      inc(icont);
+    if not FileExists(DirMidia + '\' + Arquivo) then
+      Inc(NaoExistentes);
   end;
 
-  if Icont =  FArquivosDeMidias.Count then
-    raise Exception.Create('Nenhum arquivo da lista foi encontrado.');
-
+  if NaoExistentes =  FArquivosDeMidias.Count then
+    raise Exception.Create('Nenhum arquivo da lista foi encontrado. Não é possível inicia a reprodução');
 end;
 
 function TForm_Configuracao.isFolderEmpty(sPath: String): Boolean;
@@ -360,34 +328,47 @@ begin
       Free;
     end;
 
-  CarregarItemConfiguracao;
+  ExibirConfiguracoes;
 end;
 
-procedure TForm_Configuracao.CarregarItemConfiguracao;
-var
-  i, iPos1, iPos2 : integer;
-  sAux, sAux1 : string;
+procedure TForm_Configuracao.rgMidiaClick(Sender: TObject);
 begin
-  ListBox1.Items.Clear;
-  
-  for i := 0 to FArquivosDeMidias.Count - 1 do
+  MonitorPrincipal := not Boolean(rgMidia.ItemIndex);
+end;
+
+procedure TForm_Configuracao.ExibirConfiguracoes;
+var
+  i: Word;
+  Arquivo, Tempo: String;
+begin
+  ListBox_Script.Items.Clear;
+
+  for i := 0 to Pred(FArquivosDeMidias.Count) do
   begin
-    // localizar o parametro
-    sAux := FArquivosDeMidias[i];
-    iPos1 := Pos('=',sAux);
-    iPos2 := Pos('|',sAux);
+    Arquivo := Copy(FArquivosDeMidias[i],Succ(Pos('=',FArquivosDeMidias[i])), Length(FArquivosDeMidias[i]));
+    Tempo   := Arquivo;
 
-    // Ex: ARQ001=\ARQUIVO1.FLV|0
-    sAux1 := Trim(Copy(sAux,iPos1+1,iPos2-1));
-    ListBox1.Items.Add(copy(sAux1,1,pos('|',saux1)-1));
+    Arquivo := Copy(Arquivo,1,Pred(Pos('|',Arquivo)));
+    Tempo := Copy(Tempo,Succ(Pos('|',Tempo)),Length(Tempo));
+
+    if Tempo = '0' then
+      ListBox_Script.Items.Add(Arquivo)
+    else
+      ListBox_Script.Items.Add(Arquivo + ' (' + Tempo + ' segundos)')
   end;
-
 end;
 
 procedure TForm_Configuracao.FormCreate(Sender: TObject);
 begin
-  Form_Configuracao.edtDirMidia.Text := DirMidia;
-  Form_Configuracao.edtDirLog.Text := DirLog;
+  edtDirMidia.Text := DirMidia;
+  edtDirLog.Text := DirLog;
+
+  rgMidia.Enabled := Screen.MonitorCount = 2;
+
+  if not rgMidia.Enabled then
+    MonitorPrincipal := True;
+
+  rgMidia.ItemIndex := Integer(not MonitorPrincipal);
 
   FArquivosDeMidias := TStringList.Create;
 
@@ -450,7 +431,7 @@ begin
          Form_Player.FormStyle := fsStayOnTop;
 end;
 
-procedure TForm_Configuracao.p_AjustaMonitor;
+procedure TForm_Configuracao.AjustarMonitor;
 begin
   if rgMidia.ItemIndex = 0 then begin
     if Form_Player <> nil then
@@ -471,6 +452,7 @@ begin
     try
       DirMidia := ReadString('CONFIGURACOES', 'MIDIA', '');
       DirLog := ReadString('CONFIGURACOES', 'LOGS', '');
+      MonitorPrincipal := ReadBool('CONFIGURACOES','MONITORPRINCIPAL',True);
     finally
       Free;
     end;
@@ -482,6 +464,7 @@ begin
     try
       WriteString('CONFIGURACOES', 'MIDIA', DirMidia);
       WriteString('CONFIGURACOES', 'LOGS', DirLog);
+      WriteBool('CONFIGURACOES','MONITORPRINCIPAL',MonitorPrincipal);
     finally
       Free;
     end;

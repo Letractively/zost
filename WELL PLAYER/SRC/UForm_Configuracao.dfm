@@ -5,8 +5,8 @@ object Form_Configuracao: TForm_Configuracao
   BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = bsSingle
   Caption = 'Well Player - Vers'#227'o de demonstra'#231#227'o'
-  ClientHeight = 285
-  ClientWidth = 508
+  ClientHeight = 289
+  ClientWidth = 583
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -153,6 +153,9 @@ object Form_Configuracao: TForm_Configuracao
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   OnMouseMove = FormMouseMove
+  DesignSize = (
+    583
+    289)
   PixelsPerInch = 96
   TextHeight = 13
   object Label4: TLabel
@@ -163,33 +166,38 @@ object Form_Configuracao: TForm_Configuracao
     Caption = 'Lista de reprodu'#231#227'o (Playlist)'
   end
   object SpeedButton2: TSpeedButton
-    Left = 477
+    Left = 552
     Top = 18
     Width = 23
     Height = 23
     Hint = 'Captura caminho do Arquivo de M'#237'dia'
+    Anchors = [akTop, akRight]
     Caption = '...'
     ParentShowHint = False
     ShowHint = True
     OnClick = SpeedButton2Click
+    ExplicitLeft = 477
   end
   object SpeedButton4: TSpeedButton
-    Left = 477
+    Left = 552
     Top = 59
     Width = 23
     Height = 23
     Hint = 'Captura caminho do Arquivo de Log'
+    Anchors = [akTop, akRight]
     Caption = '...'
     ParentShowHint = False
     ShowHint = True
     OnClick = SpeedButton4Click
+    ExplicitLeft = 477
   end
   object SpeedButton3: TBitBtn
-    Left = 384
-    Top = 191
+    Left = 459
+    Top = 195
     Width = 116
     Height = 25
     Hint = 'Salvar Configura'#231#245'es'
+    Anchors = [akRight, akBottom]
     Caption = 'Recriar Script'
     DoubleBuffered = True
     ParentDoubleBuffered = False
@@ -197,11 +205,13 @@ object Form_Configuracao: TForm_Configuracao
     ShowHint = True
     TabOrder = 6
     OnClick = SpeedButton3Click
+    ExplicitLeft = 384
+    ExplicitTop = 191
   end
   object ToolBar: TToolBar
     Left = 0
-    Top = 253
-    Width = 508
+    Top = 257
+    Width = 583
     Align = alBottom
     AutoSize = True
     ButtonHeight = 30
@@ -210,8 +220,8 @@ object Form_Configuracao: TForm_Configuracao
     EdgeBorders = [ebTop]
     Images = ImageList
     TabOrder = 5
-    ExplicitLeft = 6
-    ExplicitTop = 245
+    ExplicitTop = 256
+    ExplicitWidth = 508
     object btPlay: TToolButton
       Left = 0
       Top = 0
@@ -282,11 +292,12 @@ object Form_Configuracao: TForm_Configuracao
     end
   end
   object btPlayList: TBitBtn
-    Left = 384
-    Top = 222
+    Left = 459
+    Top = 226
     Width = 116
     Height = 25
     Hint = 'Iniciar Lista'
+    Anchors = [akRight, akBottom]
     Caption = 'Iniciar Playlist'
     DoubleBuffered = True
     ParentDoubleBuffered = False
@@ -294,13 +305,16 @@ object Form_Configuracao: TForm_Configuracao
     ShowHint = True
     TabOrder = 4
     OnClick = btPlayListClick
+    ExplicitLeft = 384
+    ExplicitTop = 222
   end
   object edtDirMidia: TLabeledEdit
     Left = 6
     Top = 18
-    Width = 465
+    Width = 540
     Height = 23
     Hint = 'Caminho do Arquivo de M'#237'dia'
+    Anchors = [akLeft, akTop, akRight]
     Color = clInfoBk
     EditLabel.Width = 84
     EditLabel.Height = 13
@@ -315,24 +329,30 @@ object Form_Configuracao: TForm_Configuracao
     ReadOnly = True
     ShowHint = True
     TabOrder = 0
+    ExplicitWidth = 465
   end
   object rgMidia: TRadioGroup
-    Left = 384
+    Left = 459
     Top = 88
     Width = 116
-    Height = 97
+    Height = 101
+    Anchors = [akTop, akRight, akBottom]
     Caption = ' Exibi'#231#227'o da m'#237'dia '
     ItemIndex = 0
     Items.Strings = (
       'Monitor Principal'
       'Segundo Monitor')
     TabOrder = 2
+    OnClick = rgMidiaClick
+    ExplicitLeft = 384
+    ExplicitHeight = 97
   end
-  object ListBox1: TListBox
+  object ListBox_Script: TListBox
     Left = 6
     Top = 103
-    Width = 372
-    Height = 144
+    Width = 447
+    Height = 148
+    Anchors = [akLeft, akTop, akRight, akBottom]
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -11
@@ -341,13 +361,16 @@ object Form_Configuracao: TForm_Configuracao
     ItemHeight = 14
     ParentFont = False
     TabOrder = 3
+    ExplicitWidth = 372
+    ExplicitHeight = 144
   end
   object edtDirLog: TLabeledEdit
     Left = 6
     Top = 59
-    Width = 465
+    Width = 540
     Height = 23
     Hint = 'Caminho do Arquivo de Log'
+    Anchors = [akLeft, akTop, akRight]
     Color = clInfoBk
     EditLabel.Width = 80
     EditLabel.Height = 13
@@ -362,6 +385,7 @@ object Form_Configuracao: TForm_Configuracao
     ReadOnly = True
     ShowHint = True
     TabOrder = 1
+    ExplicitWidth = 465
   end
   object ImageList: TImageList
     Height = 24
@@ -369,7 +393,7 @@ object Form_Configuracao: TForm_Configuracao
     Left = 130
     Top = 152
     Bitmap = {
-      494C010104001800540018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010104001800580018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
