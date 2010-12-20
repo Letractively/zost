@@ -264,9 +264,9 @@ object Form_Configuracao: TForm_Configuracao
     object Label_Status: TLabel
       Left = 130
       Top = 2
-      Width = 62
+      Width = 3
       Height = 30
-      Caption = 'Label_Status'
+      Caption = ' '
       Layout = tlCenter
       OnClick = Label_StatusClick
     end
