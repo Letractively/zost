@@ -20,7 +20,6 @@ object Form_Player: TForm_Player
   FormStyle = fsStayOnTop
   OldCreateOrder = True
   Position = poDefault
-  Visible = True
   OnClose = FormClose
   OnCreate = FormCreate
   OnDestroy = FormDestroy
@@ -39,8 +38,6 @@ object Form_Player: TForm_Player
     Stretch = True
     Visible = False
     OnMouseMove = Image2MouseMove
-    ExplicitWidth = 380
-    ExplicitHeight = 236
   end
   object VideoWindow: TVideoWindow
     Left = 0
@@ -56,8 +53,6 @@ object Form_Player: TForm_Player
     Align = alClient
     TabStop = False
     OnMouseMove = VideoWindowMouseMove
-    ExplicitWidth = 660
-    ExplicitHeight = 236
   end
   object StatusBar: TStatusBar
     Left = 0
@@ -67,9 +62,6 @@ object Form_Player: TForm_Player
     Panels = <>
     SimplePanel = True
     Visible = False
-    ExplicitLeft = 16
-    ExplicitTop = 105
-    ExplicitWidth = 380
   end
   object ShockwaveFlash1: TShockwaveFlash
     Left = 0
@@ -81,8 +73,6 @@ object Form_Player: TForm_Player
     TabOrder = 4
     Visible = False
     OnProgress = ShockwaveFlash1Progress
-    ExplicitWidth = 380
-    ExplicitHeight = 236
     ControlData = {
       67556655000900001B4700005535000008000200000000000800000000000800
       0000000008000E000000570069006E0064006F00770000000800040000003000
@@ -102,13 +92,11 @@ object Form_Player: TForm_Player
     Height = 16
     Cursor = crHandPoint
     Caption = 'Esconde'
-    DoubleBuffered = True
     DragCursor = crHandPoint
-    Layout = blGlyphTop
-    ParentDoubleBuffered = False
     TabOrder = 0
     Visible = False
     OnClick = BitBtn1Click
+    Layout = blGlyphTop
   end
   object TrackBar: TDSTrackBar
     Left = 8

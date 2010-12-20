@@ -6,7 +6,8 @@ uses
   SysUtils, Classes, Controls, Forms,
   UCFSHChangeNotify, StdCtrls,
   ShellAPI,  Messages, Buttons, Menus, DSPack, ImgList, ComCtrls, Dialogs,
-  ExtCtrls, DSUTIL, UForm_Configuracao,directshow9, OleCtrls,JPEG, ShockwaveFlashObjects ;
+  ExtCtrls, DSUTIL, UForm_Configuracao,directshow9, OleCtrls,JPEG,
+  ShockwaveFlashObjects_TLB ;
 
 const
   wm_IconMessage = wm_User;
@@ -52,19 +53,23 @@ type
   private
     { Private declarations }
     FMonitorPrincipal: Boolean;
+    FDiretorioMidia,
+    FDiretorioLog    :String;
+
+    FTipoArq : String;
+
     FTempo: String;
     FArquivo: String;
     FArquivosDeMidia   : TStringList;
     FDiretorioDaAplicacao :  WideString;
-    FDiretorioCache       :  WideString;
+//    FDiretorioCache       :  WideString;
     nid                   : TNotifyIconData;
     iAux, iMJ             : integer;
     PlayFiles             : array[0..100,0..3] of String;
-//    PlayFilesTMP          : array[0..100,0..3] of String;
 
     bTocando : boolean;
 
-    sDIRETORIO_CACHE,
+//    sDIRETORIO_CACHE,
     sDIRETORIO_MIDIA,
     sDIRETORIO_SCRIPT,
     sDIRETORIO_LOG : string;
@@ -90,8 +95,13 @@ type
 
     property MonitorPrincipal: Boolean read FMonitorPrincipal write FMonitorPrincipal;
 
-    property Tempo: String read FTempo;
+    property DiretorioMidia: String read FDiretorioMidia write FDiretorioMidia;
+    property DiretorioLog: String read FDiretorioLog write FDiretorioLog;
+
+    property Tempo: String read FTempo write FTempo;
     property Arquivo: String read FArquivo;
+
+    property TipoArq: String read FTipoArq write FTipoArq;
   end;
 
 var
@@ -103,8 +113,7 @@ implementation
 
 uses  windows
      , IniFiles
-     , UFuncoes
-     , DSPackUtil;
+     , UFuncoes;
 
 const
   DIRETORIO_CACHE = 'CACHE';
@@ -216,46 +225,11 @@ begin
   bTocando := False;
   FArquivosDeMidia    := TStringList.Create;
 
-  sini := TStringList.Create;
+  sini   := TStringList.Create;
   smidia := TStringList.Create;
-  slog := TStringList.Create;
+  slog   := TStringList.Create;
 
-  FDiretorioDaAplicacao             := GetCurrentDir;
-
-
-  if FileExists(FDiretorioDaAplicacao + '\config.txt') then begin
-
-    with TIniFile.Create(FDiretorioDaAplicacao + '\Config.txt') do
-      try
-       sini.Clear;
-       ReadSectionValues('INI',sini);
-       ReadSectionValues('MIDIA',sMidia);
-       ReadSectionValues('LOG',sLog);
-      finally
-        Free;
-      end;
-
-    sAux1 := sini[0];
-    iPos := Pos('=',sAux1);
-    sAux1:= Trim(Copy(sAux1,iPos+1,length(sAux1)));
-    sDIRETORIO_CACHE := sAux1;
-
-    sAux2 := smidia[0];
-    iPos := Pos('=',sAux2);
-    sAux2:= Trim(Copy(sAux2,iPos+1,length(sAux2)));
-    sDIRETORIO_MIDIA := sAux2;
-
-    sAux3 := slog[0];
-    iPos := Pos('=',sAux3);
-    sAux3:= Trim(Copy(sAux3,iPos+1,length(sAux3)));
-    sDIRETORIO_LOG := sAux3;
-  end;
-
-  CFSHChangeNotifier_Principal.Root := sDIRETORIO_SCRIPT;
-  FDiretorioCache                   := sDIRETORIO_CACHE;
-  ExecutarArqTemp;
-
-//  ajustaform;
+  FDiretorioDaAplicacao := GetCurrentDir;
 end;
 
 procedure TForm_Player.FormDestroy(Sender: TObject);
@@ -263,7 +237,7 @@ begin
   ShowCursor(True);
   FArquivosDeMidia.Free;
   FilterGraph.Free;
-  Self.Close;  
+  Self.Close;
 end;
 
 procedure TForm_Player.RecarregarScript;
@@ -271,7 +245,7 @@ begin
 
   FArquivosDeMidia.Clear;
 
-  with TIniFile.Create(FDiretorioCache + '\Script.ini') do
+  with TIniFile.Create(FDiretorioMidia + '\Script.ini') do
     try
      ReadSectionValues('ARQUIVOSDEMIDIA',FArquivosDeMidia);
     finally
@@ -281,6 +255,10 @@ begin
   CarregarItemConfiguracao;
 
   Timer1.Enabled := False;
+  Timer2.Enabled := False;
+
+  iMJ := 0;
+
   ExecutarPlay(iMj);
 
 end;
@@ -312,7 +290,6 @@ begin
   if (Msg.lParam = wm_rbuttondown) then
   begin
     GetCursorPos (Pt);
-//    PopupMenu1.Popup (Pt.x, Pt.y);
   end;
   if msg.LParam = wm_lbuttondblclk then
   begin
@@ -373,7 +350,7 @@ begin
 
     if  FArquivosDeMidia.Count = 0 then Exit;
 
-    if not(FileExists(sDIRETORIO_MIDIA+'\'+sNomePlay)) then begin
+    if not(FileExists(FDiretorioMidia+'\'+sNomePlay)) then begin
 
         FilterGraph.Stop;
 
@@ -389,6 +366,9 @@ begin
 
     end
     else begin
+
+      FTipoArq := UpperCase(PlayFiles[iIndex,2]);
+
       if (UpperCase(PlayFiles[iIndex,2]) = 'SWF') or
          (UpperCase(PlayFiles[iIndex,2]) = 'JPG') or
          (UpperCase(PlayFiles[iIndex,2]) = 'BMP') then begin
@@ -401,7 +381,7 @@ begin
           f_Imagem(sNomePlay);
       end
       else
-        FilterGraph.RenderFile(sDIRETORIO_MIDIA+'\'+sNomePlay);
+        FilterGraph.RenderFile(FDiretorioMidia+'\'+sNomePlay);
 
       FArquivo := sNomePlay;
       p_GravaLog(sNomePlay);
@@ -424,7 +404,7 @@ begin
 
   FArquivosDeMidia.Clear;
 
-  with TIniFile.Create(FDiretorioCache + '\Script.ini') do
+  with TIniFile.Create(FDiretorioMidia + '\Script.ini') do
     try
      ReadSectionValues('ARQUIVOSDEMIDIA',FArquivosDeMidia);
     finally
@@ -457,9 +437,7 @@ begin
 
     if TimeToStr(CurrentPos / MiliSecPerDay) =  TimeToStr(StopPos / MiliSecPerDay) then
     begin
-
-//        CurrentPos := 0;
-
+        FTempo := '';
         if iMj + 1 = FArquivosDeMidia.Count then
         begin
           iMj := 0;
@@ -520,7 +498,7 @@ var
   local: TextFile;
 begin
   Arqlog := 'ScripLog_' + (FormatDateTime('ddmmyyyy', now));
-  sDirLog := sDIRETORIO_LOG;
+  sDirLog := FDiretorioLog;
   sLocal   := sDirLog + '\'+Arqlog+'.txt' ;
 
   AssignFile(Local, slocal);
@@ -542,8 +520,8 @@ end;
 
 procedure TForm_Player.f_Tocarswf(sNome: String);
 begin
-  ShockwaveFlash1.Base  := sDIRETORIO_MIDIA + '\'+sNome;
-  ShockwaveFlash1.Movie := sDIRETORIO_MIDIA +'\'+ sNome;
+  ShockwaveFlash1.Base  := FDiretorioMidia + '\'+sNome;
+  ShockwaveFlash1.Movie := FDiretorioMidia +'\'+ sNome;
 
   ShockwaveFlash1.Visible := True;
   Image2.Visible          := False;
@@ -553,6 +531,7 @@ begin
   ShockwaveFlash1.Playing := False;
   ShockwaveFlash1.Play;
   Timer1.Enabled := True;
+  Timer2.Enabled := False;
   iCont := Timer1.Interval;
 end;
 
@@ -566,20 +545,29 @@ begin
     ShockwaveFlash1.Playing := False;
     Timer1.Enabled := False;
     iMj := iMj +1;
-    ProximoPlay;
+    iCont := 0;
+
+    FTempo := '';
+
+    if iMJ = FArquivosDeMidia.Count then
+      RecarregarScript
+    else
+      ProximoPlay;
   end
   else begin
     ShockwaveFlash1.Visible := True;
-    if (iCont1 - Timer2.Interval) < 60 then
-      FTempo := IntToStr(iCont - Timer2.Interval) + ' ' + 'Segundos de ' +(PlayFiles[iMJ,1]) + ' Segundos.'
+    ShockwaveFlash1.Playing := True;
+
+    if (iCont - Timer2.Interval) < 60 then
+      FTempo := IntToStr(iCont - Timer1.Interval) + ' ' + 'Segundos de ' +(PlayFiles[iMJ,1]) + ' Segundos.'
     else
-      FTempo := IntToStr(iCont - Timer2.Interval) + ' ' + 'Minutos de ' +(PlayFiles[iMJ,1]) + ' Segundos.';
+      FTempo := IntToStr(iCont - Timer1.Interval) + ' ' + 'Minutos de ' +(PlayFiles[iMJ,1]) + ' Segundos.';
   end;
 end;
 
 procedure TForm_Player.f_Imagem(sNome: String);
 begin
-  Image2.Picture.LoadFromFile(sDIRETORIO_MIDIA+'\'+sNome);
+  Image2.Picture.LoadFromFile(FDiretorioMidia+'\'+sNome);
   Image2.Align            := alClient;
 
   Image2.Visible          := True;
@@ -587,6 +575,7 @@ begin
   VideoWindow.Visible     := False;
 
   Timer2.Enabled          := True;
+  Timer1.Enabled          := False;
   iCont1 := Timer2.Interval;
 end;
 
@@ -599,13 +588,22 @@ begin
     Image2.Visible := False;
     Timer2.Enabled := False;
     iMj := iMj +1;
-    ProximoPlay;
+    iCont1 := 0;
+
+    FTempo := '';
+
+    if iMJ = FArquivosDeMidia.Count then
+      RecarregarScript
+    else
+      ProximoPlay;
   end
   else begin
     if (iCont1 - Timer2.Interval) < 60 then
-      FTempo := IntToStr(iCont1 - Timer2.Interval) + ' ' + 'Segundos de ' +(PlayFiles[iMJ,1]) + ' Minutos'
+      FTempo := IntToStr(iCont1 - Timer2.Interval) + ' ' + 'Segundos de ' +(PlayFiles[iMJ,1]) + ' Segundos'
     else
-      FTempo := IntToStr(iCont1 - Timer2.Interval) + ' ' + 'Minutos de ' +(PlayFiles[iMJ,1]) + ' Minutos';
+      FTempo := IntToStr(iCont1 - Timer2.Interval) + ' ' + 'Minutos de ' +(PlayFiles[iMJ,1]) + ' Segundos';
+    ShockwaveFlash1.Visible := False;
+    VideoWindow.Visible     := False;
     Image2.Visible := True;
   end;  
 
@@ -636,6 +634,9 @@ begin
   if not FMonitorPrincipal then
     if Screen.MonitorCount > 1 then
       Left := Screen.Monitors[1].Left;
+
+  CFSHChangeNotifier_Principal.Root := FDiretorioMidia;
+  ExecutarArqTemp;
 
 //  DesabilitaBarraWind;
 end;
