@@ -1,6 +1,6 @@
 object Form_Configuracao: TForm_Configuracao
-  Left = 441
-  Top = 222
+  Left = 464
+  Top = 141
   Cursor = crArrow
   BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = bsSingle
