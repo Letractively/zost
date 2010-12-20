@@ -196,7 +196,7 @@ object Form_Configuracao: TForm_Configuracao
     Height = 25
     Hint = 'Salvar Configura'#231#245'es'
     Anchors = [akRight, akBottom]
-    Caption = 'Recriar Script'
+    Caption = 'Atualizar Lista'
     ParentShowHint = False
     ShowHint = True
     TabOrder = 6

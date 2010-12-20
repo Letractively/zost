@@ -94,8 +94,10 @@ begin
          else begin
            if (TipoArq = 'SWF') then begin
              Timer1.Enabled := True;
-             if Form_Player.ShockwaveFlash1.Playing = False then
-               Form_Player.ShockwaveFlash1.Playing := True;
+             if ShockwaveFlash1.Playing = False then begin
+               ShockwaveFlash1.Playing;
+               ShockwaveFlash1.Play;
+             end;
            end
            else begin
              if FilterGraph.State = gsUninitialized then
@@ -140,14 +142,19 @@ begin
      with Form_Player do begin
          if (TipoArq = 'BMP') or
             (TipoArq = 'JPG') or
-            (TipoArq = 'ICO')  then begin
-             Timer2.Enabled := False
+            (TipoArq = 'ICO') or
+            (TipoArq = 'GIF') or
+            (TipoArq = 'PNG') then begin
+           Timer2.Enabled := False
          end
          else begin
            if (TipoArq = 'SWF') then begin
              Timer1.Enabled := False;
-             if Form_Player.ShockwaveFlash1.Playing = True then
-               Form_Player.ShockwaveFlash1.Playing := False;
+             if ShockwaveFlash1.Playing = True then begin
+               ShockwaveFlash1.Playing := False;
+               ShockwaveFlash1.StopPlay;
+               ShockwaveFlash1.Stop;
+             end;
            end
            else begin
              if FilterGraph.State = gsUninitialized then
@@ -254,9 +261,10 @@ begin
   if not DirectoryExists(DirMidia) then
     Application.MessageBox('O diretório de mídia ainda não foi configurado. Não é possível recriar o Script de reprodução','Impossível criar script de reprodução',MB_ICONERROR);
 
-  if FileExists(DirMidia + '\Script.ini') then
+{  if FileExists(DirMidia + '\Script.ini') then
     if Application.MessageBox('Já existe um Script de reprodução no diretório de mídia. Tem certeza de que quer sobrescrevê-lo?','Tem certeza?',MB_ICONQUESTION or MB_YESNO) = IDNO then
-      Exit;
+     Exit;
+     }
 //  if Trim(edtDirMidia.Text) = '' then
 //    raise Exception.Create('Informe o local dos Arquivos de Mídia.');
 //  if Trim(edtDirLog.Text) = '' then
@@ -310,8 +318,8 @@ begin
 //      CloseFile(LocalIni);
 //    end;
 //
-  Application.MessageBox('Script de reprodução (re)criado!','Feito!',MB_ICONINFORMATION);
   RecarregarScript;
+  Application.MessageBox('Script de reprodução Atualziado!','Feito!',MB_ICONINFORMATION);
 end;
 
 { ESTE PROCEDIMENTO ESTÁ OK }
@@ -422,7 +430,7 @@ begin
     if sTempo = '0' then
       ListBox_Script.Items.Add(Arquivo)
     else
-      ListBox_Script.Items.Add(Arquivo + ' (' + sTempo + ' segundos)')
+      ListBox_Script.Items.Add(Arquivo);// + ' (' + sTempo + ' segundos)')
   end;
 end;
 
