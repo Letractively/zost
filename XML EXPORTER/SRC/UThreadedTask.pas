@@ -108,7 +108,7 @@ procedure TThreadedTask.GenerateXML;
 var
   XML: TextFile;
   i: Byte;
-  Buffer: array [1..1048576] of Char; { Buffer de 1MB! }
+  Buffer: array [1..524288] of Char; { Buffer de 512K! }
 begin
   { Código para geração do XML }
   FOnBeforeGenerate(Self);

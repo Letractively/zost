@@ -3,18 +3,22 @@ unit UDataModule_Principal;
 interface
 
 uses
-  SysUtils, Classes, ExtCtrls;
+  SysUtils, Classes, ExtCtrls, AppEvnts;
 
 type
   TDataModule_Principal = class(TDataModule)
-    Timer_Decorrido: TTimer;
-    procedure Timer_DecorridoTimer(Sender: TObject);
+    ApplicationEvents_Monitorador: TApplicationEvents;
+    procedure ApplicationEvents_MonitoradorIdle(Sender: TObject;
+      var Done: Boolean);
+    procedure DataModuleCreate(Sender: TObject);
   private
     { Private declarations }
     FSQLLimitador: String;
     FTotalDeProcessos: Cardinal;
     FInicio: TDateTime;
     FEmExecucao: Word;
+    FEmGeracao: Word;
+    FAtivado: Boolean;
     procedure SQLLimitadorETotalDeProcessos;
     procedure AddToLog(aLinha: String);
   public
@@ -22,6 +26,7 @@ type
     procedure IniciarProcessamento;
     procedure CompilarXMLFinal;
     property ThreadsExecutando: Word read FEmExecucao write FEmExecucao;
+    property ThreadsGerando: Word read FEmGeracao write FEmGeracao;
   end;
 
 implementation
@@ -179,6 +184,8 @@ begin
   Form_Principal.StatusBar_Principal.Panels[2].Text := 'Threads executando: 0';
   Form_Principal.StatusBar_Principal.Panels[3].Text := 'Decorrido: 00:00:00';
 
+  Form_Principal.Label_ThreadsPercent.Caption := '0%';
+  Form_Principal.Label_RecordsPercent.Caption := '0%';
 
   Form_Principal.Memo_LogProcessamento.Clear;
 
@@ -214,7 +221,8 @@ begin
   RegistrosFaltantes := FTotalDeProcessos mod Configurations.PARAMETROSTOTALTHREADS;
 
   FInicio := Now;
-  Timer_Decorrido.Enabled := True;
+
+  FAtivado := True;
 
   for i := 1 to Configurations.PARAMETROSTOTALTHREADS do
   begin
@@ -224,9 +232,13 @@ begin
       Priority := tpLower;
       Memo := Form_Principal.Memo_LogProcessamento;
       ProgressBarRecord := Form_Principal.ProgressBar_Documentos;
+      LabelRecordPercent := Form_Principal.Label_ThreadsPercent;
       ProgressBarThread := Form_Principal.ProgressBar_Threads;
+      LabelThreadPercent := Form_Principal.Label_RecordsPercent;
+
       StatusBar := Form_Principal.StatusBar_Principal;
       Executing := @FEmExecucao;
+      Generating := @FEmGeracao;
       ThreadSeq := i;
 
       if i = Configurations.PARAMETROSTOTALTHREADS then
@@ -255,36 +267,17 @@ begin
   Form_Principal.Memo_LogProcessamento.Lines.Add(aLinha);
 end;
 
-procedure TDataModule_Principal.Timer_DecorridoTimer(Sender: TObject);
-begin
-  Form_Principal.StatusBar_Principal.Panels[3].Text := FormatDateTime('"Decorrido: "hh:nn:ss',Now - FInicio);
-  Form_Principal.StatusBar_Principal.Panels[2].Text := 'Threads executando: ' + IntToStr(FEmExecucao); 
-
-  if Form_Principal.ProgressBar_Documentos.Position = Form_Principal.ProgressBar_Documentos.Max then
-  begin
-    Timer_Decorrido.Enabled := False;
-    Form_Principal.Button_IniciarProcessamento.Enabled := True;
-
-    AddToLog('-----------------------------------------------------');
-    AddToLog('');
-    AddToLog('Fim: ' + FormatDateTime('dd/mm/yyyy "às" hh:nn:ss',Now));
-    AddToLog('Geração CJF concluída!');
-    AddToLog('');
-    AddToLog('*****************************************************');
-
-    CompilarXMLFinal;
-  end;
-end;
-
 procedure TDataModule_Principal.CompilarXMLFinal;
 var
   i: Word;
   XMLFinal, XMLPedaco: TextFile;
   Linha, Arquivo: String;
+  Buffer: array [1..524288] of Char; { Buffer de 512K! }
 begin
 
   try
     AssignFile(XMLFinal,Configurations.PARAMETROSNOMEDOARQUIVO + '.xml');
+    SetTextBuf(XMLFinal, Buffer);
     Rewrite(XMLFinal);
 
     AddToLog('Compilando XML Final...');
@@ -312,6 +305,35 @@ begin
     CloseFile(XMLFinal);
     AddToLog('XML Final compilado. Geração concluída!');
   end;
+end;
+
+procedure TDataModule_Principal.ApplicationEvents_MonitoradorIdle(Sender: TObject; var Done: Boolean);
+begin
+  if FAtivado then
+  begin
+    Form_Principal.StatusBar_Principal.Panels[3].Text := FormatDateTime('"Decorrido: "hh:nn:ss',Now - FInicio);
+    Form_Principal.StatusBar_Principal.Panels[2].Text := 'Threads executando: ' + IntToStr(FEmGeracao) + '/' + IntToStr(FEmExecucao);
+
+    if Form_Principal.ProgressBar_Documentos.Position = Form_Principal.ProgressBar_Documentos.Max then
+    begin
+      FAtivado := False;
+      Form_Principal.Button_IniciarProcessamento.Enabled := True;
+
+      AddToLog('-----------------------------------------------------');
+      AddToLog('');
+      AddToLog('Fim: ' + FormatDateTime('dd/mm/yyyy "às" hh:nn:ss',Now));
+      AddToLog('Geração CJF concluída!');
+      AddToLog('');
+      AddToLog('*****************************************************');
+
+      CompilarXMLFinal;
+    end;
+  end;
+end;
+
+procedure TDataModule_Principal.DataModuleCreate(Sender: TObject);
+begin
+  FAtivado := False;
 end;
 
 end.
