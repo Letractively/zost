@@ -26,6 +26,8 @@ type
     Shape1: TShape;
     Shape2: TShape;
     Label_Informacao: TLabel;
+    Label_ThreadsPercent: TLabel;
+    Label_RecordsPercent: TLabel;
     procedure Button_IniciarProcessamentoClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);

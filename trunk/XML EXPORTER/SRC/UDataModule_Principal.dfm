@@ -1,13 +1,13 @@
 object DataModule_Principal: TDataModule_Principal
   OldCreateOrder = False
+  OnCreate = DataModuleCreate
   Left = 264
   Top = 211
   Height = 150
-  Width = 215
-  object Timer_Decorrido: TTimer
-    Enabled = False
-    OnTimer = Timer_DecorridoTimer
-    Left = 30
-    Top = 6
+  Width = 298
+  object ApplicationEvents_Monitorador: TApplicationEvents
+    OnIdle = ApplicationEvents_MonitoradorIdle
+    Left = 72
+    Top = 54
   end
 end

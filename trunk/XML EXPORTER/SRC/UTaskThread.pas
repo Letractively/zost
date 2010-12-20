@@ -21,15 +21,20 @@ type
     FLogText: String;
     FMemo: TMemo;
     FProgressBarRecord: TProgressBar;
+    FLabelRecordPercent: TLabel;
     FProgressBarThread: TProgressBar;
+    FLabelThreadPercent: TLabel;
     FStatusBar: TStatusBar;
     FExecuting: PWord;
+    FGenerating: PWord;
     FThreadSeq: Word;
     procedure AddToLog;
     procedure AddProgressRecord;
     procedure AddProgressThread;
     procedure IncExecuting;
+    procedure IncGenerating;
     procedure DecExecuting;
+    procedure DecGenerating;
     procedure DoBeforeGenerate(aSender: TObject);
     procedure DoBeforeGenerateRecord(aSender: TObject);
     procedure DoAfterGenerateRecord(aSender: TObject);
@@ -40,15 +45,17 @@ type
     procedure DoAfterDisconnect(aSender: TObject);
     procedure DoBeforeGetData(aDataSet: TDataSet);
     procedure DoAfterGetData(aDataSet: TDataSet);
-
   protected
     procedure Execute; override;
   public
     property Memo: TMemo write FMemo;
     property ProgressBarRecord: TProgressBar write FProgressBarRecord;
+    property LabelRecordPercent: TLabel write FLabelRecordPercent;
     property ProgressBarThread: TProgressBar write FProgressBarThread;
+    property LabelThreadPercent: TLabel write FLabelThreadPercent;
     property StatusBar: TStatusBar write FStatusBar;
     property Executing: PWord write FExecuting;
+    property Generating: PWord write FGenerating;
     property ThreadSeq: Word write FThreadSeq;
     property SQL: String read FSQL write FSQL;
     property Database: String write FDatabase;
@@ -79,15 +86,27 @@ begin
   Dec(FExecuting^);
 end;
 
+procedure TTaskThread.IncGenerating;
+begin
+  Inc(FGenerating^);
+end;
+
+procedure TTaskThread.DecGenerating;
+begin
+  Dec(FGenerating^);
+end;
+
 procedure TTaskThread.AddProgressRecord;
 begin
   FProgressBarRecord.StepIt;
   FStatusBar.Panels[1].Text := 'Registros processados: ' + IntToStr(FProgressBarRecord.Position);
+  FLabelRecordPercent.Caption := IntToStr(Round(FProgressBarRecord.Position / FProgressBarRecord.Max * 100)) + '%';
 end;
 
 procedure TTaskThread.AddProgressThread;
 begin
   FProgressBarThread.StepIt;
+  FLabelThreadPercent.Caption := IntToStr(Round(FProgressBarThread.Position / FProgressBarThread.Max * 100)) + '%';
 end;
 
 procedure TTaskThread.AddToLog;
@@ -111,6 +130,7 @@ procedure TTaskThread.DoAfterGenerate(aSender: TObject);
 begin
   FLogText := '[' + FormatDateTime('hh:nn:ss',Now) + '] Thread #' + IntToStr(FThreadSeq) + ' (ID#' + IntToStr(ThreadID) + '): XML Gerado';
   Synchronize(AddToLog);
+  Synchronize(DecGenerating);
 end;
 
 procedure TTaskThread.DoAfterGenerateRecord(aSender: TObject);
@@ -140,6 +160,7 @@ procedure TTaskThread.DoBeforeGenerate(aSender: TObject);
 begin
   FLogText := '[' + FormatDateTime('hh:nn:ss',Now) + '] Thread #' + IntToStr(FThreadSeq) + ' (ID#' + IntToStr(ThreadID) + '): Gerando XML...';
   Synchronize(AddToLog);
+  Synchronize(IncGenerating);
 end;
 
 procedure TTaskThread.DoBeforeGenerateRecord(aSender: TObject);

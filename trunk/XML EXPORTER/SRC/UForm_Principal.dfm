@@ -41,7 +41,7 @@ object Form_Principal: TForm_Principal
       item
         Alignment = taCenter
         Text = 'Threads executando: 0'
-        Width = 135
+        Width = 155
       end
       item
         Alignment = taCenter
@@ -127,18 +127,28 @@ object Form_Principal: TForm_Principal
         object Label_Registros: TLabel
           Left = 0
           Top = 0
-          Width = 50
+          Width = 108
           Height = 17
           Align = alLeft
           Alignment = taRightJustify
           AutoSize = False
-          Caption = 'Registros'
+          Caption = 'Registros processados'
           Layout = tlCenter
         end
+        object Label_RecordsPercent: TLabel
+          Left = 563
+          Top = 2
+          Width = 29
+          Height = 13
+          Alignment = taCenter
+          Anchors = [akTop, akRight]
+          AutoSize = False
+          Caption = '0%'
+        end
         object ProgressBar_Documentos: TProgressBar
-          Left = 56
+          Left = 111
           Top = 0
-          Width = 536
+          Width = 450
           Height = 17
           Anchors = [akLeft, akTop, akRight, akBottom]
           TabOrder = 0
@@ -158,18 +168,28 @@ object Form_Principal: TForm_Principal
         object Label_Threads: TLabel
           Left = 0
           Top = 0
-          Width = 50
+          Width = 108
           Height = 17
           Align = alLeft
           Alignment = taRightJustify
           AutoSize = False
-          Caption = 'Threads'
+          Caption = 'Threads executadas'
           Layout = tlCenter
         end
+        object Label_ThreadsPercent: TLabel
+          Left = 563
+          Top = 2
+          Width = 29
+          Height = 13
+          Alignment = taCenter
+          Anchors = [akTop, akRight]
+          AutoSize = False
+          Caption = '0%'
+        end
         object ProgressBar_Threads: TProgressBar
-          Left = 56
+          Left = 111
           Top = 0
-          Width = 536
+          Width = 450
           Height = 17
           Anchors = [akLeft, akRight, akBottom]
           TabOrder = 0
