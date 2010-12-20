@@ -108,7 +108,7 @@ procedure TThreadedTask.GenerateXML;
 var
   XML: TextFile;
   i: Byte;
-  Registro: String;
+  Buffer: array [1..262144] of Char;
 begin
   { Código para geração do XML }
   FOnBeforeGenerate(Self);
@@ -116,30 +116,28 @@ begin
   try
     AssignFile(XML,Configurations.PARAMETROSNOMEDOARQUIVO + DupeString('0',5 - Length(IntToStr(FPage))) + IntToStr(FPage) + '.xml');
     FileMode := fmOpenWrite;
+    SetTextBuf(XML, Buffer);
     Rewrite(XML);
 
     while not DataSet.Eof do
     begin
       FOnBeforeGenerateRecord(Self);
 
-      Registro := '';
+      WriteLn(XML,'<DOCUMENTO>');
 
       { O primeiro campo é o coddoc, que não usamos }
       for i := 1 to Pred(DataSet.Fields.Count) do
       begin
-        Registro := Registro + '<' + DataSet.Fields[i].FieldName + '>'#13#10;
-        Registro := Registro + DataSet.Fields[i].AsString + #13#10;
-        Registro := Registro + '</' + DataSet.Fields[i].FieldName + '>';
-
-        if (i = 1) and (DataSet.Fields[1].AsString = 'TRF500226078') then
-          MessageBox(0,'aqui','veja',0);
-
-        if i <> Pred(DataSet.Fields.Count) then
-          Registro := Registro + #13#10;
+        if Trim(DataSet.Fields[i].AsString) <> '' then
+        begin
+          Writeln(XML,'<' + DataSet.Fields[i].FieldName + '>');
+          Writeln(XML,DataSet.Fields[i].AsString);
+          Writeln(XML,'</' + DataSet.Fields[i].FieldName + '>');
+        end
+        else
+          Writeln(XML,'<' + DataSet.Fields[i].FieldName + '></' + DataSet.Fields[i].FieldName + '>');
       end;
 
-      WriteLn(XML,'<DOCUMENTO>');
-      WriteLn(XML,Registro);
       WriteLn(XML,'</DOCUMENTO>');
 
       FOnAfterGenerateRecord(Self);
