@@ -314,7 +314,7 @@ begin
     Form_Principal.StatusBar_Principal.Panels[3].Text := FormatDateTime('"Decorrido: "hh:nn:ss',Now - FInicio);
     Form_Principal.StatusBar_Principal.Panels[2].Text := 'Threads executando: ' + IntToStr(FEmGeracao) + '/' + IntToStr(FEmExecucao);
 
-    if Form_Principal.ProgressBar_Documentos.Position = Form_Principal.ProgressBar_Documentos.Max then
+    if Form_Principal.ProgressBar_Threads.Position = Form_Principal.ProgressBar_Threads.Max then
     begin
       FAtivado := False;
       Form_Principal.Button_IniciarProcessamento.Enabled := True;
@@ -326,8 +326,12 @@ begin
       AddToLog('');
       AddToLog('*****************************************************');
 
+//      Form_Principal.StatusBar_Principal.Panels[3].Text := FormatDateTime('"Decorrido: "hh:nn:ss',Now - FInicio);
+//      Form_Principal.StatusBar_Principal.Panels[2].Text := 'Threads executando: ' + IntToStr(FEmGeracao) + '/' + IntToStr(FEmExecucao);
+
       CompilarXMLFinal;
     end;
+
   end;
 end;
 

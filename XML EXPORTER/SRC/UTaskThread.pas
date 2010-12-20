@@ -222,9 +222,10 @@ begin
     ThreadedTask.Free;
     FLogText := '[' + FormatDateTime('hh:nn:ss',Now) + '] Thread #' + IntToStr(FThreadSeq) + ' (ID#' + IntToStr(ThreadID) + '): Finalizada';
     Synchronize(AddToLog);
+
+    Synchronize(DecExecuting);
     Synchronize(AddProgressThread);
     ReleaseSemaphore (HSemaphore, 1, nil);
-    Synchronize(DecExecuting);
   end;
 end;
 
