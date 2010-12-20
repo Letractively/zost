@@ -184,36 +184,36 @@ end;
 procedure TForm_Player.CFSHChangeNotifier_PrincipalChangeAttributes;
 begin
   Exit;
-  RecarregarScript;
+  //RecarregarScript;
 end;
 
 procedure TForm_Player.CFSHChangeNotifier_PrincipalChangeDirName;
 begin
   Exit;
-  RecarregarScript;
+  //RecarregarScript;
 end;
 
 procedure TForm_Player.CFSHChangeNotifier_PrincipalChangeFileName;
 begin
   Exit;
-  RecarregarScript;
+  //RecarregarScript;
 end;
 
 procedure TForm_Player.CFSHChangeNotifier_PrincipalChangeLastWrite;
 begin
-  RecarregarScript;
+//  RecarregarScript;
 end;
 
 procedure TForm_Player.CFSHChangeNotifier_PrincipalChangeSecurity;
 begin
   Exit;
-  RecarregarScript;
+  //RecarregarScript;
 end;
 
 procedure TForm_Player.CFSHChangeNotifier_PrincipalChangeSize;
 begin
   Exit;
-  RecarregarScript;
+  //RecarregarScript;
 end;
 
 procedure TForm_Player.FormCreate(Sender: TObject);
