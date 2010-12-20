@@ -371,8 +371,9 @@ begin
 
       if (UpperCase(PlayFiles[iIndex,2]) = 'SWF') or
          (UpperCase(PlayFiles[iIndex,2]) = 'JPG') or
-         (UpperCase(PlayFiles[iIndex,2]) = 'BMP') then begin
-
+         (UpperCase(PlayFiles[iIndex,2]) = 'BMP') or
+         (UpperCase(PlayFiles[iIndex,2]) = 'ICO') or
+         (UpperCase(PlayFiles[iIndex,2]) = 'PNG') then begin
         FilterGraph.Active := False;
 
         if UpperCase(PlayFiles[iIndex,2]) = 'SWF' then
