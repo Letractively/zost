@@ -84,10 +84,27 @@ begin
    if Form_Player = nil then exit;
 
    if Form_Player.FilterGraph <> nil then begin
-     if Form_Player.FilterGraph.State = gsUninitialized then
-       btPlayListClick(self)
-     else
-       Form_Player.FilterGraph.Play
+
+     with Form_Player do begin
+         if (TipoArq = 'BMP') or
+            (TipoArq = 'JPG') or
+            (TipoArq = 'ICO')  then begin
+             Timer2.Enabled := True
+         end
+         else begin
+           if (TipoArq = 'SWF') then begin
+             Timer1.Enabled := True;
+             if Form_Player.ShockwaveFlash1.Playing = False then
+               Form_Player.ShockwaveFlash1.Playing := True;
+           end
+           else begin
+             if FilterGraph.State = gsUninitialized then
+               btPlayListClick(self)
+             else
+               FilterGraph.Play;
+           end;  //if (TipoArq = 'SWF')
+         end; //if (TipoArq = 'BMP' or ...)
+     end; //with Form_Player do begin
    end
    else
      btPlayListClick(self);
@@ -119,8 +136,33 @@ end;
 
 procedure TForm_Configuracao.ToolButton_PauseClick(Sender: TObject);
 begin
-  if Assigned(Form_Player) and Assigned(Form_Player.FilterGraph) then
-    Form_Player.FilterGraph.Pause;
+  if Assigned(Form_Player) and Assigned(Form_Player.FilterGraph) then begin
+     with Form_Player do begin
+         if (TipoArq = 'BMP') or
+            (TipoArq = 'JPG') or
+            (TipoArq = 'ICO')  then begin
+             Timer2.Enabled := False
+         end
+         else begin
+           if (TipoArq = 'SWF') then begin
+             Timer1.Enabled := False;
+             if Form_Player.ShockwaveFlash1.Playing = True then
+               Form_Player.ShockwaveFlash1.Playing := False;
+           end
+           else begin
+             if FilterGraph.State = gsUninitialized then
+               btPlayListClick(self)
+             else
+               FilterGraph.Pause;
+           end;  //if (TipoArq = 'SWF')
+         end; //if (TipoArq = 'BMP' or ...)
+     end; //with Form_Player do begin
+
+    {Form_Player.FilterGraph.Pause;
+    if Form_Player.ShockwaveFlash1.Playing = True then
+      Form_Player.ShockwaveFlash1.Playing := False;
+     }
+  end;
 end;
 
 procedure TForm_Configuracao.ToolButton_StopClick(Sender: TObject);
@@ -135,20 +177,31 @@ var
 begin
   if Form_Player <> nil then begin
 
+     Label_Status.Caption := '    '+ Form_Player.Tempo ;
+     StrPCopy(S, Form_Player.Arquivo);
+     with ListBox_Script do
+       ItemIndex := Perform(LB_SELECTSTRING, 0, LongInt(@S));
+     exit;
+
+
+    {
     if Form_Player.FilterGraph = nil then begin
       Label_Status.Caption := '';
        //ListBox1.Clear;
     end
     else
     begin
-       if Form_Player.FilterGraph.State = gsUninitialized then begin
 
+       if Form_Player.ShockwaveFlash1.Playing then begin
+
+       end;
+
+       if (Form_Player.FilterGraph.State = gsUninitialized) then begin
          Label_Status.Caption := '    '+ Form_Player.Tempo ;
          StrPCopy(S, Form_Player.Arquivo);
          with ListBox_Script do
            ItemIndex := Perform(LB_SELECTSTRING, 0, LongInt(@S));
          exit;
-
        end;
 
       if (Form_Player.FilterGraph.State = gsStopped) or
@@ -162,10 +215,12 @@ begin
         end;
 
       end;
+       }
     end
     else begin
-      Label_Status.Caption := '';
+//      Label_Status.Caption := '';
     end;
+
 end;
 
 procedure TForm_Configuracao.ToolButton_FecharClick(Sender: TObject);
@@ -352,22 +407,22 @@ end;
 procedure TForm_Configuracao.ExibirConfiguracoes;
 var
   i: Word;
-  Arquivo, Tempo: String;
+  Arquivo, sTempo: String;
 begin
   ListBox_Script.Items.Clear;
 
   for i := 0 to Pred(FArquivosDeMidias.Count) do
   begin
     Arquivo := Copy(FArquivosDeMidias[i],Succ(Pos('=',FArquivosDeMidias[i])), Length(FArquivosDeMidias[i]));
-    Tempo   := Arquivo;
+    sTempo   := Arquivo;
 
     Arquivo := Copy(Arquivo,1,Pred(Pos('|',Arquivo)));
-    Tempo := Copy(Tempo,Succ(Pos('|',Tempo)),Length(Tempo));
+    sTempo := Copy(sTempo,Succ(Pos('|',sTempo)),Length(sTempo));
 
-    if Tempo = '0' then
+    if sTempo = '0' then
       ListBox_Script.Items.Add(Arquivo)
     else
-      ListBox_Script.Items.Add(Arquivo + ' (' + Tempo + ' segundos)')
+      ListBox_Script.Items.Add(Arquivo + ' (' + sTempo + ' segundos)')
   end;
 end;
 
@@ -424,8 +479,12 @@ end;
 { ESTE PROCEDIMENTO ESTÁ OK }
 procedure TForm_Configuracao.AjustarMonitor;
 begin
-  if Assigned(Form_Player) and Assigned(Form_Player.FilterGraph) then
+  if Assigned(Form_Player) and Assigned(Form_Player.FilterGraph) then begin
+    Form_Player.DiretorioLog     := DirLog;
+    Form_Player.DiretorioMidia   := DirMidia;
     Form_Player.MonitorPrincipal := MonitorPrincipal;
+  end;
+
 end;
 
 procedure CarregarConfiguracoes;
