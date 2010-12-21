@@ -20,7 +20,7 @@ type
   TFileInfo = record
     FileName: String;
     FileType: String;
-    FileTime: Word;
+    FileTime: Int64;//Word;
   end;
 
   TForm_Player = class(TForm)
@@ -317,8 +317,8 @@ end;
 procedure TForm_Player.ExecutarVID(aArquivo :String);
 begin
   FilterGraph.RenderFile(FDiretorioMidia + '\' + aArquivo);
-  VideoWindow_VID.Show;
   FilterGraph.Play;
+  VideoWindow_VID.Show;
 end;
 
 //procedure TForm_Player.CarregarItemConfiguracao;
@@ -352,10 +352,10 @@ procedure TForm_Player.ExecutarItem(iIndex: Word);
 var
   FileInformation: TFileInfo;
 begin
-  if not FilterGraph.Active then
-    FilterGraph.Active := True;
+   if not FilterGraph.Active then
+     FilterGraph.Active := True;
 
-  FilterGraph.ClearGraph;
+   FilterGraph.ClearGraph;
 
   FileInformation := FileInfo(iIndex);
 
@@ -372,7 +372,8 @@ begin
   { Esta função tem de chamar ela mesma quando o arquivo não existir }
   if not FileExists(FDiretorioMidia + '\' + FileInformation.FileName) then
   begin
-    FilterGraph.Stop;
+
+//    FilterGraph.Stop;
 
     if iMj + 1 = FArquivosDeMidia.Count then
     begin
@@ -395,14 +396,17 @@ begin
       FilterGraph.Active := False;
 
       { Se for o caso especial SWF... }
-      if FTipoArq = 'SWF' then
+      if FTipoArq = 'SWF' then begin
         ExecutarSWF(FArquivo)
-      else
+      end
+      else begin
         ExecutarIMG(FArquivo);
+      end;
     end
     { Arquivos dinâmicos (reproduzíveis) }
-    else
+    else begin
       ExecutarVID(FArquivo);
+    end;
 
     SalvarItemLog(FArquivo);
   end;
@@ -438,16 +442,23 @@ end;
 procedure TForm_Player.TrackBarTimer(sender: TObject; CurrentPos, StopPos: Cardinal);
 begin
 
-   StopPos := StopPos + FileInfo(iMJ).FileTime;
+    StopPos := StopPos + FileInfo(iMJ).FileTime;
 
-   StatusBar.SimpleText := format('Position: %s Duration: %s',
-    [TimeToStr(CurrentPos / MiliSecPerDay), TimeToStr(StopPos / MiliSecPerDay)]);
+    StatusBar.SimpleText := format('Position: %s Duration: %s',
+     [TimeToStr(CurrentPos / MiliSecPerDay), TimeToStr(StopPos / MiliSecPerDay)]);
 
-   FTempo := StatusBar.SimpleText;
+    FTempo := StatusBar.SimpleText;
+
+    FTocando := True;
 
     if TimeToStr(CurrentPos / MiliSecPerDay) =  TimeToStr(StopPos / MiliSecPerDay) then
     begin
         FTempo := '';
+
+        FTocando := False;
+        FilterGraph.ClearGraph;
+        FilterGraph.Active := False;
+
         if iMj + 1 = FArquivosDeMidia.Count then
         begin
           iMj := 0;
@@ -457,7 +468,6 @@ begin
           iMj := iMj +1;
           ProximoPlay;
         end;
-
     end;
 end;
 
@@ -685,3 +695,6 @@ end;
 //end;
 
 end.
+
+
+
