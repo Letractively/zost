@@ -47,7 +47,7 @@ object Form_Player: TForm_Player
     FilterGraph = FilterGraph
     VMROptions.Mode = vmrWindowless
     VMROptions.Streams = 16
-    VMROptions.Preferences = []
+    VMROptions.Preferences = [vpRestrictToInitialMonitor]
     Color = clBlack
     Align = alClient
     TabStop = False
@@ -81,8 +81,8 @@ object Form_Player: TForm_Player
       0000300000000800040000003000000008000E00000030003000300030003000
       3000000008000000000008000200000000000D00000000000000000000000000
       0000000008000400000031000000080004000000300000000800000000000800
-      040000003000000008000800000061006C006C00000008000C00000066006100
-      6C00730065000000}
+      040000003000000008000800000061006C006C00000008000A00000074007200
+      750065000000}
   end
   object BitBtn1: TBitBtn
     Left = 164
@@ -91,13 +91,11 @@ object Form_Player: TForm_Player
     Height = 16
     Cursor = crHandPoint
     Caption = 'Esconde'
-    DoubleBuffered = True
     DragCursor = crHandPoint
-    Layout = blGlyphTop
-    ParentDoubleBuffered = False
     TabOrder = 0
     Visible = False
     OnClick = BitBtn1Click
+    Layout = blGlyphTop
   end
   object TrackBar: TDSTrackBar
     Left = 8
@@ -122,9 +120,8 @@ object Form_Player: TForm_Player
     Top = 6
   end
   object FilterGraph: TFilterGraph
-    AutoCreate = True
     Mode = gmDVD
-    GraphEdit = True
+    GraphEdit = False
     Left = 314
     Top = 4
   end
