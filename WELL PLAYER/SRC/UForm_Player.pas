@@ -95,6 +95,7 @@ type
 //    procedure HabilitaBarraWin;
 //    procedure RefreshVideoWindow;
     function FileInfo(aFileIndex: Word): TFileInfo;
+    procedure ListBoxConf;
   public
     { Public declarations }
 
@@ -367,14 +368,13 @@ begin
   ShockwaveFlash_SWF.Visible := False;
   VideoWindow_VID.Visible    := False;
 
+  ListBoxConf;
+
   { Se o arquivo não existir, tenta o próximo }
   { O algorítmo de passar para o próximo deve sair desta funçao }
   { Esta função tem de chamar ela mesma quando o arquivo não existir }
   if not FileExists(FDiretorioMidia + '\' + FileInformation.FileName) then
   begin
-
-//    FilterGraph.Stop;
-
     if iMj + 1 = FArquivosDeMidia.Count then
     begin
       iMj := 0;
@@ -442,7 +442,7 @@ end;
 procedure TForm_Player.TrackBarTimer(sender: TObject; CurrentPos, StopPos: Cardinal);
 begin
 
-    StopPos := StopPos + FileInfo(iMJ).FileTime;
+    StopPos := StopPos + 9;//FileInfo(iMJ).FileTime;
 
     StatusBar.SimpleText := format('Position: %s Duration: %s',
      [TimeToStr(CurrentPos / MiliSecPerDay), TimeToStr(StopPos / MiliSecPerDay)]);
@@ -693,6 +693,17 @@ end;
 //begin
 //
 //end;
+
+procedure TForm_Player.ListBoxConf;
+var
+  S : Array[0..255] of Char;
+begin
+     StrPCopy(S, Form_Player.Arquivo);
+     with Form_Configuracao.ListBox_Script do
+       ItemIndex := Perform(LB_SELECTSTRING, 0, LongInt(@S));
+     exit;
+
+end;
 
 end.
 
