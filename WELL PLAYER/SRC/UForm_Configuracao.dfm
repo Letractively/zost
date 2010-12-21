@@ -4,7 +4,7 @@ object Form_Configuracao: TForm_Configuracao
   Cursor = crArrow
   BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = bsSingle
-  Caption = 'Well Player - Vers'#227'o de demonstra'#231#227'o'
+  Caption = 'WellPlayer - Vers'#227'o de demonstra'#231#227'o'
   ClientHeight = 289
   ClientWidth = 583
   Color = clBtnFace
@@ -189,6 +189,13 @@ object Form_Configuracao: TForm_Configuracao
     ShowHint = True
     OnClick = SpeedButton4Click
   end
+  object Label1: TLabel
+    Left = 272
+    Top = 88
+    Width = 145
+    Height = 13
+    Caption = 'Label1'
+  end
   object BitBtn_RecriarScript: TBitBtn
     Left = 450
     Top = 195
@@ -197,8 +204,6 @@ object Form_Configuracao: TForm_Configuracao
     Hint = 'Recriar script'
     Anchors = [akRight, akBottom]
     Caption = 'Recriar Script'
-    DoubleBuffered = True
-    ParentDoubleBuffered = False
     ParentShowHint = False
     ShowHint = True
     TabOrder = 6
@@ -206,9 +211,9 @@ object Form_Configuracao: TForm_Configuracao
   end
   object ToolBar_Principal: TToolBar
     Left = 0
-    Top = 259
+    Top = 255
     Width = 583
-    Height = 30
+    Height = 34
     Align = alBottom
     AutoSize = True
     ButtonHeight = 30
@@ -218,7 +223,7 @@ object Form_Configuracao: TForm_Configuracao
     TabOrder = 5
     object ToolButton_Play: TToolButton
       Left = 0
-      Top = 0
+      Top = 2
       Hint = 'Play'
       Caption = 'ToolButton_Play'
       ImageIndex = 1
@@ -228,7 +233,7 @@ object Form_Configuracao: TForm_Configuracao
     end
     object ToolButton_Pause: TToolButton
       Left = 31
-      Top = 0
+      Top = 2
       Hint = 'Pause'
       Caption = 'ToolButton_Pause'
       ImageIndex = 0
@@ -238,7 +243,7 @@ object Form_Configuracao: TForm_Configuracao
     end
     object ToolButton_Stop: TToolButton
       Left = 62
-      Top = 0
+      Top = 2
       Hint = 'Stop'
       Caption = 'ToolButton_Stop'
       ImageIndex = 2
@@ -248,7 +253,7 @@ object Form_Configuracao: TForm_Configuracao
     end
     object ToolButton_Fechar: TToolButton
       Left = 93
-      Top = 0
+      Top = 2
       Hint = 'Fecha Play'
       Caption = 'ToolButton_Fechar'
       ImageIndex = 3
@@ -258,14 +263,14 @@ object Form_Configuracao: TForm_Configuracao
     end
     object ToolButton_Separador1: TToolButton
       Left = 124
-      Top = 0
+      Top = 2
       Width = 6
       ImageIndex = 5
       Style = tbsSeparator
     end
     object Label_Status: TLabel
       Left = 130
-      Top = 0
+      Top = 2
       Width = 3
       Height = 30
       Caption = ' '
@@ -281,8 +286,6 @@ object Form_Configuracao: TForm_Configuracao
     Hint = 'Iniciar Lista'
     Anchors = [akRight, akBottom]
     Caption = 'Iniciar Playlist'
-    DoubleBuffered = True
-    ParentDoubleBuffered = False
     ParentShowHint = False
     ShowHint = True
     TabOrder = 4

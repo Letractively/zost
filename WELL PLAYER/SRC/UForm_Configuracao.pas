@@ -28,6 +28,7 @@ type
     edtDirLog: TLabeledEdit;
     SpeedButton4: TSpeedButton;
     Label_Status: TLabel;
+    Label1: TLabel;
     procedure ToolButton_PlayClick(Sender: TObject);
     procedure btPlayListClick(Sender: TObject);
     procedure ToolButton_PauseClick(Sender: TObject);
@@ -321,7 +322,7 @@ begin
 //    end;
 //
   RecarregarScript;
-  Application.MessageBox('Script de reprodução Atualziado!','Feito!',MB_ICONINFORMATION);
+  Application.MessageBox('Script de reprodução Atualizado!','Feito!',MB_ICONINFORMATION);
 end;
 
 { ESTE PROCEDIMENTO ESTÁ OK }
@@ -433,7 +434,7 @@ begin
       if sTempo = '0' then
         ListBox_Script.Items.Add(Arquivo)
       else
-        ListBox_Script.Items.Add(Arquivo + ' (' + sTempo + ' segundos)');
+        ListBox_Script.Items.Add(Arquivo);// + ' (' + sTempo + ' segundos)');
     end;
 end;
 
