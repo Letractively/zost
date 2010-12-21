@@ -20,6 +20,7 @@
 			<Base>true</Base>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Base)'!=''">
+			<DCC_RangeChecking>true</DCC_RangeChecking>
 			<DCC_UNIT_PLATFORM>false</DCC_UNIT_PLATFORM>
 			<DCC_SYMBOL_PLATFORM>false</DCC_SYMBOL_PLATFORM>
 			<DCC_UsePackage>vcl;rtl;vclx;indy;inet;xmlrtl;vclie;inetdbbde;inetdbxpress;dbrtl;dsnap;dsnapcon;vcldb;soaprtl;VclSmp;dbexpress;dbxcds;inetdb;bdertl;vcldbx;webdsnap;websnap;adortl;ibxpress;teeui;teedb;tee;dss;visualclx;visualdbclx;vclactnband;vclshlctrls;IntrawebDB_50_70;Intraweb_50_70;Rave50CLX;Rave50VCL;dclOfficeXP;AClasseD7;AClsDBD7;AClsSombraD7;AClsExtraD7;AClsPesqInstD7;GuardiaoD7;AClsClGrdD7;fc4000v7;ip4000clientvcl7;ip4000v7;RxCtl7;RxDB7;RxBDE7;rbDIDE107;rbDAD107;rbUSERDesign107;rbUSER107;rbRCL107;rbDBDE107;rbBDE107;rbDB107;rbADO107;rbDBE107;rbIBE107;rbIDE107;rbCIDE107;rbRIDE107;rbRAP107;ztv70rt;XDevice7;MPSUtilsD7R;dacvcl70;dac70;CRControls70;odacvcl70;odac70;oraprov70;dsavegrid50;QRExports;qrpt70;MPSExtraD7;HardShadowD7;CompEsparta;AClsDBIP4000D7</DCC_UsePackage>

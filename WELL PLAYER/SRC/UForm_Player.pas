@@ -6,25 +6,35 @@ uses
   SysUtils, Classes, Controls, Forms,
   UCFSHChangeNotify, StdCtrls,
   ShellAPI,  Messages, Buttons, Menus, DSPack, ImgList, ComCtrls, Dialogs,
-  ExtCtrls, DSUTIL, UForm_Configuracao,directshow9, OleCtrls,JPEG,
-  ShockwaveFlashObjects_TLB ;
+  ExtCtrls, UForm_Configuracao, directshow9, OleCtrls,JPEG,
+  {$IFDEF VER150}
+  DSUtil, ShockwaveFlashObjects_TLB
+  {$ELSE}
+  DSPackUtil, ShockwaveFlashObjects
+  {$ENDIF};
 
 const
   wm_IconMessage = wm_User;
 
 type
+  TFileInfo = record
+    FileName: String;
+    FileType: String;
+    FileTime: Word;
+  end;
+
   TForm_Player = class(TForm)
     CFSHChangeNotifier_Principal: TCFSHChangeNotifier;
     BitBtn1: TBitBtn;
     FilterGraph: TFilterGraph;
     OpenDialog: TOpenDialog;
-    VideoWindow: TVideoWindow;
+    VideoWindow_VID: TVideoWindow;
     Timer1: TTimer;
     StatusBar: TStatusBar;
     TrackBar: TDSTrackBar;
     Timer2: TTimer;
-    Image2: TImage;
-    ShockwaveFlash1: TShockwaveFlash;
+    Image_IMG: TImage;
+    ShockwaveFlash_SWF: TShockwaveFlash;
     procedure FormCreate(Sender: TObject);
     procedure CFSHChangeNotifier_PrincipalChangeSize;
     procedure CFSHChangeNotifier_PrincipalChangeAttributes;
@@ -36,20 +46,16 @@ type
     procedure BitBtn1Click(Sender: TObject);
     procedure ExibirJanela1Click(Sender: TObject);
     procedure FecharJanela1Click(Sender: TObject);
-    procedure TrackBarTimer(sender: TObject; CurrentPos,
-      StopPos: Cardinal);
+    procedure TrackBarTimer(sender: TObject; CurrentPos, StopPos: Cardinal);
     procedure Pause2Click(Sender: TObject);
     procedure Play2Click(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure Timer1Timer(Sender: TObject);
     procedure Timer2Timer(Sender: TObject);
     procedure FormShow(Sender: TObject);
-    procedure ShockwaveFlash1Progress(ASender: TObject;
-      percentDone: Integer);
-    procedure VideoWindowMouseMove(Sender: TObject; Shift: TShiftState; X,
-      Y: Integer);
-    procedure Image2MouseMove(Sender: TObject; Shift: TShiftState; X,
-      Y: Integer);
+    procedure ShockwaveFlash_SWFProgress(ASender: TObject; percentDone: Integer);
+    procedure VideoWindow_VIDMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Integer);
+    procedure Image_IMGMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Integer);
   private
     { Private declarations }
     FMonitorPrincipal: Boolean;
@@ -61,47 +67,46 @@ type
     FTempo: String;
     FArquivo: String;
     FArquivosDeMidia   : TStringList;
-    FDiretorioDaAplicacao :  WideString;
+//    FDiretorioDaAplicacao :  WideString;
 //    FDiretorioCache       :  WideString;
     nid                   : TNotifyIconData;
-    iAux, iMJ             : integer;
-    PlayFiles             : array[0..100,0..3] of String;
+    {iAux,} iMJ             : integer;
+//    PlayFiles             : array[0..100,0..3] of String;
 
-    bTocando : boolean;
+    FTocando: Boolean;
 
 //    sDIRETORIO_CACHE,
-    sDIRETORIO_MIDIA,
-    sDIRETORIO_SCRIPT,
-    sDIRETORIO_LOG : string;
+//    sDIRETORIO_MIDIA,
+//    sDIRETORIO_SCRIPT,
+//    sDIRETORIO_LOG : string;
 
     procedure RecarregarScript;
-    procedure IconTray (var Msg: TMessage); message wm_IconMessage;
-    procedure CarregarItemConfiguracao ;
-    procedure ExecutarPlay(iIndex : Integer);
-    procedure ExecutarArqTemp;
+//    procedure IconTray (var Msg: TMessage); message wm_IconMessage;
+//    procedure CarregarItemConfiguracao ;
+    procedure ExecutarItem(iIndex: Word);
+    procedure IniciarReproducao;
     procedure ProximoPlay;
 //    procedure ajustaform;
-    procedure p_GravaLog(sMusica :String);
-    procedure f_Tocarswf(sNome : String);
-    procedure f_Imagem(sNome : String);
+    procedure SalvarItemLog(aArquivo: String);
+    procedure ExecutarSWF(aArquivo: String);
+    procedure ExecutarIMG(sArquivo: String);
+    procedure ExecutarVID(aArquivo:String);
 //    procedure DesabilitaBarraWind;
 //    procedure HabilitaBarraWin;
 //    procedure RefreshVideoWindow;
-
+    function FileInfo(aFileIndex: Word): TFileInfo;
   public
     { Public declarations }
 
     iCont, iCont1 : Cardinal;
 
     property MonitorPrincipal: Boolean read FMonitorPrincipal write FMonitorPrincipal;
-
     property DiretorioMidia: String read FDiretorioMidia write FDiretorioMidia;
     property DiretorioLog: String read FDiretorioLog write FDiretorioLog;
-
     property Tempo: String read FTempo write FTempo;
-    property Arquivo: String read FArquivo;
-
     property TipoArq: String read FTipoArq write FTipoArq;
+    property ArquivosDeMidia: TStringList read FArquivosDeMidia write FArquivosDeMidia;
+    property Arquivo: String read FArquivo;
   end;
 
 var
@@ -111,18 +116,18 @@ implementation
 
 {$R *.dfm}
 
-uses  windows
-     , IniFiles
-     , UFuncoes;
+uses windows
+   , IniFiles
+   , UFuncoes;
 
-const
-  DIRETORIO_CACHE = 'CACHE';
-  DIRETORIO_MIDIA = 'C:\SlideShow Script Monitor\bin\exe\Cache\Midia';
-  DIRETORIO_SCRIPT = 'C:\SlideShow Script Monitor\bin\exe\Cache';
+//const
+//  DIRETORIO_CACHE = 'CACHE';
+//  DIRETORIO_MIDIA = 'C:\SlideShow Script Monitor\bin\exe\Cache\Midia';
+//  DIRETORIO_SCRIPT = 'C:\SlideShow Script Monitor\bin\exe\Cache';
 
 function IsDirectoryEmpty(const aDirectory: string) : boolean;
 var
-  SearchRec :TSearchRec;
+  SearchRec: TSearchRec;
 begin
   try
     Result := (FindFirst(aDirectory + '\*.*', faAnyFile, SearchRec) = 0) and (FindNext(SearchRec) = 0) and (FindNext(SearchRec) <> 0);
@@ -178,24 +183,21 @@ end;
 //	SearchTree;
 //end;
 
-
-
-
 procedure TForm_Player.CFSHChangeNotifier_PrincipalChangeAttributes;
 begin
-  Exit;
+//  Exit;
   //RecarregarScript;
 end;
 
 procedure TForm_Player.CFSHChangeNotifier_PrincipalChangeDirName;
 begin
-  Exit;
+//  Exit;
   //RecarregarScript;
 end;
 
 procedure TForm_Player.CFSHChangeNotifier_PrincipalChangeFileName;
 begin
-  Exit;
+//  Exit;
   //RecarregarScript;
 end;
 
@@ -206,60 +208,43 @@ end;
 
 procedure TForm_Player.CFSHChangeNotifier_PrincipalChangeSecurity;
 begin
-  Exit;
+//  Exit;
   //RecarregarScript;
 end;
 
 procedure TForm_Player.CFSHChangeNotifier_PrincipalChangeSize;
 begin
-  Exit;
+//  Exit;
   //RecarregarScript;
 end;
 
 procedure TForm_Player.FormCreate(Sender: TObject);
-var
-   sini, smidia, slog : TStringList;
-   ipos :integer;
-   sAux1,sAux2,sAux3 : String;
 begin
-  bTocando := False;
-  FArquivosDeMidia    := TStringList.Create;
+  FTocando := False;
+//  FArquivosDeMidia    := TStringList.Create;
 
-  sini   := TStringList.Create;
-  smidia := TStringList.Create;
-  slog   := TStringList.Create;
-
-  FDiretorioDaAplicacao := GetCurrentDir;
+//  FDiretorioDaAplicacao := GetCurrentDir;
 end;
 
 procedure TForm_Player.FormDestroy(Sender: TObject);
 begin
   ShowCursor(True);
-  FArquivosDeMidia.Free;
+//  FArquivosDeMidia.Free;
   FilterGraph.Free;
   Self.Close;
 end;
 
 procedure TForm_Player.RecarregarScript;
 begin
-
-  FArquivosDeMidia.Clear;
-
-  with TIniFile.Create(FDiretorioMidia + '\Script.ini') do
-    try
-     ReadSectionValues('ARQUIVOSDEMIDIA',FArquivosDeMidia);
-    finally
-      Free;
-    end;
-
-  CarregarItemConfiguracao;
+  { Executa os mesmos procedimentos já existentes no form de configurações }
+  Form_Configuracao.RecarregarScript;
 
   Timer1.Enabled := False;
   Timer2.Enabled := False;
 
   iMJ := 0;
 
-  ExecutarPlay(iMj);
+  ExecutarItem(iMj);
 
 end;
 
@@ -283,20 +268,20 @@ begin
 
 end;
 
-procedure TForm_Player.IconTray(var Msg: TMessage);
-var
-  Pt: TPoint;
-begin
-  if (Msg.lParam = wm_rbuttondown) then
-  begin
-    GetCursorPos (Pt);
-  end;
-  if msg.LParam = wm_lbuttondblclk then
-  begin
-    Self.show;
-  end;
-
-end;
+//procedure TForm_Player.IconTray(var Msg: TMessage);
+//var
+//  Pt: TPoint;
+//begin
+//  if (Msg.lParam = wm_rbuttondown) then
+//  begin
+//    GetCursorPos (Pt);
+//  end;
+//  if msg.LParam = wm_lbuttondblclk then
+//  begin
+//    Self.show;
+//  end;
+//
+//end;
 
 procedure TForm_Player.ExibirJanela1Click(Sender: TObject);
 begin
@@ -305,131 +290,155 @@ end;
 
 procedure TForm_Player.FecharJanela1Click(Sender: TObject);
 begin
-  close;
+  Close;
 end;
 
-procedure TForm_Player.CarregarItemConfiguracao;
+function TForm_Player.FileInfo(aFileIndex: Word): TFileInfo;
 var
-  i, iPos1, iPos2 : integer;
-  sAux, sAux1 : string;
+  Arquivo: String;
 begin
-  iAux := FArquivosDeMidia.Count;
+  ZeroMemory(@Result,SizeOf(TFileInfo));
 
-  Form_Configuracao.ListBox_Script.Clear;
-
-  for i := 0 to FArquivosDeMidia.Count - 1 do
+  if aFileIndex <= Pred(FArquivosDeMidia.Count) then
   begin
-    // localizar o parametro
-    sAux := FArquivosDeMidia[i];
-    iPos1 := Pos('=',sAux);
-    iPos2 := Pos('|',sAux);
+    Arquivo := FArquivosDeMidia.ValueFromIndex[aFileIndex];
 
-    // Ex: ARQ001=\ARQUIVO1.FLV|0
-    sAux1 := Trim(Copy(sAux,iPos1+1,iPos2-1));
-    PlayFiles[i,0] := copy(sAux1,1,pos('|',saux1)-1);
-    PlayFiles[i,1] := copy(sAux1,pos('|',saux1)+1,length(saux1)-1);
-    PlayFiles[i,2] := copy(sAux1,pos('|',saux1)-3,3); // Extensão do arquivo
-
-    Form_Configuracao.ListBox_Script.Items.Add(PlayFiles[i,0]);
-  end;
-
+    with Result do
+    begin
+      FileName := Copy(Arquivo,1,Pred(Pos('|',Arquivo)));
+      FileTime := StrToInt(Copy(Arquivo,Succ(Pos('|',Arquivo)),Length(Arquivo)));
+      FileType := StringReplace(ExtractFileExt(FileName),'.','',[]);
+    end;
+  end
+  else
+    raise Exception.Create('O índice "' + IntToStr(aFileIndex) + '" não existe na lista');
 end;
 
-procedure TForm_Player.ExecutarPlay(iIndex : Integer);
-var sNomePlay :  WideString;
+procedure TForm_Player.ExecutarVID(aArquivo :String);
 begin
+  FilterGraph.RenderFile(FDiretorioMidia + '\' + aArquivo);
+  VideoWindow_VID.Show;
+  FilterGraph.Play;
+end;
 
-    if not FilterGraph.Active then
-      FilterGraph.Active := True;
+//procedure TForm_Player.CarregarItemConfiguracao;
+//var
+//  i, iPos1, iPos2 : integer;
+//  sAux, sAux1 : string;
+//begin
+//  iAux := FArquivosDeMidia.Count;
+//
+//  Form_Configuracao.ListBox_Script.Clear;
+//
+//  for i := 0 to FArquivosDeMidia.Count - 1 do
+//  begin
+//    // localizar o parametro
+//    sAux := FArquivosDeMidia[i];
+//    iPos1 := Pos('=',sAux);
+//    iPos2 := Pos('|',sAux);
+//
+//    // Ex: ARQ001=\ARQUIVO1.FLV|0
+//    sAux1 := Trim(Copy(sAux,iPos1+1,iPos2-1));
+//    PlayFiles[i,0] := copy(sAux1,1,pos('|',saux1)-1);
+//    PlayFiles[i,1] := copy(sAux1,pos('|',saux1)+1,length(saux1)-1);
+//    PlayFiles[i,2] := copy(sAux1,pos('|',saux1)-3,3); // Extensão do arquivo
+//
+//    Form_Configuracao.ListBox_Script.Items.Add(PlayFiles[i,0]);
+//  end;
+//
+//end;
 
-    FilterGraph.ClearGraph;
+procedure TForm_Player.ExecutarItem(iIndex: Word);
+var
+  FileInformation: TFileInfo;
+begin
+  if not FilterGraph.Active then
+    FilterGraph.Active := True;
 
-    sNomePlay := PlayFiles[iIndex,0];
+  FilterGraph.ClearGraph;
 
-    if sNomePlay = '' then Exit;
+  FileInformation := FileInfo(iIndex);
 
-    if  FArquivosDeMidia.Count = 0 then Exit;
+  FTipoArq := UpperCase(FileInformation.FileType);
+  FArquivo := UpperCase(FileInformation.FileName);
 
-    if not(FileExists(FDiretorioMidia+'\'+sNomePlay)) then begin
+  { Esconde tudo aqui }
+  Image_IMG.Visible          := False;
+  ShockwaveFlash_SWF.Visible := False;
+  VideoWindow_VID.Visible    := False;
 
-        FilterGraph.Stop;
+  { Se o arquivo não existir, tenta o próximo }
+  { O algorítmo de passar para o próximo deve sair desta funçao }
+  { Esta função tem de chamar ela mesma quando o arquivo não existir }
+  if not FileExists(FDiretorioMidia + '\' + FileInformation.FileName) then
+  begin
+    FilterGraph.Stop;
 
-        if iMj + 1 = FArquivosDeMidia.Count then
-        begin
-          iMj := 0;
-          RecarregarScript
-        end
-        else begin
-          iMj := iMj +1;
-          ProximoPlay;
-        end;
-
+    if iMj + 1 = FArquivosDeMidia.Count then
+    begin
+      iMj := 0;
+      RecarregarScript
     end
-    else begin
-
-      FTipoArq := UpperCase(PlayFiles[iIndex,2]);
-
-      if (UpperCase(PlayFiles[iIndex,2]) = 'SWF') or
-         (UpperCase(PlayFiles[iIndex,2]) = 'JPG') or
-         (UpperCase(PlayFiles[iIndex,2]) = 'BMP') or
-         (UpperCase(PlayFiles[iIndex,2]) = 'ICO') or
-         (UpperCase(PlayFiles[iIndex,2]) = 'PNG') then begin
-        FilterGraph.Active := False;
-
-        if UpperCase(PlayFiles[iIndex,2]) = 'SWF' then
-          f_Tocarswf(sNomePlay)
-        else
-          f_Imagem(sNomePlay);
-      end
-      else
-        FilterGraph.RenderFile(FDiretorioMidia+'\'+sNomePlay);
-
-      FArquivo := sNomePlay;
-      p_GravaLog(sNomePlay);
+    else
+    begin
+      iMj := iMj +1;
+      ProximoPlay;
     end;
+  end
+  { Se existir, exibe! }
+  else
+  begin
+    { Arquivos estáticos e SWF (não reproduzíveis) }
+    if (FTipoArq = 'SWF') or (FTipoArq = 'JPG') or (FTipoArq = 'BMP') or
+       (FTipoArq = 'ICO') or (FTipoArq = 'PNG') then
+    begin
+      FilterGraph.Active := False;
 
-   VideoWindow.PopupMenu := PopupMenu;
-   bTocando := True;
+      { Se for o caso especial SWF... }
+      if FTipoArq = 'SWF' then
+        ExecutarSWF(FArquivo)
+      else
+        ExecutarIMG(FArquivo);
+    end
+    { Arquivos dinâmicos (reproduzíveis) }
+    else
+      ExecutarVID(FArquivo);
 
-   Image2.Visible          := False;
-   ShockwaveFlash1.Visible := False;
-   VideoWindow.Visible     := True;
- 
-   FilterGraph.Play;
+    SalvarItemLog(FArquivo);
+  end;
+{ O flag abaixo so deve existir dentro das funções de reprodução e deve ser
+ressetado quando a reprodução for parada manualmente para parar timers }
+  FTocando := True;
+
+//  VideoWindow.PopupMenu := PopupMenu;
 end;
 
-procedure TForm_Player.ExecutarArqTemp;
+procedure TForm_Player.IniciarReproducao;
 begin
 
-  ChDir(FDiretorioDaAplicacao);
+//  ChDir(FDiretorioDaAplicacao);
+  { Recarrega a lista interna de arquivos e atualiza a lista no form de
+  configuração }
+  Form_Configuracao.RecarregarScript;
 
-  FArquivosDeMidia.Clear;
+  { Caso não esteja no modo de reprodução, o inicia }
+  if not FTocando then
+    ExecutarItem(0);
+{ O flag abaixo so deve existir dentro das funções de reprodução e deve ser
+ressetado quando a reprodução for parada manualmente para parar timers }
 
-  with TIniFile.Create(FDiretorioMidia + '\Script.ini') do
-    try
-     ReadSectionValues('ARQUIVOSDEMIDIA',FArquivosDeMidia);
-    finally
-      Free;
-    end;
+//  FTocando := True;
 
-    CarregarItemConfiguracao;
+//  VideoWindow_VID.Align := alClient;
+//  FilterGraph.Play;
 
-    if not bTocando then
-      ExecutarPlay(0);
-
-    bTocando := True;
-
-    VideoWindow.Align := alClient;
-    FilterGraph.Play;
-
-    bTocando := False;
-
+//  FTocando := False;
 end;
 
 procedure TForm_Player.TrackBarTimer(sender: TObject; CurrentPos, StopPos: Cardinal);
 begin
 
-   StopPos := StopPos + StrToInt64(PlayFiles[iMJ,1]);
+   StopPos := StopPos + FileInfo(iMJ).FileTime;
 
    StatusBar.SimpleText := format('Position: %s Duration: %s',
     [TimeToStr(CurrentPos / MiliSecPerDay), TimeToStr(StopPos / MiliSecPerDay)]);
@@ -454,7 +463,7 @@ end;
 
 procedure TForm_Player.ProximoPlay;
 begin
-  ExecutarPlay(iMJ);
+  ExecutarItem(iMJ);
 end;
 
 procedure TForm_Player.Pause2Click(Sender: TObject);
@@ -493,7 +502,7 @@ end;
 //  end;
 //end;
 
-procedure TForm_Player.p_GravaLog(sMusica: String);
+procedure TForm_Player.SalvarItemLog(aArquivo: String);
 var
   sDirLog, Arqlog, slocal: string;
   local: TextFile;
@@ -508,42 +517,48 @@ begin
   begin
     Rewrite(Local, sLocal);
     Append(Local); //Cria o arquivo
-    WriteLn(Local, (FormatDateTime('dd-mm-yyyy hh:mm:ss', now))+' - '+smusica );
+    WriteLn(Local, (FormatDateTime('dd-mm-yyyy hh:mm:ss', now))+' - '+aArquivo );
   end
   else begin
     Append(Local); //Cria o arquivo
-    WriteLn(Local, (FormatDateTime('dd-mm-yyyy hh:mm:ss', now))+' - '+smusica );
+    WriteLn(Local, (FormatDateTime('dd-mm-yyyy hh:mm:ss', now))+' - '+aArquivo );
   end;
 
   CloseFile(Local);
 
 end;
 
-procedure TForm_Player.f_Tocarswf(sNome: String);
+procedure TForm_Player.ExecutarSWF(aArquivo: String);
 begin
-  ShockwaveFlash1.Base  := FDiretorioMidia + '\'+sNome;
-  ShockwaveFlash1.Movie := FDiretorioMidia +'\'+ sNome;
+  ShockwaveFlash_SWF.Base  := FDiretorioMidia + '\' + aArquivo;
+  ShockwaveFlash_SWF.Movie := FDiretorioMidia + '\' + aArquivo;
 
-  ShockwaveFlash1.Visible := True;
-  Image2.Visible          := False;
-  VideoWindow.Visible     := False;
+  ShockwaveFlash_SWF.Stop;
+  ShockwaveFlash_SWF.Rewind;
 
-  ShockwaveFlash1.Align   := alClient;
-  ShockwaveFlash1.Playing := False;
-  ShockwaveFlash1.Play;
+  ShockwaveFlash_SWF.Show;
+
+  ShockwaveFlash_SWF.Align   := alClient;
+//  ShockwaveFlash_SWF.Playing := False;
+  ShockwaveFlash_SWF.Play;
   Timer1.Enabled := True;
   Timer2.Enabled := False;
   iCont := Timer1.Interval;
 end;
 
 procedure TForm_Player.Timer1Timer(Sender: TObject);
+var
+  FileInformation: TFileInfo;
 begin
   inc(iCont);
   iCont := iCont;
 
-  if iCont = Timer1.Interval + (StrToInt64(PlayFiles[iMJ,1]){*60}) then begin
-    ShockwaveFlash1.Visible := False;
-    ShockwaveFlash1.Playing := False;
+  FileInformation := FileInfo(iMJ);
+
+  if iCont = Timer1.Interval + FileInformation.FileTime then
+  begin
+    ShockwaveFlash_SWF.Visible := False;
+    ShockwaveFlash_SWF.Playing := False;
     Timer1.Enabled := False;
     iMj := iMj +1;
     iCont := 0;
@@ -555,38 +570,42 @@ begin
     else
       ProximoPlay;
   end
-  else begin
-    ShockwaveFlash1.Visible := True;
-    ShockwaveFlash1.Playing := True;
+  else
+  begin
+    ShockwaveFlash_SWF.Visible := True;
+    ShockwaveFlash_SWF.Playing := True;
 
     if (iCont - Timer2.Interval) < 60 then
-      FTempo := IntToStr(iCont - Timer1.Interval) + ' ' + 'Segundos de ' +(PlayFiles[iMJ,1]) + ' Segundos.'
+      FTempo := IntToStr(iCont - Timer1.Interval) + ' ' + 'Segundos de ' + IntToStr(FileInformation.FileTime) + ' Segundos.'
     else
-      FTempo := IntToStr(iCont - Timer1.Interval) + ' ' + 'Minutos de ' +(PlayFiles[iMJ,1]) + ' Segundos.';
+      FTempo := IntToStr(iCont - Timer1.Interval) + ' ' + 'Minutos de ' + IntToStr(FileInformation.FileTime) + ' Segundos.';
   end;
 end;
 
-procedure TForm_Player.f_Imagem(sNome: String);
+procedure TForm_Player.ExecutarIMG(sArquivo: String);
 begin
-  Image2.Picture.LoadFromFile(FDiretorioMidia+'\'+sNome);
-  Image2.Align            := alClient;
+  Image_IMG.Picture.LoadFromFile(FDiretorioMidia + '\' + sArquivo);
+  Image_IMG.Align         := alClient;
 
-  Image2.Visible          := True;
-  ShockwaveFlash1.Visible := False;
-  VideoWindow.Visible     := False;
+  Image_IMG.Show;
 
   Timer2.Enabled          := True;
   Timer1.Enabled          := False;
-  iCont1 := Timer2.Interval;
+  iCont1                  := Timer2.Interval;
 end;
 
 procedure TForm_Player.Timer2Timer(Sender: TObject);
+var
+  FileInformation: TFileInfo;
 begin
   inc(iCont1);
   iCont1 := iCont1;
 
-  if iCont1 = Timer2.Interval + (StrToInt64(PlayFiles[iMJ,1]){*60}) then begin
-    Image2.Visible := False;
+  FileInformation := FileInfo(iMJ);
+
+  if iCont1 = Timer2.Interval + FileInformation.FileTime then
+  begin
+    Image_IMG.Visible := False;
     Timer2.Enabled := False;
     iMj := iMj +1;
     iCont1 := 0;
@@ -598,14 +617,16 @@ begin
     else
       ProximoPlay;
   end
-  else begin
+  else
+  begin
     if (iCont1 - Timer2.Interval) < 60 then
-      FTempo := IntToStr(iCont1 - Timer2.Interval) + ' ' + 'Segundos de ' +(PlayFiles[iMJ,1]) + ' Segundos'
+      FTempo := IntToStr(iCont1 - Timer2.Interval) + ' ' + 'Segundos de ' + IntToStr(FileInformation.FileTime) + ' Segundos'
     else
-      FTempo := IntToStr(iCont1 - Timer2.Interval) + ' ' + 'Minutos de ' +(PlayFiles[iMJ,1]) + ' Segundos';
-    ShockwaveFlash1.Visible := False;
-    VideoWindow.Visible     := False;
-    Image2.Visible := True;
+      FTempo := IntToStr(iCont1 - Timer2.Interval) + ' ' + 'Minutos de ' + IntToStr(FileInformation.FileTime) + ' Segundos';
+
+    ShockwaveFlash_SWF.Visible := False;
+    VideoWindow_VID.Visible     := False;
+    Image_IMG.Visible := True;
   end;  
 
 end;
@@ -637,25 +658,23 @@ begin
       Left := Screen.Monitors[1].Left;
 
   CFSHChangeNotifier_Principal.Root := FDiretorioMidia;
-  ExecutarArqTemp;
+
+  IniciarReproducao;
 
 //  DesabilitaBarraWind;
 end;
 
-procedure TForm_Player.ShockwaveFlash1Progress(ASender: TObject;
-  percentDone: Integer);
+procedure TForm_Player.ShockwaveFlash_SWFProgress(ASender: TObject; percentDone: Integer);
 begin
   ShowCursor(False);
 end;
 
-procedure TForm_Player.VideoWindowMouseMove(Sender: TObject;
-  Shift: TShiftState; X, Y: Integer);
+procedure TForm_Player.VideoWindow_VIDMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Integer);
 begin
   ShowCursor(False);
 end;
 
-procedure TForm_Player.Image2MouseMove(Sender: TObject; Shift: TShiftState;
-  X, Y: Integer);
+procedure TForm_Player.Image_IMGMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Integer);
 begin
   ShowCursor(False);
 end;

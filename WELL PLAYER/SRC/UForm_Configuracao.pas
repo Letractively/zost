@@ -24,7 +24,7 @@ type
     ListBox_Script: TListBox;
     OpenDialog1: TOpenDialog;
     SpeedButton2: TSpeedButton;
-    SpeedButton3: TBitBtn;
+    BitBtn_RecriarScript: TBitBtn;
     edtDirLog: TLabeledEdit;
     SpeedButton4: TSpeedButton;
     Label_Status: TLabel;
@@ -35,7 +35,7 @@ type
     procedure ApplicationEvents1Idle(Sender: TObject; var Done: Boolean);
     procedure ToolButton_FecharClick(Sender: TObject);
     procedure SpeedButton2Click(Sender: TObject);
-    procedure SpeedButton3Click(Sender: TObject);
+    procedure BitBtn_RecriarScriptClick(Sender: TObject);
     procedure SpeedButton4Click(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormCreate(Sender: TObject);
@@ -50,7 +50,7 @@ type
     { Public declarations }
     sLocalConf : string;
     FDiretorioDaAplicacao : String;
-    FArquivosDeMidias     : TStringList;
+    FArquivosDeMidia     : TStringList;
 
     iCont : Integer;
 
@@ -60,7 +60,7 @@ type
     procedure RecarregarScript;
     procedure ExibirConfiguracoes;
     procedure HabilitaBarraWin;
-    procedure AjustarMonitor;
+    procedure ConfigurarJanelaDeReproducao;
 
   end;
 
@@ -94,9 +94,9 @@ begin
          else begin
            if (TipoArq = 'SWF') then begin
              Timer1.Enabled := True;
-             if ShockwaveFlash1.Playing = False then begin
-               ShockwaveFlash1.Playing;
-               ShockwaveFlash1.Play;
+             if ShockwaveFlash_SWF.Playing = False then begin
+               ShockwaveFlash_SWF.Playing;
+               ShockwaveFlash_SWF.Play;
              end;
            end
            else begin
@@ -125,9 +125,10 @@ begin
 
     { Ajusta o form de reprodução segundo configurações contidas aqui neste form.
     Dentro dele, no onShow, tais configurações precisam ser usadas }
-    AjustarMonitor;
+    ConfigurarJanelaDeReproducao;
 
-    { Exibe o form que internamente deve carregar as configurações }
+    { Exibe o form que internamente deve carregar as configurações e inicializar
+    a reprodução }
     Form_Player.Show;
 
   except
@@ -150,10 +151,10 @@ begin
          else begin
            if (TipoArq = 'SWF') then begin
              Timer1.Enabled := False;
-             if ShockwaveFlash1.Playing = True then begin
-               ShockwaveFlash1.Playing := False;
-               ShockwaveFlash1.StopPlay;
-               ShockwaveFlash1.Stop;
+             if ShockwaveFlash_SWF.Playing = True then begin
+               ShockwaveFlash_SWF.Playing := False;
+               ShockwaveFlash_SWF.StopPlay;
+               ShockwaveFlash_SWF.Stop;
              end;
            end
            else begin
@@ -247,12 +248,13 @@ begin
   chosenDirectory := 'C:\';
   if SelectDirectory(chosenDirectory, options, 0)  then
   begin
-    edtDirMidia.Text := chosenDirectory;
     DirMidia := chosenDirectory;
+    edtDirMidia.Text := DirMidia;
+    RecarregarScript;
   end;
 end;
 
-procedure TForm_Configuracao.SpeedButton3Click(Sender: TObject);
+procedure TForm_Configuracao.BitBtn_RecriarScriptClick(Sender: TObject);
 //var
 //  sDirMidia, sDirLog : String;
 //  ArqIni, ArqMidia, ArqLog : string;
@@ -331,8 +333,8 @@ begin
   chosenDirectory := 'C:\';
   if SelectDirectory(chosenDirectory, options, 0)  then
   begin
-    edtDirLog.Text := chosenDirectory;
     DirLog := chosenDirectory;
+    edtDirLog.Text := DirLog;
   end;
 end;
 
@@ -344,19 +346,19 @@ var
 begin
   NaoExistentes := 0;
 
-  if FArquivosDeMidias.Count = 0 then
+  if FArquivosDeMidia.Count = 0 then
     raise Exception.Create('O script de reprodução não existe ou não contém arquivos');
 
-  for i := 0 to Pred(FArquivosDeMidias.Count) do
+  for i := 0 to Pred(FArquivosDeMidia.Count) do
   begin
-    Arquivo := Copy(FArquivosDeMidias[i],Succ(Pos('=',FArquivosDeMidias[i])), Length(FArquivosDeMidias[i]));
+    Arquivo := FArquivosDeMidia.ValueFromIndex[i];
     Arquivo := Copy(Arquivo,1,Pred(Pos('|',Arquivo)));
 
     if not FileExists(DirMidia + '\' + Arquivo) then
       Inc(NaoExistentes);
   end;
 
-  if NaoExistentes =  FArquivosDeMidias.Count then
+  if NaoExistentes =  FArquivosDeMidia.Count then
     raise Exception.Create('Nenhum arquivo da lista foi encontrado. Não é possível inicia a reprodução');
 end;
 
@@ -393,11 +395,11 @@ end;
 procedure TForm_Configuracao.RecarregarScript;
 begin
 
-  FArquivosDeMidias.Clear;
+  FArquivosDeMidia.Clear;
 
-  with TIniFile.Create(edtDirMidia.Text + '\Script.ini') do
+  with TIniFile.Create(DirMidia + '\Script.ini') do
     try
-     ReadSectionValues('ARQUIVOSDEMIDIA',FArquivosDeMidias);
+      ReadSectionValues('ARQUIVOSDEMIDIA',FArquivosDeMidia);
     finally
       Free;
     end;
@@ -419,19 +421,20 @@ var
 begin
   ListBox_Script.Items.Clear;
 
-  for i := 0 to Pred(FArquivosDeMidias.Count) do
-  begin
-    Arquivo := Copy(FArquivosDeMidias[i],Succ(Pos('=',FArquivosDeMidias[i])), Length(FArquivosDeMidias[i]));
-    sTempo   := Arquivo;
+  if FArquivosDeMidia.Count > 0 then
+    for i := 0 to Pred(FArquivosDeMidia.Count) do
+    begin
+      Arquivo := Copy(FArquivosDeMidia[i],Succ(Pos('=',FArquivosDeMidia[i])), Length(FArquivosDeMidia[i]));
+      sTempo   := Arquivo;
 
-    Arquivo := Copy(Arquivo,1,Pred(Pos('|',Arquivo)));
-    sTempo := Copy(sTempo,Succ(Pos('|',sTempo)),Length(sTempo));
+      Arquivo := Copy(Arquivo,1,Pred(Pos('|',Arquivo)));
+      sTempo := Copy(sTempo,Succ(Pos('|',sTempo)),Length(sTempo));
 
-    if sTempo = '0' then
-      ListBox_Script.Items.Add(Arquivo)
-    else
-      ListBox_Script.Items.Add(Arquivo);// + ' (' + sTempo + ' segundos)')
-  end;
+      if sTempo = '0' then
+        ListBox_Script.Items.Add(Arquivo)
+      else
+        ListBox_Script.Items.Add(Arquivo + ' (' + sTempo + ' segundos)');
+    end;
 end;
 
 procedure TForm_Configuracao.FormCreate(Sender: TObject);
@@ -446,7 +449,7 @@ begin
 
   rgMidia.ItemIndex := Integer(not MonitorPrincipal);
 
-  FArquivosDeMidias := TStringList.Create;
+  FArquivosDeMidia := TStringList.Create;
 
   FDiretorioDaAplicacao := ExtractFilePath(Application.ExeName);
 
@@ -456,10 +459,12 @@ end;
 { ESTE PROCEDIMENTO ESTÁ OK }
 procedure TForm_Configuracao.FormDestroy(Sender: TObject);
 begin
-  DirMidia := Form_Configuracao.edtDirMidia.Text;
-  DirLog := Form_Configuracao.edtDirLog.Text;
+  // Não é necessário fazer isso aqui porque as variáveis são manipuladas sempre
+  // e os campos visuais (Edits) apenas as seguem
+//  DirMidia := Form_Configuracao.edtDirMidia.Text;
+//  DirLog := Form_Configuracao.edtDirLog.Text;
 
-  FArquivosDeMidias.Free;
+  FArquivosDeMidia.Free;
   HabilitaBarraWin;
 end;
 
@@ -478,21 +483,21 @@ begin
   ShowCursor(True);
 end;
 
-procedure TForm_Configuracao.FormMouseMove(Sender: TObject; Shift: TShiftState; X,
-  Y: Integer);
+procedure TForm_Configuracao.FormMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Integer);
 begin
   ShowCursor(True);
 end;
 
 { ESTE PROCEDIMENTO ESTÁ OK }
-procedure TForm_Configuracao.AjustarMonitor;
+procedure TForm_Configuracao.ConfigurarJanelaDeReproducao;
 begin
-  if Assigned(Form_Player) and Assigned(Form_Player.FilterGraph) then begin
+  if Assigned(Form_Player) and Assigned(Form_Player.FilterGraph) then
+  begin
     Form_Player.DiretorioLog     := DirLog;
     Form_Player.DiretorioMidia   := DirMidia;
     Form_Player.MonitorPrincipal := MonitorPrincipal;
+    Form_Player.ArquivosDeMidia  := FArquivosDeMidia;
   end;
-
 end;
 
 procedure CarregarConfiguracoes;
