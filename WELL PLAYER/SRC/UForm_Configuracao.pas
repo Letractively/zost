@@ -186,8 +186,6 @@ begin
 end;
 
 procedure TForm_Configuracao.ApplicationEvents1Idle(Sender: TObject; var Done: Boolean);
-var
-  S : Array[0..255] of Char;
 begin
   if Form_Player <> nil then begin
 
