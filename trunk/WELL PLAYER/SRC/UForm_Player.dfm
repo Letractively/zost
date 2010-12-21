@@ -8,7 +8,7 @@ object Form_Player: TForm_Player
   Caption = 'Form_Player'
   ClientHeight = 535
   ClientWidth = 688
-  Color = clBtnFace
+  Color = clBlack
   UseDockManager = True
   DefaultMonitor = dmDesktop
   DockSite = True
@@ -25,7 +25,7 @@ object Form_Player: TForm_Player
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
-  object Image2: TImage
+  object Image_IMG: TImage
     Left = 0
     Top = 0
     Width = 688
@@ -36,9 +36,9 @@ object Form_Player: TForm_Player
     Proportional = True
     Stretch = True
     Visible = False
-    OnMouseMove = Image2MouseMove
+    OnMouseMove = Image_IMGMouseMove
   end
-  object VideoWindow: TVideoWindow
+  object VideoWindow_VID: TVideoWindow
     Left = 0
     Top = 0
     Width = 688
@@ -51,7 +51,7 @@ object Form_Player: TForm_Player
     Color = clBlack
     Align = alClient
     TabStop = False
-    OnMouseMove = VideoWindowMouseMove
+    OnMouseMove = VideoWindow_VIDMouseMove
   end
   object StatusBar: TStatusBar
     Left = 0
@@ -62,7 +62,7 @@ object Form_Player: TForm_Player
     SimplePanel = True
     Visible = False
   end
-  object ShockwaveFlash1: TShockwaveFlash
+  object ShockwaveFlash_SWF: TShockwaveFlash
     Left = 0
     Top = 0
     Width = 688
@@ -71,15 +71,15 @@ object Form_Player: TForm_Player
     DragCursor = crArrow
     TabOrder = 4
     Visible = False
-    OnProgress = ShockwaveFlash1Progress
+    OnProgress = ShockwaveFlash_SWFProgress
     ControlData = {
       67556655000900001B4700005535000008000200000000000800000000000800
       0000000008000E000000570069006E0064006F00770000000800040000003000
       00000800060000002D00310000000800100000004100750074006F004C006F00
       7700000008000200000000000800060000002D00310000000800000000000800
       020000000000080010000000530068006F00770041006C006C00000008000400
-      0000300000000800040000003000000008000E00000042004600420046004200
-      4600000008000000000008000200000000000D00000000000000000000000000
+      0000300000000800040000003000000008000E00000030003000300030003000
+      3000000008000000000008000200000000000D00000000000000000000000000
       0000000008000400000031000000080004000000300000000800000000000800
       040000003000000008000800000061006C006C00000008000C00000066006100
       6C00730065000000}
@@ -91,11 +91,13 @@ object Form_Player: TForm_Player
     Height = 16
     Cursor = crHandPoint
     Caption = 'Esconde'
+    DoubleBuffered = True
     DragCursor = crHandPoint
+    Layout = blGlyphTop
+    ParentDoubleBuffered = False
     TabOrder = 0
     Visible = False
     OnClick = BitBtn1Click
-    Layout = blGlyphTop
   end
   object TrackBar: TDSTrackBar
     Left = 8

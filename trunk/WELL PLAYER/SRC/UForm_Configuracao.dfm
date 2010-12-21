@@ -189,24 +189,26 @@ object Form_Configuracao: TForm_Configuracao
     ShowHint = True
     OnClick = SpeedButton4Click
   end
-  object SpeedButton3: TBitBtn
-    Left = 459
+  object BitBtn_RecriarScript: TBitBtn
+    Left = 450
     Top = 195
-    Width = 116
+    Width = 125
     Height = 25
-    Hint = 'Salvar Configura'#231#245'es'
+    Hint = 'Recriar script'
     Anchors = [akRight, akBottom]
-    Caption = 'Atualizar Lista'
+    Caption = 'Recriar Script'
+    DoubleBuffered = True
+    ParentDoubleBuffered = False
     ParentShowHint = False
     ShowHint = True
     TabOrder = 6
-    OnClick = SpeedButton3Click
+    OnClick = BitBtn_RecriarScriptClick
   end
   object ToolBar_Principal: TToolBar
     Left = 0
-    Top = 255
+    Top = 259
     Width = 583
-    Height = 34
+    Height = 30
     Align = alBottom
     AutoSize = True
     ButtonHeight = 30
@@ -216,7 +218,7 @@ object Form_Configuracao: TForm_Configuracao
     TabOrder = 5
     object ToolButton_Play: TToolButton
       Left = 0
-      Top = 2
+      Top = 0
       Hint = 'Play'
       Caption = 'ToolButton_Play'
       ImageIndex = 1
@@ -226,7 +228,7 @@ object Form_Configuracao: TForm_Configuracao
     end
     object ToolButton_Pause: TToolButton
       Left = 31
-      Top = 2
+      Top = 0
       Hint = 'Pause'
       Caption = 'ToolButton_Pause'
       ImageIndex = 0
@@ -236,7 +238,7 @@ object Form_Configuracao: TForm_Configuracao
     end
     object ToolButton_Stop: TToolButton
       Left = 62
-      Top = 2
+      Top = 0
       Hint = 'Stop'
       Caption = 'ToolButton_Stop'
       ImageIndex = 2
@@ -246,7 +248,7 @@ object Form_Configuracao: TForm_Configuracao
     end
     object ToolButton_Fechar: TToolButton
       Left = 93
-      Top = 2
+      Top = 0
       Hint = 'Fecha Play'
       Caption = 'ToolButton_Fechar'
       ImageIndex = 3
@@ -256,14 +258,14 @@ object Form_Configuracao: TForm_Configuracao
     end
     object ToolButton_Separador1: TToolButton
       Left = 124
-      Top = 2
+      Top = 0
       Width = 6
       ImageIndex = 5
       Style = tbsSeparator
     end
     object Label_Status: TLabel
       Left = 130
-      Top = 2
+      Top = 0
       Width = 3
       Height = 30
       Caption = ' '
@@ -272,13 +274,15 @@ object Form_Configuracao: TForm_Configuracao
     end
   end
   object btPlayList: TBitBtn
-    Left = 459
+    Left = 450
     Top = 226
-    Width = 116
+    Width = 125
     Height = 25
     Hint = 'Iniciar Lista'
     Anchors = [akRight, akBottom]
     Caption = 'Iniciar Playlist'
+    DoubleBuffered = True
+    ParentDoubleBuffered = False
     ParentShowHint = False
     ShowHint = True
     TabOrder = 4
@@ -307,23 +311,23 @@ object Form_Configuracao: TForm_Configuracao
     TabOrder = 0
   end
   object rgMidia: TRadioGroup
-    Left = 459
+    Left = 450
     Top = 88
-    Width = 116
+    Width = 125
     Height = 101
     Anchors = [akTop, akRight, akBottom]
     Caption = ' Exibi'#231#227'o da m'#237'dia '
     ItemIndex = 0
     Items.Strings = (
       'Monitor Principal'
-      'Segundo Monitor')
+      'Monitor Secund'#225'rio')
     TabOrder = 2
     OnClick = rgMidiaClick
   end
   object ListBox_Script: TListBox
     Left = 6
     Top = 103
-    Width = 447
+    Width = 438
     Height = 148
     Anchors = [akLeft, akTop, akRight, akBottom]
     Font.Charset = DEFAULT_CHARSET
@@ -363,7 +367,7 @@ object Form_Configuracao: TForm_Configuracao
     Left = 130
     Top = 152
     Bitmap = {
-      494C0101040018005C0018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C0101040018006C0018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
