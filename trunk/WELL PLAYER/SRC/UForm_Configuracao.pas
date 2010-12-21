@@ -187,11 +187,11 @@ begin
   if Form_Player <> nil then begin
 
      Label_Status.Caption := '    '+ Form_Player.Tempo ;
-     StrPCopy(S, Form_Player.Arquivo);
+{     StrPCopy(S, Form_Player.Arquivo);
      with ListBox_Script do
        ItemIndex := Perform(LB_SELECTSTRING, 0, LongInt(@S));
      exit;
-
+ }
 
     {
     if Form_Player.FilterGraph = nil then begin
