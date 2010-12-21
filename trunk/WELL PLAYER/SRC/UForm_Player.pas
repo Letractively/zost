@@ -517,24 +517,27 @@ var
   sDirLog, Arqlog, slocal: string;
   local: TextFile;
 begin
-  Arqlog := 'ScripLog_' + (FormatDateTime('ddmmyyyy', now));
-  sDirLog := FDiretorioLog;
-  sLocal   := sDirLog + '\'+Arqlog+'.txt' ;
-
-  AssignFile(Local, slocal);
-
-  if not FileExists(sLocal) then
+  if DirectoryExists(FDiretorioLog) then
   begin
-    Rewrite(Local, sLocal);
-    Append(Local); //Cria o arquivo
-    WriteLn(Local, (FormatDateTime('dd-mm-yyyy hh:mm:ss', now))+' - '+aArquivo );
-  end
-  else begin
-    Append(Local); //Cria o arquivo
-    WriteLn(Local, (FormatDateTime('dd-mm-yyyy hh:mm:ss', now))+' - '+aArquivo );
-  end;
+    Arqlog := 'ScripLog_' + (FormatDateTime('ddmmyyyy', now));
+    sDirLog := FDiretorioLog;
+    sLocal   := sDirLog + '\'+Arqlog+'.txt' ;
 
-  CloseFile(Local);
+    AssignFile(Local, slocal);
+
+    if not FileExists(sLocal) then
+    begin
+      Rewrite(Local, sLocal);
+      Append(Local); //Cria o arquivo
+      WriteLn(Local, (FormatDateTime('dd-mm-yyyy hh:mm:ss', now))+' - '+aArquivo );
+    end
+    else begin
+      Append(Local); //Cria o arquivo
+      WriteLn(Local, (FormatDateTime('dd-mm-yyyy hh:mm:ss', now))+' - '+aArquivo );
+    end;
+
+    CloseFile(Local);
+  end;
 
 end;
 
