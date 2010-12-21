@@ -1,7 +1,6 @@
 object Form_Configuracao: TForm_Configuracao
   Left = 464
   Top = 141
-  Cursor = crArrow
   BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = bsSingle
   Caption = 'WellPlayer - Vers'#227'o de demonstra'#231#227'o'
@@ -166,10 +165,10 @@ object Form_Configuracao: TForm_Configuracao
     Caption = 'Lista de reprodu'#231#227'o (Playlist)'
   end
   object SpeedButton2: TSpeedButton
-    Left = 552
+    Left = 555
     Top = 18
     Width = 23
-    Height = 23
+    Height = 21
     Hint = 'Captura caminho do Arquivo de M'#237'dia'
     Anchors = [akTop, akRight]
     Caption = '...'
@@ -178,10 +177,10 @@ object Form_Configuracao: TForm_Configuracao
     OnClick = SpeedButton2Click
   end
   object SpeedButton4: TSpeedButton
-    Left = 552
+    Left = 555
     Top = 59
     Width = 23
-    Height = 23
+    Height = 21
     Hint = 'Captura caminho do Arquivo de Log'
     Anchors = [akTop, akRight]
     Caption = '...'
@@ -189,16 +188,9 @@ object Form_Configuracao: TForm_Configuracao
     ShowHint = True
     OnClick = SpeedButton4Click
   end
-  object Label1: TLabel
-    Left = 272
-    Top = 88
-    Width = 145
-    Height = 13
-    Caption = 'Label1'
-  end
   object BitBtn_RecriarScript: TBitBtn
-    Left = 450
-    Top = 195
+    Left = 453
+    Top = 193
     Width = 125
     Height = 25
     Hint = 'Recriar script'
@@ -279,8 +271,8 @@ object Form_Configuracao: TForm_Configuracao
     end
   end
   object btPlayList: TBitBtn
-    Left = 450
-    Top = 226
+    Left = 453
+    Top = 224
     Width = 125
     Height = 25
     Hint = 'Iniciar Lista'
@@ -294,30 +286,24 @@ object Form_Configuracao: TForm_Configuracao
   object edtDirMidia: TLabeledEdit
     Left = 6
     Top = 18
-    Width = 540
-    Height = 23
+    Width = 543
+    Height = 21
     Hint = 'Caminho do Arquivo de M'#237'dia'
     Anchors = [akLeft, akTop, akRight]
     Color = clInfoBk
     EditLabel.Width = 84
     EditLabel.Height = 13
     EditLabel.Caption = 'Arquivos de m'#237'dia'
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -11
-    Font.Name = '@Arial Unicode MS'
-    Font.Style = []
-    ParentFont = False
     ParentShowHint = False
     ReadOnly = True
     ShowHint = True
     TabOrder = 0
   end
   object rgMidia: TRadioGroup
-    Left = 450
+    Left = 453
     Top = 88
     Width = 125
-    Height = 101
+    Height = 99
     Anchors = [akTop, akRight, akBottom]
     Caption = ' Exibi'#231#227'o da m'#237'dia '
     ItemIndex = 0
@@ -330,8 +316,8 @@ object Form_Configuracao: TForm_Configuracao
   object ListBox_Script: TListBox
     Left = 6
     Top = 103
-    Width = 438
-    Height = 148
+    Width = 441
+    Height = 146
     Anchors = [akLeft, akTop, akRight, akBottom]
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
@@ -345,20 +331,14 @@ object Form_Configuracao: TForm_Configuracao
   object edtDirLog: TLabeledEdit
     Left = 6
     Top = 59
-    Width = 540
-    Height = 23
+    Width = 543
+    Height = 21
     Hint = 'Caminho do Arquivo de Log'
     Anchors = [akLeft, akTop, akRight]
     Color = clInfoBk
     EditLabel.Width = 80
     EditLabel.Height = 13
     EditLabel.Caption = 'Arquivos de LOG'
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -11
-    Font.Name = '@Arial Unicode MS'
-    Font.Style = []
-    ParentFont = False
     ParentShowHint = False
     ReadOnly = True
     ShowHint = True
@@ -367,8 +347,8 @@ object Form_Configuracao: TForm_Configuracao
   object ImageList_ToolBar: TImageList
     Height = 24
     Width = 24
-    Left = 130
-    Top = 152
+    Left = 11
+    Top = 138
     Bitmap = {
       494C0101040018006C0018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
@@ -973,12 +953,12 @@ object Form_Configuracao: TForm_Configuracao
   end
   object ApplicationEvents1: TApplicationEvents
     OnIdle = ApplicationEvents1Idle
-    Left = 210
-    Top = 152
+    Left = 11
+    Top = 168
   end
   object OpenDialog1: TOpenDialog
     OptionsEx = [ofExNoPlacesBar]
-    Left = 47
-    Top = 150
+    Left = 11
+    Top = 108
   end
 end

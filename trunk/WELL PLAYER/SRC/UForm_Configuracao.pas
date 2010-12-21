@@ -28,7 +28,6 @@ type
     edtDirLog: TLabeledEdit;
     SpeedButton4: TSpeedButton;
     Label_Status: TLabel;
-    Label1: TLabel;
     procedure ToolButton_PlayClick(Sender: TObject);
     procedure btPlayListClick(Sender: TObject);
     procedure ToolButton_PauseClick(Sender: TObject);
@@ -70,14 +69,20 @@ var
 
 implementation
 
+{$R *.dfm}
+
 uses UForm_Player, Inifiles, RTLConsts;
 
+const
+  EXTENSOES_SUPORTADAS: array [1..12] of String = ('.BMP','.JPG','.JPEG','.ICO',
+                                                   '.GIF','.PNG','.SWF','.AVI',
+                                                   '.FLV','.VOB','.MPG','.MPEG');
+  EXTENSOES_NORMAIS: array [1..7] of String = ('.BMP','.JPG','.JPEG','.ICO', '.GIF','.PNG','.SWF');
+  EXTENSOES_TEMPORIZADAS: array [1..5] of String = ('.AVI','.FLV','.VOB','.MPG','.MPEG');
 var
   DirMidia: String;
   DirLog: String;
   MonitorPrincipal: Boolean;
-
-{$R *.dfm}
 
 procedure TForm_Configuracao.ToolButton_PlayClick(Sender: TObject);
 begin
@@ -256,73 +261,63 @@ begin
 end;
 
 procedure TForm_Configuracao.BitBtn_RecriarScriptClick(Sender: TObject);
-//var
-//  sDirMidia, sDirLog : String;
-//  ArqIni, ArqMidia, ArqLog : string;
-//  LocalIni,  local: TextFile;
+var
+  SearchRec: TSearchRec;
+  DosError, ItemIndex: Integer;
+  i, j: Word;
 begin
   if not DirectoryExists(DirMidia) then
-    Application.MessageBox('O diretório de mídia ainda não foi configurado. Não é possível recriar o Script de reprodução','Impossível criar script de reprodução',MB_ICONERROR);
+    Application.MessageBox('O diretório de mídia ainda não foi configurado ou está incorreto. Não é possível recriar o Script de reprodução','Impossível criar script de reprodução',MB_ICONERROR);
 
-{  if FileExists(DirMidia + '\Script.ini') then
-    if Application.MessageBox('Já existe um Script de reprodução no diretório de mídia. Tem certeza de que quer sobrescrevê-lo?','Tem certeza?',MB_ICONQUESTION or MB_YESNO) = IDNO then
-     Exit;
-     }
-//  if Trim(edtDirMidia.Text) = '' then
-//    raise Exception.Create('Informe o local dos Arquivos de Mídia.');
-//  if Trim(edtDirLog.Text) = '' then
-//    raise Exception.Create('Informe o local do Arquivo de Log.');
-//
-//  if not DirectoryExists(Trim(edtDirMidia.Text)) then
-//    raise Exception.Create('O diretório informado nãoe existe: ' +Trim(edtDirMidia.Text));
-//  if not DirectoryExists(Trim(edtDirLog.Text)) then
-//    raise Exception.Create('O diretório informado nãoe existe: ' +Trim(edtDirLog.Text));
-//
-//  sDirMidia := edtDirMidia.Text;
-//  sDirLog   := edtDirLog.Text;
-//
-//  ArqMidia := sDirMidia;
-//  ArqLog   := sDirLog;
-//
-//
-//  sLocalConf := FDiretorioDaAplicacao + '\Config.ini';
-//
-//  if FileExists(sLocalConf) then  //Verifica se existe o arquivo, deletando se existir
-//    DeleteFile(sLocalConf);
-//
-//  AssignFile(Local, ArqIni);
-//
-//  if not FileExists(sLocalConf) then
-//  begin
-//    Rewrite(Local, sLocalConf);
-//    Append(Local); //Cria o arquivo
-//    WriteLn(Local, '[INI]');
-//    WriteLn(Local, 'arq000='+aRQIni);
-//
-//    WriteLn(Local, '[MIDIA]');
-//    WriteLn(Local, 'arq001='+aRQmidia);
-//
-//    WriteLn(Local, '[LOG]');
-//    WriteLn(Local, 'arq002='+arqlog);
-//
-//  end;
-//
-//  CloseFile(Local);
-//
-//  // cria arquivo INI
-//  if  Trim(ArqIni) <> '' then
-//    if not FileExists(ArqIni+'\Script.ini') then  //Verifica se existe o arquivo, abrindo se existir
-//    begin
-//      AssignFile(LocalIni, ArqIni+'\Script.ini');
-//      Rewrite(LocalIni);
-//      WriteLn(LocalIni, '[ARQUIVOSDEMIDIA]');
-//      WriteLn(LocalIni, 'ARQ000=nome do arquivo, com a extenção, seguido de |9. Ex: som_do_ceu.flv|9 ');
-//      WriteLn(LocalIni, 'ARQ001=nome do arquivo, com a extenção, seguido de |9. Ex: outro_som.flv|9 ');
-//      CloseFile(LocalIni);
-//    end;
-//
+  if FileExists(DirMidia + '\Script.ini') then
+    if Application.MessageBox('Já existe um Script de reprodução no diretório de mídia. Tem certeza de que quer sobrescrevê-lo?','Tem certeza?',MB_ICONQUESTION or MB_YESNO) = IDYES then
+    begin
+      { Muda para o diretório de mídias }
+    	ChDir(DirMidia);
+
+      with TIniFile.Create(DirMidia + '\Script.ini') do
+        try
+          { Remove a seção de arquivos. Ela será recriada com arquivos
+          posteriormente }
+          EraseSection('ARQUIVOSDEMIDIA');
+
+          DosError := FindFirst('*.*', 0, SearchRec);
+
+          ItemIndex := 1;
+          while DosError = 0 do
+          begin
+            for i := 1 to High(EXTENSOES_SUPORTADAS) do
+              if UpperCase(ExtractFileExt(SearchRec.Name)) = EXTENSOES_SUPORTADAS[i] then
+              begin
+                for j := 1 to High(EXTENSOES_NORMAIS) do
+                  if EXTENSOES_SUPORTADAS[i] = EXTENSOES_NORMAIS[j] then
+                  begin
+                    WriteString('ARQUIVOSDEMIDIA',Format('ARQ%.3d',[ItemIndex]),SearchRec.Name + '|10');
+                    Inc(ItemIndex);
+                    Break;
+                  end;
+
+                { Caso não tenha achado na lista de extensões normais tentar as
+                extensões temporizadas }
+                if j = Succ(High(EXTENSOES_NORMAIS)) then
+                  for j := 1 to High(EXTENSOES_TEMPORIZADAS) do
+                    if EXTENSOES_SUPORTADAS[i] = EXTENSOES_TEMPORIZADAS[j] then
+                    begin
+                      WriteString('ARQUIVOSDEMIDIA',Format('ARQ%.3d',[ItemIndex]),SearchRec.Name + '|0');
+                      Inc(ItemIndex);
+                      Break;
+                      Break;
+                    end;
+              end;
+            DosError := FindNext(SearchRec);
+          end;
+        finally
+          FindClose(SearchRec);
+          Free;
+        end;
   RecarregarScript;
-  Application.MessageBox('Script de reprodução Atualizado!','Feito!',MB_ICONINFORMATION);
+      Application.MessageBox('Script de reprodução Atualziado!','Feito!',MB_ICONINFORMATION);
+    end;
 end;
 
 { ESTE PROCEDIMENTO ESTÁ OK }
@@ -434,7 +429,7 @@ begin
       if sTempo = '0' then
         ListBox_Script.Items.Add(Arquivo)
       else
-        ListBox_Script.Items.Add(Arquivo);// + ' (' + sTempo + ' segundos)');
+        ListBox_Script.Items.Add(Arquivo + ' (' + sTempo + ' segundos)');
     end;
 end;
 
