@@ -253,21 +253,21 @@ object Form_Configuracao: TForm_Configuracao
       ShowHint = True
       OnClick = ToolButton_FecharClick
     end
-    object ToolButton_Separador1: TToolButton
+    object Panel_Tempo: TPanel
       Left = 124
       Top = 2
-      Width = 6
-      ImageIndex = 5
-      Style = tbsSeparator
-    end
-    object Label_Status: TLabel
-      Left = 130
-      Top = 2
-      Width = 3
+      Width = 459
       Height = 30
-      Caption = ' '
-      Layout = tlCenter
-      OnClick = Label_StatusClick
+      BevelOuter = bvNone
+      Caption = '00:00:00 / 00:00:00'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -19
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentBackground = False
+      ParentFont = False
+      TabOrder = 0
     end
   end
   object btPlayList: TBitBtn

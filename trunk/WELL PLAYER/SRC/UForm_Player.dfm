@@ -1,13 +1,12 @@
 object Form_Player: TForm_Player
-  Left = 501
-  Top = 253
-  Cursor = crAppStart
+  Left = 458
+  Top = 240
   VertScrollBar.Tracking = True
   BorderIcons = []
   BorderStyle = bsNone
   Caption = 'Form_Player'
-  ClientHeight = 535
-  ClientWidth = 688
+  ClientHeight = 146
+  ClientWidth = 312
   Color = clBlack
   UseDockManager = True
   DefaultMonitor = dmDesktop
@@ -22,14 +21,15 @@ object Form_Player: TForm_Player
   OnClose = FormClose
   OnCreate = FormCreate
   OnDestroy = FormDestroy
+  OnResize = FormResize
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
   object Image_IMG: TImage
     Left = 0
     Top = 0
-    Width = 688
-    Height = 516
+    Width = 312
+    Height = 146
     Align = alClient
     Center = True
     DragCursor = crAppStart
@@ -41,8 +41,8 @@ object Form_Player: TForm_Player
   object VideoWindow_VID: TVideoWindow
     Left = 0
     Top = 0
-    Width = 688
-    Height = 516
+    Width = 312
+    Height = 146
     Mode = vmVMR
     FilterGraph = FilterGraph
     VMROptions.Mode = vmrWindowless
@@ -53,59 +53,27 @@ object Form_Player: TForm_Player
     TabStop = False
     OnMouseMove = VideoWindow_VIDMouseMove
   end
-  object StatusBar: TStatusBar
-    Left = 0
-    Top = 516
-    Width = 688
-    Height = 19
-    Panels = <>
-    SimplePanel = True
-    Visible = False
-  end
   object ShockwaveFlash_SWF: TShockwaveFlash
     Left = 0
     Top = 0
-    Width = 688
-    Height = 516
+    Width = 312
+    Height = 146
     Align = alClient
     DragCursor = crArrow
-    TabOrder = 4
+    TabOrder = 1
     Visible = False
     OnProgress = ShockwaveFlash_SWFProgress
     ControlData = {
-      67556655000900001B4700005535000008000200000000000800000000000800
+      67556655000900003F200000170F000008000200000000000800000000000800
       0000000008000E000000570069006E0064006F00770000000800040000003000
-      00000800060000002D00310000000800100000004100750074006F004C006F00
-      7700000008000200000000000800060000002D00310000000800000000000800
-      020000000000080010000000530068006F00770041006C006C00000008000400
-      0000300000000800040000003000000008000E00000030003000300030003000
-      3000000008000000000008000200000000000D00000000000000000000000000
-      0000000008000400000031000000080004000000300000000800000000000800
-      040000003000000008000800000061006C006C00000008000A00000074007200
-      750065000000}
-  end
-  object BitBtn1: TBitBtn
-    Left = 164
-    Top = 494
-    Width = 55
-    Height = 16
-    Cursor = crHandPoint
-    Caption = 'Esconde'
-    DragCursor = crHandPoint
-    TabOrder = 0
-    Visible = False
-    OnClick = BitBtn1Click
-    Layout = blGlyphTop
-  end
-  object TrackBar: TDSTrackBar
-    Left = 8
-    Top = 465
-    Width = 150
-    Height = 45
-    TabOrder = 3
-    Visible = False
-    FilterGraph = FilterGraph
-    OnTimer = TrackBarTimer
+      00000800060000002D00310000000800120000004100750074006F0048006900
+      67006800000008000A0000004C00540052004200000008000400000030000000
+      0800000000000800020000000000080010000000530068006F00770041006C00
+      6C00000008000400000030000000080004000000300000000800020000000000
+      08000000000008000200000000000D0000000000000000000000000000000000
+      0800040000003100000008000400000030000000080000000000080004000000
+      3000000008000800000061006C006C00000008000A0000007400720075006500
+      0000}
   end
   object CFSHChangeNotifier_Principal: TCFSHChangeNotifier
     Root = 'C:\'
@@ -116,29 +84,19 @@ object Form_Player: TForm_Player
     OnChangeSize = CFSHChangeNotifier_PrincipalChangeSize
     OnChangeLastWrite = CFSHChangeNotifier_PrincipalChangeLastWrite
     OnChangeSecurity = CFSHChangeNotifier_PrincipalChangeSecurity
-    Left = 62
-    Top = 6
+    Left = 5
+    Top = 4
   end
   object FilterGraph: TFilterGraph
     Mode = gmDVD
     GraphEdit = False
-    Left = 314
+    Left = 33
     Top = 4
   end
-  object OpenDialog: TOpenDialog
-    Left = 364
-    Top = 8
-  end
-  object Timer1: TTimer
-    Enabled = False
-    OnTimer = Timer1Timer
-    Left = 182
-    Top = 6
-  end
-  object Timer2: TTimer
-    Enabled = False
-    OnTimer = Timer2Timer
-    Left = 262
-    Top = 10
+  object Timer_Estaticos: TTimer
+    Interval = 500
+    OnTimer = Timer_EstaticosTimer
+    Left = 61
+    Top = 4
   end
 end
