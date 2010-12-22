@@ -420,6 +420,9 @@ begin
   RecarregarScript;
 
   CFSHChangeNotifier_Principal.Root := DirMidia;
+
+//  if ParamStr(1) = 'autoplay' then
+//    btPlayList.Click;
 end;
 
 { ESTE PROCEDIMENTO ESTÁ OK }
