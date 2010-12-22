@@ -187,52 +187,10 @@ end;
 
 procedure TForm_Configuracao.ApplicationEvents1Idle(Sender: TObject; var Done: Boolean);
 begin
-  if Form_Player <> nil then begin
-
-     Label_Status.Caption := '    '+ Form_Player.Tempo ;
-{     StrPCopy(S, Form_Player.Arquivo);
-     with ListBox_Script do
-       ItemIndex := Perform(LB_SELECTSTRING, 0, LongInt(@S));
-     exit;
- }
-
-    {
-    if Form_Player.FilterGraph = nil then begin
+  if Form_Player <> nil then 
+     Label_Status.Caption := '    '+ Form_Player.Tempo 
+  else
       Label_Status.Caption := '';
-       //ListBox1.Clear;
-    end
-    else
-    begin
-
-       if Form_Player.ShockwaveFlash1.Playing then begin
-
-       end;
-
-       if (Form_Player.FilterGraph.State = gsUninitialized) then begin
-         Label_Status.Caption := '    '+ Form_Player.Tempo ;
-         StrPCopy(S, Form_Player.Arquivo);
-         with ListBox_Script do
-           ItemIndex := Perform(LB_SELECTSTRING, 0, LongInt(@S));
-         exit;
-       end;
-
-      if (Form_Player.FilterGraph.State = gsStopped) or
-         (Form_Player.FilterGraph.State = gsPaused) or
-         (Form_Player.FilterGraph.State = gsPlaying)  then begin
-        Label_Status.Caption := '    '+ Form_Player.Tempo ;
-
-        StrPCopy(S, Form_Player.Arquivo);
-        with ListBox_Script do
-          ItemIndex := Perform(LB_SELECTSTRING, 0, LongInt(@S));
-        end;
-
-      end;
-       }
-    end
-    else begin
-//      Label_Status.Caption := '';
-    end;
-
 end;
 
 procedure TForm_Configuracao.ToolButton_FecharClick(Sender: TObject);
@@ -525,5 +483,43 @@ finalization;
   SalvarConfiguracoes;
 
 end.
+{     StrPCopy(S, Form_Player.Arquivo);
+     with ListBox_Script do
+       ItemIndex := Perform(LB_SELECTSTRING, 0, LongInt(@S));
+     exit;
+ }
+
+    {
+    if Form_Player.FilterGraph = nil then begin
+      Label_Status.Caption := '';
+       //ListBox1.Clear;
+    end
+    else
+    begin
+
+       if Form_Player.ShockwaveFlash1.Playing then begin
+
+       end;
+
+       if (Form_Player.FilterGraph.State = gsUninitialized) then begin
+         Label_Status.Caption := '    '+ Form_Player.Tempo ;
+         StrPCopy(S, Form_Player.Arquivo);
+         with ListBox_Script do
+           ItemIndex := Perform(LB_SELECTSTRING, 0, LongInt(@S));
+         exit;
+       end;
+
+      if (Form_Player.FilterGraph.State = gsStopped) or
+         (Form_Player.FilterGraph.State = gsPaused) or
+         (Form_Player.FilterGraph.State = gsPlaying)  then begin
+        Label_Status.Caption := '    '+ Form_Player.Tempo ;
+
+        StrPCopy(S, Form_Player.Arquivo);
+        with ListBox_Script do
+          ItemIndex := Perform(LB_SELECTSTRING, 0, LongInt(@S));
+        end;
+
+      end;
+       }
 
 
