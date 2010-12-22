@@ -42,19 +42,12 @@ type
   end;
 
   TForm_Player = class(TForm)
-    CFSHChangeNotifier_Principal: TCFSHChangeNotifier;
     FilterGraph: TFilterGraph;
     VideoWindow_VID: TVideoWindow;
     Image_IMG: TImage;
     ShockwaveFlash_SWF: TShockwaveFlash;
     Timer_Estaticos: TTimer;
     procedure FormCreate(Sender: TObject);
-    procedure CFSHChangeNotifier_PrincipalChangeSize;
-    procedure CFSHChangeNotifier_PrincipalChangeAttributes;
-    procedure CFSHChangeNotifier_PrincipalChangeDirName;
-    procedure CFSHChangeNotifier_PrincipalChangeFileName;
-    procedure CFSHChangeNotifier_PrincipalChangeLastWrite;
-    procedure CFSHChangeNotifier_PrincipalChangeSecurity;
     procedure FormDestroy(Sender: TObject);
     procedure ExibirJanela1Click(Sender: TObject);
     procedure FecharJanela1Click(Sender: TObject);
@@ -190,55 +183,20 @@ end;
 //	SearchTree;
 //end;
 
-procedure TForm_Player.CFSHChangeNotifier_PrincipalChangeAttributes;
-begin
-//  Exit;
-  //RecarregarScript;
-end;
-
-procedure TForm_Player.CFSHChangeNotifier_PrincipalChangeDirName;
-begin
-//  Exit;
-  //RecarregarScript;
-end;
-
-procedure TForm_Player.CFSHChangeNotifier_PrincipalChangeFileName;
-begin
-//  Exit;
-  //RecarregarScript;
-end;
-
-procedure TForm_Player.CFSHChangeNotifier_PrincipalChangeLastWrite;
-begin
-//  RecarregarScript;
-end;
-
-procedure TForm_Player.CFSHChangeNotifier_PrincipalChangeSecurity;
-begin
-//  Exit;
-  //RecarregarScript;
-end;
-
-procedure TForm_Player.CFSHChangeNotifier_PrincipalChangeSize;
-begin
-//  Exit;
-  //RecarregarScript;
-end;
-
 procedure TForm_Player.FormCreate(Sender: TObject);
 begin
-//  FTocando := False;
   FTipoDeReproducao := tdrNenhuma;
   Form_Configuracao.ListBox_Script.Enabled := False;
+  Form_Configuracao.rgMidia.Enabled := False;
 end;
 
 procedure TForm_Player.FormDestroy(Sender: TObject);
 begin
   ShowCursor(True);
-//  FArquivosDeMidia.Free;
   FilterGraph.Free;
 
   Form_Configuracao.ListBox_Script.Enabled := True;
+  Form_Configuracao.rgMidia.Enabled := Screen.MonitorCount = 2;
 end;
 
 //procedure TForm_Player.RecarregarScript;
@@ -476,7 +434,6 @@ begin
     FArquivo := AnsiUpperCase(aFileInformation.FileName);
     FTimeIn  := Now;
     FTimeOut := FTimeIn + aFileInformation.FileTime / 86400;
-    FTipoDeReproducao := tdrTimer;
 
     ShockwaveFlash_SWF.Base  := FDiretorioMidia + '\' + aFileInformation.FileName;
     ShockwaveFlash_SWF.Movie := FDiretorioMidia + '\' + aFileInformation.FileName;
@@ -484,6 +441,8 @@ begin
     ShockwaveFlash_SWF.Rewind;
     ShockwaveFlash_SWF.Show;
     ShockwaveFlash_SWF.Play;
+
+    FTipoDeReproducao := tdrTimer;
 
     Form_Configuracao.ListBox_Script.ItemIndex := FNowPlaying;
   end;
@@ -499,10 +458,11 @@ begin
     FArquivo := AnsiUpperCase(aFileInformation.FileName);
     FTimeIn  := Now;
     FTimeOut := FTimeIn + aFileInformation.FileTime / 86400;
-    FTipoDeReproducao := tdrTimer;
 
     Image_IMG.Picture.LoadFromFile(FDiretorioMidia + '\' + aFileInformation.FileName);
     Image_IMG.Show;
+
+    FTipoDeReproducao := tdrTimer;
 
     Form_Configuracao.ListBox_Script.ItemIndex := FNowPlaying;
   end;
@@ -518,11 +478,17 @@ begin
     FArquivo := AnsiUpperCase(aFileInformation.FileName);
     FTimeIn  := Now;
     FTimeOut := 0; { Não será usado }
-    FTipoDeReproducao := tdrTempo;
 
+    FilterGraph.Active := False;
+    FilterGraph.ClearGraph;
+    FilterGraph.Active := True;
+    
     FilterGraph.RenderFile(FDiretorioMidia + '\' + aFileInformation.FileName);
     VideoWindow_VID.Show;
+
     FilterGraph.Play;
+
+    FTipoDeReproducao := tdrTempo;
 
     Form_Configuracao.ListBox_Script.ItemIndex := FNowPlaying;
   end;
@@ -553,8 +519,6 @@ begin
   if not FMonitorPrincipal then
     if Screen.MonitorCount > 1 then
       Left := Screen.Monitors[1].Left;
-
-  CFSHChangeNotifier_Principal.Root := FDiretorioMidia;
 
   IniciarPlaylist;
 

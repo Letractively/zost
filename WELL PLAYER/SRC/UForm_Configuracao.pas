@@ -5,7 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, ImgList, ComCtrls, ToolWin, StdCtrls, Buttons, AppEvnts, DsPack,
-  ExtCtrls, FileCtrl;
+  ExtCtrls, FileCtrl, UCFSHChangeNotify;
 
 type
   TForm_Configuracao = class(TForm)
@@ -27,6 +27,7 @@ type
     edtDirLog: TLabeledEdit;
     SpeedButton4: TSpeedButton;
     Panel_Tempo: TPanel;
+    CFSHChangeNotifier_Principal: TCFSHChangeNotifier;
     procedure ToolButton_PlayClick(Sender: TObject);
     procedure btPlayListClick(Sender: TObject);
     procedure ToolButton_PauseClick(Sender: TObject);
@@ -43,6 +44,12 @@ type
     procedure FormMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Integer);
     procedure rgMidiaClick(Sender: TObject);
     procedure Label_StatusClick(Sender: TObject);
+    procedure CFSHChangeNotifier_PrincipalChangeAttributes;
+    procedure CFSHChangeNotifier_PrincipalChangeDirName;
+    procedure CFSHChangeNotifier_PrincipalChangeFileName;
+    procedure CFSHChangeNotifier_PrincipalChangeLastWrite;
+    procedure CFSHChangeNotifier_PrincipalChangeSecurity;
+    procedure CFSHChangeNotifier_PrincipalChangeSize;
   private
     { Private declarations }
   public
@@ -60,7 +67,6 @@ type
     procedure ExibirConfiguracoes;
     procedure HabilitaBarraWin;
     procedure ConfigurarJanelaDeReproducao;
-
   end;
 
 var
@@ -196,7 +202,7 @@ begin
   if Assigned(Form_Player) then
     Panel_Tempo.Caption := Form_Player.TempoFormatado
   else
-    Panel_Tempo.Caption := '00:00:00 / 00:00:00';
+    Panel_Tempo.Caption := '00:00:00 / 00:00:00 (00:00:00)';
 end;
 
 procedure TForm_Configuracao.ToolButton_FecharClick(Sender: TObject);
@@ -412,16 +418,13 @@ begin
   FDiretorioDaAplicacao := ExtractFilePath(Application.ExeName);
 
   RecarregarScript;
+
+  CFSHChangeNotifier_Principal.Root := DirMidia;
 end;
 
 { ESTE PROCEDIMENTO ESTÁ OK }
 procedure TForm_Configuracao.FormDestroy(Sender: TObject);
 begin
-  // Não é necessário fazer isso aqui porque as variáveis são manipuladas sempre
-  // e os campos visuais (Edits) apenas as seguem
-//  DirMidia := Form_Configuracao.edtDirMidia.Text;
-//  DirLog := Form_Configuracao.edtDirLog.Text;
-
   FArquivosDeMidia.Free;
   HabilitaBarraWin;
 end;
@@ -482,6 +485,36 @@ begin
     finally
       Free;
     end;
+end;
+
+procedure TForm_Configuracao.CFSHChangeNotifier_PrincipalChangeAttributes;
+begin
+//
+end;
+
+procedure TForm_Configuracao.CFSHChangeNotifier_PrincipalChangeDirName;
+begin
+//
+end;
+
+procedure TForm_Configuracao.CFSHChangeNotifier_PrincipalChangeFileName;
+begin
+//
+end;
+
+procedure TForm_Configuracao.CFSHChangeNotifier_PrincipalChangeLastWrite;
+begin
+//
+end;
+
+procedure TForm_Configuracao.CFSHChangeNotifier_PrincipalChangeSecurity;
+begin
+//
+end;
+
+procedure TForm_Configuracao.CFSHChangeNotifier_PrincipalChangeSize;
+begin
+//
 end;
 
 initialization
