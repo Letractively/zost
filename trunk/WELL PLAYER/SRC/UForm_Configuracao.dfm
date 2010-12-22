@@ -259,7 +259,7 @@ object Form_Configuracao: TForm_Configuracao
       Width = 459
       Height = 30
       BevelOuter = bvNone
-      Caption = '00:00:00 / 00:00:00'
+      Caption = '00:00:00 / 00:00:00 (00:00:00)'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -19
@@ -960,5 +960,17 @@ object Form_Configuracao: TForm_Configuracao
     OptionsEx = [ofExNoPlacesBar]
     Left = 11
     Top = 108
+  end
+  object CFSHChangeNotifier_Principal: TCFSHChangeNotifier
+    Root = 'C:\'
+    WatchSubTree = False
+    OnChangeFileName = CFSHChangeNotifier_PrincipalChangeFileName
+    OnChangeDirName = CFSHChangeNotifier_PrincipalChangeDirName
+    OnChangeAttributes = CFSHChangeNotifier_PrincipalChangeAttributes
+    OnChangeSize = CFSHChangeNotifier_PrincipalChangeSize
+    OnChangeLastWrite = CFSHChangeNotifier_PrincipalChangeLastWrite
+    OnChangeSecurity = CFSHChangeNotifier_PrincipalChangeSecurity
+    Left = 11
+    Top = 198
   end
 end

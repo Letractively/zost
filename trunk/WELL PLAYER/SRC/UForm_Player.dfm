@@ -5,8 +5,8 @@ object Form_Player: TForm_Player
   BorderIcons = []
   BorderStyle = bsNone
   Caption = 'Form_Player'
-  ClientHeight = 146
-  ClientWidth = 312
+  ClientHeight = 326
+  ClientWidth = 632
   Color = clBlack
   UseDockManager = True
   DefaultMonitor = dmDesktop
@@ -28,8 +28,8 @@ object Form_Player: TForm_Player
   object Image_IMG: TImage
     Left = 0
     Top = 0
-    Width = 312
-    Height = 146
+    Width = 632
+    Height = 326
     Align = alClient
     Center = True
     DragCursor = crAppStart
@@ -41,8 +41,8 @@ object Form_Player: TForm_Player
   object VideoWindow_VID: TVideoWindow
     Left = 0
     Top = 0
-    Width = 312
-    Height = 146
+    Width = 632
+    Height = 326
     Mode = vmVMR
     FilterGraph = FilterGraph
     VMROptions.Mode = vmrWindowless
@@ -56,15 +56,15 @@ object Form_Player: TForm_Player
   object ShockwaveFlash_SWF: TShockwaveFlash
     Left = 0
     Top = 0
-    Width = 312
-    Height = 146
+    Width = 632
+    Height = 326
     Align = alClient
     DragCursor = crArrow
     TabOrder = 1
     Visible = False
     OnProgress = ShockwaveFlash_SWFProgress
     ControlData = {
-      67556655000900003F200000170F000008000200000000000800000000000800
+      675566550009000052410000B121000008000200000000000800000000000800
       0000000008000E000000570069006E0064006F00770000000800040000003000
       00000800060000002D00310000000800120000004100750074006F0048006900
       67006800000008000A0000004C00540052004200000008000400000030000000
@@ -75,28 +75,16 @@ object Form_Player: TForm_Player
       3000000008000800000061006C006C00000008000A0000007400720075006500
       0000}
   end
-  object CFSHChangeNotifier_Principal: TCFSHChangeNotifier
-    Root = 'C:\'
-    WatchSubTree = True
-    OnChangeFileName = CFSHChangeNotifier_PrincipalChangeFileName
-    OnChangeDirName = CFSHChangeNotifier_PrincipalChangeDirName
-    OnChangeAttributes = CFSHChangeNotifier_PrincipalChangeAttributes
-    OnChangeSize = CFSHChangeNotifier_PrincipalChangeSize
-    OnChangeLastWrite = CFSHChangeNotifier_PrincipalChangeLastWrite
-    OnChangeSecurity = CFSHChangeNotifier_PrincipalChangeSecurity
-    Left = 5
-    Top = 4
-  end
   object FilterGraph: TFilterGraph
     Mode = gmDVD
     GraphEdit = False
-    Left = 33
+    Left = 4
     Top = 4
   end
   object Timer_Estaticos: TTimer
     Interval = 500
     OnTimer = Timer_EstaticosTimer
-    Left = 61
+    Left = 32
     Top = 4
   end
 end
