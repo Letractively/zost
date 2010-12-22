@@ -13,7 +13,6 @@ type
     ToolButton_Play: TToolButton;
     ToolButton_Pause: TToolButton;
     ToolButton_Stop: TToolButton;
-    ToolButton_Separador1: TToolButton;
     ToolButton_Fechar: TToolButton;
     ImageList_ToolBar: TImageList;
     btPlayList: TBitBtn;
@@ -27,7 +26,7 @@ type
     BitBtn_RecriarScript: TBitBtn;
     edtDirLog: TLabeledEdit;
     SpeedButton4: TSpeedButton;
-    Label_Status: TLabel;
+    Panel_Tempo: TPanel;
     procedure ToolButton_PlayClick(Sender: TObject);
     procedure btPlayListClick(Sender: TObject);
     procedure ToolButton_PauseClick(Sender: TObject);
@@ -75,10 +74,10 @@ uses UForm_Player, Inifiles, RTLConsts;
 
 const
   EXTENSOES_SUPORTADAS: array [1..12] of String = ('.BMP','.JPG','.JPEG','.ICO',
-                                                   '.GIF','.PNG','.SWF','.AVI',
-                                                   '.FLV','.VOB','.MPG','.MPEG');
-  EXTENSOES_NORMAIS: array [1..7] of String = ('.BMP','.JPG','.JPEG','.ICO', '.GIF','.PNG','.SWF');
-  EXTENSOES_TEMPORIZADAS: array [1..5] of String = ('.AVI','.FLV','.VOB','.MPG','.MPEG');
+                                                   '.GIF','.SWF','.AVI','.FLV',
+                                                   '.VOB','.MPG','.MPEG','.WMV');
+  EXTENSOES_NORMAIS: array [1..6] of String = ('.BMP','.JPG','.JPEG','.ICO', '.GIF','.SWF');
+  EXTENSOES_TEMPORIZADAS: array [1..6] of String = ('.AVI','.FLV','.VOB','.MPG','.MPEG','.WMV');
 var
   DirMidia: String;
   DirLog: String;
@@ -86,36 +85,42 @@ var
 
 procedure TForm_Configuracao.ToolButton_PlayClick(Sender: TObject);
 begin
+  if not Assigned(Form_Player) then
+    Exit;
 
-   if Form_Player = nil then exit;
-
-   if Form_Player.FilterGraph <> nil then begin
-
-     with Form_Player do begin
-         if (TipoArq = 'BMP') or
-            (TipoArq = 'JPG') or
-            (TipoArq = 'ICO')  then begin
-             Timer2.Enabled := True
-         end
-         else begin
-           if (TipoArq = 'SWF') then begin
-             Timer1.Enabled := True;
-             if ShockwaveFlash_SWF.Playing = False then begin
-               ShockwaveFlash_SWF.Playing;
-               ShockwaveFlash_SWF.Play;
-             end;
-           end
-           else begin
-             if FilterGraph.State = gsUninitialized then
-               btPlayListClick(self)
-             else
-               FilterGraph.Play;
-           end;  //if (TipoArq = 'SWF')
-         end; //if (TipoArq = 'BMP' or ...)
-     end; //with Form_Player do begin
-   end
-   else
-     btPlayListClick(self);
+//  if Assigned(Form_Player.FilterGraph) then
+//  begin
+//
+//    with Form_Player do
+//    begin
+//      if (TipoArq = 'BMP') or (TipoArq = 'JPG') or (TipoArq = 'ICO')  then
+//      begin
+//        Timer2.Enabled := True
+//      end
+//      else
+//      begin
+//        if (TipoArq = 'SWF') then
+//        begin
+//          Timer1.Enabled := True;
+//
+//          if ShockwaveFlash_SWF.Playing = False then
+//          begin
+//            ShockwaveFlash_SWF.Playing;
+//            ShockwaveFlash_SWF.Play;
+//          end;
+//        end
+//        else
+//        begin
+//          if FilterGraph.State = gsUninitialized then
+//            btPlayListClick(self)
+//          else
+//            FilterGraph.Play;
+//        end;  //if (TipoArq = 'SWF')
+//      end; //if (TipoArq = 'BMP' or ...)
+//    end; //with Form_Player do begin
+//  end
+//  else
+//    btPlayListClick(self);
 end;
 
 procedure TForm_Configuracao.btPlayListClick(Sender: TObject);
@@ -137,6 +142,7 @@ begin
     a reprodução }
     Form_Player.Show;
 
+
   except
     on E: Exception do
       ShowMessage('Não foi possível iniciar o SlideShow.'#13#10 + E.Message);
@@ -145,38 +151,38 @@ end;
 
 procedure TForm_Configuracao.ToolButton_PauseClick(Sender: TObject);
 begin
-  if Assigned(Form_Player) and Assigned(Form_Player.FilterGraph) then begin
-     with Form_Player do begin
-         if (TipoArq = 'BMP') or
-            (TipoArq = 'JPG') or
-            (TipoArq = 'ICO') or
-            (TipoArq = 'GIF') or
-            (TipoArq = 'PNG') then begin
-           Timer2.Enabled := False
-         end
-         else begin
-           if (TipoArq = 'SWF') then begin
-             Timer1.Enabled := False;
-             if ShockwaveFlash_SWF.Playing = True then begin
-               ShockwaveFlash_SWF.Playing := False;
-               ShockwaveFlash_SWF.StopPlay;
-               ShockwaveFlash_SWF.Stop;
-             end;
-           end
-           else begin
-             if FilterGraph.State = gsUninitialized then
-               btPlayListClick(self)
-             else
-               FilterGraph.Pause;
-           end;  //if (TipoArq = 'SWF')
-         end; //if (TipoArq = 'BMP' or ...)
-     end; //with Form_Player do begin
-
-    {Form_Player.FilterGraph.Pause;
-    if Form_Player.ShockwaveFlash1.Playing = True then
-      Form_Player.ShockwaveFlash1.Playing := False;
-     }
-  end;
+//  if Assigned(Form_Player) and Assigned(Form_Player.FilterGraph) then
+//  begin
+//     with Form_Player do begin
+//         if (TipoArq = 'BMP') or
+//            (TipoArq = 'JPG') or
+//            (TipoArq = 'ICO') or
+//            (TipoArq = 'GIF') then begin
+//           Timer2.Enabled := False
+//         end
+//         else begin
+//           if (TipoArq = 'SWF') then begin
+//             Timer1.Enabled := False;
+//             if ShockwaveFlash_SWF.Playing = True then begin
+//               ShockwaveFlash_SWF.Playing := False;
+//               ShockwaveFlash_SWF.StopPlay;
+//               ShockwaveFlash_SWF.Stop;
+//             end;
+//           end
+//           else begin
+//             if FilterGraph.State = gsUninitialized then
+//               btPlayListClick(self)
+//             else
+//               FilterGraph.Pause;
+//           end;  //if (TipoArq = 'SWF')
+//         end; //if (TipoArq = 'BMP' or ...)
+//     end; //with Form_Player do begin
+//
+//    {Form_Player.FilterGraph.Pause;
+//    if Form_Player.ShockwaveFlash1.Playing = True then
+//      Form_Player.ShockwaveFlash1.Playing := False;
+//     }
+//  end;
 end;
 
 procedure TForm_Configuracao.ToolButton_StopClick(Sender: TObject);
@@ -187,17 +193,17 @@ end;
 
 procedure TForm_Configuracao.ApplicationEvents1Idle(Sender: TObject; var Done: Boolean);
 begin
-  if Form_Player <> nil then 
-     Label_Status.Caption := '    '+ Form_Player.Tempo 
+  if Assigned(Form_Player) then
+    Panel_Tempo.Caption := Form_Player.TempoFormatado
   else
-      Label_Status.Caption := '';
+    Panel_Tempo.Caption := '00:00:00 / 00:00:00';
 end;
 
 procedure TForm_Configuracao.ToolButton_FecharClick(Sender: TObject);
 begin
   if Form_Player <> nil then
     if Form_Player.FilterGraph <> nil then
-       Form_Player.Close;
+      Form_Player.Close;
 
   HabilitaBarraWin;       
 end;
@@ -243,12 +249,12 @@ begin
           while DosError = 0 do
           begin
             for i := 1 to High(EXTENSOES_SUPORTADAS) do
-              if UpperCase(ExtractFileExt(SearchRec.Name)) = EXTENSOES_SUPORTADAS[i] then
+              if AnsiUpperCase(ExtractFileExt(SearchRec.Name)) = EXTENSOES_SUPORTADAS[i] then
               begin
                 for j := 1 to High(EXTENSOES_NORMAIS) do
                   if EXTENSOES_SUPORTADAS[i] = EXTENSOES_NORMAIS[j] then
                   begin
-                    WriteString('ARQUIVOSDEMIDIA',Format('ARQ%.3d',[ItemIndex]),SearchRec.Name + '|10');
+                    WriteString('ARQUIVOSDEMIDIA',Format('ARQ%.3d',[ItemIndex]),AnsiUpperCase(SearchRec.Name) + '|10');
                     Inc(ItemIndex);
                     Break;
                   end;
@@ -259,7 +265,7 @@ begin
                   for j := 1 to High(EXTENSOES_TEMPORIZADAS) do
                     if EXTENSOES_SUPORTADAS[i] = EXTENSOES_TEMPORIZADAS[j] then
                     begin
-                      WriteString('ARQUIVOSDEMIDIA',Format('ARQ%.3d',[ItemIndex]),SearchRec.Name + '|0');
+                      WriteString('ARQUIVOSDEMIDIA',Format('ARQ%.3d',[ItemIndex]),AnsiUpperCase(SearchRec.Name) + '|0');
                       Inc(ItemIndex);
                       Break;
                       Break;
@@ -449,6 +455,8 @@ begin
     Form_Player.DiretorioMidia   := DirMidia;
     Form_Player.MonitorPrincipal := MonitorPrincipal;
     Form_Player.ArquivosDeMidia  := FArquivosDeMidia;
+
+//    Form_Player.WindowState := wsMaximized;
   end;
 end;
 
@@ -483,43 +491,5 @@ finalization;
   SalvarConfiguracoes;
 
 end.
-{     StrPCopy(S, Form_Player.Arquivo);
-     with ListBox_Script do
-       ItemIndex := Perform(LB_SELECTSTRING, 0, LongInt(@S));
-     exit;
- }
-
-    {
-    if Form_Player.FilterGraph = nil then begin
-      Label_Status.Caption := '';
-       //ListBox1.Clear;
-    end
-    else
-    begin
-
-       if Form_Player.ShockwaveFlash1.Playing then begin
-
-       end;
-
-       if (Form_Player.FilterGraph.State = gsUninitialized) then begin
-         Label_Status.Caption := '    '+ Form_Player.Tempo ;
-         StrPCopy(S, Form_Player.Arquivo);
-         with ListBox_Script do
-           ItemIndex := Perform(LB_SELECTSTRING, 0, LongInt(@S));
-         exit;
-       end;
-
-      if (Form_Player.FilterGraph.State = gsStopped) or
-         (Form_Player.FilterGraph.State = gsPaused) or
-         (Form_Player.FilterGraph.State = gsPlaying)  then begin
-        Label_Status.Caption := '    '+ Form_Player.Tempo ;
-
-        StrPCopy(S, Form_Player.Arquivo);
-        with ListBox_Script do
-          ItemIndex := Perform(LB_SELECTSTRING, 0, LongInt(@S));
-        end;
-
-      end;
-       }
 
 
