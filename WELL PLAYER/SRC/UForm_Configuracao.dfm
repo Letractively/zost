@@ -125,7 +125,6 @@ object Form_Configuracao: TForm_Configuracao
       Caption = 'ToolButton_Pause'
       Enabled = False
       ImageIndex = 0
-      Visible = False
       OnClick = ToolButton_PauseClick
     end
     object ToolButton_Stop: TToolButton
