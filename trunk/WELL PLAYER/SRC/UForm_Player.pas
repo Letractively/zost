@@ -369,6 +369,7 @@ begin
       ShockwaveFlash_SWF.Play;
 
     FTimeIn := FTimeIn + Now - FTimePause;
+    FTimeOut := FTimeOut + Now - FTimePause;
     FTipoDeReproducao := tdrTimer;
   end
   { Arquivos dinâmicos (reproduzíveis) }
@@ -377,6 +378,7 @@ begin
     FilterGraph.Play;
 
     FTimeIn := FTimeIn + Now - FTimePause;
+    FTimeOut := FTimeOut + Now - FTimePause;
     FTipoDeReproducao := tdrTempo;
   end;
 end;
