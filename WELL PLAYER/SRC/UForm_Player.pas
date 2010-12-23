@@ -74,6 +74,7 @@ type
     FTimeIn: TTime;
     FReproducaoTotal: Integer; { Em milisegundos }
 
+
     FNowPlaying: Word;
 
     FTempoFormatado: String;
@@ -335,7 +336,7 @@ begin
   Form_Configuracao.RecarregarScript;
 
   CalcularReproducaoTotal;
-  
+
   { Caso não esteja no modo de reprodução, o inicia }
   if FTipoDeReproducao = tdrNenhuma then
     IniciarReproducao(0);
@@ -366,8 +367,7 @@ end;
 
 procedure TForm_Player.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
-//  if Assigned(FilterGraph) then
-//    FilterGraph.ClearGraph;
+  FilterGraph.ClearGraph;
 
   Action := caFree;
   Form_Player := nil;
@@ -611,7 +611,6 @@ begin
         FilterGraph.Active := False;
       end;
     end;
-
   end;
 end;
 
