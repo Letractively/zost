@@ -119,8 +119,15 @@ object Form_Configuracao: TForm_Configuracao
       ShowHint = True
       OnClick = ToolButton_PlayClick
     end
-    object ToolButton_Stop: TToolButton
+    object ToolButton_Pause: TToolButton
       Left = 31
+      Top = 2
+      Caption = 'ToolButton_Pause'
+      Enabled = False
+      ImageIndex = 0
+    end
+    object ToolButton_Stop: TToolButton
+      Left = 62
       Top = 2
       Hint = 'Stop'
       Caption = 'ToolButton_Stop'
@@ -131,7 +138,7 @@ object Form_Configuracao: TForm_Configuracao
       OnClick = ToolButton_StopClick
     end
     object ToolButton_Fechar: TToolButton
-      Left = 62
+      Left = 93
       Top = 2
       Hint = 'Fecha Play'
       Caption = 'ToolButton_Fechar'
@@ -142,9 +149,9 @@ object Form_Configuracao: TForm_Configuracao
       OnClick = ToolButton_FecharClick
     end
     object Panel_Tempo: TPanel
-      Left = 93
+      Left = 124
       Top = 2
-      Width = 490
+      Width = 459
       Height = 30
       BevelOuter = bvNone
       Caption = '00:00:00 / 00:00:00 (00:00:00)'

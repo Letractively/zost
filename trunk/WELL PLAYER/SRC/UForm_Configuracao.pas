@@ -29,6 +29,7 @@ type
     CFSHChangeNotifier_Principal: TCFSHChangeNotifier;
     BitBtn_MoverAbaixo: TBitBtn;
     BitBtn_MoverAcima: TBitBtn;
+    ToolButton_Pause: TToolButton;
     procedure ToolButton_PlayClick(Sender: TObject);
     procedure ToolButton_StopClick(Sender: TObject);
     procedure ApplicationEvents1Idle(Sender: TObject; var Done: Boolean);
@@ -138,6 +139,7 @@ begin
     Panel_Tempo.Caption := Form_Player.TempoFormatado;
     ToolButton_Play.Enabled := Form_Player.TipoDeReproducao = tdrNenhuma;
     ToolButton_Stop.Enabled := not ToolButton_Play.Enabled;
+    ToolButton_Pause.Enabled := (not ToolButton_Play.Enabled);
     ToolButton_Fechar.Enabled := True;
   end
   else
@@ -146,6 +148,7 @@ begin
     ToolButton_Play.Enabled := True;
     ToolButton_Stop.Enabled := False;
     ToolButton_Fechar.Enabled := False;
+    ToolButton_Pause.Enabled := False;
   end;
 end;
 
