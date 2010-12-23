@@ -125,6 +125,8 @@ object Form_Configuracao: TForm_Configuracao
       Caption = 'ToolButton_Pause'
       Enabled = False
       ImageIndex = 0
+      Visible = False
+      OnClick = ToolButton_PauseClick
     end
     object ToolButton_Stop: TToolButton
       Left = 62
@@ -273,6 +275,7 @@ object Form_Configuracao: TForm_Configuracao
     Width = 25
     Height = 25
     TabOrder = 7
+    Visible = False
     Glyph.Data = {
       36030000424D3603000000000000360000002800000010000000100000000100
       1800000000000003000001000000010000000000000000000000FFFFFFFFFFFF
@@ -307,6 +310,7 @@ object Form_Configuracao: TForm_Configuracao
     Width = 25
     Height = 25
     TabOrder = 8
+    Visible = False
     Glyph.Data = {
       36030000424D3603000000000000360000002800000010000000100000000100
       1800000000000003000001000000010000000000000000000000FFFFFFFFFFFF

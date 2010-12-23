@@ -22,7 +22,7 @@ type
     FileTime: Int64;//Word;
   end;
 
-  TTipoDeReproducao = (tdrNenhuma, tdrTimer, tdrTempo);
+  TTipoDeReproducao = (tdrNenhuma, tdrTimer, tdrTempo, tdrPause);
 
   { Interposer para inserção de novas funcionalidades }
   TFilterGraph = class(DSPack.TFilterGraph)
@@ -71,9 +71,9 @@ type
     FTipoArq: String;
     FArquivo: String;
     FTimeOut: TTime;
+    FTimePause: TTime;
     FTimeIn: TTime;
     FReproducaoTotal: Integer; { Em milisegundos }
-
 
     FNowPlaying: Word;
 
@@ -98,6 +98,8 @@ type
   public
     { Public declarations }
     procedure IniciarPlaylist;
+    procedure PausarPlaylist;
+    procedure DespausarPlaylist;
     procedure FinalizarPlaylist;
 
     property MonitorPrincipal: Boolean read FMonitorPrincipal write FMonitorPrincipal;
@@ -270,18 +272,6 @@ begin
     raise Exception.Create('O índice "' + IntToStr(aFileIndex) + '" não existe na lista');
 end;
 
-procedure TForm_Player.FinalizarPlaylist;
-begin
-  FTipoDeReproducao := tdrNenhuma;
-  FilterGraph.Stop;
-  FilterGraph.ClearGraph;
-  ShockwaveFlash_SWF.Stop;
-
-  Image_IMG.Visible          := False;
-  ShockwaveFlash_SWF.Visible := False;
-  VideoWindow_VID.Visible    := False;
-end;
-
 procedure TForm_Player.IniciarReproducao(aIndex: Word);
 var
   FileInformation: TFileInfo;
@@ -340,6 +330,67 @@ begin
   { Caso não esteja no modo de reprodução, o inicia }
   if FTipoDeReproducao = tdrNenhuma then
     IniciarReproducao(0);
+end;
+
+procedure TForm_Player.PausarPlaylist;
+begin
+  { Arquivos estáticos e SWF (não reproduzíveis) }
+  if (FTipoArq = 'SWF')
+  or (FTipoArq = 'JPG')
+  or (FTipoArq = 'BMP')
+  or (FTipoArq = 'ICO') then
+  begin
+    FTipoDeReproducao := tdrPause;
+    FTimePause := Now;
+
+    { Se for o caso especial SWF... }
+    if FTipoArq = 'SWF' then
+      ShockwaveFlash_SWF.Stop;
+  end
+  { Arquivos dinâmicos (reproduzíveis) }
+  else
+  begin
+    FTipoDeReproducao := tdrPause;
+    FTimePause := Now;
+    FilterGraph.Pause;
+  end;
+end;
+
+procedure TForm_Player.DespausarPlaylist;
+begin
+  { Arquivos estáticos e SWF (não reproduzíveis) }
+  if (FTipoArq = 'SWF')
+  or (FTipoArq = 'JPG')
+  or (FTipoArq = 'BMP')
+  or (FTipoArq = 'ICO') then
+  begin
+    { Se for o caso especial SWF... }
+    if FTipoArq = 'SWF' then
+      ShockwaveFlash_SWF.Play;
+
+    FTimeIn := FTimeIn + Now - FTimePause;
+    FTipoDeReproducao := tdrTimer;
+  end
+  { Arquivos dinâmicos (reproduzíveis) }
+  else
+  begin
+    FilterGraph.Play;
+
+    FTimeIn := FTimeIn + Now - FTimePause;
+    FTipoDeReproducao := tdrTempo;
+  end;
+end;
+
+procedure TForm_Player.FinalizarPlaylist;
+begin
+  FTipoDeReproducao := tdrNenhuma;
+  FilterGraph.Stop;
+  FilterGraph.ClearGraph;
+  ShockwaveFlash_SWF.Stop;
+
+  Image_IMG.Visible          := False;
+  ShockwaveFlash_SWF.Visible := False;
+  VideoWindow_VID.Visible    := False;
 end;
 
 procedure TForm_Player.ProximoPlay;
