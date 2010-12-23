@@ -51,9 +51,11 @@ type
     procedure CFSHChangeNotifier_PrincipalChangeSecurity;
     procedure CFSHChangeNotifier_PrincipalChangeSize;
     procedure BitBtn_RecarregarScriptClick(Sender: TObject);
+    procedure ToolButton_PauseClick(Sender: TObject);
   private
     procedure FinalizarPlaylist;
     procedure IniciarPlaylist;
+    procedure PausarPlaylist;
     { Private declarations }
   public
     { Public declarations }
@@ -118,13 +120,24 @@ begin
         ShowMessage('Não foi possível iniciar a reprodução.'#13#10 + E.Message);
     end
   else
-    Form_Player.IniciarPlaylist;
+  begin
+    if Form_Player.TipoDeReproducao = tdrPause then
+      Form_Player.DespausarPlaylist
+    else
+      Form_Player.IniciarPlaylist;
+  end
 end;
 
 procedure TForm_Configuracao.FinalizarPlaylist;
 begin
   if Assigned(Form_Player) then
     Form_Player.FinalizarPlaylist;
+end;
+
+procedure TForm_Configuracao.PausarPlaylist;
+begin
+  if Assigned(Form_Player) then
+    Form_Player.PausarPlaylist;
 end;
 
 procedure TForm_Configuracao.ToolButton_StopClick(Sender: TObject);
@@ -137,9 +150,9 @@ begin
   if Assigned(Form_Player) then
   begin
     Panel_Tempo.Caption := Form_Player.TempoFormatado;
-    ToolButton_Play.Enabled := Form_Player.TipoDeReproducao = tdrNenhuma;
+    ToolButton_Play.Enabled := Form_Player.TipoDeReproducao in [tdrNenhuma,tdrPause];
     ToolButton_Stop.Enabled := not ToolButton_Play.Enabled;
-    ToolButton_Pause.Enabled := (not ToolButton_Play.Enabled);
+    ToolButton_Pause.Enabled := Form_Player.TipoDeReproducao in [tdrTimer,tdrTempo];
     ToolButton_Fechar.Enabled := True;
   end
   else
@@ -467,6 +480,11 @@ end;
 procedure TForm_Configuracao.CFSHChangeNotifier_PrincipalChangeSize;
 begin
 //
+end;
+
+procedure TForm_Configuracao.ToolButton_PauseClick(Sender: TObject);
+begin
+  PausarPlaylist;
 end;
 
 initialization
