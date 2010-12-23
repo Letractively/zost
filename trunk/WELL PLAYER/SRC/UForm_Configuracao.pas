@@ -11,14 +11,13 @@ type
   TForm_Configuracao = class(TForm)
     ToolBar_Principal: TToolBar;
     ToolButton_Play: TToolButton;
-    ToolButton_Pause: TToolButton;
     ToolButton_Stop: TToolButton;
     ToolButton_Fechar: TToolButton;
     ImageList_ToolBar: TImageList;
-    btPlayList: TBitBtn;
+    BitBtn_RecarregarScript: TBitBtn;
     ApplicationEvents1: TApplicationEvents;
     edtDirMidia: TLabeledEdit;
-    rgMidia: TRadioGroup;
+    RadioGroup_Monitor: TRadioGroup;
     Label4: TLabel;
     ListBox_Script: TListBox;
     OpenDialog1: TOpenDialog;
@@ -28,9 +27,9 @@ type
     SpeedButton4: TSpeedButton;
     Panel_Tempo: TPanel;
     CFSHChangeNotifier_Principal: TCFSHChangeNotifier;
+    BitBtn_MoverAbaixo: TBitBtn;
+    BitBtn_MoverAcima: TBitBtn;
     procedure ToolButton_PlayClick(Sender: TObject);
-    procedure btPlayListClick(Sender: TObject);
-    procedure ToolButton_PauseClick(Sender: TObject);
     procedure ToolButton_StopClick(Sender: TObject);
     procedure ApplicationEvents1Idle(Sender: TObject; var Done: Boolean);
     procedure ToolButton_FecharClick(Sender: TObject);
@@ -42,7 +41,7 @@ type
     procedure FormDestroy(Sender: TObject);
     procedure FormActivate(Sender: TObject);
     procedure FormMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Integer);
-    procedure rgMidiaClick(Sender: TObject);
+    procedure RadioGroup_MonitorClick(Sender: TObject);
     procedure Label_StatusClick(Sender: TObject);
     procedure CFSHChangeNotifier_PrincipalChangeAttributes;
     procedure CFSHChangeNotifier_PrincipalChangeDirName;
@@ -50,7 +49,10 @@ type
     procedure CFSHChangeNotifier_PrincipalChangeLastWrite;
     procedure CFSHChangeNotifier_PrincipalChangeSecurity;
     procedure CFSHChangeNotifier_PrincipalChangeSize;
+    procedure BitBtn_RecarregarScriptClick(Sender: TObject);
   private
+    procedure FinalizarPlaylist;
+    procedure IniciarPlaylist;
     { Private declarations }
   public
     { Public declarations }
@@ -91,127 +93,66 @@ var
 
 procedure TForm_Configuracao.ToolButton_PlayClick(Sender: TObject);
 begin
+  IniciarPlaylist;
+end;
+
+procedure TForm_Configuracao.IniciarPlaylist;
+begin
   if not Assigned(Form_Player) then
-    Exit;
+    try
+      { Valida a existência de ao menos um arquivo visualizável }
+      ValidarArquivosDeMidia;
 
-//  if Assigned(Form_Player.FilterGraph) then
-//  begin
-//
-//    with Form_Player do
-//    begin
-//      if (TipoArq = 'BMP') or (TipoArq = 'JPG') or (TipoArq = 'ICO')  then
-//      begin
-//        Timer2.Enabled := True
-//      end
-//      else
-//      begin
-//        if (TipoArq = 'SWF') then
-//        begin
-//          Timer1.Enabled := True;
-//
-//          if ShockwaveFlash_SWF.Playing = False then
-//          begin
-//            ShockwaveFlash_SWF.Playing;
-//            ShockwaveFlash_SWF.Play;
-//          end;
-//        end
-//        else
-//        begin
-//          if FilterGraph.State = gsUninitialized then
-//            btPlayListClick(self)
-//          else
-//            FilterGraph.Play;
-//        end;  //if (TipoArq = 'SWF')
-//      end; //if (TipoArq = 'BMP' or ...)
-//    end; //with Form_Player do begin
-//  end
-//  else
-//    btPlayListClick(self);
+      Form_Player := TForm_Player.Create(Self);
+
+      { Ajusta o form de reprodução segundo configurações contidas aqui neste form.
+      Dentro dele, no onShow, tais configurações precisam ser usadas }
+      ConfigurarJanelaDeReproducao;
+
+      { Exibe o form que internamente deve carregar as configurações e inicializar
+      a reprodução }
+      Form_Player.Show;
+    except
+      on E: Exception do
+        ShowMessage('Não foi possível iniciar a reprodução.'#13#10 + E.Message);
+    end
+  else
+    Form_Player.IniciarPlaylist;
 end;
 
-procedure TForm_Configuracao.btPlayListClick(Sender: TObject);
+procedure TForm_Configuracao.FinalizarPlaylist;
 begin
-  ValidarArquivosDeMidia;
-
-  try
-    if Assigned(Form_Player) then
-      if Assigned(Form_Player.FilterGraph) and (Form_Player.FilterGraph.State <> gsUninitialized) then
-        Exit;
-
-    Form_Player := TForm_Player.Create(Self);
-
-    { Ajusta o form de reprodução segundo configurações contidas aqui neste form.
-    Dentro dele, no onShow, tais configurações precisam ser usadas }
-    ConfigurarJanelaDeReproducao;
-
-    { Exibe o form que internamente deve carregar as configurações e inicializar
-    a reprodução }
-    Form_Player.Show;
-
-
-  except
-    on E: Exception do
-      ShowMessage('Não foi possível iniciar o SlideShow.'#13#10 + E.Message);
-  end;
-end;
-
-procedure TForm_Configuracao.ToolButton_PauseClick(Sender: TObject);
-begin
-//  if Assigned(Form_Player) and Assigned(Form_Player.FilterGraph) then
-//  begin
-//     with Form_Player do begin
-//         if (TipoArq = 'BMP') or
-//            (TipoArq = 'JPG') or
-//            (TipoArq = 'ICO') or
-//            (TipoArq = 'GIF') then begin
-//           Timer2.Enabled := False
-//         end
-//         else begin
-//           if (TipoArq = 'SWF') then begin
-//             Timer1.Enabled := False;
-//             if ShockwaveFlash_SWF.Playing = True then begin
-//               ShockwaveFlash_SWF.Playing := False;
-//               ShockwaveFlash_SWF.StopPlay;
-//               ShockwaveFlash_SWF.Stop;
-//             end;
-//           end
-//           else begin
-//             if FilterGraph.State = gsUninitialized then
-//               btPlayListClick(self)
-//             else
-//               FilterGraph.Pause;
-//           end;  //if (TipoArq = 'SWF')
-//         end; //if (TipoArq = 'BMP' or ...)
-//     end; //with Form_Player do begin
-//
-//    {Form_Player.FilterGraph.Pause;
-//    if Form_Player.ShockwaveFlash1.Playing = True then
-//      Form_Player.ShockwaveFlash1.Playing := False;
-//     }
-//  end;
+  if Assigned(Form_Player) then
+    Form_Player.FinalizarPlaylist;
 end;
 
 procedure TForm_Configuracao.ToolButton_StopClick(Sender: TObject);
 begin
-  if Assigned(Form_Player) and Assigned(Form_Player.FilterGraph) then
-    Form_Player.FilterGraph.Stop;
+  FinalizarPlaylist;
 end;
 
 procedure TForm_Configuracao.ApplicationEvents1Idle(Sender: TObject; var Done: Boolean);
 begin
   if Assigned(Form_Player) then
-    Panel_Tempo.Caption := Form_Player.TempoFormatado
+  begin
+    Panel_Tempo.Caption := Form_Player.TempoFormatado;
+    ToolButton_Play.Enabled := Form_Player.TipoDeReproducao = tdrNenhuma;
+    ToolButton_Stop.Enabled := not ToolButton_Play.Enabled;
+    ToolButton_Fechar.Enabled := True;
+  end
   else
+  begin
     Panel_Tempo.Caption := '00:00:00 / 00:00:00 (00:00:00)';
+    ToolButton_Play.Enabled := True;
+    ToolButton_Stop.Enabled := False;
+    ToolButton_Fechar.Enabled := False;
+  end;
 end;
 
 procedure TForm_Configuracao.ToolButton_FecharClick(Sender: TObject);
 begin
-  if Form_Player <> nil then
-    if Form_Player.FilterGraph <> nil then
-      Form_Player.Close;
-
-  HabilitaBarraWin;       
+  if Assigned(Form_Player) then
+    Form_Player.Close;
 end;
 
 procedure TForm_Configuracao.SpeedButton2Click(Sender: TObject);
@@ -226,6 +167,11 @@ begin
     edtDirMidia.Text := DirMidia;
     RecarregarScript;
   end;
+end;
+
+procedure TForm_Configuracao.BitBtn_RecarregarScriptClick(Sender: TObject);
+begin
+  RecarregarScript;
 end;
 
 procedure TForm_Configuracao.BitBtn_RecriarScriptClick(Sender: TObject);
@@ -372,32 +318,32 @@ begin
 end;
 
 { ESTE PROCEDIMENTO ESTÁ OK }
-procedure TForm_Configuracao.rgMidiaClick(Sender: TObject);
+procedure TForm_Configuracao.RadioGroup_MonitorClick(Sender: TObject);
 begin
-  MonitorPrincipal := not Boolean(rgMidia.ItemIndex);
+  MonitorPrincipal := not Boolean(RadioGroup_Monitor.ItemIndex);
 end;
 
 { ESTE PROCEDIMENTO ESTÁ OK }
 procedure TForm_Configuracao.ExibirConfiguracoes;
 var
   i: Word;
-  Arquivo, sTempo: String;
+  Arquivo, Duracao: String;
 begin
   ListBox_Script.Items.Clear;
 
   if FArquivosDeMidia.Count > 0 then
     for i := 0 to Pred(FArquivosDeMidia.Count) do
     begin
-      Arquivo := Copy(FArquivosDeMidia[i],Succ(Pos('=',FArquivosDeMidia[i])), Length(FArquivosDeMidia[i]));
-      sTempo   := Arquivo;
+      Arquivo := FArquivosDeMidia.ValueFromIndex[i];
+      Duracao := Arquivo;
 
       Arquivo := Copy(Arquivo,1,Pred(Pos('|',Arquivo)));
-      sTempo := Copy(sTempo,Succ(Pos('|',sTempo)),Length(sTempo));
+      Duracao := Copy(Duracao,Succ(Pos('|',Duracao)),Length(Duracao));
 
-      if sTempo = '0' then
+      if Duracao = '0' then
         ListBox_Script.Items.Add(Arquivo)
       else
-        ListBox_Script.Items.Add(Arquivo + ' (' + sTempo + ' segundos)');
+        ListBox_Script.Items.Add(Arquivo + ' (' + Duracao + ' segundos)');
     end;
 end;
 
@@ -406,12 +352,12 @@ begin
   edtDirMidia.Text := DirMidia;
   edtDirLog.Text := DirLog;
 
-  rgMidia.Enabled := Screen.MonitorCount = 2;
+  RadioGroup_Monitor.Enabled := Screen.MonitorCount = 2;
 
-  if not rgMidia.Enabled then
+  if not RadioGroup_Monitor.Enabled then
     MonitorPrincipal := True;
 
-  rgMidia.ItemIndex := Integer(not MonitorPrincipal);
+  RadioGroup_Monitor.ItemIndex := Integer(not MonitorPrincipal);
 
   FArquivosDeMidia := TStringList.Create;
 
