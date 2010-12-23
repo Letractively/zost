@@ -83,7 +83,6 @@ type
 
 //    procedure RecarregarScript;
     procedure IniciarReproducao(aIndex: Word);
-    procedure IniciarPlaylist;
     procedure ProximoPlay;
     procedure SalvarItemLog(aArquivo: String);
     procedure ExecutarSWF(aFileInformation: TFileInfo);
@@ -97,6 +96,8 @@ type
 //    procedure ListBoxConf;
   public
     { Public declarations }
+    procedure IniciarPlaylist;
+    procedure FinalizarPlaylist;
 
     property MonitorPrincipal: Boolean read FMonitorPrincipal write FMonitorPrincipal;
     property DiretorioMidia: String read FDiretorioMidia write FDiretorioMidia;
@@ -106,6 +107,7 @@ type
     property Arquivo: String read FArquivo;
     property TimeOut: TTime read FTimeOut;
     property TimeIn: TTime read FTimeIn;
+    property TipoDeReproducao: TTipoDeReproducao read FTipoDeReproducao;
     property ArquivosDeMidia: TStringList read FArquivosDeMidia write FArquivosDeMidia;
   end;
 
@@ -187,7 +189,11 @@ procedure TForm_Player.FormCreate(Sender: TObject);
 begin
   FTipoDeReproducao := tdrNenhuma;
   Form_Configuracao.ListBox_Script.Enabled := False;
-  Form_Configuracao.rgMidia.Enabled := False;
+  Form_Configuracao.RadioGroup_Monitor.Enabled := False;
+  Form_Configuracao.BitBtn_RecarregarScript.Enabled := False;
+  Form_Configuracao.BitBtn_RecriarScript.Enabled := False;
+  Form_Configuracao.BitBtn_MoverAcima.Enabled := False;
+  Form_Configuracao.BitBtn_MoverAbaixo.Enabled := False;
 end;
 
 procedure TForm_Player.FormDestroy(Sender: TObject);
@@ -196,7 +202,11 @@ begin
   FilterGraph.Free;
 
   Form_Configuracao.ListBox_Script.Enabled := True;
-  Form_Configuracao.rgMidia.Enabled := Screen.MonitorCount = 2;
+  Form_Configuracao.RadioGroup_Monitor.Enabled := Screen.MonitorCount = 2;
+  Form_Configuracao.BitBtn_RecarregarScript.Enabled := True;
+  Form_Configuracao.BitBtn_RecriarScript.Enabled := True;
+  Form_Configuracao.BitBtn_MoverAcima.Enabled := True;
+  Form_Configuracao.BitBtn_MoverAbaixo.Enabled := True;
 end;
 
 //procedure TForm_Player.RecarregarScript;
@@ -259,32 +269,17 @@ begin
     raise Exception.Create('O índice "' + IntToStr(aFileIndex) + '" não existe na lista');
 end;
 
-//procedure TForm_Player.CarregarItemConfiguracao;
-//var
-//  i, iPos1, iPos2 : integer;
-//  sAux, sAux1 : string;
-//begin
-//  iAux := FArquivosDeMidia.Count;
-//
-//  Form_Configuracao.ListBox_Script.Clear;
-//
-//  for i := 0 to FArquivosDeMidia.Count - 1 do
-//  begin
-//    // localizar o parametro
-//    sAux := FArquivosDeMidia[i];
-//    iPos1 := Pos('=',sAux);
-//    iPos2 := Pos('|',sAux);
-//
-//    // Ex: ARQ001=\ARQUIVO1.FLV|0
-//    sAux1 := Trim(Copy(sAux,iPos1+1,iPos2-1));
-//    PlayFiles[i,0] := copy(sAux1,1,pos('|',saux1)-1);
-//    PlayFiles[i,1] := copy(sAux1,pos('|',saux1)+1,length(saux1)-1);
-//    PlayFiles[i,2] := copy(sAux1,pos('|',saux1)-3,3); // Extensão do arquivo
-//
-//    Form_Configuracao.ListBox_Script.Items.Add(PlayFiles[i,0]);
-//  end;
-//
-//end;
+procedure TForm_Player.FinalizarPlaylist;
+begin
+  FTipoDeReproducao := tdrNenhuma;
+  FilterGraph.Stop;
+  FilterGraph.ClearGraph;
+  ShockwaveFlash_SWF.Stop;
+
+  Image_IMG.Visible          := False;
+  ShockwaveFlash_SWF.Visible := False;
+  VideoWindow_VID.Visible    := False;
+end;
 
 procedure TForm_Player.IniciarReproducao(aIndex: Word);
 var
@@ -371,10 +366,12 @@ end;
 
 procedure TForm_Player.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
-  if Assigned(FilterGraph) then
-    FilterGraph.ClearGraph;
+//  if Assigned(FilterGraph) then
+//    FilterGraph.ClearGraph;
 
   Action := caFree;
+  Form_Player := nil;
+//  HabilitarBarraDeTarefas;
 end;
 
 //procedure TForm_Player.ajustaform;
