@@ -25,7 +25,7 @@ begin
         HDDCount := GetHDDCount;
         
         for i := 0 to Pred(GetHDDCount) do
-          if IndexOf(GetStringCheckSum(GetHDDInfo(i).SerialNumber,[haSha512])) > -1 then
+          if IndexOf(GetStringCheckSum(GetHDDInfo(i).SerialNumber,[haTiger,haSha512,haHaval,haSha384,haRipemd128,haSha256,haRipemd160,haSha1],haSha512)) > -1 then
             Break;
 
         { Se nenhuma licença foi encontrada, sai! }
