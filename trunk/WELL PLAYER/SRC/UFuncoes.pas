@@ -4,10 +4,40 @@ interface
 
 function CopyFile(aOrign, aDestiny: String; aFailOnExists: Boolean = False): boolean;
 procedure ClearDirectory(aDirectory: String);
+procedure VerificarLicenca;
 
 implementation
 
-uses Windows, ShellApi, SysUtils, Classes;
+uses Forms, Windows, ShellApi, SysUtils, Classes, UHDDInfo, ZTO.Crypt.Utilities, ZTO.Crypt.Types;
+
+{ Caso a função termine sem nenhum raise, significa que a licença é válida }
+procedure VerificarLicenca;
+var
+  i: Byte;
+  HDDCount: Byte;
+begin
+  { Carregando arquivo de licenças }
+  if FileExists(ChangeFileExt(Application.ExeName,'.lic')) then
+    with TStringList.Create do
+      try
+        LoadFromFile(ChangeFileExt(Application.ExeName,'.lic'));
+
+        HDDCount := GetHDDCount;
+        
+        for i := 0 to Pred(GetHDDCount) do
+          if IndexOf(GetStringCheckSum(GetHDDInfo(i).SerialNumber,[haSha512])) > -1 then
+            Break;
+
+        { Se nenhuma licença foi encontrada, sai! }
+        if i = HDDCount then
+          raise Exception.Create('Nenhuma licença válida foi encontrada. Hardware não autorizado');
+
+      finally
+        Free;
+      end
+  else
+    raise Exception.Create('Arquivo de licença não encontrado. Você não pode executar esta aplicação!');
+end;
 
 function CopyFile(aOrign, aDestiny: String; aFailOnExists: Boolean = False): boolean;
 var
