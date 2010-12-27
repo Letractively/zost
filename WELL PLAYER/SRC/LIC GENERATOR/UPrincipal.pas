@@ -29,7 +29,7 @@ uses ZTO.Crypt.Utilities, ZTO.Crypt.Types;
 
 procedure TForm_Principal.Button_GerarClick(Sender: TObject);
 begin
-  LabeledEdit_Destino.Text := GetStringCheckSum(LabeledEdit_Origem.Text,[haSha512]);
+  LabeledEdit_Destino.Text := GetStringCheckSum(LabeledEdit_Origem.Text,[haTiger,haSha512,haHaval,haSha384,haRipemd128,haSha256,haRipemd160,haSha1],haSha512);
 end;
 
 end.
