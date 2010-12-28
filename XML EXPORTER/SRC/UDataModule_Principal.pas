@@ -3,14 +3,16 @@ unit UDataModule_Principal;
 interface
 
 uses
-  SysUtils, Classes, ExtCtrls, AppEvnts;
+  SysUtils, Classes, ExtCtrls, AppEvnts, ZipMstr;
 
 type
   TDataModule_Principal = class(TDataModule)
     ApplicationEvents_Monitorador: TApplicationEvents;
-    procedure ApplicationEvents_MonitoradorIdle(Sender: TObject;
-      var Done: Boolean);
+    ZipMaster_Compressor: TZipMaster;
+    procedure ApplicationEvents_MonitoradorIdle(Sender: TObject; var Done: Boolean);
     procedure DataModuleCreate(Sender: TObject);
+    procedure ZipMaster_CompressorMessage(Sender: TObject; ErrCode: Integer; Message: String);
+    procedure ZipMaster_CompressorProgress(Sender: TObject; ProgrType: ProgressType; Filename: String; FileSize: Integer);
   private
     { Private declarations }
     FSQLLimitador: String;
@@ -21,6 +23,7 @@ type
     FAtivado: Boolean;
     procedure SQLLimitadorETotalDeProcessos;
     procedure AddToLog(aLinha: String);
+    procedure ZiparArquivo;
   public
     { Public declarations }
     procedure IniciarProcessamento;
@@ -31,10 +34,12 @@ type
 
 implementation
 
-uses UConfigurations, UForm_Principal, UTaskThread, ZConnection, ZDataSet, Math,
-     StrUtils;
+uses Windows, Messages, UConfigurations, UForm_Principal, UTaskThread, ZConnection,
+     ZDataSet, Math, StrUtils;
 
 {$R *.dfm}
+
+{$R ZipMsgBR.res}
 
 const
   SQL_TEMPLATE = '  SELECT D.CODDOC'#13#10 +
@@ -264,7 +269,8 @@ end;
 
 procedure TDataModule_Principal.AddToLog(aLinha: String);
 begin
-  Form_Principal.Memo_LogProcessamento.Lines.Add(aLinha);
+  Form_Principal.Memo_LogProcessamento.Lines.Append(aLinha);
+  PostMessage(Form_Principal.Memo_LogProcessamento.Handle, EM_SCROLLCARET, 0, 0);
 end;
 
 procedure TDataModule_Principal.CompilarXMLFinal;
@@ -276,6 +282,8 @@ var
 begin
 
   try
+    AddToLog('-----------------------------------------------------');
+
     AssignFile(XMLFinal,Configurations.PARAMETROSNOMEDOARQUIVO + '.xml');
     SetTextBuf(XMLFinal, Buffer);
     Rewrite(XMLFinal);
@@ -297,13 +305,13 @@ begin
         end;
       finally
         CloseFile(XMLPedaco);
-        DeleteFile(Configurations.PARAMETROSNOMEDOARQUIVO + DupeString('0',5 - Length(IntToStr(i))) + IntToStr(i) + '.xml');
+        SysUtils.DeleteFile(Configurations.PARAMETROSNOMEDOARQUIVO + DupeString('0',5 - Length(IntToStr(i))) + IntToStr(i) + '.xml');
         AddToLog(ExtractFileName(Arquivo) + ' Combinado e excluído!');
       end;
-
   finally
     CloseFile(XMLFinal);
     AddToLog('XML Final compilado. Geração concluída!');
+    AddToLog('-----------------------------------------------------');
   end;
 end;
 
@@ -330,6 +338,7 @@ begin
 //      Form_Principal.StatusBar_Principal.Panels[2].Text := 'Threads executando: ' + IntToStr(FEmGeracao) + '/' + IntToStr(FEmExecucao);
 
       CompilarXMLFinal;
+      ZiparArquivo;
     end;
 
   end;
@@ -338,6 +347,94 @@ end;
 procedure TDataModule_Principal.DataModuleCreate(Sender: TObject);
 begin
   FAtivado := False;
+end;
+
+procedure TDataModule_Principal.ZiparArquivo;
+var
+  TmpStr: String;
+begin
+  AddToLog('-----------------------------------------------------');
+
+  with ZipMaster_Compressor do
+  begin
+    ZipFilename := Configurations.PARAMETROSNOMEDOARQUIVO + '.zip';
+
+    { Colocar mensagem no log }
+    ZipMaster_CompressorMessage(Self, 0, 'Criando arquivo ' + ZipMaster_Compressor.ZipFileName + '...');
+
+    { Atribuindo lista de arquivos. No caso apenas um arquivo fixo }
+    FSpecArgs.Add(Configurations.PARAMETROSNOMEDOARQUIVO + '.xml');
+
+    AddOptions := [];
+
+    try
+      Add;
+
+      TmpStr := 'Arquivo Criado! ';
+
+      if SuccessCnt = 1 then
+        TmpStr := TmpStr + '(' + IntToStr(SuccessCnt) + ' arquivo comprimido)'
+      else
+        TmpStr := TmpStr + '(' + IntToStr(SuccessCnt) + ' arquivos comprimidos)';
+
+      ZipMaster_CompressorMessage(Self, 0, TmpStr);
+
+      ZipMaster_CompressorMessage(Self, 0, 'Excluindo arquivo original...');
+
+      if FileExists(ZipFilename) then
+        SysUtils.DeleteFile(Configurations.PARAMETROSNOMEDOARQUIVO + '.xml');
+
+      ZipMaster_CompressorMessage(Self, 0, 'Arquivo original excluído!');
+    except
+      MessageBox(Form_Principal.Handle,'Erro ao comprimir','Exceção fatal no DLL',MB_ICONERROR);
+    end;
+  end;
+
+  AddToLog('-----------------------------------------------------');
+end;
+
+procedure TDataModule_Principal.ZipMaster_CompressorMessage(Sender: TObject; ErrCode: Integer; Message: String);
+begin
+  if (ErrCode > 0) and not ZipMaster_Compressor.Unattended then
+    AddToLog('[' + FormatDateTime('hh:nn:ss',Now) + '] ZIP (ERRO): ' + Trim(Message))
+  else
+    AddToLog('[' + FormatDateTime('hh:nn:ss',Now) + '] ZIP: ' + Trim(Message));
+end;
+
+procedure TDataModule_Principal.ZipMaster_CompressorProgress(Sender: TObject; ProgrType: ProgressType; Filename: String; FileSize: Integer);
+begin
+  case ProgrType of
+    TotalSize2Process: begin
+      Form_Principal.Label_Registros.Caption := 'Percentual do arquivo';
+      Form_Principal.ProgressBar_Documentos.Position := 0;
+      Form_Principal.ProgressBar_Documentos.Max := FileSize;
+      Form_Principal.Label_RecordsPercent.Caption := '0%';
+    end;
+    TotalFiles2Process: begin
+      Form_Principal.Label_Threads.Caption := 'Percentual total';
+      Form_Principal.ProgressBar_Threads.Position := 0;
+      Form_Principal.ProgressBar_Threads.Max := FileSize;
+      Form_Principal.ProgressBar_Threads.Step := 1;
+
+      Form_Principal.Label_ThreadsPercent.Caption := '0%';
+    end;
+    NewFile: begin
+      Form_Principal.ProgressBar_Documentos.Position := 0;
+      Form_Principal.ProgressBar_Documentos.Max := FileSize;
+      Form_Principal.Label_RecordsPercent.Caption := '0%';
+
+      Form_Principal.ProgressBar_Threads.StepIt;
+      Form_Principal.Label_ThreadsPercent.Caption := IntToStr(Round(Form_Principal.ProgressBar_Threads.Position / Form_Principal.ProgressBar_Threads.Max * 100)) + '%';
+    end;
+    ProgressUpdate: begin
+      Form_Principal.ProgressBar_Documentos.Position := Form_Principal.ProgressBar_Documentos.Position + FileSize;
+      Form_Principal.Label_RecordsPercent.Caption := IntToStr(Round(Form_Principal.ProgressBar_Documentos.Position / Form_Principal.ProgressBar_Documentos.Max * 100)) + '%';
+    end;
+    EndOfBatch: begin
+      Form_Principal.Label_Registros.Caption := 'Registros processados';
+      Form_Principal.Label_Threads.Caption := 'Threads executadas';
+    end;
+  end;
 end;
 
 end.
