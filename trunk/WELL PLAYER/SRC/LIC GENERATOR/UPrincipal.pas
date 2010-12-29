@@ -12,7 +12,9 @@ type
     LabeledEdit_MesExpiracao: TLabeledEdit;
     LabeledEdit_AnoExpiracao: TLabeledEdit;
     Label_Serial: TLabel;
+    Label1: TLabel;
     procedure Button_GerarClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
   private
     { Private declarations }
   public
@@ -51,6 +53,11 @@ begin
     finally
       Free;
     end;
+end;
+
+procedure TForm_Principal.FormCreate(Sender: TObject);
+begin
+      Label_Serial.Caption := GetHDDInfo(0).SerialNumber;
 end;
 
 end.

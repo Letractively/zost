@@ -4,7 +4,7 @@ object Form_Principal: TForm_Principal
   BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = bsSingle
   Caption = 'License Generator'
-  ClientHeight = 101
+  ClientHeight = 126
   ClientWidth = 259
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -14,16 +14,17 @@ object Form_Principal: TForm_Principal
   Font.Style = []
   OldCreateOrder = False
   Position = poScreenCenter
+  OnCreate = FormCreate
   DesignSize = (
     259
-    101)
+    126)
   PixelsPerInch = 96
   TextHeight = 13
   object Label_Serial: TLabel
     Left = 6
-    Top = 42
+    Top = 64
     Width = 247
-    Height = 21
+    Height = 24
     Alignment = taCenter
     Anchors = [akLeft, akTop, akRight, akBottom]
     AutoSize = False
@@ -37,9 +38,24 @@ object Form_Principal: TForm_Principal
     Layout = tlCenter
     WordWrap = True
   end
+  object Label1: TLabel
+    Left = 8
+    Top = 40
+    Width = 249
+    Height = 16
+    Alignment = taCenter
+    AutoSize = False
+    Caption = 'Serial - HD 0 (Principal  '
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -13
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentFont = False
+  end
   object Button_Gerar: TButton
     Left = 6
-    Top = 69
+    Top = 94
     Width = 248
     Height = 25
     Anchors = [akLeft, akRight, akBottom]
