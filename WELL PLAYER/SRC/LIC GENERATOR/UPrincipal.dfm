@@ -3,8 +3,8 @@ object Form_Principal: TForm_Principal
   Top = 280
   BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = bsSingle
-  Caption = 'License Generator - Licen'#231'a gerada para o HD na posi'#231#227'o 0:0'
-  ClientHeight = 76
+  Caption = 'License Generator'
+  ClientHeight = 101
   ClientWidth = 259
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -14,13 +14,35 @@ object Form_Principal: TForm_Principal
   Font.Style = []
   OldCreateOrder = False
   Position = poScreenCenter
+  DesignSize = (
+    259
+    101)
   PixelsPerInch = 96
   TextHeight = 13
+  object Label_Serial: TLabel
+    Left = 6
+    Top = 42
+    Width = 247
+    Height = 21
+    Alignment = taCenter
+    Anchors = [akLeft, akTop, akRight, akBottom]
+    AutoSize = False
+    Caption = '?????'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -17
+    Font.Name = 'Tahoma'
+    Font.Style = [fsBold]
+    ParentFont = False
+    Layout = tlCenter
+    WordWrap = True
+  end
   object Button_Gerar: TButton
     Left = 6
-    Top = 44
+    Top = 69
     Width = 248
     Height = 25
+    Anchors = [akLeft, akRight, akBottom]
     Caption = 'Gerar'
     TabOrder = 0
     OnClick = Button_GerarClick

@@ -11,6 +11,7 @@ type
     Button_Gerar: TButton;
     LabeledEdit_MesExpiracao: TLabeledEdit;
     LabeledEdit_AnoExpiracao: TLabeledEdit;
+    Label_Serial: TLabel;
     procedure Button_GerarClick(Sender: TObject);
   private
     { Private declarations }
@@ -39,7 +40,9 @@ begin
       if FileExists(FileName) then
         LoadFromFile(FileName);
 
-      License := LabeledEdit_MesExpiracao.Text + GetStringCheckSum(GetHDDInfo(0).SerialNumber,[haSha512]) + LabeledEdit_AnoExpiracao.Text;
+      Label_Serial.Caption := GetHDDInfo(0).SerialNumber;
+
+      License := LabeledEdit_MesExpiracao.Text + GetStringCheckSum(Label_Serial.Caption,[haSha512]) + LabeledEdit_AnoExpiracao.Text;
 
       if IndexOf(License) = -1 then
         Add(License);
