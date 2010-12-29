@@ -10,6 +10,9 @@ implementation
 
 uses Forms, Windows, ShellApi, SysUtils, Classes, UHDDInfo, ZTO.Crypt.Utilities, ZTO.Crypt.Types;
 
+{$I SERIAL.NFO }
+{$I CLIENTE.NFO }
+
 { Caso a função termine sem nenhum raise, significa que a licença é válida }
 procedure VerificarLicenca;
 var

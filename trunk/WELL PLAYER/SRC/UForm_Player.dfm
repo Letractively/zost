@@ -8,6 +8,10 @@ object Form_Player: TForm_Player
   ClientHeight = 326
   ClientWidth = 632
   Color = clBlack
+  Constraints.MaxHeight = 360
+  Constraints.MaxWidth = 640
+  Constraints.MinHeight = 360
+  Constraints.MinWidth = 640
   UseDockManager = True
   DefaultMonitor = dmDesktop
   DockSite = True
