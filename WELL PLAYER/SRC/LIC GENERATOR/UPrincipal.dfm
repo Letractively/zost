@@ -3,10 +3,10 @@ object Form_Principal: TForm_Principal
   Top = 280
   BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = bsSingle
-  Caption = 'License Generator'
+  Caption = 'Gerador de Licen'#231'as'
   ClientHeight = 126
   ClientWidth = 259
-  Color = clBtnFace
+  Color = clSilver
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -11
@@ -24,7 +24,7 @@ object Form_Principal: TForm_Principal
     Left = 6
     Top = 64
     Width = 247
-    Height = 24
+    Height = 17
     Alignment = taCenter
     Anchors = [akLeft, akTop, akRight, akBottom]
     AutoSize = False
@@ -45,7 +45,7 @@ object Form_Principal: TForm_Principal
     Height = 16
     Alignment = taCenter
     AutoSize = False
-    Caption = 'Serial - HD 0 (Principal  '
+    Caption = 'Serial - HD 0 (Principal)'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -13
@@ -59,14 +59,14 @@ object Form_Principal: TForm_Principal
     Width = 248
     Height = 25
     Anchors = [akLeft, akRight, akBottom]
-    Caption = 'Gerar'
+    Caption = 'Gerar Licen'#231'a'
     TabOrder = 0
     OnClick = Button_GerarClick
   end
   object LabeledEdit_MesExpiracao: TLabeledEdit
-    Left = 6
+    Left = 10
     Top = 17
-    Width = 121
+    Width = 85
     Height = 21
     EditLabel.Width = 111
     EditLabel.Height = 13
@@ -76,9 +76,9 @@ object Form_Principal: TForm_Principal
     TabOrder = 1
   end
   object LabeledEdit_AnoExpiracao: TLabeledEdit
-    Left = 132
+    Left = 133
     Top = 17
-    Width = 122
+    Width = 84
     Height = 21
     EditLabel.Width = 123
     EditLabel.Height = 13

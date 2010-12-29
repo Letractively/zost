@@ -53,6 +53,8 @@ begin
     finally
       Free;
     end;
+    showmessage('Lincença Gerada com sucesso!' + #13#10 +
+                'Arquivo gerado com sucesso em: '+ FileName );
 end;
 
 procedure TForm_Principal.FormCreate(Sender: TObject);
