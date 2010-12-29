@@ -8,7 +8,8 @@ procedure VerificarLicenca;
 
 implementation
 
-uses Forms, Windows, ShellApi, SysUtils, Classes, UHDDInfo, ZTO.Crypt.Utilities, ZTO.Crypt.Types;
+uses Forms, Windows, ShellApi, SysUtils, Classes, UHDDInfo, ZTO.Crypt.Utilities, ZTO.Crypt.Types,
+  DateUtils;
 
 {$I SERIAL.NFO }
 {$I CLIENTE.NFO }
@@ -17,7 +18,7 @@ uses Forms, Windows, ShellApi, SysUtils, Classes, UHDDInfo, ZTO.Crypt.Utilities,
 procedure VerificarLicenca;
 var
   i: Byte;
-  HDDCount: Byte;
+  HDDLic: String;
 begin
   { Carregando arquivo de licenças }
   if FileExists(ChangeFileExt(Application.ExeName,'.lic')) then
@@ -25,15 +26,24 @@ begin
       try
         LoadFromFile(ChangeFileExt(Application.ExeName,'.lic'));
 
-        HDDCount := GetHDDCount;
-        
-        for i := 0 to Pred(GetHDDCount) do
-          if IndexOf(GetStringCheckSum(GetHDDInfo(i).SerialNumber,[haTiger,haSha512,haHaval,haSha384,haRipemd128,haSha256,haRipemd160,haSha1],haSha512)) > -1 then
-            Break;
+        HDDLic := GetStringCheckSum(GetHDDInfo(0).SerialNumber,[haSha512]);
+
+        for i := 0 to Pred(Count) do
+          case Length(Strings[i]) of
+            128: begin { Licença ilimitada }
+              if Strings[i] = HDDLic then
+                Break
+            end;
+            134: begin { Licença limitada }
+              if Copy(Strings[i],3,128) = HDDLic then { Licença válida. Está no periodo? }
+                if StrToInt(FormatDateTime('yyyymmdd',Now)) < StrToInt(Format('%s%s01',[Copy(Strings[i],131,4),Copy(Strings[i],1,2)])) then
+                  Break;
+            end;
+        end;
 
         { Se nenhuma licença foi encontrada, sai! }
-        if i = HDDCount then
-          raise Exception.Create('Nenhuma licença válida foi encontrada. Hardware não autorizado');
+        if i = Count then
+          raise Exception.Create('Nenhuma licença válida foi encontrada. Hardware não autorizado ou a licença para o mesmo expirou');
 
       finally
         Free;

@@ -17,7 +17,8 @@ uses
   ZTO.Crypt.Hashes.Sha1 in '..\..\SRC\Crypt\hashes\ZTO.Crypt.Hashes.Sha1.pas',
   ZTO.Crypt.Hashes.Sha256 in '..\..\SRC\Crypt\hashes\ZTO.Crypt.Hashes.Sha256.pas',
   ZTO.Crypt.Hashes.Sha512 in '..\..\SRC\Crypt\hashes\ZTO.Crypt.Hashes.Sha512.pas',
-  ZTO.Crypt.Hashes.tiger in '..\..\SRC\Crypt\hashes\ZTO.Crypt.Hashes.tiger.pas';
+  ZTO.Crypt.Hashes.tiger in '..\..\SRC\Crypt\hashes\ZTO.Crypt.Hashes.tiger.pas',
+  UHDDInfo in '..\..\SRC\UHDDInfo.pas';
 
 {$R *.res}
 

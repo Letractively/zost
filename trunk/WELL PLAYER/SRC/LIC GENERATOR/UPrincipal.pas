@@ -8,9 +8,9 @@ uses
 
 type
   TForm_Principal = class(TForm)
-    LabeledEdit_Origem: TLabeledEdit;
-    LabeledEdit_Destino: TLabeledEdit;
     Button_Gerar: TButton;
+    LabeledEdit_MesExpiracao: TLabeledEdit;
+    LabeledEdit_AnoExpiracao: TLabeledEdit;
     procedure Button_GerarClick(Sender: TObject);
   private
     { Private declarations }
@@ -25,11 +25,29 @@ implementation
 
 {$R *.dfm}
 
-uses ZTO.Crypt.Utilities, ZTO.Crypt.Types;
+uses ZTO.Crypt.Utilities, ZTO.Crypt.Types, UHDDInfo;
 
 procedure TForm_Principal.Button_GerarClick(Sender: TObject);
+var
+  FileName: String;
+  License: String;
 begin
-  LabeledEdit_Destino.Text := GetStringCheckSum(LabeledEdit_Origem.Text,[haTiger,haSha512,haHaval,haSha384,haRipemd128,haSha256,haRipemd160,haSha1],haSha512);
+  FileName := ChangeFileExt(Application.ExeName,'.lic');
+
+  with TStringList.Create do
+    try
+      if FileExists(FileName) then
+        LoadFromFile(FileName);
+
+      License := LabeledEdit_MesExpiracao.Text + GetStringCheckSum(GetHDDInfo(0).SerialNumber,[haSha512]) + LabeledEdit_AnoExpiracao.Text;
+
+      if IndexOf(License) = -1 then
+        Add(License);
+
+      SaveToFile(FileName);
+    finally
+      Free;
+    end;
 end;
 
 end.
