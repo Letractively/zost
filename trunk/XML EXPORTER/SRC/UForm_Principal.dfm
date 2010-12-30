@@ -20,6 +20,7 @@ object Form_Principal: TForm_Principal
   Position = poScreenCenter
   OnCreate = FormCreate
   OnDestroy = FormDestroy
+  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
   object StatusBar_Principal: TStatusBar

@@ -31,6 +31,7 @@ type
     procedure Button_IniciarProcessamentoClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
+    procedure FormShow(Sender: TObject);
   private
     { Private declarations }
     FDataModule: TDataModule_Principal;
@@ -69,6 +70,11 @@ end;
 procedure TForm_Principal.FormDestroy(Sender: TObject);
 begin
   FDataModule.Free;
+end;
+
+procedure TForm_Principal.FormShow(Sender: TObject);
+begin
+  FDataModule.ProcessarLinhaDeComando;
 end;
 
 end.
