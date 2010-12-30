@@ -32,9 +32,10 @@ const
 
   {Section: ENVIO}
   cENVIOSERVIDOR = 'SERVIDOR';
-  cENVIOREMOTEBASEDIR = 'REMOTEBASEDIR';
+  cENVIOREMOTEDIR = 'REMOTEDIR';
   cENVIOUSERNAME = 'USERNAME';
-  cENVIOPASSWORD = 'PASSWORD'; 
+  cENVIOPASSWORD = 'PASSWORD';
+  cENVIOSINCRONO = 'SINCRONO'; 
 
 type
   TConfigurations = class(TObject)
@@ -62,9 +63,10 @@ type
 
     {Section: ENVIO}
     FENVIOSERVIDOR: String;
-    FENVIOREMOTEBASEDIR: String;
+    FENVIOREMOTEDIR: String;
     FENVIOUSERNAME: String;
     FENVIOPASSWORD: String;
+    FENVIOSINCRONO: Boolean;
   public
     procedure LoadSettings(Ini: TIniFile);
     procedure SaveSettings(Ini: TIniFile);
@@ -95,9 +97,10 @@ type
 
     {Section: ENVIO}
     property ENVIOSERIVIDOR: string read FENVIOSERVIDOR write FENVIOSERVIDOR;
-    property ENVIOREMOTEBASEDIR: string read FENVIOREMOTEBASEDIR write FENVIOREMOTEBASEDIR;
+    property ENVIOREMOTEDIR: string read FENVIOREMOTEDIR write FENVIOREMOTEDIR;
     property ENVIOUSERNAME: string read FENVIOUSERNAME write FENVIOUSERNAME;
     property ENVIOPASSWORD: string read FENVIOPASSWORD write FENVIOPASSWORD;
+    property ENVIOSINCRONO: Boolean read FENVIOSINCRONO write FENVIOSINCRONO;
   end;
 
 var
@@ -135,10 +138,11 @@ begin
     FPARAMETROSSTANDALONE        := Ini.ReadBool(cPARAMETROSSection, cPARAMETROSSTANDALONE,False);
     FPARAMETROSORDENARDADOS      := Ini.ReadBool(cPARAMETROSSection, cPARAMETROSORDENARDADOS,True);
 
-    FENVIOSERVIDOR               := Ini.ReadString(cENVIOSection, cENVIOSERVIDOR, '10.1.0.15');
-    FENVIOREMOTEBASEDIR          := Ini.ReadString(cENVIOSection, cENVIOREMOTEBASEDIR, '/');
-    FENVIOUSERNAME               := Ini.ReadString(cENVIOSection, cENVIOUSERNAME, 'jurtrf5');
-    FENVIOPASSWORD               := Ini.ReadString(cENVIOSection, cENVIOPASSWORD, '');
+    FENVIOSERVIDOR               := Ini.ReadString(cENVIOSection, cENVIOSERVIDOR, '127.0.0.1');
+    FENVIOREMOTEDIR              := Ini.ReadString(cENVIOSection, cENVIOREMOTEDIR, '/');
+    FENVIOUSERNAME               := Ini.ReadString(cENVIOSection, cENVIOUSERNAME, 'ics');
+    FENVIOPASSWORD               := Ini.ReadString(cENVIOSection, cENVIOPASSWORD, 'ics');
+    FENVIOSINCRONO               := Ini.ReadBool(cENVIOSection,cENVIOSINCRONO,True);
   end;
 end;
 
@@ -170,9 +174,10 @@ begin
     Ini.WriteBool(cPARAMETROSSection,cPARAMETROSORDENARDADOS,FPARAMETROSORDENARDADOS);
 
     Ini.WriteString(cENVIOSection, cENVIOSERVIDOR, FENVIOSERVIDOR);
-    Ini.WriteString(cENVIOSection, cENVIOREMOTEBASEDIR, FENVIOREMOTEBASEDIR);
+    Ini.WriteString(cENVIOSection, cENVIOREMOTEDIR, FENVIOREMOTEDIR);
     Ini.WriteString(cENVIOSection, cENVIOUSERNAME, FENVIOUSERNAME);
     Ini.WriteString(cENVIOSection, cENVIOPASSWORD, FENVIOPASSWORD);
+    Ini.WriteBool(cENVIOSection,cENVIOSINCRONO,FENVIOSINCRONO);
   end;
 end;
 

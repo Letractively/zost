@@ -3,16 +3,26 @@ unit UDataModule_Principal;
 interface
 
 uses
-  SysUtils, Classes, ExtCtrls, AppEvnts, ZipMstr;
+  SysUtils, Classes, ExtCtrls, AppEvnts, ZipMstr, OverbyteIcsWndControl,
+  OverbyteIcsFtpCli;
 
 type
+  TSyncCmd = function: Boolean of object;
+  TAsyncCmd = procedure of object;
+
   TDataModule_Principal = class(TDataModule)
     ApplicationEvents_Monitorador: TApplicationEvents;
     ZipMaster_Compressor: TZipMaster;
+    FtpClient_Envio: TFtpClient;
     procedure ApplicationEvents_MonitoradorIdle(Sender: TObject; var Done: Boolean);
     procedure DataModuleCreate(Sender: TObject);
     procedure ZipMaster_CompressorMessage(Sender: TObject; ErrCode: Integer; Message: String);
     procedure ZipMaster_CompressorProgress(Sender: TObject; ProgrType: ProgressType; Filename: String; FileSize: Integer);
+    procedure FtpClient_EnvioDisplay(Sender: TObject; var Msg: String);
+    procedure FtpClient_EnvioRequestDone(Sender: TObject; RqType: TFtpRequest; ErrCode: Word);
+    procedure FtpClient_EnvioSessionClosed(Sender: TObject; ErrCode: Word);
+    procedure FtpClient_EnvioSessionConnected(Sender: TObject; ErrCode: Word);
+    procedure FtpClient_EnvioProgress64(Sender: TObject; Count: Int64; var Abort: Boolean);
   private
     { Private declarations }
     FSQLLimitador: String;
@@ -24,10 +34,15 @@ type
     procedure SQLLimitadorETotalDeProcessos;
     procedure AddToLog(aLinha: String);
     procedure ZiparArquivo;
+    procedure ExecuteCmd(SyncCmd: TSyncCmd; ASyncCmd: TAsyncCmd);
+    function FileSize(aFileName: TFileName): Int64;
+    procedure TransmitirArquivo;
+    procedure CompilarXMLFinal;
+    function ParametroBooleanoPresente(aParamStr: String): Boolean;
   public
     { Public declarations }
     procedure IniciarProcessamento;
-    procedure CompilarXMLFinal;
+    procedure ProcessarLinhaDeComando;
     property ThreadsExecutando: Word read FEmExecucao write FEmExecucao;
     property ThreadsGerando: Word read FEmGeracao write FEmGeracao;
   end;
@@ -199,7 +214,7 @@ begin
   AddToLog('Geração CJF Iniciada ...');
   AddToLog('Inicio: ' + FormatDateTime('dd/mm/yyyy "às" hh:nn:ss',Now));
   AddToLog('');
-  AddToLog('-----------------------------------------------------');
+  AddToLog('---------------------------------------------------------------------------------');
   AddToLog('Propriedades de geração:');
 
   { Obtém a contagem de registros e gera o SQL limitador }
@@ -209,7 +224,7 @@ begin
   AddToLog('Tipo de Documento...............: ' + IntToStr(Configurations.PARAMETROSTIPODOCUMENTO));
   AddToLog('Total de páginas (Threads)......: ' + IntToStr(Configurations.PARAMETROSTOTALTHREADS));
   AddToLog('Operações simultâneas...........: ' + IntToStr(Configurations.PARAMETROSCONCURRENTTHREADS));
-  AddToLog('-----------------------------------------------------');
+  AddToLog('---------------------------------------------------------------------------------');
 
   { Configura o progressbars }
   Form_Principal.ProgressBar_Threads.Position := 0;
@@ -282,7 +297,7 @@ var
 begin
 
   try
-    AddToLog('-----------------------------------------------------');
+    AddToLog('---------------------------------------------------------------------------------');
 
     AssignFile(XMLFinal,Configurations.PARAMETROSNOMEDOARQUIVO + '.xml');
     SetTextBuf(XMLFinal, Buffer);
@@ -311,7 +326,7 @@ begin
   finally
     CloseFile(XMLFinal);
     AddToLog('XML Final compilado. Geração concluída!');
-    AddToLog('-----------------------------------------------------');
+    AddToLog('---------------------------------------------------------------------------------');
   end;
 end;
 
@@ -325,22 +340,30 @@ begin
     if Form_Principal.ProgressBar_Threads.Position = Form_Principal.ProgressBar_Threads.Max then
     begin
       FAtivado := False;
-      Form_Principal.Button_IniciarProcessamento.Enabled := True;
 
-      AddToLog('-----------------------------------------------------');
+      AddToLog('---------------------------------------------------------------------------------');
       AddToLog('');
       AddToLog('Fim: ' + FormatDateTime('dd/mm/yyyy "às" hh:nn:ss',Now));
       AddToLog('Geração CJF concluída!');
       AddToLog('');
-      AddToLog('*****************************************************');
-
-//      Form_Principal.StatusBar_Principal.Panels[3].Text := FormatDateTime('"Decorrido: "hh:nn:ss',Now - FInicio);
-//      Form_Principal.StatusBar_Principal.Panels[2].Text := 'Threads executando: ' + IntToStr(FEmGeracao) + '/' + IntToStr(FEmExecucao);
+      AddToLog('*********************************************************************************');
 
       CompilarXMLFinal;
       ZiparArquivo;
-    end;
 
+      if ParametroBooleanoPresente('/AUTOMATICO') then
+      begin
+        TransmitirArquivo;
+        Form_Principal.Close;
+      end
+      else
+      begin
+        if MessageBox(Form_Principal.Handle,'Deseja transmitir o arquivo agora?','Transmitir?',MB_ICONQUESTION or MB_YESNO) = IDYES then
+          TransmitirArquivo;
+
+        Form_Principal.Button_IniciarProcessamento.Enabled := True;
+      end;
+    end;
   end;
 end;
 
@@ -353,7 +376,7 @@ procedure TDataModule_Principal.ZiparArquivo;
 var
   TmpStr: String;
 begin
-  AddToLog('-----------------------------------------------------');
+  AddToLog('---------------------------------------------------------------------------------');
 
   with ZipMaster_Compressor do
   begin
@@ -390,7 +413,7 @@ begin
     end;
   end;
 
-  AddToLog('-----------------------------------------------------');
+  AddToLog('---------------------------------------------------------------------------------');
 end;
 
 procedure TDataModule_Principal.ZipMaster_CompressorMessage(Sender: TObject; ErrCode: Integer; Message: String);
@@ -437,4 +460,134 @@ begin
   end;
 end;
 
+procedure TDataModule_Principal.TransmitirArquivo;
+begin
+  try
+    AddToLog('---------------------------------------------------------------------------------');
+    Form_Principal.Label_Registros.Caption := 'Percentual do arquivo';
+    Form_Principal.Label_Threads.Caption := 'Percentual total';
+    Form_Principal.Label_ThreadsPercent.Caption := '0%';
+    Form_Principal.Label_RecordsPercent.Caption := '0%';
+
+    Form_Principal.ProgressBar_Threads.Position := 0;
+    Form_Principal.ProgressBar_Threads.Max := 1;
+    Form_Principal.ProgressBar_Threads.Step := 1;
+
+    Form_Principal.ProgressBar_Documentos.Position := 0;
+    Form_Principal.ProgressBar_Documentos.Max := FileSize(Configurations.PARAMETROSNOMEDOARQUIVO + '.zip');
+
+    FtpClient_Envio.HostName      := Configurations.ENVIOSERIVIDOR;
+    FtpClient_Envio.Port          := '21';
+    FtpClient_Envio.UserName      := Configurations.ENVIOUSERNAME;
+    FtpClient_Envio.PassWord      := Configurations.ENVIOPASSWORD;
+    FtpClient_Envio.HostDirName   := Configurations.ENVIOREMOTEDIR;
+    FtpClient_Envio.HostFileName  := ExtractFileName(Configurations.PARAMETROSNOMEDOARQUIVO + '.zip');
+    FtpClient_Envio.LocalFileName := Configurations.PARAMETROSNOMEDOARQUIVO + '.zip';
+    FtpClient_Envio.Binary        := True;
+    FtpClient_Envio.Passive       := True;
+    FtpClient_Envio.Options       := FtpClient_Envio.Options - [ftpBandwidthControl];
+    ExecuteCmd(FtpClient_Envio.Transmit, FtpClient_Envio.TransmitAsync);
+  finally
+    Form_Principal.Label_Registros.Caption := 'Registros processados';
+    Form_Principal.Label_Threads.Caption := 'Threads executadas';
+    AddToLog('---------------------------------------------------------------------------------');
+  end;
+end;
+
+procedure TDataModule_Principal.FtpClient_EnvioDisplay(Sender: TObject; var Msg: String);
+begin
+  AddToLog('[' + FormatDateTime('hh:nn:ss',Now) + '] FTP: ' + Msg);
+end;
+
+procedure TDataModule_Principal.ExecuteCmd(SyncCmd: TSyncCmd; ASyncCmd: TAsyncCmd);
+begin
+  AddToLog('[' + FormatDateTime('hh:nn:ss',Now) + '] FTP: Executando comando');
+
+  { Initialize progress stuff }
+    //FLastProgress  := 0;
+//    FProgressCount := 0;
+
+  if Configurations.ENVIOSINCRONO then
+  begin
+    if SyncCmd then
+      AddToLog('[' + FormatDateTime('hh:nn:ss',Now) + '] FTP: Comando bem sucedido')
+    else
+      AddToLog('[' + FormatDateTime('hh:nn:ss',Now) + '] FTP: Comando mal sucedido');
+  end
+  else
+    ASyncCmd;
+end;
+
+procedure TDataModule_Principal.FtpClient_EnvioRequestDone(Sender: TObject; RqType: TFtpRequest; ErrCode: Word);
+begin
+  AddToLog('[' + FormatDateTime('hh:nn:ss',Now) + '] FTP: Requisição ' + LookupFTPReq(RqType) + ' conlcuída!');
+  AddToLog('[' + FormatDateTime('hh:nn:ss',Now) + '] FTP: StatusCode = ' + IntToStr(FtpClient_Envio.StatusCode));
+  AddToLog('[' + FormatDateTime('hh:nn:ss',Now) + '] FTP: Última resposta = ' + FtpClient_Envio.LastResponse);
+
+  if ErrCode = 0 then
+    AddToLog('[' + FormatDateTime('hh:nn:ss',Now) + '] FTP: Sem erros')
+  else
+    AddToLog('[' + FormatDateTime('hh:nn:ss',Now) + '] FTP: Erro = ' + IntToStr(ErrCode) + ' (' + FtpClient_Envio.ErrorMessage + ')');
+end;
+
+procedure TDataModule_Principal.FtpClient_EnvioSessionClosed(Sender: TObject; ErrCode: Word);
+begin
+  AddToLog('[' + FormatDateTime('hh:nn:ss',Now) + '] FTP: Sessão finalizada, erro = ' + IntToStr(ErrCode));
+end;
+
+procedure TDataModule_Principal.FtpClient_EnvioSessionConnected(Sender: TObject; ErrCode: Word);
+begin
+  AddToLog('[' + FormatDateTime('hh:nn:ss',Now) + '] FTP: Sessão conectada, erro = ' + IntToStr(ErrCode));
+end;
+
+procedure TDataModule_Principal.FtpClient_EnvioProgress64(Sender: TObject; Count: Int64; var Abort: Boolean);
+begin
+  Form_Principal.ProgressBar_Documentos.Position := Count;
+
+  if Count >= Form_Principal.ProgressBar_Documentos.Max then
+    Form_Principal.ProgressBar_Threads.StepIt;
+
+  Form_Principal.Label_ThreadsPercent.Caption := IntToStr(Round(Form_Principal.ProgressBar_Threads.Position / Form_Principal.ProgressBar_Threads.Max * 100)) + '%';
+  Form_Principal.Label_RecordsPercent.Caption := IntToStr(Round(Form_Principal.ProgressBar_Documentos.Position / Form_Principal.ProgressBar_Documentos.Max * 100)) + '%';
+end;
+
+function TDataModule_Principal.FileSize(aFileName: TFileName): Int64;
+var
+	FOB: file of 0..255;
+begin
+  try
+    AssignFile(FOB,aFileName);
+    Reset(FOB);
+    Result := System.FileSize(FOB);
+  finally
+    CloseFile(FOB);
+  end;
+end;
+
+function TDataModule_Principal.ParametroBooleanoPresente(aParamStr: String): Boolean;
+var
+  i: Byte;
+begin
+  Result := False;
+  
+  if ParamCount > 0 then
+    for i := 1 to ParamCount do
+      if AnsiUpperCase(ParamStr(i)) = AnsiUpperCase(aParamStr) then
+      begin
+        Result := True;
+        Break;
+      end;
+end;
+
+procedure TDataModule_Principal.ProcessarLinhaDeComando;
+begin
+  if ParametroBooleanoPresente('/AUTOMATICO') then
+  begin
+    Form_Principal.Button_IniciarProcessamento.Click;
+    Form_Principal.Button_IniciarProcessamento.Enabled := False;
+  end;
+end;
+
 end.
+
+
