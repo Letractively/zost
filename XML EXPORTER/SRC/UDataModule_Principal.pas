@@ -103,19 +103,19 @@ const
   //      ...
   //      (10 - 1) * 10 + 1 até 10 * 10 = 9 * 10 + 1 até 100 = 91 até 100
   SQL0 = 'SELECT SEL.CODDOC'#13#10 +
-         '  FROM (<:SELECAO:>) SEL'#13#10 +
-         ' WHERE SEL.RN BETWEEN (%U-1) * %U + 1 AND %U * %U';
+         '                        FROM (<:SELECAO:>) SEL'#13#10 +
+         '                       WHERE SEL.RN BETWEEN (%U-1) * %U + 1 AND %U * %U';
 
-  SQL1 =         'SELECT ROW_NUMBER() OVER (ORDER BY CODDOC) AS RN'#13#10 +
-         '             , CODDOC'#13#10 +
-         '          FROM DOCUMENTO'#13#10 +
-         '         WHERE CODORIG = <:CODORIG:>'#13#10 +
-         '           AND TIPSITOPER = ''A'''#13#10;
+  SQL1 = '                              SELECT ROW_NUMBER() OVER (ORDER BY CODDOC) AS RN'#13#10 +
+         '                                   , CODDOC'#13#10 +
+         '                                FROM DOCUMENTO'#13#10 +
+         '                               WHERE CODORIG = <:CODORIG:>'#13#10 +
+         '                                 AND TIPSITOPER = ''A'''#13#10;
 
-  SQL2 = '           AND CODTIPDOC = <:CODTIPDOC:>'#13#10;
+  SQL2 = '                                 AND CODTIPDOC = <:CODTIPDOC:>'#13#10;
 
   { TODO : A constução das datas abaixo pode precisar de ajustes para usar o dia inteiro }
-  SQL3 = '           AND (DTHRINCL BETWEEN TO_DATE(''<:DATAINICIAL:>'', ''DD/MM/YYYY'') AND TO_DATE(''<:DATAFINAL:>'', ''DD/MM/YYYY'') OR DTHRALT BETWEEN TO_DATE(''<:DATAINICIAL:>'', ''DD/MM/YYYY'') AND TO_DATE(''<:DATAFINAL:>'', ''DD/MM/YYYY''))'#13#10;
+  SQL3 = '                                 AND (DTHRINCL BETWEEN TO_DATE(''<:DATAINICIAL:>'', ''DD/MM/YYYY'') AND TO_DATE(''<:DATAFINAL:>'', ''DD/MM/YYYY'') OR DTHRALT BETWEEN TO_DATE(''<:DATAINICIAL:>'', ''DD/MM/YYYY'') AND TO_DATE(''<:DATAFINAL:>'', ''DD/MM/YYYY''))'#13#10;
 var
   DataIni, DataFim: TDateTime;
   ZConnection: TZConnection;
@@ -171,7 +171,7 @@ begin
       with TZReadOnlyQuery.Create(Self) do
         try
           Connection := ZConnection;
-          SQL.Text := StringReplace(FSQLLimitador,'SELECT ROW_NUMBER() OVER (ORDER BY CODDOC) AS RN'#13#10'             , CODDOC'#13#10,'  SELECT COUNT(CODDOC)'#13#10,[]);
+          SQL.Text := StringReplace(FSQLLimitador,'                              SELECT ROW_NUMBER() OVER (ORDER BY CODDOC) AS RN'#13#10'                                   , CODDOC'#13#10,'  SELECT COUNT(CODDOC)'#13#10,[]);
           Open;
 
           FTotalDeProcessos := Fields[0].AsInteger;
