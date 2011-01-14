@@ -7,7 +7,7 @@ uses
   Messages, Buttons, Menus, DSPack, ImgList, ComCtrls, Dialogs, ExtCtrls,
   UForm_Configuracao, directshow9, OleCtrls, JPEG,
   {$IFDEF VER150}
-  DSUtil, ShockwaveFlashObjects_TLB
+  DSUtil, ShockwaveFlashObjects_TLB, S8Capture
   {$ELSE}
   DSPackUtil, ShockwaveFlashObjects
   {$ENDIF};
@@ -308,6 +308,8 @@ begin
       end
       else
       begin
+        ShockwaveFlash_SWF.Visible := False;
+        VideoWindow_VID.Visible := False;
         ExecutarIMG(FileInformation);
       end;
     end
@@ -485,6 +487,7 @@ begin
     FTimeIn  := Now;
     FTimeOut := FTimeIn + aFileInformation.FileTime / 86400;
 
+    ShockwaveFlash_SWF.Align := alClient;
     ShockwaveFlash_SWF.Base  := FDiretorioMidia + '\' + aFileInformation.FileName;
     ShockwaveFlash_SWF.Movie := FDiretorioMidia + '\' + aFileInformation.FileName;
     ShockwaveFlash_SWF.Stop;
@@ -509,9 +512,11 @@ begin
     FTimeIn  := Now;
     FTimeOut := FTimeIn + aFileInformation.FileTime / 86400;
 
+
+    Image_IMG.Align := alClient;
+    Image_IMG.Visible := True;
     Image_IMG.Picture.LoadFromFile(FDiretorioMidia + '\' + aFileInformation.FileName);
     Image_IMG.Show;
-
     FTipoDeReproducao := tdrTimer;
 
     Form_Configuracao.ListBox_Script.ItemIndex := FNowPlaying;
@@ -532,7 +537,7 @@ begin
     FilterGraph.Active := False;
     FilterGraph.ClearGraph;
     FilterGraph.Active := True;
-    
+    VideoWindow_VID.Align := alClient;
     FilterGraph.RenderFile(FDiretorioMidia + '\' + aFileInformation.FileName);
     VideoWindow_VID.Show;
 
