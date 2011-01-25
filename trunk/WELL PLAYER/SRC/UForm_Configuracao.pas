@@ -30,6 +30,7 @@ type
     BitBtn_MoverAbaixo: TBitBtn;
     BitBtn_MoverAcima: TBitBtn;
     ToolButton_Pause: TToolButton;
+    Memo1: TMemo;
     procedure ToolButton_PlayClick(Sender: TObject);
     procedure ToolButton_StopClick(Sender: TObject);
     procedure ApplicationEvents1Idle(Sender: TObject; var Done: Boolean);
@@ -56,6 +57,8 @@ type
     procedure FinalizarPlaylist;
     procedure IniciarPlaylist;
     procedure PausarPlaylist;
+    procedure WMDropFiles(var Msg: TMessage);   message wm_DropFiles;
+
     { Private declarations }
   public
     { Public declarations }
@@ -81,7 +84,7 @@ implementation
 
 {$R *.dfm}
 
-uses UForm_Player, Inifiles, RTLConsts;
+uses UForm_Player, Inifiles, RTLConsts, shellapi;
 
 const
   EXTENSOES_SUPORTADAS: array [1..12] of String = ('.BMP','.JPG','.JPEG','.ICO',
@@ -383,6 +386,8 @@ begin
 
   CFSHChangeNotifier_Principal.Root := DirMidia;
 
+  DragAcceptFiles(Handle, true);
+
 //  if ParamStr(1) = 'autoplay' then
 //    btPlayList.Click;
 end;
@@ -392,6 +397,7 @@ procedure TForm_Configuracao.FormDestroy(Sender: TObject);
 begin
   FArquivosDeMidia.Free;
   HabilitaBarraWin;
+  DragAcceptFiles(Handle, false);
 end;
 
 procedure TForm_Configuracao.HabilitaBarraWin;
@@ -485,6 +491,83 @@ end;
 procedure TForm_Configuracao.ToolButton_PauseClick(Sender: TObject);
 begin
   PausarPlaylist;
+end;
+
+procedure TForm_Configuracao.WMDropFiles(var Msg: TMessage);
+var
+  I, FileCount, BufferSize: word;
+  Drop: HDROP;
+  FileName: string;
+  Pt: TPoint;
+  RctListBox, RctMemo: TRect;
+  sName, sAux : String;
+  iPos : integer;
+
+begin
+  { Pega o manipulador (handle) da operação
+    "arrastar e soltar" (drag-and-drop) }
+  Drop := Msg.wParam;
+
+  { Pega a quantidade de arquivos soltos (dropped) }
+  FileCount := DragQueryFile(Drop, $FFFFFFFF, nil, 0);
+
+  { Se nenhum arquivo... }
+  if FileCount = 0 then begin
+    ShowMessage('Nenhum arquivo.');
+    Exit;
+  end;
+
+  { Pega o retângulo do ListBox }
+  RctListBox := ListBox_Script.BoundsRect;
+
+  { Pega o retângulo do Memo }
+  RctMemo := Memo1.BoundsRect;
+
+  { Se soltou fora da área cliente do form... }
+  if not DragQueryPoint(Drop, Pt) then
+    ShowMessage('Arquivos soltos fora da área cliente do form')
+  { Se soltou na área do ListBox... }
+  else if PtInRect(RctListBox, Pt) then begin
+    { Pega todos os nomes de arquivos e coloca no ListBox }
+    for I := 0 to FileCount -1 do begin
+      { Obtém o comprimento necessário para o nome do arquivo,
+        sem contar o caractere nulo do fim da string. }
+      BufferSize := DragQueryFile(Drop, I, nil, 0);
+      SetLength(FileName, BufferSize +1); { O +1 é p/ nulo do fim da string }
+      if DragQueryFile(Drop, I, PChar(FileName), BufferSize+1) = BufferSize then
+      begin
+        iPos := pos('.',FileName);
+
+        sAux := copy(FileName,iPos,length(string(PChar(FileName))));
+        sAux := string(PChar(sAux));
+        sName := copy(string(PChar(FileName)),0,iPos-1);
+
+        iPos := pos('\',sName);
+        sName := delete();
+
+        ListBox_Script.Items.Add(string(PChar(FileName)));
+      end
+      else
+        ShowMessage('Erro ao obter nome do arquivo.');
+    end;
+  { Se soltou na área do Memo... }
+  end else if PtInRect(RctMemo, Pt) then begin
+    if FileCount > 1 then
+      ShowMessage('Será mostrado apenas o conteúdo do primeiro arquivo.');
+
+    { Obtém o comprimento necessário para o nome do arquivo,
+      sem contar o caractere nulo do fim da string.
+      O segundo parâmetro (zero) indica o primeiro arquivo da lista }
+    BufferSize := DragQueryFile(Drop, 0, nil, 0);
+    SetLength(FileName, BufferSize +1); { O +1 é p/ nulo do fim da string }
+    if DragQueryFile(Drop, 0, PChar(FileName), BufferSize+1) = BufferSize then
+      Memo1.Lines.LoadFromFile(string(PChar(FileName)))
+    else
+      ShowMessage('Erro ao obter nome do arquivo.');
+  end;
+
+  Msg.Result := 0;
+
 end;
 
 initialization
