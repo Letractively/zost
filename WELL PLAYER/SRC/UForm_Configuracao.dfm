@@ -338,6 +338,16 @@ object Form_Configuracao: TForm_Configuracao
       FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
       FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF}
   end
+  object Memo1: TMemo
+    Left = 224
+    Top = 168
+    Width = 166
+    Height = 64
+    Lines.Strings = (
+      'Memo1')
+    TabOrder = 9
+    Visible = False
+  end
   object ImageList_ToolBar: TImageList
     Height = 24
     Width = 24
