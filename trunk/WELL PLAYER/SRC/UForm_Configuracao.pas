@@ -500,9 +500,6 @@ var
   FileName: string;
   Pt: TPoint;
   RctListBox, RctMemo: TRect;
-  sName, sAux : String;
-  iPos : integer;
-
 begin
   { Pega o manipulador (handle) da operação
     "arrastar e soltar" (drag-and-drop) }
@@ -536,16 +533,7 @@ begin
       SetLength(FileName, BufferSize +1); { O +1 é p/ nulo do fim da string }
       if DragQueryFile(Drop, I, PChar(FileName), BufferSize+1) = BufferSize then
       begin
-        iPos := pos('.',FileName);
-
-        sAux := copy(FileName,iPos,length(string(PChar(FileName))));
-        sAux := string(PChar(sAux));
-        sName := copy(string(PChar(FileName)),0,iPos-1);
-
-        iPos := pos('\',sName);
-        sName := delete();
-
-        ListBox_Script.Items.Add(string(PChar(FileName)));
+        ListBox_Script.Items.Add(ExtractFileName(string(PChar(FileName))));
       end
       else
         ShowMessage('Erro ao obter nome do arquivo.');
