@@ -4,8 +4,8 @@ object Form_Configuracao: TForm_Configuracao
   BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = bsSingle
   Caption = 'WellPlayer - Vers'#227'o de demonstra'#231#227'o'
-  ClientHeight = 289
-  ClientWidth = 583
+  ClientHeight = 333
+  ClientWidth = 765
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -20,8 +20,8 @@ object Form_Configuracao: TForm_Configuracao
   OnDestroy = FormDestroy
   OnMouseMove = FormMouseMove
   DesignSize = (
-    583
-    289)
+    765
+    333)
   PixelsPerInch = 96
   TextHeight = 13
   object Label4: TLabel
@@ -32,7 +32,7 @@ object Form_Configuracao: TForm_Configuracao
     Caption = 'Lista de reprodu'#231#227'o (Playlist)'
   end
   object SpeedButton2: TSpeedButton
-    Left = 555
+    Left = 737
     Top = 18
     Width = 23
     Height = 21
@@ -44,7 +44,7 @@ object Form_Configuracao: TForm_Configuracao
     OnClick = SpeedButton2Click
   end
   object SpeedButton4: TSpeedButton
-    Left = 555
+    Left = 737
     Top = 59
     Width = 23
     Height = 21
@@ -56,8 +56,8 @@ object Form_Configuracao: TForm_Configuracao
     OnClick = SpeedButton4Click
   end
   object BitBtn_RecriarScript: TBitBtn
-    Left = 453
-    Top = 195
+    Left = 635
+    Top = 239
     Width = 125
     Height = 25
     Hint = 'Recriar script'
@@ -99,8 +99,8 @@ object Form_Configuracao: TForm_Configuracao
   end
   object ToolBar_Principal: TToolBar
     Left = 0
-    Top = 255
-    Width = 583
+    Top = 299
+    Width = 765
     Height = 34
     Align = alBottom
     AutoSize = True
@@ -167,8 +167,8 @@ object Form_Configuracao: TForm_Configuracao
     end
   end
   object BitBtn_RecarregarScript: TBitBtn
-    Left = 453
-    Top = 226
+    Left = 635
+    Top = 270
     Width = 125
     Height = 25
     Hint = 'Iniciar Lista'
@@ -210,7 +210,7 @@ object Form_Configuracao: TForm_Configuracao
   object edtDirMidia: TLabeledEdit
     Left = 6
     Top = 18
-    Width = 543
+    Width = 725
     Height = 21
     Hint = 'Caminho do Arquivo de M'#237'dia'
     Anchors = [akLeft, akTop, akRight]
@@ -224,10 +224,10 @@ object Form_Configuracao: TForm_Configuracao
     TabOrder = 0
   end
   object RadioGroup_Monitor: TRadioGroup
-    Left = 453
+    Left = 635
     Top = 100
     Width = 125
-    Height = 89
+    Height = 133
     Anchors = [akTop, akRight, akBottom]
     Caption = ' Exibi'#231#227'o da m'#237'dia '
     ItemIndex = 0
@@ -240,8 +240,8 @@ object Form_Configuracao: TForm_Configuracao
   object ListBox_Script: TListBox
     Left = 6
     Top = 103
-    Width = 410
-    Height = 148
+    Width = 355
+    Height = 192
     Anchors = [akLeft, akTop, akRight, akBottom]
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
@@ -255,7 +255,7 @@ object Form_Configuracao: TForm_Configuracao
   object edtDirLog: TLabeledEdit
     Left = 6
     Top = 59
-    Width = 543
+    Width = 725
     Height = 21
     Hint = 'Caminho do Arquivo de Log'
     Anchors = [akLeft, akTop, akRight]
@@ -269,8 +269,8 @@ object Form_Configuracao: TForm_Configuracao
     TabOrder = 1
   end
   object BitBtn_MoverAbaixo: TBitBtn
-    Left = 422
-    Top = 226
+    Left = 606
+    Top = 242
     Width = 25
     Height = 25
     TabOrder = 7
@@ -304,8 +304,8 @@ object Form_Configuracao: TForm_Configuracao
       FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF}
   end
   object BitBtn_MoverAcima: TBitBtn
-    Left = 422
-    Top = 103
+    Left = 606
+    Top = 119
     Width = 25
     Height = 25
     TabOrder = 8
@@ -339,14 +339,11 @@ object Form_Configuracao: TForm_Configuracao
       FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF}
   end
   object Memo1: TMemo
-    Left = 224
-    Top = 168
-    Width = 166
-    Height = 64
-    Lines.Strings = (
-      'Memo1')
+    Left = 361
+    Top = 103
+    Width = 241
+    Height = 192
     TabOrder = 9
-    Visible = False
   end
   object ImageList_ToolBar: TImageList
     Height = 24
