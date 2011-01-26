@@ -68,6 +68,8 @@ type
 
     iCont : Integer;
 
+    FFileName : String;
+
     procedure ValidarArquivosDeMidia;
     function isFolderEmpty(sPath : String) : Boolean ;
 
@@ -75,6 +77,9 @@ type
     procedure ExibirConfiguracoes;
     procedure HabilitaBarraWin;
     procedure ConfigurarJanelaDeReproducao;
+    procedure p_ValidaExtensao(sExt : String);
+    procedure p_InsereArquivoIni(sArq,sExt : String);
+
   end;
 
 var
@@ -249,7 +254,7 @@ begin
           Free;
         end;
   RecarregarScript;
-      Application.MessageBox('Script de reprodução Atualziado!','Feito!',MB_ICONINFORMATION);
+      Application.MessageBox('Script de reprodução Atualiaado!','Feito!',MB_ICONINFORMATION);
     end;
 end;
 
@@ -500,6 +505,7 @@ var
   FileName: string;
   Pt: TPoint;
   RctListBox, RctMemo: TRect;
+  sAux : String;
 begin
   { Pega o manipulador (handle) da operação
     "arrastar e soltar" (drag-and-drop) }
@@ -533,6 +539,14 @@ begin
       SetLength(FileName, BufferSize +1); { O +1 é p/ nulo do fim da string }
       if DragQueryFile(Drop, I, PChar(FileName), BufferSize+1) = BufferSize then
       begin
+        sAux := ExtractFileExt(string(PChar(FileName)));
+
+        p_ValidaExtensao(UpperCase(sAux));
+        // se passou, insere em FArquivosDeMidia
+        FArquivosDeMidia.Add(ExtractFileName(string(PChar(FileName))));
+        // se passou, insere no arquivo
+        p_InsereArquivoIni(ExtractFileName(string(PChar(FileName))),UpperCase(sAux));
+
         ListBox_Script.Items.Add(ExtractFileName(string(PChar(FileName))));
       end
       else
@@ -555,6 +569,49 @@ begin
   end;
 
   Msg.Result := 0;
+
+end;
+
+procedure TForm_Configuracao.p_ValidaExtensao(sExt: String);
+var i : integer;
+   bExt : boolean;
+begin
+    bExt := False;
+    for i := 1 to High(EXTENSOES_SUPORTADAS) do begin
+      if sExt = EXTENSOES_SUPORTADAS[i] then
+      begin
+           bExt := True;
+           Break;
+      end;
+    end;
+
+    if not bExt then
+      raise Exception.Create('A extensão do arquivo não é suportada pelo sistema. ' + '('+sExt+')' );
+end;
+
+
+procedure TForm_Configuracao.p_InsereArquivoIni(sArq,sExt: String);
+var Arquivo: TextFile;
+    icont : string;
+begin
+  // DirMidia + '\Script.ini'
+  icont := IntToStr(FArquivosDeMidia.Count);
+  // associa o arquivo á variável
+  AssignFile(Arquivo, DirMidia + '\Script.ini');
+  // abre o arquivo de configuração;
+  Append(Arquivo);
+ // Rewrite(Arquivo);
+  // insere o novo arquivo de mídia;
+
+  if  (sExt = '.SWF')  or (sExt = '.JPG')  or (sExt = '.BMP') or (sExt = '.ICO') then begin
+     if (sExt = '.SWF') then
+       Writeln(Arquivo, icont+ '=' +sArq+'|60')
+  end
+  else
+    Writeln(Arquivo, icont+ '=' +sArq+'|0');
+
+  // fecha arquivo de configuração;
+  CloseFile(Arquivo);
 
 end;
 
