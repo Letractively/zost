@@ -26,7 +26,7 @@ begin
       try
         LoadFromFile(ChangeFileExt(Application.ExeName,'.lic'));
 
-        HDDLic := GetStringCheckSum(GetHDDInfo(0).SerialNumber,[haSha512]);
+        HDDLic := GetStringCheckSum(String(GetHDDInfo(0).SerialNumber),[haSha512]);
 
         for i := 0 to Pred(Count) do
           case Length(Strings[i]) of

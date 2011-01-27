@@ -5,7 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, ImgList, ComCtrls, ToolWin, StdCtrls, Buttons, AppEvnts, DsPack,
-  ExtCtrls, FileCtrl, UCFSHChangeNotify;
+  ExtCtrls, FileCtrl, UCFSHChangeNotify, Inifiles;
 
 type
   TForm_Configuracao = class(TForm)
@@ -18,8 +18,7 @@ type
     ApplicationEvents1: TApplicationEvents;
     edtDirMidia: TLabeledEdit;
     RadioGroup_Monitor: TRadioGroup;
-    Label4: TLabel;
-    ListBox_Script: TListBox;
+    ListBox_Playlist: TListBox;
     OpenDialog1: TOpenDialog;
     SpeedButton2: TSpeedButton;
     BitBtn_RecriarScript: TBitBtn;
@@ -30,7 +29,10 @@ type
     BitBtn_MoverAbaixo: TBitBtn;
     BitBtn_MoverAcima: TBitBtn;
     ToolButton_Pause: TToolButton;
-    Memo1: TMemo;
+    Memo_Configuracoes: TMemo;
+    PageControl_Principal: TPageControl;
+    TabSheet_Playlist: TTabSheet;
+    TabSheet_Configuracoes: TTabSheet;
     procedure ToolButton_PlayClick(Sender: TObject);
     procedure ToolButton_StopClick(Sender: TObject);
     procedure ApplicationEvents1Idle(Sender: TObject; var Done: Boolean);
@@ -44,7 +46,6 @@ type
     procedure FormActivate(Sender: TObject);
     procedure FormMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Integer);
     procedure RadioGroup_MonitorClick(Sender: TObject);
-    procedure Label_StatusClick(Sender: TObject);
     procedure CFSHChangeNotifier_PrincipalChangeAttributes;
     procedure CFSHChangeNotifier_PrincipalChangeDirName;
     procedure CFSHChangeNotifier_PrincipalChangeFileName;
@@ -54,12 +55,16 @@ type
     procedure BitBtn_RecarregarScriptClick(Sender: TObject);
     procedure ToolButton_PauseClick(Sender: TObject);
   private
+    { Private declarations }
     procedure FinalizarPlaylist;
     procedure IniciarPlaylist;
     procedure PausarPlaylist;
-    procedure WMDropFiles(var Msg: TMessage);   message wm_DropFiles;
+//    procedure WMDropFiles(var Msg: TMessage); message wm_DropFiles;
+    procedure ListBoxDropFiles(var Msg: TWMDropFiles); message WM_DROPFILES;
+    function ArquivoExiste(aFileName: String; aIniFile: TIniFile): Boolean;
+    function ArquivosNoPlaylist(aIniFile: TIniFile): Cardinal;
+    function CopiarParaDiretorioDeMidia(aFileName: String): Boolean;
 
-    { Private declarations }
   public
     { Public declarations }
     sLocalConf : string;
@@ -77,8 +82,8 @@ type
     procedure ExibirConfiguracoes;
     procedure HabilitaBarraWin;
     procedure ConfigurarJanelaDeReproducao;
-    procedure p_ValidaExtensao(sExt : String);
-    procedure p_InsereArquivoIni(sArq,sExt : String);
+    function ExtensaoSuportada(aExtensao: String): Boolean;
+    procedure AdicionarArquivo(aFileName: String; aIniFile: TIniFile = nil);
 
   end;
 
@@ -89,7 +94,7 @@ implementation
 
 {$R *.dfm}
 
-uses UForm_Player, Inifiles, RTLConsts, shellapi;
+uses UForm_Player, RTLConsts, shellapi;
 
 const
   EXTENSOES_SUPORTADAS: array [1..12] of String = ('.BMP','.JPG','.JPEG','.ICO',
@@ -201,8 +206,8 @@ end;
 procedure TForm_Configuracao.BitBtn_RecriarScriptClick(Sender: TObject);
 var
   SearchRec: TSearchRec;
-  DosError, ItemIndex: Integer;
-  i, j: Word;
+  DosError: Integer;
+  Ini: TIniFile;
 begin
   if not DirectoryExists(DirMidia) then
     Application.MessageBox('O diretório de mídia ainda não foi configurado ou está incorreto. Não é possível recriar o Script de reprodução','Impossível criar script de reprodução',MB_ICONERROR);
@@ -213,47 +218,25 @@ begin
       { Muda para o diretório de mídias }
     	ChDir(DirMidia);
 
-      with TIniFile.Create(DirMidia + '\Script.ini') do
-        try
-          { Remove a seção de arquivos. Ela será recriada com arquivos
-          posteriormente }
-          EraseSection('ARQUIVOSDEMIDIA');
+      Ini := TIniFile.Create(DirMidia + '\Script.ini');
+      try
+        { Remove a seção de arquivos. Ela será recriada com arquivos
+        posteriormente }
+        Ini.EraseSection('ARQUIVOSDEMIDIA');
 
-          DosError := FindFirst('*.*', 0, SearchRec);
+        DosError := FindFirst('*.*', 0, SearchRec);
 
-          ItemIndex := 1;
-          while DosError = 0 do
-          begin
-            for i := 1 to High(EXTENSOES_SUPORTADAS) do
-              if AnsiUpperCase(ExtractFileExt(SearchRec.Name)) = EXTENSOES_SUPORTADAS[i] then
-              begin
-                for j := 1 to High(EXTENSOES_NORMAIS) do
-                  if EXTENSOES_SUPORTADAS[i] = EXTENSOES_NORMAIS[j] then
-                  begin
-                    WriteString('ARQUIVOSDEMIDIA',Format('ARQ%.3d',[ItemIndex]),AnsiUpperCase(SearchRec.Name) + '|10');
-                    Inc(ItemIndex);
-                    Break;
-                  end;
-
-                { Caso não tenha achado na lista de extensões normais tentar as
-                extensões temporizadas }
-                if j = Succ(High(EXTENSOES_NORMAIS)) then
-                  for j := 1 to High(EXTENSOES_TEMPORIZADAS) do
-                    if EXTENSOES_SUPORTADAS[i] = EXTENSOES_TEMPORIZADAS[j] then
-                    begin
-                      WriteString('ARQUIVOSDEMIDIA',Format('ARQ%.3d',[ItemIndex]),AnsiUpperCase(SearchRec.Name) + '|0');
-                      Inc(ItemIndex);
-                      Break;
-                      Break;
-                    end;
-              end;
-            DosError := FindNext(SearchRec);
-          end;
-        finally
-          FindClose(SearchRec);
-          Free;
+        while DosError = 0 do
+        begin
+          AdicionarArquivo(SearchRec.Name, Ini);
+          DosError := FindNext(SearchRec);
         end;
-  RecarregarScript;
+      finally
+        FindClose(SearchRec);
+        Ini.Free;
+      end;
+
+      RecarregarScript;
       Application.MessageBox('Script de reprodução Atualiaado!','Feito!',MB_ICONINFORMATION);
     end;
 end;
@@ -311,11 +294,6 @@ begin
   FindClose(res);
 end;
 
-procedure TForm_Configuracao.Label_StatusClick(Sender: TObject);
-begin
-
-end;
-
 { ESTE PROCEDIMENTO ESTÁ OK }
 procedure TForm_Configuracao.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
@@ -328,7 +306,6 @@ end;
 { ESTE PROCEDIMENTO ESTÁ OK }
 procedure TForm_Configuracao.RecarregarScript;
 begin
-
   FArquivosDeMidia.Clear;
 
   with TIniFile.Create(DirMidia + '\Script.ini') do
@@ -353,7 +330,7 @@ var
   i: Word;
   Arquivo, Duracao: String;
 begin
-  ListBox_Script.Items.Clear;
+  ListBox_Playlist.Items.Clear;
 
   if FArquivosDeMidia.Count > 0 then
     for i := 0 to Pred(FArquivosDeMidia.Count) do
@@ -365,9 +342,9 @@ begin
       Duracao := Copy(Duracao,Succ(Pos('|',Duracao)),Length(Duracao));
 
       if Duracao = '0' then
-        ListBox_Script.Items.Add(Arquivo)
+        ListBox_Playlist.Items.Add(Arquivo)
       else
-        ListBox_Script.Items.Add(Arquivo + ' (' + Duracao + ' segundos)');
+        ListBox_Playlist.Items.Add(Arquivo + ' (' + Duracao + ' segundos)');
     end;
 end;
 
@@ -395,6 +372,11 @@ begin
 
 //  if ParamStr(1) = 'autoplay' then
 //    btPlayList.Click;
+
+  { TODO -oWELLINGTON : A aba que mostra o código do INI permanecerá oculta até
+  você começar a implementar o seu uso e o arrasto sobre ela. Quando acabar,
+  remova a linha abaixo }
+  TabSheet_Configuracoes.TabVisible := False;
 end;
 
 { ESTE PROCEDIMENTO ESTÁ OK }
@@ -437,6 +419,15 @@ begin
 
 //    Form_Player.WindowState := wsMaximized;
   end;
+end;
+
+function TForm_Configuracao.CopiarParaDiretorioDeMidia(aFileName: String): Boolean;
+begin
+  Result := True;
+  { TODO -oWELLINGTON : Implementa aqui a lógica para copiar o arquivo cujo
+  caminho completo é passado no parâmetro, para o diretório de mídias do
+  WellPlayer. O diretório de mídias é DirMidia. Caso consiga copiar com sucesso
+  retorna True, do contrario False. Esta função não deve lançar exceções. }
 end;
 
 procedure CarregarConfiguracoes;
@@ -498,121 +489,243 @@ begin
   PausarPlaylist;
 end;
 
-procedure TForm_Configuracao.WMDropFiles(var Msg: TMessage);
+procedure TForm_Configuracao.ListBoxDropFiles(var Msg: TWMDropFiles);
 var
-  I, FileCount, BufferSize: word;
-  Drop: HDROP;
-  FileName: string;
-  Pt: TPoint;
-  RctListBox, RctMemo: TRect;
-  sAux : String;
+  i, PathLength, FileCount : Cardinal;
+  Buffer, FullFileName : string;
+  JaPerguntou, ConseguiuCopiar: Boolean;
 begin
-  { Pega o manipulador (handle) da operação
-    "arrastar e soltar" (drag-and-drop) }
-  Drop := Msg.wParam;
+  { TODO -oWELLINGTON : Como se pode ver, este procedure funciona apenas para o
+  listbox. Cria um novo procedure exatamente igual a este, mas com o nome
+  "MemoDropFiles" e altera ali onde tem "ListBox_Playlist". A maior parte da
+  lógica, se não for toda ela mesmo, deve ser colocada entre os delimitadores
+  mais adiante (O que fazer com FullFileName? INICIO e FINAL) }
+  if WindowFromPoint(Mouse.CursorPos) = ListBox_Playlist.Handle then
+  begin
 
-  { Pega a quantidade de arquivos soltos (dropped) }
-  FileCount := DragQueryFile(Drop, $FFFFFFFF, nil, 0);
+    FileCount := DragQueryFile(Msg.Drop, $FFFFFFFF, nil, MAX_PATH);
 
-  { Se nenhum arquivo... }
-  if FileCount = 0 then begin
-    ShowMessage('Nenhum arquivo.');
-    Exit;
-  end;
+    if FileCount = 0 then
+      raise Exception.Create('Nenhum arquivo selecionado!');
 
-  { Pega o retângulo do ListBox }
-  RctListBox := ListBox_Script.BoundsRect;
+    SetLength(Buffer, MAX_PATH * 2);
 
-  { Pega o retângulo do Memo }
-  RctMemo := Memo1.BoundsRect;
+    JaPerguntou := False;
 
-  { Se soltou fora da área cliente do form... }
-  if not DragQueryPoint(Drop, Pt) then
-    ShowMessage('Arquivos soltos fora da área cliente do form')
-  { Se soltou na área do ListBox... }
-  else if PtInRect(RctListBox, Pt) then begin
-    { Pega todos os nomes de arquivos e coloca no ListBox }
-    for I := 0 to FileCount -1 do begin
-      { Obtém o comprimento necessário para o nome do arquivo,
-        sem contar o caractere nulo do fim da string. }
-      BufferSize := DragQueryFile(Drop, I, nil, 0);
-      SetLength(FileName, BufferSize +1); { O +1 é p/ nulo do fim da string }
-      if DragQueryFile(Drop, I, PChar(FileName), BufferSize+1) = BufferSize then
+    for i := 0 to Pred(FileCount) do
+    begin
+      PathLength := DragQueryFile(Msg.Drop, i, nil, MAX_PATH * 2);
+
+      if (PathLength > 0) and (PathLength < MAX_PATH * 2) then
       begin
-        sAux := ExtractFileExt(string(PChar(FileName)));
+        if DragQueryFile(Msg.Drop, i, @Buffer[1], Succ(PathLength)) = PathLength then
+        begin
+          FullFileName := Copy(Buffer, 1, PathLength);
+          { -- O que fazer com FullFileName? INICIO -------------------------- }
 
-        p_ValidaExtensao(UpperCase(sAux));
-        // se passou, insere em FArquivosDeMidia
-        FArquivosDeMidia.Add(ExtractFileName(string(PChar(FileName))));
-        // se passou, insere no arquivo
-        p_InsereArquivoIni(ExtractFileName(string(PChar(FileName))),UpperCase(sAux));
+          if ExtensaoSuportada(ExtractFileExt(FullFileName)) then
+          begin
+            ConseguiuCopiar := True;
 
-        ListBox_Script.Items.Add(ExtractFileName(string(PChar(FileName))));
-      end
-      else
-        ShowMessage('Erro ao obter nome do arquivo.');
-    end;
-  { Se soltou na área do Memo... }
-  end else if PtInRect(RctMemo, Pt) then begin
-    if FileCount > 1 then
-      ShowMessage('Será mostrado apenas o conteúdo do primeiro arquivo.');
+            if (ExtractFilePath(FullFileName) <> DirMidia) then
+            begin
+              if not JaPerguntou then
+              begin
+                if Application.MessageBox('Os arquivos selecionados não estão no diretório de mídias do Well Player. Se você continuar, estes arquivos serão copiados neste diretório de mídias. Tem certeza?','Tem certeza?',MB_ICONQUESTION or MB_YESNO) = IDNO then
+                  Abort;
 
-    { Obtém o comprimento necessário para o nome do arquivo,
-      sem contar o caractere nulo do fim da string.
-      O segundo parâmetro (zero) indica o primeiro arquivo da lista }
-    BufferSize := DragQueryFile(Drop, 0, nil, 0);
-    SetLength(FileName, BufferSize +1); { O +1 é p/ nulo do fim da string }
-    if DragQueryFile(Drop, 0, PChar(FileName), BufferSize+1) = BufferSize then
-      Memo1.Lines.LoadFromFile(string(PChar(FileName)))
-    else
-      ShowMessage('Erro ao obter nome do arquivo.');
-  end;
+                JaPerguntou := True;
+              end;
 
-  Msg.Result := 0;
+              ConseguiuCopiar := CopiarParaDiretorioDeMidia(FullFileName);
+            end;
 
-end;
+            if ConseguiuCopiar then
+              AdicionarArquivo(ExtractFileName(FullFileName));
+          end;
 
-procedure TForm_Configuracao.p_ValidaExtensao(sExt: String);
-var i : integer;
-   bExt : boolean;
-begin
-    bExt := False;
-    for i := 1 to High(EXTENSOES_SUPORTADAS) do begin
-      if sExt = EXTENSOES_SUPORTADAS[i] then
-      begin
-           bExt := True;
-           Break;
+          { -- O que fazer com FullFileName? FINAL --------------------------- }
+        end;
       end;
     end;
+    RecarregarScript;
+  end;
 
-    if not bExt then
-      raise Exception.Create('A extensão do arquivo não é suportada pelo sistema. ' + '('+sExt+')' );
+  DragFinish(Msg.Drop);
+  Msg.Result := 0;
 end;
 
 
-procedure TForm_Configuracao.p_InsereArquivoIni(sArq,sExt: String);
-var Arquivo: TextFile;
-    icont : string;
+{ TODO -oWELLINGTON : O Código antigo está embaixo. Mantive ele comentado pra
+que você pudesse aproveitar algo relacionado ao memo. Recria o mesmo procedure
+acima, com um nome diferente, e que vai manipular os drops no memo apenas. veja
+o comentário que eu coloquei no primeiro IF do procedure acima }
+
+//procedure TForm_Configuracao.WMDropFiles(var Msg: TMessage);
+//var
+//  I, FileCount, BufferSize: word;
+//  Drop: HDROP;
+//  FileName: string;
+//  Pt: TPoint;
+//  RctListBox, RctMemo: TRect;
+//  sAux : String;
+//begin
+//  { Pega o manipulador (handle) da operação
+//    "arrastar e soltar" (drag-and-drop) }
+//  Drop := Msg.wParam;
+//
+//  { Pega a quantidade de arquivos soltos (dropped) }
+//  FileCount := DragQueryFile(Drop, $FFFFFFFF, nil, 0);
+//
+//  { Se nenhum arquivo... }
+//  if FileCount = 0 then begin
+//    ShowMessage('Nenhum arquivo.');
+//    Exit;
+//  end;
+//
+//  { Pega o retângulo do ListBox }
+//  RctListBox := ListBox_Script.BoundsRect;
+//
+//  { Pega o retângulo do Memo }
+//  RctMemo := Memo_Configuracoes.BoundsRect;
+//
+//  { Se soltou fora da área cliente do form... }
+//  if not DragQueryPoint(Drop, Pt) then
+//    ShowMessage('Arquivos soltos fora da área cliente do form')
+//  { Se soltou na área do ListBox... }
+//  else if PtInRect(RctListBox, Pt) then begin
+//    { Pega todos os nomes de arquivos e coloca no ListBox }
+//    for I := 0 to FileCount -1 do begin
+//      { Obtém o comprimento necessário para o nome do arquivo,
+//        sem contar o caractere nulo do fim da string. }
+//      BufferSize := DragQueryFile(Drop, I, nil, 0);
+//      SetLength(FileName, BufferSize +1); { O +1 é p/ nulo do fim da string }
+//      if DragQueryFile(Drop, I, PChar(FileName), BufferSize+1) = BufferSize then
+//      begin
+//        sAux := ExtractFileExt(string(PChar(FileName)));
+//
+//        p_ValidaExtensao(UpperCase(sAux));
+//        // se passou, insere em FArquivosDeMidia
+//        FArquivosDeMidia.Add(ExtractFileName(string(PChar(FileName))));
+//        // se passou, insere no arquivo
+//        p_InsereArquivoIni(ExtractFileName(string(PChar(FileName))),UpperCase(sAux));
+//
+//        ListBox_Script.Items.Add(ExtractFileName(string(PChar(FileName))));
+//      end
+//      else
+//        ShowMessage('Erro ao obter nome do arquivo.');
+//    end;
+//  { Se soltou na área do Memo... }
+//  end else if PtInRect(RctMemo, Pt) then begin
+//    if FileCount > 1 then
+//      ShowMessage('Será mostrado apenas o conteúdo do primeiro arquivo.');
+//
+//    { Obtém o comprimento necessário para o nome do arquivo,
+//      sem contar o caractere nulo do fim da string.
+//      O segundo parâmetro (zero) indica o primeiro arquivo da lista }
+//    BufferSize := DragQueryFile(Drop, 0, nil, 0);
+//    SetLength(FileName, BufferSize +1); { O +1 é p/ nulo do fim da string }
+//    if DragQueryFile(Drop, 0, PChar(FileName), BufferSize+1) = BufferSize then
+//      Memo_Configuracoes.Lines.LoadFromFile(string(PChar(FileName)))
+//    else
+//      ShowMessage('Erro ao obter nome do arquivo.');
+//  end;
+//
+//  Msg.Result := 0;
+//
+//end;
+
+function TForm_Configuracao.ExtensaoSuportada(aExtensao: String): Boolean;
+var
+  i: Integer;
 begin
-  // DirMidia + '\Script.ini'
-  icont := IntToStr(FArquivosDeMidia.Count);
-  // associa o arquivo á variável
-  AssignFile(Arquivo, DirMidia + '\Script.ini');
-  // abre o arquivo de configuração;
-  Append(Arquivo);
- // Rewrite(Arquivo);
-  // insere o novo arquivo de mídia;
+  Result := False;
 
-  if  (sExt = '.SWF')  or (sExt = '.JPG')  or (sExt = '.BMP') or (sExt = '.ICO') then begin
-     if (sExt = '.SWF') then
-       Writeln(Arquivo, icont+ '=' +sArq+'|60')
-  end
-  else
-    Writeln(Arquivo, icont+ '=' +sArq+'|0');
+  for i := 1 to High(EXTENSOES_SUPORTADAS) do
+  begin
+    if UpperCase(aExtensao) = EXTENSOES_SUPORTADAS[i] then
+    begin
+      Result := True;
+      Break;
+    end;
+  end;
+end;
 
-  // fecha arquivo de configuração;
-  CloseFile(Arquivo);
+function TForm_Configuracao.ArquivoExiste(aFileName: String; aIniFile: TIniFile): Boolean;
+var
+  SectionValues: TStringList;
+begin
+  SectionValues := TStringList.Create;
+  try
+    aIniFile.ReadSectionValues('ARQUIVOSDEMIDIA',SectionValues);
 
+    SectionValues.Text := AnsiUpperCase(SectionValues.Text);
+
+    Result := Pos('=' + AnsiUpperCase(aFileName) + '|',SectionValues.Text) > 0;
+  finally
+    SectionValues.Free;
+  end;
+end;
+
+function TForm_Configuracao.ArquivosNoPlaylist(aIniFile: TIniFile): Cardinal;
+var
+  SectionValues: TStringList;
+begin
+  SectionValues := TStringList.Create;
+  try
+    aIniFile.ReadSectionValues('ARQUIVOSDEMIDIA',SectionValues);
+
+    Result := SectionValues.Count;
+
+  finally
+    SectionValues.Free;
+  end;
+end;
+
+procedure TForm_Configuracao.AdicionarArquivo(aFileName: String; aIniFile: TIniFile = nil);
+var
+  i, j: Word;
+  PrecisaDestruir: Boolean;
+begin
+  PrecisaDestruir := False;
+
+  if not Assigned(aIniFile) then
+  begin
+    aIniFile := TIniFile.Create(DirMidia + '\Script.ini');
+    PrecisaDestruir := True;
+  end;
+
+  { Verifica se já existe a entrada no ini }
+  if ArquivoExiste(aFileName,aIniFile) then
+    Exit;
+
+  for i := 1 to High(EXTENSOES_SUPORTADAS) do
+    if AnsiUpperCase(ExtractFileExt(aFileName)) = EXTENSOES_SUPORTADAS[i] then
+    begin
+      { Se for uma extensão estática... }
+      for j := 1 to High(EXTENSOES_NORMAIS) do
+        if EXTENSOES_SUPORTADAS[i] = EXTENSOES_NORMAIS[j] then
+        begin
+          aIniFile.WriteString('ARQUIVOSDEMIDIA',Format('ARQ%.3d',[Succ(ArquivosNoPlaylist(aIniFile))]),AnsiUpperCase(aFileName) + '|10');
+          Break;
+        end;
+
+      { Caso não tenha achado na lista de extensões estáticas tentar as
+      extensões temporizadas }
+      if j = Succ(High(EXTENSOES_NORMAIS)) then
+        for j := 1 to High(EXTENSOES_TEMPORIZADAS) do
+          if EXTENSOES_SUPORTADAS[i] = EXTENSOES_TEMPORIZADAS[j] then
+          begin
+            aIniFile.WriteString('ARQUIVOSDEMIDIA',Format('ARQ%.3d',[Succ(ArquivosNoPlaylist(aIniFile))]),AnsiUpperCase(aFileName) + '|0');
+            Break;
+          end;
+
+      { Ao encontrar a extensão suportada, não faz mais nada }
+      Break;
+    end;
+
+  if PrecisaDestruir then
+    aIniFile.Free;
 end;
 
 initialization

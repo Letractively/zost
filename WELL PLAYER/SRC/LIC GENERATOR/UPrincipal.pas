@@ -42,7 +42,7 @@ begin
       if FileExists(FileName) then
         LoadFromFile(FileName);
 
-      Label_Serial.Caption := GetHDDInfo(0).SerialNumber;
+      Label_Serial.Caption := String(GetHDDInfo(0).SerialNumber);
 
       License := LabeledEdit_MesExpiracao.Text + GetStringCheckSum(Label_Serial.Caption,[haSha512]) + LabeledEdit_AnoExpiracao.Text;
 
@@ -59,7 +59,7 @@ end;
 
 procedure TForm_Principal.FormCreate(Sender: TObject);
 begin
-      Label_Serial.Caption := GetHDDInfo(0).SerialNumber;
+  Label_Serial.Caption := String(GetHDDInfo(0).SerialNumber);
 end;
 
 end.
