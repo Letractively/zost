@@ -25,12 +25,14 @@ uses
 {$R *.res}
 
 begin
-
-
-
   try
     Application.Initialize;
-    VerificarLicenca;
+
+    {$IFDEF VER200}
+    if DebugHook = 0 then
+    {$ENDIF}
+      VerificarLicenca;
+
     Application.Title := 'Well Player';
     Application.CreateForm(TForm_Configuracao, Form_Configuracao);
     Application.Run;

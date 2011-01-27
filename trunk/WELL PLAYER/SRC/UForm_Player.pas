@@ -191,7 +191,7 @@ end;
 procedure TForm_Player.FormCreate(Sender: TObject);
 begin
   FTipoDeReproducao := tdrNenhuma;
-  Form_Configuracao.ListBox_Script.Enabled := False;
+  Form_Configuracao.ListBox_Playlist.Enabled := False;
   Form_Configuracao.RadioGroup_Monitor.Enabled := False;
   Form_Configuracao.BitBtn_RecarregarScript.Enabled := False;
   Form_Configuracao.BitBtn_RecriarScript.Enabled := False;
@@ -204,7 +204,7 @@ begin
   ShowCursor(True);
   FilterGraph.Free;
 
-  Form_Configuracao.ListBox_Script.Enabled := True;
+  Form_Configuracao.ListBox_Playlist.Enabled := True;
   Form_Configuracao.RadioGroup_Monitor.Enabled := Screen.MonitorCount = 2;
   Form_Configuracao.BitBtn_RecarregarScript.Enabled := True;
   Form_Configuracao.BitBtn_RecriarScript.Enabled := True;
@@ -494,7 +494,7 @@ begin
 
     FTipoDeReproducao := tdrTimer;
 
-    Form_Configuracao.ListBox_Script.ItemIndex := FNowPlaying;
+    Form_Configuracao.ListBox_Playlist.ItemIndex := FNowPlaying;
   end;
 end;
 
@@ -514,7 +514,7 @@ begin
 
     FTipoDeReproducao := tdrTimer;
 
-    Form_Configuracao.ListBox_Script.ItemIndex := FNowPlaying;
+    Form_Configuracao.ListBox_Playlist.ItemIndex := FNowPlaying;
   end;
 end;
 
@@ -540,7 +540,7 @@ begin
 
     FTipoDeReproducao := tdrTempo;
 
-    Form_Configuracao.ListBox_Script.ItemIndex := FNowPlaying;
+    Form_Configuracao.ListBox_Playlist.ItemIndex := FNowPlaying;
   end;
 end;
 

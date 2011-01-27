@@ -59,6 +59,22 @@
 			<DCCReference Include="..\src\UForm_Player.pas">
 				<Form>Form_Player</Form>
 			</DCCReference>
+			<DCCReference Include="..\SRC\UHDDInfo.pas"/>
+			<DCCReference Include="..\SRC\Crypt\ZTO.Crypt.Utilities.pas"/>
+			<DCCReference Include="..\SRC\Crypt\ZTO.Crypt.Types.pas"/>
+			<DCCReference Include="..\SRC\Crypt\hashes\ZTO.Crypt.Hashes.Haval.pas"/>
+			<DCCReference Include="..\SRC\Crypt\hashes\ZTO.Crypt.Hashes.Md4.pas"/>
+			<DCCReference Include="..\SRC\Crypt\hashes\ZTO.Crypt.Hashes.Md5.pas"/>
+			<DCCReference Include="..\SRC\Crypt\hashes\ZTO.Crypt.Hashes.Ripemd128.pas"/>
+			<DCCReference Include="..\SRC\Crypt\hashes\ZTO.Crypt.Hashes.Ripemd160.pas"/>
+			<DCCReference Include="..\SRC\Crypt\hashes\ZTO.Crypt.Hashes.Sha1.pas"/>
+			<DCCReference Include="..\SRC\Crypt\hashes\ZTO.Crypt.Hashes.Sha256.pas"/>
+			<DCCReference Include="..\SRC\Crypt\hashes\ZTO.Crypt.Hashes.Sha512.pas"/>
+			<DCCReference Include="..\SRC\Crypt\hashes\ZTO.Crypt.Hashes.tiger.pas"/>
+			<DCCReference Include="..\SRC\Crypt\ZTO.Crypt.Common.pas"/>
+			<DCCReference Include="..\SRC\Crypt\ZTO.Crypt.Consts.pas"/>
+			<DCCReference Include="..\SRC\Crypt\ZTO.Crypt.Base64.pas"/>
+			<DCCReference Include="..\SRC\Crypt\ZTO.Crypt.Blockciphers.pas"/>
 			<BuildConfiguration Include="Base">
 				<Key>Base</Key>
 			</BuildConfiguration>
