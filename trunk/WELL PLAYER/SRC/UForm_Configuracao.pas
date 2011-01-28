@@ -84,7 +84,7 @@ type
     procedure ConfigurarJanelaDeReproducao;
     function ExtensaoSuportada(aExtensao: String): Boolean;
     procedure AdicionarArquivo(aFileName: String; aIniFile: TIniFile = nil);
-
+    procedure MemoDropFiles(var Msg: TWMDropFiles);
   end;
 
 var
@@ -376,7 +376,7 @@ begin
   { TODO -oWELLINGTON : A aba que mostra o código do INI permanecerá oculta até
   você começar a implementar o seu uso e o arrasto sobre ela. Quando acabar,
   remova a linha abaixo }
-  TabSheet_Configuracoes.TabVisible := False;
+//  TabSheet_Configuracoes.TabVisible := False;
 end;
 
 { ESTE PROCEDIMENTO ESTÁ OK }
@@ -422,12 +422,33 @@ begin
 end;
 
 function TForm_Configuracao.CopiarParaDiretorioDeMidia(aFileName: String): Boolean;
+var
+  Dados: TSHFileOpStruct;
+  origem, destino: String;
 begin
-  Result := True;
   { TODO -oWELLINGTON : Implementa aqui a lógica para copiar o arquivo cujo
   caminho completo é passado no parâmetro, para o diretório de mídias do
   WellPlayer. O diretório de mídias é DirMidia. Caso consiga copiar com sucesso
   retorna True, do contrario False. Esta função não deve lançar exceções. }
+
+      origem  := aFileName;
+      destino := DirMidia;
+
+      If (origem <> '') and (destino <> '') then
+      begin
+        FillChar(Dados,SizeOf(Dados), 0);
+        with Dados do
+        begin
+          wFunc := FO_COPY;
+          pFrom := PChar(origem);
+          pTo   := PChar(destino);
+          fFlags:= FOF_ALLOWUNDO;
+        end;
+        SHFileOperation(Dados);
+        Result := True;
+      end
+      else
+        Result := False;
 end;
 
 procedure CarregarConfiguracoes;
@@ -494,65 +515,70 @@ var
   i, PathLength, FileCount : Cardinal;
   Buffer, FullFileName : string;
   JaPerguntou, ConseguiuCopiar: Boolean;
+  Msg_m: TWMDropFiles;
 begin
   { TODO -oWELLINGTON : Como se pode ver, este procedure funciona apenas para o
   listbox. Cria um novo procedure exatamente igual a este, mas com o nome
   "MemoDropFiles" e altera ali onde tem "ListBox_Playlist". A maior parte da
   lógica, se não for toda ela mesmo, deve ser colocada entre os delimitadores
   mais adiante (O que fazer com FullFileName? INICIO e FINAL) }
+
+  if WindowFromPoint(Mouse.CursorPos) = Memo_Configuracoes.Handle then
+    MemoDropFiles(Msg);
+ 
   if WindowFromPoint(Mouse.CursorPos) = ListBox_Playlist.Handle then
-  begin
-
-    FileCount := DragQueryFile(Msg.Drop, $FFFFFFFF, nil, MAX_PATH);
-
-    if FileCount = 0 then
-      raise Exception.Create('Nenhum arquivo selecionado!');
-
-    SetLength(Buffer, MAX_PATH * 2);
-
-    JaPerguntou := False;
-
-    for i := 0 to Pred(FileCount) do
     begin
-      PathLength := DragQueryFile(Msg.Drop, i, nil, MAX_PATH * 2);
 
-      if (PathLength > 0) and (PathLength < MAX_PATH * 2) then
+      FileCount := DragQueryFile(Msg.Drop, $FFFFFFFF, nil, MAX_PATH);
+
+      if FileCount = 0 then
+        raise Exception.Create('Nenhum arquivo selecionado!');
+
+      SetLength(Buffer, MAX_PATH * 2);
+
+      JaPerguntou := False;
+
+      for i := 0 to Pred(FileCount) do
       begin
-        if DragQueryFile(Msg.Drop, i, @Buffer[1], Succ(PathLength)) = PathLength then
+        PathLength := DragQueryFile(Msg.Drop, i, nil, MAX_PATH * 2);
+
+        if (PathLength > 0) and (PathLength < MAX_PATH * 2) then
         begin
-          FullFileName := Copy(Buffer, 1, PathLength);
-          { -- O que fazer com FullFileName? INICIO -------------------------- }
-
-          if ExtensaoSuportada(ExtractFileExt(FullFileName)) then
+          if DragQueryFile(Msg.Drop, i, @Buffer[1], Succ(PathLength)) = PathLength then
           begin
-            ConseguiuCopiar := True;
+            FullFileName := Copy(Buffer, 1, PathLength);
+            { -- O que fazer com FullFileName? INICIO -------------------------- }
 
-            if (ExtractFilePath(FullFileName) <> DirMidia) then
+            if ExtensaoSuportada(ExtractFileExt(FullFileName)) then
             begin
-              if not JaPerguntou then
-              begin
-                if Application.MessageBox('Os arquivos selecionados não estão no diretório de mídias do Well Player. Se você continuar, estes arquivos serão copiados neste diretório de mídias. Tem certeza?','Tem certeza?',MB_ICONQUESTION or MB_YESNO) = IDNO then
-                  Abort;
+              ConseguiuCopiar := True;
 
-                JaPerguntou := True;
+              if (ExtractFilePath(FullFileName) <> DirMidia) then
+              begin
+                if not JaPerguntou then
+                begin
+                  if Application.MessageBox('Os arquivos selecionados não estão no diretório de mídias do Well Player. Se você continuar, estes arquivos serão copiados neste diretório de mídias. Tem certeza?','Tem certeza?',MB_ICONQUESTION or MB_YESNO) = IDNO then
+                    Abort;
+
+                  JaPerguntou := True;
+                end;
+
+                ConseguiuCopiar := CopiarParaDiretorioDeMidia(FullFileName);
               end;
 
-              ConseguiuCopiar := CopiarParaDiretorioDeMidia(FullFileName);
+              if ConseguiuCopiar then
+                AdicionarArquivo(ExtractFileName(FullFileName));
             end;
 
-            if ConseguiuCopiar then
-              AdicionarArquivo(ExtractFileName(FullFileName));
+            { -- O que fazer com FullFileName? FINAL --------------------------- }
           end;
-
-          { -- O que fazer com FullFileName? FINAL --------------------------- }
         end;
       end;
+      RecarregarScript;
     end;
-    RecarregarScript;
-  end;
 
-  DragFinish(Msg.Drop);
-  Msg.Result := 0;
+    DragFinish(Msg.Drop);
+    Msg.Result := 0;
 end;
 
 
@@ -726,6 +752,57 @@ begin
 
   if PrecisaDestruir then
     aIniFile.Free;
+end;
+
+
+procedure TForm_Configuracao.MemoDropFiles(var Msg: TWMDropFiles);
+var
+  i, PathLength, FileCount : Cardinal;
+  Buffer, FullFileName : string;
+  JaPerguntou, ConseguiuCopiar: Boolean;
+begin
+  { TODO -oWELLINGTON : Como se pode ver, este procedure funciona apenas para o
+  listbox. Cria um novo procedure exatamente igual a este, mas com o nome
+  "MemoDropFiles" e altera ali onde tem "ListBox_Playlist". A maior parte da
+  lógica, se não for toda ela mesmo, deve ser colocada entre os delimitadores
+  mais adiante (O que fazer com FullFileName? INICIO e FINAL) }
+
+  if WindowFromPoint(Mouse.CursorPos) = Memo_Configuracoes.Handle then
+  begin
+
+    FileCount := DragQueryFile(Msg.Drop, $FFFFFFFF, nil, MAX_PATH);
+
+    if FileCount = 0 then
+      raise Exception.Create('Nenhum arquivo selecionado!');
+
+    SetLength(Buffer, MAX_PATH * 2);
+
+    JaPerguntou := False;
+
+    for i := 0 to Pred(FileCount) do
+    begin
+      PathLength := DragQueryFile(Msg.Drop, i, nil, MAX_PATH * 2);
+
+      if (PathLength > 0) and (PathLength < MAX_PATH * 2) then
+      begin
+        if DragQueryFile(Msg.Drop, i, @Buffer[1], Succ(PathLength)) = PathLength then
+        begin
+          FullFileName := Copy(Buffer, 1, PathLength);
+          { -- O que fazer com FullFileName? INICIO -------------------------- }
+
+           if UpperCase(ExtractFileName(string(PChar(FullFileName)))) <> 'SCRIPT.INI' then exit;
+
+           Memo_Configuracoes.Lines.LoadFromFile(string(PChar(FullFileName)))
+          { -- O que fazer com FullFileName? FINAL --------------------------- }
+        end;
+      end;
+    end;
+    RecarregarScript;
+  end;
+
+  DragFinish(Msg.Drop);
+  Msg.Result := 0;
+
 end;
 
 initialization
