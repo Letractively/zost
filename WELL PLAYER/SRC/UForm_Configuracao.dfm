@@ -56,7 +56,10 @@ object Form_Configuracao: TForm_Configuracao
     Hint = 'Recriar script'
     Anchors = [akRight, akBottom]
     Caption = 'Recriar Script'
-    DoubleBuffered = True
+    ParentShowHint = False
+    ShowHint = True
+    TabOrder = 5
+    OnClick = BitBtn_RecriarScriptClick
     Glyph.Data = {
       36030000424D3603000000000000360000002800000010000000100000000100
       18000000000000030000C30E0000C30E00000000000000000000FF00FFFF00FF
@@ -85,18 +88,13 @@ object Form_Configuracao: TForm_Configuracao
       FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF16
       7AA10F658EFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF}
     Layout = blGlyphRight
-    ParentDoubleBuffered = False
-    ParentShowHint = False
-    ShowHint = True
     Spacing = 24
-    TabOrder = 5
-    OnClick = BitBtn_RecriarScriptClick
   end
   object ToolBar_Principal: TToolBar
     Left = 0
-    Top = 306
+    Top = 302
     Width = 765
-    Height = 30
+    Height = 34
     Align = alBottom
     AutoSize = True
     ButtonHeight = 30
@@ -106,7 +104,7 @@ object Form_Configuracao: TForm_Configuracao
     TabOrder = 4
     object ToolButton_Play: TToolButton
       Left = 0
-      Top = 0
+      Top = 2
       Hint = 'Play'
       Caption = 'ToolButton_Play'
       ImageIndex = 1
@@ -116,7 +114,7 @@ object Form_Configuracao: TForm_Configuracao
     end
     object ToolButton_Pause: TToolButton
       Left = 31
-      Top = 0
+      Top = 2
       Caption = 'ToolButton_Pause'
       Enabled = False
       ImageIndex = 0
@@ -124,7 +122,7 @@ object Form_Configuracao: TForm_Configuracao
     end
     object ToolButton_Stop: TToolButton
       Left = 62
-      Top = 0
+      Top = 2
       Hint = 'Stop'
       Caption = 'ToolButton_Stop'
       Enabled = False
@@ -135,7 +133,7 @@ object Form_Configuracao: TForm_Configuracao
     end
     object ToolButton_Fechar: TToolButton
       Left = 93
-      Top = 0
+      Top = 2
       Hint = 'Fecha Play'
       Caption = 'ToolButton_Fechar'
       Enabled = False
@@ -146,7 +144,7 @@ object Form_Configuracao: TForm_Configuracao
     end
     object Panel_Tempo: TPanel
       Left = 124
-      Top = 0
+      Top = 2
       Width = 459
       Height = 30
       BevelOuter = bvNone
@@ -169,7 +167,10 @@ object Form_Configuracao: TForm_Configuracao
     Hint = 'Iniciar Lista'
     Anchors = [akRight, akBottom]
     Caption = 'Recarregar Script'
-    DoubleBuffered = True
+    ParentShowHint = False
+    ShowHint = True
+    TabOrder = 3
+    OnClick = BitBtn_RecarregarScriptClick
     Glyph.Data = {
       36030000424D3603000000000000360000002800000010000000100000000100
       1800000000000003000001000000010000000000000000000000FFFFFFFFFFFF
@@ -198,11 +199,6 @@ object Form_Configuracao: TForm_Configuracao
       21FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
       FFFFFFFFFFFFFFFF2B3066161425FFFFFFFFFFFFFFFFFFFFFFFF}
     Layout = blGlyphRight
-    ParentDoubleBuffered = False
-    ParentShowHint = False
-    ShowHint = True
-    TabOrder = 3
-    OnClick = BitBtn_RecarregarScriptClick
   end
   object edtDirMidia: TLabeledEdit
     Left = 6
@@ -255,7 +251,7 @@ object Form_Configuracao: TForm_Configuracao
     Top = 86
     Width = 623
     Height = 214
-    ActivePage = TabSheet_Playlist
+    ActivePage = TabSheet_Configuracoes
     Anchors = [akLeft, akTop, akBottom]
     TabOrder = 6
     object TabSheet_Playlist: TTabSheet
@@ -283,7 +279,8 @@ object Form_Configuracao: TForm_Configuracao
         Top = 161
         Width = 25
         Height = 25
-        DoubleBuffered = True
+        TabOrder = 1
+        Visible = False
         Glyph.Data = {
           36030000424D3603000000000000360000002800000010000000100000000100
           1800000000000003000001000000010000000000000000000000FFFFFFFFFFFF
@@ -311,16 +308,14 @@ object Form_Configuracao: TForm_Configuracao
           FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
           FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
           FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF}
-        ParentDoubleBuffered = False
-        TabOrder = 1
-        Visible = False
       end
       object BitBtn_MoverAcima: TBitBtn
         Left = 590
         Top = 0
         Width = 25
         Height = 25
-        DoubleBuffered = True
+        TabOrder = 2
+        Visible = False
         Glyph.Data = {
           36030000424D3603000000000000360000002800000010000000100000000100
           1800000000000003000001000000010000000000000000000000FFFFFFFFFFFF
@@ -348,18 +343,11 @@ object Form_Configuracao: TForm_Configuracao
           FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
           FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
           FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF}
-        ParentDoubleBuffered = False
-        TabOrder = 2
-        Visible = False
       end
     end
     object TabSheet_Configuracoes: TTabSheet
       Caption = 'Lista de reprodu'#231#227'o (c'#243'digo-fonte)'
       ImageIndex = 1
-      ExplicitLeft = -68
-      ExplicitTop = 33
-      ExplicitWidth = 467
-      ExplicitHeight = 165
       object Memo_Configuracoes: TMemo
         Left = 0
         Top = 0
@@ -367,10 +355,6 @@ object Form_Configuracao: TForm_Configuracao
         Height = 186
         Align = alClient
         TabOrder = 0
-        ExplicitLeft = 226
-        ExplicitTop = -27
-        ExplicitWidth = 241
-        ExplicitHeight = 192
       end
     end
   end
