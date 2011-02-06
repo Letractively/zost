@@ -33,6 +33,7 @@ requires
   vclimg;
 
 contains
+  ZTO.Win32.Rtl.Common.DateUtils in '..\SRC\Win32\rtl\common\ZTO.Win32.Rtl.Common.DateUtils.pas',
   ZTO.Win32.Rtl.Common.FileUtils in '..\SRC\Win32\rtl\common\ZTO.Win32.Rtl.Common.FileUtils.pas',
   ZTO.Win32.Rtl.Common.Classes in '..\SRC\Win32\rtl\common\ZTO.Win32.Rtl.Common.Classes.pas',
   ZTO.Win32.Rtl.Common.ComponentUtils in '..\SRC\Win32\rtl\common\ZTO.Win32.Rtl.Common.ComponentUtils.pas',
