@@ -33,6 +33,7 @@ function SecondsBetween(const aNow, aThen: TDateTime): Int64;
 function MinutesBetween(const aNow, aThen: TDateTime): Int64;
 function HoursBetween(const aNow, aThen: TDateTime): Int64;
 function DaysBetween(const aNow, aThen: TDateTime): Integer;
+function DecodeDateDiff(aStartDateTime, aFinishDateTime: TDateTime): TDecodedDateDiff;
 
 implementation
 
