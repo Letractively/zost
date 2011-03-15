@@ -1,9 +1,0 @@
-<?xml version="1.0"?>
-<TgConfig Version="3" SubLevelDisabled="False">
-  <Option Name="namespaceFolder.BancoDeInformacoes" Type="System.String" Value="" IsBrowsable="False" />
-  <Option Name="namespaceFolder.UBDIDataModule" Type="System.String" Value="" IsBrowsable="False" />
-  <Option Name="namespaceFolder.UBDIDataModule_Main" Type="System.String" Value="" IsBrowsable="False" />
-  <Option Name="namespaceFolder.UBDIForm_Main" Type="System.String" Value="" IsBrowsable="False" />
-  <Option Name="namespaceFolder.UBDITypesConstantsAndClasses" Type="System.String" Value="" IsBrowsable="False" />
-  <Option Name="namespaceFolder.UBDIForm_Splash" Type="System.String" Value="" IsBrowsable="False" />
-</TgConfig>
