@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<nodeSet>
-  <view uin="syi8p3l9n_v">
-    <property name="$defaultDiagram" value="true" />
-    <property name="$metaclass" value="Package Diagram" />
-    <property name="$name" value="default" />
-  </view>
-</nodeSet>
