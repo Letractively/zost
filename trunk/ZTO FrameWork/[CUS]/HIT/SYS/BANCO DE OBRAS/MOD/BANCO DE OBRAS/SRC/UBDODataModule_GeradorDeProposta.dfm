@@ -1,0 +1,2 @@
+inherited BDODataModule_GeradorDeProposta: TBDODataModule_GeradorDeProposta
+end

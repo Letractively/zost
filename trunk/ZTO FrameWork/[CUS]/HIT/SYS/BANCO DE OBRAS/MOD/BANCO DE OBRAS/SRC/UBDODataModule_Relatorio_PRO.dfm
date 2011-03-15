@@ -1,0 +1,2 @@
+inherited BDODataModule_Relatorio_PRO: TBDODataModule_Relatorio_PRO
+end

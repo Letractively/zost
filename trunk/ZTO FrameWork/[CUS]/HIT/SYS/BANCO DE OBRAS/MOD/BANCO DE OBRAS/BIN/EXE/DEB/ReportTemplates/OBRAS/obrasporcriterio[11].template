@@ -1,0 +1,5 @@
+						<TR>
+							<TD STYLE="padding-left: 6mm"><%>SITUACAO<%></TD>
+<%>QTDSITUACAO<%>
+<%>VALSITUACAO<%>
+						</TR>

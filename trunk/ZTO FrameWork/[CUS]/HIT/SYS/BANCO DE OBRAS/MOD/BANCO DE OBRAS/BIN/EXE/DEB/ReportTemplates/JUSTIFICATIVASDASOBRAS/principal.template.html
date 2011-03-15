@@ -1,0 +1,152 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+	<HEAD>
+		<TITLE>[%]CRITERIO1[%]</TITLE>
+		<META NAME="description" CONTENT="Relatório de justificativas das obras de acordo com um determinado critério exibindo a quantidade total de cada justificativa dentro do dado critério">
+		<META NAME="keywords" CONTENT="hitachi, obras, propostas, ítens, famílias, ar condicionado">
+		<STYLE>
+			tr.cor {
+				background-color: #C0C0C0;
+			}
+			div.linhasup {
+				border-bottom: 2px solid navy;
+				margin-bottom: 0.3cm;
+				margin-top: 0.1cm;
+			}
+			div.linhainf {
+				border-bottom: 2px solid navy;
+			}
+			td.linhadivisoria {
+				border-top: 2px solid navy;
+				border-left: 1px solid #FFFFFF;
+				border-right: 1px solid #FFFFFF;
+			}
+			body {
+				margin: 0.5cm;
+				font: normal 12px Arial, Helvetica, sans-serif;
+				text-align: justify;
+				background-image: url("");
+			}
+			div.rodapeinf {
+				color: Black;
+				text-align: center;
+				font: bold 9px Arial, Helvetica, sans-serif;
+			}
+			div.rodapesup {
+				color: Black;
+				text-align: center;
+				font: bold 9px Arial, Helvetica, sans-serif;
+				margin-top: 0.3cm;
+			}
+			div.titulo {
+				text-align: center;
+				font-size: 18px;
+				margin-bottom: 0.3cm;
+			}
+			table.tabelaprincipal {
+				font-size: 12px;
+				font-family: Arial, Helvetica, sans-serif;
+				margin: 0cm 0cm 0.5cm 0cm;
+				/*border: 1px dotted #000000;*/
+				background-color: #FFFFFF;
+			}
+			td.paddings {
+				padding: 2px;
+			}
+			tr.sumario {
+				font-weight: bold;
+				border-top: 1px solid #FFFFFF;
+				border-left: 1px solid #FFFFFF;
+				border-bottom: 1px solid #FFFFFF;
+			}
+			/* ============================================================= */
+			tr.cabecalhocriteriodavez {
+				font-weight: bold;
+				background-color: #FFFFFF;
+				color: #000000;
+				font-size: 16px;
+				font-style: italic;
+			}
+			tr.cabecalhojustificativas {
+				font-weight: bold;
+				background-color: navy;
+				color: white;
+			}
+			td.linhaseparadora {
+				border-left: 1px solid white;
+				border-right: 1px solid white;
+			}
+			</STYLE>
+	</HEAD>
+	<BODY>
+		<IMG SRC="./RECURSOS/hlogo2.gif" ALT="Hitachi Ar Condicionado" WIDTH="184" HEIGHT="47" BORDER="0" ALIGN="top">
+		<DIV CLASS="linhasup"></DIV>
+		<DIV CLASS="titulo">[%]CRITERIO2[%]</DIV>
+        <DIV CLASS="titulo">[%]PERIODO[%]</DIV>
+		<!-- Conteúdo variável - INÍCIO ============================================================================================ -->
+
+		<TABLE WIDTH="100%" CELLSPACING="0" CELLPADDING="0" RULES="all" BORDER="0" CLASS="tabelaprincipal">
+[%]LISTAGEM[%]
+[%]SUMARIOGERAL[%]
+		
+<!--
+			<TR CLASS="cabecalhocriteriodavez">
+				<TD COLSPAN="3" CLASS="paddings" STYLE="border-top: 1px solid #FFFFFF; border-left: 1px solid #FFFFFF; border-right: 1px solid #FFFFFF">[%]CRITERIO_DA_VEZ[%]</TD>
+			</TR>
+			<TR CLASS="cabecalhojustificativas">
+				<TD WIDTH="150" CLASS="paddings">Categoria</TD>
+				<TD CLASS="paddings" STYLE="border: 1px dotted #FFFFFF; border-right: 1px dotted #FFFFFF">Justificativa</TD>
+				<TD WIDTH="150" ALIGN="center" CLASS="paddings">Quantidade</TD>
+			</TR>
+			<TR>
+				<TD WIDTH="150" CLASS="paddings">[%]CAT[%]</TD>
+				<TD CLASS="paddings" STYLE="border-left: 1px dotted #000000; border-right: 1px dotted #000000">[%]JUSTIFICATIVA[%]</TD>
+				<TD WIDTH="150" ALIGN="center" CLASS="paddings">[%]QTD[%]</TD>
+			</TR>
+			<TR class="cor">
+				<TD WIDTH="150" CLASS="paddings">[%]CAT[%]</TD>
+				<TD CLASS="paddings">[%]JUSTIFICATIVA[%]</TD>
+				<TD WIDTH="150" ALIGN="center" CLASS="paddings">[%]QTD[%]</TD>
+			</TR>
+
+			<TR><TD COLSPAN="3" STYLE="border-left: 1px solid #FFFFFF; border-right: 1px solid #FFFFFF">&nbsp;</TD></TR>
+			<TR CLASS="sumario">
+				<TD COLSPAN="2" ALIGN="right" CLASS="paddings">JUSTIFICATIVAS COMERCIAIS</TD>
+				<TD WIDTH="150" ALIGN="center" CLASS="paddings" STYLE="color: #FFFFFF; background-color: navy">[%]QTDPARCOM[%]</TD>
+			</TR>
+			<TR CLASS="sumario">
+				<TD COLSPAN="2" ALIGN="right" CLASS="paddings">JUSTIFICATIVAS TÉCNICAS</TD>
+				<TD WIDTH="150" ALIGN="center" CLASS="paddings" STYLE="color: #FFFFFF; background-color: navy">[%]QTDPARCTEC[%]</TD>
+			</TR>
+			<TR CLASS="sumario">
+				<TD COLSPAN="2" ALIGN="right" CLASS="paddings">TOTAL DE JUSTIFICATIVAS</TD>
+				<TD WIDTH="150" ALIGN="center" CLASS="paddings" STYLE="color: #FFFFFF; background-color: navy">[%]QTDPARCTOT[%]</TD>
+			</TR>
+			
+			<TR><TD COLSPAN="3" STYLE="border-left: 1px solid #FFFFFF; border-right: 1px solid #FFFFFF">&nbsp;</TD></TR>
+
+
+
+			<TR><TD COLSPAN="3" CLASS="linhadivisoria">&nbsp;</TD></TR>
+			<TR CLASS="sumario">
+				<TD COLSPAN="2" ALIGN="right" CLASS="paddings">TOTAL DE JUSTIFICATIVAS COMERCIAIS</TD>
+				<TD ALIGN="center" CLASS="paddings" STYLE="color: #FFFFFF; background-color: navy">[%]QTDTOTCOM[%]</TD>
+			</TR>
+			<TR CLASS="sumario">
+				<TD COLSPAN="2" ALIGN="right" CLASS="paddings">TOTAL DE JUSTIFICATIVAS TÉCNICAS</TD>
+				<TD ALIGN="center" CLASS="paddings" STYLE="color: #FFFFFF; background-color: navy">[%]QTDTOTTEC[%]</TD>
+			</TR>
+-->
+		</TABLE>
+
+
+
+
+
+
+		<!-- Conteúdo variável - FIM =============================================================================================== -->
+		<DIV CLASS="rodapesup">[%]PRIMEIRORODAPE[%]</DIV>
+		<DIV CLASS="linhainf"></DIV>
+		<DIV CLASS="rodapeinf">[%]SEGUNDORODAPE[%]</DIV>
+	</BODY>
+</HTML>

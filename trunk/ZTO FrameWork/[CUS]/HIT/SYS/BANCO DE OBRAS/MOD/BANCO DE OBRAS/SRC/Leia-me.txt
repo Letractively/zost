@@ -1,0 +1,3 @@
+O arquivo "BDOForm_DialogTemplate" é uma caixa de diálogo herdada do padrão do
+Framework. A partir desta caixa todas as outras caixas de diálogo deveriam ser
+herdadas. Seria o padrão da nossa aplicação. Um dia faça isso!

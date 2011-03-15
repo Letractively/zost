@@ -1,0 +1,8 @@
+			<TR <%>LINHACOR<%>>
+				<TD ALIGN="center"><%>CODIGO<%></TD>
+				<TD ALIGN="center"><a href="@[%]IN_PROPOSTAS_ID[%]"><%>OBRA<%></A></TD>
+[%]EXIBIRINSTALADOR[%]
+[%]EXIBIRSITUACAO[%]
+				<TD ALIGN="center"><%>LOCALIDADE<%></TD>
+<%>EXIBIRVALOR<%>
+			</TR>

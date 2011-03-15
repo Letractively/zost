@@ -1,0 +1,189 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+	<HEAD>
+		<TITLE>Relatório de equipamentos por [%]CRITERIO[%]</TITLE>
+		<META NAME="description" CONTENT="Relatório de equipamentos de acordo com um determinado critério exibindo a quantidade total de cada equipamento dento do dado critério">
+		<META NAME="keywords" CONTENT="hitachi, obras, propostas, ítens, famílias, ar condicionado">
+		<STYLE>
+			div.linhasup {
+				border-bottom: 2px solid navy;
+				margin-bottom: 0.3cm;
+				margin-top: 0.1cm;
+			}
+			div.linhainf {
+				border-bottom: 2px solid navy;
+			}
+			body {
+				margin: 0.5cm; 
+				font: normal 12px Arial, Helvetica, sans-serif;
+				text-align: justify;
+                background-image: url("");
+			}
+			div.rodapeinf {
+				color: Black;
+				text-align: center;
+				font: bold 9px Arial, Helvetica, sans-serif;
+			} 
+			div.rodapesup {
+				color: Black;
+				text-align: center;
+				font: bold 9px Arial, Helvetica, sans-serif;
+				margin-top: 0.3cm;		
+			}
+            div.titulo {
+                text-align: center;
+                font-size: 18px;
+                margin-bottom: 0.3cm;
+            }
+			table.tabeladeequipamentos {
+				font-size: 12px;
+				font-family: Arial, Helvetica, sans-serif;
+				margin: 0cm 0cm 0.5cm 0cm;
+				border: 1px dotted #000000;		
+				background-color: #FFFFFF;
+			}
+			tr.linhacor {
+				background-color: #C0C0C0;
+			}
+			tr.cabecalhosituacao {
+				font-weight: bold; 
+				background-color: navy; 
+				color: white;
+				font-size: 16px;
+				font-style: italic;
+			}
+			tr.cabecalhovoltagem {
+				font-weight: bold; 
+				background-color: #C0C8FF;
+				color: black;
+				font-size: 14px;
+                text-align: center;
+			}
+            tr.cabecalhoequipamento {
+				font-weight: bold; 
+				background-color: navy; 
+				color: white;
+            }
+            tr.linhaseparadora {
+                border-left: 1px solid white;
+                border-right: 1px solid white;
+                height: 30px;
+            }
+            tr.linhasumarioparcial {
+				font-weight: bold; 
+				color: white;
+            }
+            td.sumarioparcial2 {
+                background-color: navy;
+                border-right: 1px dotted red;
+                border-bottom: 1px dotted black;
+            }
+            td.sumarioparcial1 {
+                text-align: right;
+                padding: 2px;
+                font-weight: bold;
+                color: Black;
+                border-left: 1px solid white;
+                border-bottom: 1px solid white;
+            }
+            td.linhasumarioparcialtotal1 {
+                text-align: right;
+                border: 1px solid white;
+                border-right: 1px dotted black;
+                padding: 2px;
+                font-weight: bold; 
+                font-size: 14px;
+            }
+            td.linhasumarioparcialtotal2 {
+                background-color: navy;
+                color: white;
+                text-align: center;
+                font-weight: bold; 
+                border: 1px dotted black;
+                font-size: 14px;
+            }
+            tr.linhaseparadorasumarioparcialtotal {
+                height: 10px;
+                border-right: 1px solid white;
+                border-left: 1px solid white;
+            }
+
+            td.linhasumariototal1 {
+                text-align: right;
+                border: 1px solid white;
+                border-right: 1px dotted black;
+                padding: 2px;
+                font-weight: bold; 
+                font-size: 14px;
+            }
+            td.linhasumariototal2 {
+                background-color: navy;
+                color: white;
+                text-align: center;
+                font-weight: bold; 
+                border: 1px dotted black;
+                font-size: 14px;
+            }
+
+            </STYLE>
+	</HEAD>
+	<BODY>
+		<IMG SRC="RECURSOS/hlogo2.gif" ALT="Hitachi Ar Condicionado" WIDTH="184" HEIGHT="47" BORDER="0" ALIGN="top">
+		<DIV CLASS="linhasup"></DIV>
+		<DIV CLASS="titulo">RELATÓRIO DE EQUIPAMENTOS POR "<I STYLE="TEXT-TRANSFORM: uppercase"><B>[%]CRITERIO[%]</B></I>"</DIV>
+        <DIV CLASS="titulo">[%]PERIODO[%]</DIV>
+		<!-- Conteúdo variável - INÍCIO ============================================================================================ -->
+		<TABLE WIDTH="100%" CELLSPACING="0" CELLPADDING="0" RULES="all" [%]COLS[%] CLASS="tabeladeequipamentos">
+[%]CONTEUDODALISTAGEM[%]
+<!--
+			<TR CLASS="cabecalhosituacao">
+				<TD COLSPAN="3" STYLE="color: #000000; padding: 2px; background-color: #C0C8FF">[%]MESANO[%]</TD>
+			</TR>
+			<TR class="cabecalhoequipamento">
+				<TD STYLE="padding: 2px">Equipamento</TD>
+				<TD width="75" align="center">Voltagem</TD>
+				<TD width="150" align="center">Quantidade</TD>
+			</TR>
+			<TR>
+				<TD STYLE="padding: 2px">XXXXXXXX</TD>
+				<TD width="75" align="center">XXXXXXX</TD>
+				<TD width="150" align="center">XXXXXXX</TD>
+			</TR>
+			<TR class="linhacor">
+				<TD STYLE="padding: 2px">XXXXXXXX</TD>
+				<TD width="75" align="center">XXXXXXX</TD>
+				<TD width="150" align="center">XXXXXXX</TD>
+			</TR>
+
+			<TR CLASS="linhasumarioparcial">
+				<TD COLSPAN="2" CLASS="sumarioparcial1">&nbsp;</TD>
+				<TD CLASS="sumarioparcial2" width="150" align="center" STYLE="padding: 2px">XXXXXXX</TD>
+			</TR>
+
+			<TR CLASS="linhaseparadorasumarioparcialtotal">
+				<TD COLSPAN="3"></TD>
+			</TR>
+
+			<TR>
+				<TD CLASS="linhasumarioparcialtotal1" COLSPAN="2">TOTAL DE EQUIPAMENTOS PREVISTOS PARA ENTREGA EM [%]MESANO[%]</TD>
+				<TD CLASS="linhasumarioparcialtotal2" width="150" align="center">[%]QUANTIDADE[%]</TD>
+			</TR>
+
+			<TR CLASS="linhaseparadora">
+				<TD COLSPAN="3"><HR SIZE="2" noshade></TD>
+			</TR>
+
+			<TR>
+				<TD COLSPAN="2" CLASS="linhasumariototal1">TOTAL DE EQUIPAMENTOS LISTADOS</TD>
+				<TD CLASS="linhasumariototal2" width="150" align="center">XXXXXXX</TD>
+			</TR>
+-->
+		</TABLE>
+
+
+		<!-- Conteúdo variável - FIM =============================================================================================== -->
+		<DIV CLASS="rodapesup">[%]PRIMEIRORODAPE[%]</DIV>
+		<DIV CLASS="linhainf"></DIV>
+		<DIV CLASS="rodapeinf">[%]SEGUNDORODAPE[%]</DIV>
+	</BODY>
+</HTML>

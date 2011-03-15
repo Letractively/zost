@@ -1,0 +1,61 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+	<HEAD>
+		<TITLE>Relatório de famílias de equipamentos por <%>CRITERIO<%></TITLE>
+		<META NAME="description" CONTENT="Relatório de famílias de acordo com um determinado critério exibindo o valor total de cada família vendida dentro do critério">
+		<META NAME="generator" CONTENT="Macromedia HomeSite 5.0">
+		<META NAME="keywords" CONTENT="hitachi, obras, propostas, ítens, famílias, ar condicionado">
+		<STYLE>
+			div.linhasup {
+				border-bottom: 2px solid navy;
+				margin-bottom: 0.3cm;
+				margin-top: 0.1cm;
+			}
+			div.linhainf {
+				border-bottom: 2px solid navy;
+			}
+			body {
+				margin: 0.5cm; 
+				font: normal 12px Arial, Helvetica, sans-serif;
+				text-align: justify;
+			}
+			div.rodapeinf {
+				color: Black;
+				text-align: center;
+				font: bold 9px Arial, Helvetica, sans-serif;
+			} 
+			div.rodapesup {
+				color: Black;
+				text-align: center;
+				font: bold 9px Arial, Helvetica, sans-serif;
+				margin-top: 0.3cm;		
+			}
+			table.tabeladefamilias {
+				font-size: 12px;
+				font-family: Arial, Helvetica, sans-serif;
+				margin: 0cm 0cm 0.5cm 0cm;
+				background-color: #FFFFFF;
+			}
+			tr.linhacor {
+				background-color: #C0C0C0;
+			}
+			tr.linhacabecalho {
+				font-weight: bold; 
+				background-color: navy; 
+				color: white;
+			}
+		</STYLE>
+	</HEAD>
+	<BODY>
+		<IMG SRC="RECURSOS/hlogo2.gif" ALT="Hitachi Ar Condicionado" WIDTH="184" HEIGHT="47" BORDER="0" ALIGN="top">
+		<DIV CLASS="linhasup"></DIV>
+		<!-- Conteúdo variável - INÍCIO ============================================================================================ -->
+		<DIV ALIGN="center" STYLE="font-size: 18px; margin-bottom: 0.3cm;">RELATÓRIO DE FAMÍLIAS DE EQUIPAMENTOS POR "<I STYLE="text-transform: uppercase;"><B><%>CRITERIO<%></B></I>"</DIV>
+<%>ITENS<%>
+[%]SUMARIO[%]
+		<!-- Conteúdo variável - FIM =============================================================================================== -->
+		<DIV CLASS="rodapesup"><%>PRIMEIRORODAPE<%></DIV>
+		<DIV CLASS="linhainf"></DIV>
+		<DIV CLASS="rodapeinf"><%>SEGUNDORODAPE<%></DIV>
+	</BODY>
+</HTML>

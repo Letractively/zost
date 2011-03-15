@@ -1,0 +1,1 @@
+Nesta pasta podem ser colocadas imagens adicionais que podem ser exibidas em alguns relatórios.
