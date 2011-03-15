@@ -1,0 +1,979 @@
+
+unit UConfiguracoes1;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, ExtCtrls, ComCtrls, StdCtrls, Buttons, Menus, XPMan, IniFiles, Registry,
+  jpeg, AppEvnts, ShellApi, ImgList, NotifyIcon, OleCtrls, SHDocVw, HTTPApp,
+  IdBaseComponent, IdComponent, IdTCPConnection, IdTCPClient, IdHTTP, Spin;
+  
+const WM_ICONTRAY = WM_USER + 1;
+      CST_VARIAVEL_VALOR_URL = '<%VALOR_DA_URL%>';
+      CST_VARIAVEL_RETURN = '<%RETURN%>';
+
+type
+  TMyTransparentPanel = class(TPanel)
+  protected
+    procedure CreateParams(var Params: TCreateParams); override;
+    procedure Paint; override;
+  end;
+
+type
+  TFRConfiguracoesGerais = class(TForm)
+    TMTempo: TTimer;
+    Panel1: TPanel;
+    Panel2: TPanel;
+    PCConfiguracoes: TPageControl;
+    TSGeral: TTabSheet;
+    TSTemplates: TTabSheet;
+    BTGravar: TBitBtn;
+    BTSair: TBitBtn;
+    TSPortaSerial: TTabSheet;
+    GroupBox1: TGroupBox;
+    GroupBox2: TGroupBox;
+    LEUrl: TLabeledEdit;
+    LEArquivoLog: TLabeledEdit;
+    CBIniciarComWindows: TCheckBox;
+    CBAtivarTimer: TCheckBox;
+    CBUsarValorPadrao: TCheckBox;
+    Image1: TImage;
+    PMSystray: TPopupMenu;
+    XPManifest1: TXPManifest;
+    Label1: TLabel;
+    Sair1: TMenuItem;
+    N1: TMenuItem;
+    Ativar1: TMenuItem;
+    Configuraes1: TMenuItem;
+    N2: TMenuItem;
+    CBAutoAtivar: TCheckBox;
+    LimparArquivodeLog1: TMenuItem;
+    N3: TMenuItem;
+    MMTemplateSaida: TMemo;
+    Label3: TLabel;
+    CXPortasCOM: TComboBox;
+    Label2: TLabel;
+    CXBitsPorSegundo: TComboBox;
+    CXBitsDeDados: TComboBox;
+    CXParidade: TComboBox;
+    CXBitsDeParada: TComboBox;
+    CXControleFluxo: TComboBox;
+    Label4: TLabel;
+    Label5: TLabel;
+    Label6: TLabel;
+    Label7: TLabel;
+    Label8: TLabel;
+    VisualizarArquivodeLog1: TMenuItem;
+    LECaractereInicial: TLabeledEdit;
+    UDCaracIni: TUpDown;
+    LECopiarQtdCaracteres: TLabeledEdit;
+    UDCopiaCarac: TUpDown;
+    LEValorPadrao: TMemo;
+    Label9: TLabel;
+    btTestar: TBitBtn;
+    TSVisualizarURL: TTabSheet;
+    ILMenuSystray: TImageList;
+    WBUrl: TWebBrowser;
+    CBEnviaPorSMS: TCheckBox;
+    tsSMS: TTabSheet;
+    GroupBox4: TGroupBox;
+    Label12: TLabel;
+    Label13: TLabel;
+    edDestinatario: TEdit;
+    GroupBox5: TGroupBox;
+    Label14: TLabel;
+    mmTemplateEnvio: TMemo;
+    GroupBox6: TGroupBox;
+    Label15: TLabel;
+    Label16: TLabel;
+    Label17: TLabel;
+    Label18: TLabel;
+    Label19: TLabel;
+    HTTPProxySMS: TIdHTTP;
+    tsProxy: TTabSheet;
+    edProxyServer: TLabeledEdit;
+    edProxyUser: TLabeledEdit;
+    edProxyPwd: TLabeledEdit;
+    CBUsaProxy: TCheckBox;
+    pmMinutos: TPopupMenu;
+    N3Horas1: TMenuItem;
+    N4Horas1: TMenuItem;
+    N5horas1: TMenuItem;
+    N6horas1: TMenuItem;
+    N10horas1: TMenuItem;
+    N12horas1: TMenuItem;
+    N16horas1: TMenuItem;
+    N18horas1: TMenuItem;
+    N24horas1: TMenuItem;
+    N4: TMenuItem;
+    N5: TMenuItem;
+    N48horas1: TMenuItem;
+    N36horas1: TMenuItem;
+    N72horas1: TMenuItem;
+    LETempo: TSpinEdit;
+    GroupBox3: TGroupBox;
+    Label10: TLabel;
+    Label11: TLabel;
+    edAccount: TEdit;
+    edCode: TEdit;
+    edProxyPort: TSpinEdit;
+    Label20: TLabel;
+    LEUrlPooling: TLabeledEdit;
+    tsSobre: TTabSheet;
+    MMSobre: TMemo;
+    procedure BTSairClick(Sender: TObject);
+    procedure Sair1Click(Sender: TObject);
+    procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
+    procedure UDTempoChanging(Sender: TObject; var AllowChange: Boolean);
+    procedure FormCreate(Sender: TObject);
+    procedure BTGravarClick(Sender: TObject);
+    procedure Configuraes1Click(Sender: TObject);
+    procedure LimparArquivodeLog1Click(Sender: TObject);
+    procedure Ativar1Click(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
+    procedure VisualizarArquivodeLog1Click(Sender: TObject);
+    procedure TMTempoTimer(Sender: TObject);
+    procedure UDCaracIniChanging(Sender: TObject; var AllowChange: Boolean);
+    procedure UDCopiaCaracChanging(Sender: TObject; var AllowChange: Boolean);
+    procedure CBAtivarTimerClick(Sender: TObject);
+    procedure btTestarClick(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure Label9MouseMove(Sender: TObject; Shift: TShiftState; X,
+      Y: Integer);
+    procedure N3Horas1Click(Sender: TObject);
+    procedure N4Horas1Click(Sender: TObject);
+    procedure N5horas1Click(Sender: TObject);
+    procedure N6horas1Click(Sender: TObject);
+    procedure N10horas1Click(Sender: TObject);
+    procedure N12horas1Click(Sender: TObject);
+    procedure N16horas1Click(Sender: TObject);
+    procedure N18horas1Click(Sender: TObject);
+    procedure N24horas1Click(Sender: TObject);
+    procedure N36horas1Click(Sender: TObject);
+    procedure N48horas1Click(Sender: TObject);
+    procedure N72horas1Click(Sender: TObject);
+  private
+    TrayIconData: TNotifyIconData;
+    boIconAdded : Boolean;
+    procedure p_CarregaGUIDeINI(const ArquivoINI: TINIFile);
+    procedure p_SalvaGUIparaINI(const ArquivoINI: TINIFile);
+    procedure p_ApagaDaInicializacaoWindows;
+    procedure p_ApagaRegistro(Raiz: HKEY; Chave, Valor: string);
+    procedure p_GravaNaInicializacaoWindows;
+    procedure p_GravaRegistro(Raiz: HKEY; Chave, Valor, Endereco: string);
+    procedure p_GeraTextoLog(const msglog: string);
+    procedure p_CarregaListaPortasCOM;
+    procedure p_IniciaPainel;
+    procedure p_SendToolTipToTrayIcon(const text, caption: string; const iconFlag, time: integer);
+    procedure p_ShowValorPadraoBalloonTip;
+    procedure p_AtivaDesativaPainel;
+    procedure p_poeicone(icon: TIcon);
+    procedure p_VisualizaURL(const url: string);
+    function EnviaMsg(Msg: String): String;
+    function FormataTxtMensagem(mensagem: string): String;
+    function RetornaMinutoDeHoras(value: integer): Integer;
+    { Private declarations }
+  public
+    { Public declarations }
+    procedure TrayMessage(var Msg: TMessage); message WM_ICONTRAY;
+  end;
+
+var
+  FRConfiguracoesGerais: TFRConfiguracoesGerais;
+  ArquivoINI : TINIFile;
+  Log: TStringList;
+  PanelSobre: TMyTransparentPanel;
+
+implementation
+
+uses
+	UGetURLResponse, USendStringToComPort;
+
+{$R *.dfm}
+
+procedure TFRConfiguracoesGerais.Ativar1Click(Sender: TObject);
+begin
+  p_AtivaDesativaPainel;
+end;
+
+procedure TFRConfiguracoesGerais.BTGravarClick(Sender: TObject);
+begin
+  ArquivoINI := TINIFile.Create(ExtractFileDir(application.ExeName)+'\Config.ini');
+  try
+    p_SalvaGUIparaINI(ArquivoINI);
+//     p_GeraTextoLog('Configurações do painel SMM foram salvas em '+ExtractFileDir(application.ExeName)+'\Config.ini');
+//     p_SendToolTipToTrayIcon('As configurações do Painel SMM foram atualizadas!','Informação:',1,2000);     
+  finally
+    ArquivoINI.Free;
+  end;
+end;
+
+procedure TFRConfiguracoesGerais.BTSairClick(Sender: TObject);
+begin
+  self.Hide
+end;
+
+procedure TFRConfiguracoesGerais.btTestarClick(Sender: TObject);
+var valorAux: String;
+begin
+  if Application.MessageBox(PAnsiChar('Deseja Realmente fazer o teste da URL: "'+LEUrl.text+'"?'+
+                                      #13#10+'Esta operação irá atualizar o valor Padrão...'+
+                                      #13#10+'Deseja Continuar assim mesmo?'),
+                            'Confirmação...',
+                            MB_YESNO + MB_DEFBUTTON2)=IDYES Then
+    try
+      if TRIM(LEUrl.Text) <> '' then
+        valorAux := GetURLResponse(LEUrl.Text)
+      else
+        valorAux := '';
+
+      p_VisualizaURL(LEUrl.Text);
+
+      if TRIM(valorAux) <> '' then
+      begin
+
+        LEValorPadrao.Text := ValorAux;
+
+        p_GeraTextoLog('Valor da URL "'+LEUrl.Text+'" atualizou por teste o valor padrão para: '+Copy(LEValorPadrao.Text,StrToInt(LECaractereInicial.Text), StrToInt(LECopiarQtdCaracteres.Text)));
+        p_SendToolTipToTrayIcon('Teste da URL efetuado com sucesso!','Informação:',1,2000);
+        ShowMessage('Teste da URL "'+LEUrl.Text+'" atualizou valor padrão com sucesso...');
+      
+      end else begin
+         p_SendToolTipToTrayIcon('Teste da URL não obteve sucesso!','Aviso:',2,2000);
+         ShowMessage('A URL "'+LEUrl.Text+'" retornou valor vazio no teste...');
+      end;
+
+    Except
+        on E: Exception do
+        begin
+          p_SendToolTipToTrayIcon('Teste da URL efetuado sem sucesso!','Informação:',1,2000);
+          ShowMessage('Falha ao pegar valor na URL: "'+LEUrl.Text+'"...');
+        end;
+    end;
+
+end;
+
+procedure TFRConfiguracoesGerais.CBAtivarTimerClick(Sender: TObject);
+begin
+  if CBAtivarTimer.Checked then
+  begin
+    LETempo.Enabled:= true;
+    //UDTempo.Enabled:= true;
+  end else begin
+    LETempo.Enabled:= false;
+    //UDTempo.Enabled:= false;
+  end;
+end;
+
+procedure TFRConfiguracoesGerais.Configuraes1Click(Sender: TObject);
+begin
+  self.Show;
+end;
+
+procedure TFRConfiguracoesGerais.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
+begin
+canclose:=false;
+BTSair.click;
+end;
+
+procedure TFRConfiguracoesGerais.p_poeicone(icon: TIcon);
+begin
+  with TrayIconData do
+  begin
+    cbSize := SizeOf(TrayIconData);
+    Wnd := Handle;
+    uID := 0;
+    uFlags := NIF_MESSAGE + NIF_ICON + NIF_TIP;
+    uCallbackMessage := WM_ICONTRAY;
+    hIcon := icon.handle;
+    StrPCopy(szTip, Application.Title);
+  end;
+
+  if ( Shell_NotifyIcon(NIM_ADD, @TrayIconData) ) then
+    boIconAdded := True;
+
+  Shell_NotifyIcon(NIM_MODIFY, @TrayIconData);
+end;
+
+
+procedure TFRConfiguracoesGerais.FormCreate(Sender: TObject);
+begin
+  p_poeicone(Application.icon);
+
+  p_CarregaListaPortasCOM;
+  ArquivoINI:= TINIFile.Create(ExtractFileDir(application.ExeName)+'\Config.ini');
+  Log:= TStringList.create;
+  try
+
+    p_CarregaGUIDeINI(ArquivoINI);
+
+    PanelSobre:= TMyTransparentPanel.Create(self);
+    PanelSobre.Parent:=TsSobre;
+    PanelSobre.Align:= alClient;
+
+    if not FileExists(ExtractFileDir(application.ExeName)+'\Config.ini') then
+      self.show;
+
+  finally
+    ArquivoINI.free;
+    p_SendToolTipToTrayIcon('O Painel SMM foi iniciado!','Informação:',1,2000);
+    if Ativar1.Checked then
+      p_AtivaDesativaPainel;
+  end;
+end;
+
+procedure TFRConfiguracoesGerais.FormDestroy(Sender: TObject);
+begin
+  Shell_NotifyIcon(NIM_DELETE, @TrayIconData);
+end;
+
+procedure TFRConfiguracoesGerais.FormShow(Sender: TObject);
+begin
+  PCConfiguracoes.TabIndex:=0;
+  if (WBUrl.LocationURL = '') and (FRConfiguracoesGerais.Visible) then
+    p_VisualizaURL(LEUrl.Text);
+end;
+
+procedure TFRConfiguracoesGerais.Label9MouseMove(Sender: TObject;
+  Shift: TShiftState; X, Y: Integer);
+begin
+  p_ShowValorPadraoBalloonTip;
+end;
+
+procedure TFRConfiguracoesGerais.LimparArquivodeLog1Click(Sender: TObject);
+begin
+  if FileExists(LEArquivoLog.Text) then
+  begin
+    if Application.MessageBox('Tem certeza que deseja limpar o arquivo de log?',
+                              'Confirmação...',
+                              MB_YESNO + MB_DEFBUTTON2)=IDYES Then
+    begin
+      Log.Clear;
+      Log.SaveToFile(LEArquivoLog.Text);
+      p_SendToolTipToTrayIcon('Arquivo de Log está limpo!','Aviso:',2,2000);
+    end;
+  end;
+end;
+
+function TFRConfiguracoesGerais.RetornaMinutoDeHoras(value: integer): Integer;
+begin
+    result:= value * 60 * 60;
+end;
+
+procedure TFRConfiguracoesGerais.N10horas1Click(Sender: TObject);
+begin
+LETempo.Text := IntToStr(RetornaMinutoDeHoras(10));
+end;
+
+procedure TFRConfiguracoesGerais.N12horas1Click(Sender: TObject);
+begin
+LETempo.Text := IntToStr(RetornaMinutoDeHoras(12));
+end;
+
+procedure TFRConfiguracoesGerais.N16horas1Click(Sender: TObject);
+begin
+LETempo.Text := IntToStr(RetornaMinutoDeHoras(16));
+end;
+
+procedure TFRConfiguracoesGerais.N18horas1Click(Sender: TObject);
+begin
+LETempo.Text := IntToStr(RetornaMinutoDeHoras(18));
+end;
+
+procedure TFRConfiguracoesGerais.N24horas1Click(Sender: TObject);
+begin
+LETempo.Text := IntToStr(RetornaMinutoDeHoras(24));
+end;
+
+procedure TFRConfiguracoesGerais.N36horas1Click(Sender: TObject);
+begin
+LETempo.Text := IntToStr(RetornaMinutoDeHoras(36));
+end;
+
+procedure TFRConfiguracoesGerais.N3Horas1Click(Sender: TObject);
+begin
+LETempo.Text := IntToStr(RetornaMinutoDeHoras(3));
+end;
+
+procedure TFRConfiguracoesGerais.N48horas1Click(Sender: TObject);
+begin
+LETempo.Text := IntToStr(RetornaMinutoDeHoras(48));
+end;
+
+procedure TFRConfiguracoesGerais.N4Horas1Click(Sender: TObject);
+begin
+LETempo.Text := IntToStr(RetornaMinutoDeHoras(4));
+end;
+
+procedure TFRConfiguracoesGerais.N5horas1Click(Sender: TObject);
+begin
+LETempo.Text := IntToStr(RetornaMinutoDeHoras(5));
+end;
+
+procedure TFRConfiguracoesGerais.N6horas1Click(Sender: TObject);
+begin
+LETempo.Text := IntToStr(RetornaMinutoDeHoras(6));
+end;
+
+procedure TFRConfiguracoesGerais.N72horas1Click(Sender: TObject);
+begin
+LETempo.Text := IntToStr(RetornaMinutoDeHoras(72));
+end;
+
+procedure TFRConfiguracoesGerais.Sair1Click(Sender: TObject);
+begin
+  if Application.MessageBox('Deseja Realmente Sair do Painel SMM?',
+                            'Confirmação...',
+                            MB_YESNO + MB_DEFBUTTON2)=IDYES Then
+    application.Terminate;
+end;
+
+procedure TFRConfiguracoesGerais.UDCaracIniChanging(Sender: TObject;
+  var AllowChange: Boolean);
+begin
+  LECaractereInicial.Text:=inttostr(UDCaracIni.Position);
+end;
+
+procedure TFRConfiguracoesGerais.UDCopiaCaracChanging(Sender: TObject;
+  var AllowChange: Boolean);
+begin
+  LECopiarQtdCaracteres.Text:=inttostr(UDCopiaCarac.Position);
+end;
+
+procedure TFRConfiguracoesGerais.UDTempoChanging(Sender: TObject; var AllowChange: Boolean);
+begin
+ // LETempo.Text:=inttostr(UDTempo.Position);
+end;
+
+procedure TFRConfiguracoesGerais.VisualizarArquivodeLog1Click(Sender: TObject);
+begin
+   if FileExists(LEArquivoLog.Text) then
+     WinExec(PChar('notepad.exe'+' "'+LeArquivoLog.text+'"'), SW_SHOWMAXIMIZED)
+   else
+     showmessage('Não existe arquivo de log criado!');
+end;
+
+procedure TFRConfiguracoesGerais.p_GravaRegistro(Raiz: HKEY; Chave, Valor,
+  Endereco: string);
+var
+  Registro: TRegistry;
+begin
+  Registro := TRegistry.Create(KEY_WRITE); // Chama o construtor do objeto
+  Registro.RootKey := Raiz; //Define a chave raiz
+  Registro.OpenKey(Chave, True); //Cria a chave
+  Registro.WriteString(Valor, '"' + Endereco + '"'); //Grava o endereço da sua aplicação no Registro
+  Registro.CloseKey; // Fecha a chave e o objeto
+  Registro.Free;
+end;
+
+procedure TFRConfiguracoesGerais.p_IniciaPainel;
+var valorAux, respostaSMS, valorPooling, urlPooling: String;
+    naoEnvia, soft, hard: boolean;
+begin
+  if Ativar1.Checked then
+  begin
+    // Pega valor na url
+    naoEnvia := False;
+    try
+      if TRIM(LEUrl.Text) <> '' then
+        valorAux := GetURLResponse(LEUrl.Text)
+      else
+        valorAux := '';
+
+      if TRIM(valorAux) <> '' then
+      begin
+        LEValorPadrao.Text := ValorAux;
+        p_GeraTextoLog('Valor da URL "'+LEUrl.Text+'" atualizou valor padrão para: '+Copy(LEValorPadrao.Text,StrToInt(LECaractereInicial.Text), StrToInt(LECopiarQtdCaracteres.Text)));
+        p_SendToolTipToTrayIcon('Valor da URL "'+LEUrl.Text+'" atualizou valor padrão para: '+Copy(LEValorPadrao.Text,StrToInt(LECaractereInicial.Text), StrToInt(LECopiarQtdCaracteres.Text)),'Informação:',1,2000);
+      end
+      else
+      begin
+        if CBUsarValorPadrao.Checked then
+        Begin
+          p_GeraTextoLog('A URL "'+LEUrl.Text+'" retornou valor vazio, usado valor padrão: '+Copy(LEValorPadrao.Text,StrToInt(LECaractereInicial.Text), StrToInt(LECopiarQtdCaracteres.Text)));
+          p_SendToolTipToTrayIcon('A URL "'+LEUrl.Text+'" retornou valor vazio, usado valor padrão: '+Copy(LEValorPadrao.Text,StrToInt(LECaractereInicial.Text), StrToInt(LECopiarQtdCaracteres.Text)),'Aviso:',2,2000)
+        End
+        else
+        begin
+          p_GeraTextoLog('A URL "'+LEUrl.Text+'" retornou valor vazio e não será enviado valor ao painel...');
+          naoEnvia := True;
+          p_SendToolTipToTrayIcon('A URL "'+LEUrl.Text+'" retornou valor vazio e não será enviado valor ao painel...','Erro:',3,2000);
+        end;
+      end;
+    except
+      on E: Exception do
+      begin
+        if CBUsarValorPadrao.Checked then
+        begin
+          p_GeraTextoLog('Falha ao pegar valor na URL: "'+LEUrl.Text+'". Foi utilizaado o valor padrão: '+Copy(LEValorPadrao.Text,StrToInt(LECaractereInicial.Text), StrToInt(LECopiarQtdCaracteres.Text)));
+          naoEnvia := False;
+          p_SendToolTipToTrayIcon('Falha ao pegar valor na URL: "'+LEUrl.Text+'". Foi utilizaado o valor padrão: '+Copy(LEValorPadrao.Text,StrToInt(LECaractereInicial.Text), StrToInt(LECopiarQtdCaracteres.Text)),'Aviso:',2,2000);
+        end
+        else
+        begin
+          p_GeraTextoLog('Falha ao pegar valor na URL: "'+LEUrl.Text+'" e não será enviado valor ao painel...');
+          naoEnvia := True;
+          p_SendToolTipToTrayIcon('Falha ao pegar valor na URL: "'+LEUrl.Text+'" e não será enviado valor ao painel...','Erro:',3,2000)
+        end;
+      end;
+    end;
+
+    if (not NaoEnvia) and (TRIM(Copy(LEValorPadrao.Text,StrToInt(LECaractereInicial.Text), StrToInt(LECopiarQtdCaracteres.Text))) <> '') then
+    begin
+
+      if not CBEnviaPorSMS.Checked then
+      begin
+        // Envia Dados ao painel via porta Serial
+        soft := TRIM(CXControleFluxo.Text) = 'Xon / Xoff';
+        hard := TRIM(CXControleFluxo.Text) = 'Hardware';
+
+        if SendStringToComPort(StringReplace(MMTemplateSaida.Text,CST_VARIAVEL_VALOR_URL,Copy(LEValorPadrao.Text,StrToInt(LECaractereInicial.Text),StrToInt(LECopiarQtdCaracteres.Text)),[rfReplaceAll,rfIgnoreCase]),CXPortasCOM.Text,StrToInt(CXBitsPorSegundo.Text),StrToInt(CXBitsDeDados.Text),CXParidade.Text[1],CXBitsDeParada.ItemIndex,soft,hard) then
+        begin
+          p_GeraTextoLog('O valor '+Copy(LEValorPadrao.Text,StrToInt(LECaractereInicial.Text), StrToInt(LECopiarQtdCaracteres.Text))+' foi enviado com sucesso ao painel via porta: '+CXPortasCOM.Text);
+          p_GeraTextoLog('Atualização de Funcionamento do Painel realizado com retorno: '+valorPooling);
+          p_SendToolTipToTrayIcon('O valor '+Copy(LEValorPadrao.Text,StrToInt(LECaractereInicial.Text), StrToInt(LECopiarQtdCaracteres.Text))+' foi enviado com sucesso ao painel via porta: '+CXPortasCOM.Text,'Informação:',1,2000);
+        end
+        else
+        begin
+          p_GeraTextoLog('Falha ao enviar valor '+Copy(LEValorPadrao.Text,StrToInt(LECaractereInicial.Text), StrToInt(LECopiarQtdCaracteres.Text))+' ao Painel pela porta "'+CXPortasCOM.Text+'", favor verificar a conexão serial do painel...');
+          p_SendToolTipToTrayIcon('Falha ao enviar valor '+Copy(LEValorPadrao.Text,StrToInt(LECaractereInicial.Text), StrToInt(LECopiarQtdCaracteres.Text))+' ao Painel pela porta "'+CXPortasCOM.Text+'", favor verificar a conexão serial do painel...','Erro:',3,2000);
+        end;
+
+      end
+      else //se for para enviar por SMS
+      begin
+        respostaSMS := EnviaMsg(StringReplace(MMTemplateSaida.Text,
+                                             CST_VARIAVEL_VALOR_URL,
+                                             Copy(LEValorPadrao.Text,
+                                             StrToInt(LECaractereInicial.Text),
+                                             StrToInt(LECopiarQtdCaracteres.Text)),
+                                             [rfReplaceAll,rfIgnoreCase]
+                                             ));
+        p_GeraTextoLog('O valor '+Copy(LEValorPadrao.Text,StrToInt(LECaractereInicial.Text), StrToInt(LECopiarQtdCaracteres.Text))+' enviado ao painel via SMS para: '+edDestinatario.Text +' obteve o seguinte resultado: '+respostaSMS);
+        p_SendToolTipToTrayIcon('O valor '+Copy(LEValorPadrao.Text,StrToInt(LECaractereInicial.Text), StrToInt(LECopiarQtdCaracteres.Text))+' enviado ao painel via SMS para: '+edDestinatario.Text +' obteve o seguinte resultado: '+respostaSMS,'Informação:',1,2000);
+      end;
+      BTGravar.Click;
+    end
+    else
+    begin
+      p_GeraTextoLog('Não foi possível enviar o valor "'+Copy(LEValorPadrao.Text,StrToInt(LECaractereInicial.Text), StrToInt(LECopiarQtdCaracteres.Text))+'" ao Painel pela porta "'+CXPortasCOM.Text+'", pois houve problemas com a conexão de internet ou valor padrão ...');
+      p_SendToolTipToTrayIcon('Não foi possível enviar o valor "'+Copy(LEValorPadrao.Text,StrToInt(LECaractereInicial.Text), StrToInt(LECopiarQtdCaracteres.Text))+'" ao Painel pela porta "'+CXPortasCOM.Text+'", pois houve problemas com a conexão de internet ou valor padrão ...','Erro:',3,2000);
+    end;
+
+    if Trim(LEUrlPooling.Text) <> '' then
+    begin
+      urlPooling:= LEUrlPooling.Text;
+      urlPooling:= StringReplace(urlPooling,'<%msg%>',Copy(LEValorPadrao.Text,StrToInt(LECaractereInicial.Text), StrToInt(LECopiarQtdCaracteres.Text)),[rfReplaceAll]);
+      urlPooling:= StringReplace(urlPooling,'<%extra%>','OK',[rfReplaceAll]);
+      valorPooling:= GetURLResponse(urlPooling);
+    end;
+  end;
+end;
+
+procedure TFRConfiguracoesGerais.p_ApagaRegistro(Raiz: HKEY; Chave,
+  Valor: string);
+var
+  Registro: TRegistry;
+begin
+  Registro := TRegistry.Create(KEY_WRITE); // Chama o construtor do objeto
+  Registro.RootKey := Raiz;
+  Registro.OpenKey(Chave, True); //Cria a chave
+  Registro.DeleteValue(Valor); //Grava o endereço da sua aplicação no Registro
+  Registro.CloseKey; // Fecha a chave e o objeto
+  Registro.Free;
+end;
+ 
+
+procedure TFRConfiguracoesGerais.p_AtivaDesativaPainel;
+var icon: TIcon;
+begin
+  icon:= TIcon.Create;
+  if Ativar1.Checked then
+  begin
+    ILMenuSystray.GetIcon(5,icon);
+    p_poeicone(icon);
+    p_SendToolTipToTrayIcon('O Painel SMM foi Ativado!','Aviso:',2,2000);
+
+    if not CBAtivarTimer.Checked then
+      TMTempo.Interval := 10000
+    else
+      TMTempo.Interval := StrToInt(LETempo.text) * 1000;
+
+    TMTempo.Enabled:=true;
+    p_IniciaPainel;
+  end else begin
+    ILMenuSystray.GetIcon(4,icon);
+    p_poeicone(icon);
+    TMTempo.Enabled:=false;
+    p_SendToolTipToTrayIcon('O Painel SMM foi Desativado!','Aviso:',2,2000);
+  end;
+end;
+
+procedure TFRConfiguracoesGerais.p_GeraTextoLog(const msglog: string);
+begin
+  if FileExists(LEArquivoLog.text) then
+    Log.LoadFromFile(LEArquivoLog.text);
+
+  Log.Text:=#13#10+
+            #13#10+
+            #13#10+
+            #13#10+
+            #13#10+
+            log.Text;
+  Log[0]:='************************************************************************************************************************************';
+  Log[2]:='['+FormatDateTime('DD/MM/YYYY HH:nn:SS',now)+']: '+msglog;
+  Log[4]:='************************************************************************************************************************************';
+  Log.SaveToFile(LEArquivoLog.Text);
+end;
+
+procedure TFRConfiguracoesGerais.p_GravaNaInicializacaoWindows;
+begin
+  try
+    p_GravaRegistro(HKEY_LOCAL_MACHINE, 'Software\Microsoft\Windows\CurrentVersion\Run','Painel SMM', Application.ExeName);
+    p_SendToolTipToTrayIcon('Painel SMM adicionado na Inicialização do Windows com sucesso!','Informação:',1,2000);
+  except
+    p_GeraTextoLog('Erro ao Gravar Inicialização do Programa no Registro!');
+    p_SendToolTipToTrayIcon('Erro ao Gravar Inicialização do Programa no Registro!','Erro:',3,2000);
+  end;
+end;
+
+procedure TFRConfiguracoesGerais.p_ApagaDaInicializacaoWindows;
+begin
+  try
+    p_ApagaRegistro(HKEY_LOCAL_MACHINE, 'Software\Microsoft\Windows\CurrentVersion\Run','Painel SMM');
+    p_SendToolTipToTrayIcon('Painel SMM retirado da Inicialização do Windows com Sucesso!','Informação:',1,2000);
+  except
+    p_GeraTextoLog('Erro ao Apagar Inicializacão do Programa no Registro!');
+    p_SendToolTipToTrayIcon('Erro ao Apagar Inicializacão do Programa no Registro!','Erro:',3,2000);
+  end;
+ 
+end;
+
+procedure TFRConfiguracoesGerais.p_CarregaGUIDeINI(const ArquivoINI: TINIFile);
+begin
+  LEUrl.Text := ArquivoINI.ReadString('GERAL','URL_VALOR','http://www.tributarista.adm.br/impostometro/home/valorPainelRecife.php');
+  LEArquivoLog.Text := ArquivoINI.ReadString('GERAL','ARQUIVO_LOG',ExtractFileDir(application.ExeName)+'\PainelSMM.log');
+  CBIniciarComWindows.Checked := ArquivoINI.ReadBool('GERAL','INICIAR_COM_WINDOWS',false);
+  CBUsarValorPadrao.Checked := ArquivoINI.ReadBool('GERAL','USAR_VALOR_PADRAO',true);
+  CBEnviaPorSMS.Checked := ArquivoINI.ReadBool('GERAL','ENVIA_POR_SMS',false);
+  LEUrlPooling.Text := ArquivoINI.ReadString('GERAL','URL_POOLING','');
+
+  //UDTempo.Position:=ArquivoINI.ReadInteger('TEMPORIZACAO_ATIVACAO','TEMPO_ATIVACAO',60);
+  LETempo.Text := inttostr(ArquivoINI.ReadInteger('TEMPORIZACAO_ATIVACAO','TEMPO_ATIVACAO',1440));
+
+  CBAutoAtivar.Checked := ArquivoINI.ReadBool('TEMPORIZACAO_ATIVACAO','ATIVAR_AO_INICIAR',false);
+  CBAtivarTimer.Checked := ArquivoINI.ReadBool('TEMPORIZACAO_ATIVACAO','USAR_TIMER',true);
+
+  LEValorPadrao.text := StringReplace(ArquivoINI.ReadString('TEMPLATE_SAIDA_VALOR_PADRAO','VALOR_PADRAO','0000000000000000000'),
+                                      CST_VARIAVEL_RETURN,
+                                      #13#10,
+                                      [rfReplaceAll]);
+  MMTemplateSaida.Text := StringReplace(ArquivoINI.ReadString('TEMPLATE_SAIDA_VALOR_PADRAO','TEMPLATE_SAIDA','[L1][M<%VALOR_DA_URL%>][F]'),
+                                        CST_VARIAVEL_RETURN,
+                                        #13#10,
+                                        [rfReplaceAll]);
+  UDCaracIni.Position:=ArquivoINI.ReadInteger('TEMPLATE_SAIDA_VALOR_PADRAO','CARACTERE_INICIAL',116);
+  UDCopiaCarac.Position:=ArquivoINI.ReadInteger('TEMPLATE_SAIDA_VALOR_PADRAO','COPIA_QTD_CARACTERES',19);
+  LECaractereInicial.Text := IntTostr(ArquivoINI.ReadInteger('TEMPLATE_SAIDA_VALOR_PADRAO','CARACTERE_INICIAL',1));
+  LECopiarQtdCaracteres.Text := IntTostr(ArquivoINI.ReadInteger('TEMPLATE_SAIDA_VALOR_PADRAO','COPIA_QTD_CARACTERES',19));
+
+  CXPortasCOM.ItemIndex:= CXPortasCOM.Items.IndexOf(ArquivoINI.ReadString('PORTA_SERIAL','PORTA_COM','COM1'));
+  CXBitsPorSegundo.ItemIndex:= CXBitsPorSegundo.Items.IndexOf(ArquivoINI.ReadString('PORTA_SERIAL','BITS_SEGUNDO','9600'));
+  CXBitsDeDados.ItemIndex:= CXBitsDeDados.Items.IndexOf(ArquivoINI.ReadString('PORTA_SERIAL','BITS_DADOS','8'));
+  CXParidade.ItemIndex:= CXParidade.Items.IndexOf(ArquivoINI.ReadString('PORTA_SERIAL','PARIDADE','Nenhum'));
+  CXBitsDeParada.ItemIndex:= CXBitsDeParada.Items.IndexOf(ArquivoINI.ReadString('PORTA_SERIAL','BITS_PARADA','1'));
+  CXControleFluxo.ItemIndex:= CXControleFluxo.Items.IndexOf(ArquivoINI.ReadString('PORTA_SERIAL','CONTROLE_FLUXO','Nenhum'));
+  edAccount.text:= ArquivoINI.ReadString('SMS','ACCOUNT','account');
+  edCode.text:= ArquivoINI.ReadString('SMS','CODE','code');
+  edDestinatario.text:= ArquivoINI.ReadString('SMS','DESTINATARIO','559281420718');
+  mmTemplateEnvio.Text:= ArquivoINI.ReadString('SMS','TEMPLATE_ENVIO','/GatewayIntegration/msgSms.do?dispatch=send&account=<%account%>&code=<%code%>&to=<%destinatario%>&msg=<%mensagem%>');
+  CBUsaProxy.Checked:= ArquivoINI.ReadBool('SMS_PROXY','USAR_PROXY',false);
+  edProxyServer.text:= ArquivoINI.ReadString('SMS_PROXY','SERVER','');
+  edProxyPort.text:= IntToStr(ArquivoINI.ReadInteger('SMS_PROXY','PORT',0));
+  edProxyUser.text:= ArquivoINI.ReadString('SMS_PROXY','USER','');
+  edProxyPwd.text:= ArquivoINI.ReadString('SMS_PROXY','PWD','');
+
+  if CBIniciarComWindows.Checked then
+    p_GravaNaInicializacaoWindows
+  else
+    p_ApagaDaInicializacaoWindows;
+
+  if CBAutoAtivar.Checked then
+    Ativar1.Checked:=true
+  else
+    Ativar1.Checked:=false;
+
+  TMTempo.Interval:= strtoint(LETempo.text) * 1000;
+
+  if Ativar1.Checked then
+    TMTempo.Enabled:=true
+  else
+    TMTempo.Enabled:=true;
+end;
+
+procedure TFRConfiguracoesGerais.p_CarregaListaPortasCOM;
+var Reg : TRegistry;
+    Lista : TStrings;
+    i : Integer;
+    Porta: string;
+begin
+  Reg :=TRegistry.Create;
+  //Procurar na secção...
+  Reg.RootKey :=HKEY_LOCAL_MACHINE;
+
+  //SubSecção onde estão as Portas de comunicação disponíveis
+  if Reg.OpenKey('\Hardware\DeviceMap\SerialComm', false) then
+  begin
+    //Cria a uma 'lista' das portas encontradas (mouse, modem... etc..)
+    lista := TStringList.Create;
+
+    //Adiciona à 'lista' as portas encontradas
+    Reg.GetValueNames(lista);
+    for i := 0 to lista.count -1 do
+      if TRIM(lista[i])<>'' then
+      begin
+        Porta := Reg.ReadString(lista[i]);// Lê nome da porta
+        CXPortasCOM.Items.Add(Porta);
+      end;
+    Lista.Free;
+  end;
+  //Fecha e libera variáveis
+  Reg.CloseKey;
+  Reg.Free;
+  if CXPortasCOM.Items.Count = 0 then
+    for I := 1 to 20 do
+      CXPortasCOM.Items.Add('COM'+inttostr(i));
+end;
+
+procedure TFRConfiguracoesGerais.p_SalvaGUIparaINI(
+  const ArquivoINI: TINIFile);
+begin
+  ArquivoINI.WriteString('GERAL','URL_VALOR',LEUrl.Text);
+  ArquivoINI.WriteString('GERAL','ARQUIVO_LOG',LEArquivoLog.Text);
+  ArquivoINI.WriteString('GERAL','URL_POOLING',LEUrlPooling.Text);
+  ArquivoINI.WriteBool('GERAL','INICIAR_COM_WINDOWS',CBIniciarComWindows.Checked);
+  ArquivoINI.WriteBool('GERAL','USAR_VALOR_PADRAO',CBUsarValorPadrao.Checked);
+  ArquivoINI.WriteBool('GERAL','ENVIA_POR_SMS',CBEnviaPorSMS.Checked);
+  ArquivoINI.WriteInteger('TEMPORIZACAO_ATIVACAO','TEMPO_ATIVACAO',strtoint(LETempo.Text));
+  ArquivoINI.WriteBool('TEMPORIZACAO_ATIVACAO','ATIVAR_AO_INICIAR',CBAutoAtivar.Checked);
+  ArquivoINI.WriteBool('TEMPORIZACAO_ATIVACAO','USAR_TIMER',CBAtivarTimer.Checked);
+  ArquivoINI.WriteString('TEMPLATE_SAIDA_VALOR_PADRAO','VALOR_PADRAO',StringReplace(LEValorPadrao.text,
+                                                                                    #13#10,
+                                                                                    CST_VARIAVEL_RETURN,
+                                                                                    [rfReplaceAll]));
+  ArquivoINI.WriteString('TEMPLATE_SAIDA_VALOR_PADRAO','TEMPLATE_SAIDA',StringReplace(MMTemplateSaida.Text,
+                                                                                      #13#10,
+                                                                                      CST_VARIAVEL_RETURN,
+                                                                                      [rfReplaceAll]));
+  ArquivoINI.WriteInteger('TEMPLATE_SAIDA_VALOR_PADRAO','CARACTERE_INICIAL',strtoint(LECaractereInicial.Text));
+  ArquivoINI.WriteInteger('TEMPLATE_SAIDA_VALOR_PADRAO','COPIA_QTD_CARACTERES',strtoint(LECopiarQtdCaracteres.Text));
+  ArquivoINI.WriteString('PORTA_SERIAL','PORTA_COM',CXPortasCOM.Text);
+  ArquivoINI.WriteString('PORTA_SERIAL','BITS_SEGUNDO',CXBitsPorSegundo.text);
+  ArquivoINI.WriteString('PORTA_SERIAL','BITS_DADOS',CXBitsDeDados.text);
+  ArquivoINI.WriteString('PORTA_SERIAL','PARIDADE',CXParidade.text);
+  ArquivoINI.WriteString('PORTA_SERIAL','BITS_PARADA',CXBitsDeParada.text);
+  ArquivoINI.WriteString('PORTA_SERIAL','CONTROLE_FLUXO',CXControleFluxo.text);
+  ArquivoINI.WriteString('SMS','ACCOUNT',edAccount.text);
+  ArquivoINI.WriteString('SMS','CODE',edCode.text);
+  ArquivoINI.WriteString('SMS','DESTINATARIO',edDestinatario.text);
+  ArquivoINI.WriteString('SMS','TEMPLATE_ENVIO',mmTemplateEnvio.text);
+  ArquivoINI.WriteBool('SMS_PROXY','USAR_PROXY',CBUsaProxy.Checked);
+  ArquivoINI.WriteString('SMS_PROXY','SERVER',edProxyServer.text);
+  ArquivoINI.WriteInteger('SMS_PROXY','PORT',StrToInt(edProxyPort.text));
+  ArquivoINI.WriteString('SMS_PROXY','USER',edProxyUser.text);
+  ArquivoINI.WriteString('SMS_PROXY','PWD',edProxyPwd.text);
+
+
+  if CBIniciarComWindows.Checked then
+    p_GravaNaInicializacaoWindows
+  else
+    p_ApagaDaInicializacaoWindows;
+
+  TMTempo.Interval:= strtoint(LETempo.text) * 1000;
+end;
+
+procedure TFRConfiguracoesGerais.p_SendToolTipToTrayIcon(const text,
+  caption: string; const iconFlag, time: integer);
+begin
+  if ( boIconAdded ) then begin
+    StrPLCopy(TrayIconData.szInfo, text, length(text));
+    StrPLCopy(TrayIconData.szInfoTitle, caption, length(caption));
+    TrayIconData.dwInfoFlags := iconFlag;
+    TrayIconData.uTimeout := time;
+    TrayIconData.uFlags := NIF_INFO;
+    Shell_NotifyIcon(NIM_MODIFY, @TrayIconData);
+  end;
+end;
+
+procedure TFRConfiguracoesGerais.p_ShowValorPadraoBalloonTip;
+begin
+  p_SendToolTipToTrayIcon('O Valor Padrão Atual é: '+Copy(LEValorPadrao.Text,StrToInt(LECaractereInicial.Text), StrToInt(LECopiarQtdCaracteres.Text)),'Informação:',1,3500);
+end;
+
+procedure TFRConfiguracoesGerais.p_VisualizaURL(const url: string);
+begin
+  try
+    WBUrl.Navigate(url);
+    p_SendToolTipToTrayIcon('Visualização da URL disponível...','Inofrmação:',1,2000);
+  except
+    on e: exception do
+    begin
+       p_GeraTextoLog('Não foi possível carregar o site no visualizador da URL...');
+       p_SendToolTipToTrayIcon('Não foi possível carregar o site no visualizador da URL...','Aviso:',2,2000);
+    end;
+  end;
+end;
+
+procedure TFRConfiguracoesGerais.TMTempoTimer(Sender: TObject);
+begin
+  if Ativar1.Checked then
+    p_IniciaPainel;
+end;
+
+procedure TFRConfiguracoesGerais.TrayMessage(var Msg: TMessage);
+var
+  p : TPoint;
+begin
+  case Msg.lParam of
+    WM_LBUTTONDBLCLK:
+    begin
+      self.Show;
+    end;
+    WM_RBUTTONDBLCLK:
+    begin
+      p_ShowValorPadraoBalloonTip
+    end;
+    WM_RBUTTONDOWN:
+    begin
+       SetForegroundWindow(Handle);
+       GetCursorPos(p);
+       PMSystray.Popup(p.x, p.y);
+       PostMessage(Handle, WM_NULL, 0, 0);
+    end;
+  end;
+end;
+
+Function TFRConfiguracoesGerais.FormataTxtMensagem(mensagem:string): String;
+var
+  n, i: integer;
+begin
+  //Função para formatar os caracteres de espaços
+
+  i := length(' ');
+    for n := 1 to length(mensagem) do
+      begin
+        if Copy(mensagem, n, i) = ' ' then
+          begin
+            Delete(mensagem, n, i); Insert('%20', mensagem, n);
+          end;
+      end;
+
+  Result:= mensagem;
+
+end;
+
+Function TFRConfiguracoesGerais.EnviaMsg(Msg:String):String;
+var
+  ret,StrEnvio,Conta,Codigo,NumMobile,Mensagem : string;
+  Codret : integer;
+Begin
+
+  {Variáveis}
+  Conta  := EdAccount.Text;            {Id de conta válida - human mobile}
+  Codigo := EdCode.Text;               {Codigo válido - human mobile}
+  NumMobile := EdDestinatario.Text;    {Codigo 55 + cod. cidade + num. telefone}
+  Mensagem := FormataTxtMensagem(msg);  {Corpo da mensagem}
+
+  {Parametros de conexão utilizando componente IdHttp (Indy)}
+  HTTPProxySMS.URL.Port := '80';
+  HTTPProxySMS.URL.Host := 'system.human.com.br';
+
+  {Monta a string de envio}
+  StrEnvio := mmTemplateEnvio.text;
+  strEnvio := StringReplace(strEnvio,'<%account%>',Conta,[rfReplaceAll]);
+  strEnvio := StringReplace(strEnvio,'<%code%>',Codigo,[rfReplaceAll]);
+  strEnvio := StringReplace(strEnvio,'<%destinatario%>',NumMobile,[rfReplaceAll]);
+  strEnvio := StringReplace(strEnvio,'<%mensagem%>',Mensagem,[rfReplaceAll]);
+
+  {Configura o uso de proxy}
+  if CBUsaProxy.checked then
+  begin
+    HTTPProxySMS.ProxyParams.ProxyServer := edProxyServer.text;
+    HTTPProxySMS.ProxyParams.ProxyPort := strtoint(edProxyPort.text);
+    HTTPProxySMS.ProxyParams.ProxyUsername := edProxyUser.text;
+    HTTPProxySMS.ProxyParams.ProxyPassword := edProxyPwd.text;
+  end;
+
+  {Envia Mensagem}
+  ret :=  HTTPProxySMS.Get(StrEnvio);
+
+  {Analisa Retorno}
+  Try
+    Codret := strtoint(Copy(ret,0,3));
+    case Codret of
+         000: result := 'Mensagem enviada com sucesso!';
+         010: result := 'Mensagem vazia!';
+         011: result := 'Corpo da Mensagem inválido!';
+         012: result := 'Corpo da Mensagem Excedeu o Tamanho Máximo Permitido(145 posições)!';
+         013: result := 'Destinatário inválido!';
+         014: result := 'Destinatário vazio!';
+         015: result := 'Data de Agendamento inválida!';
+         016: result := 'ID excedeu o tamanho máximo permitido(20 posições)!';
+         080: result := 'Mensagem sob esse ID enviada anteriormente!';
+         900: result := 'ERRO ao autenticar Conta e/ou Senha!';
+         990: result := 'Limite de Segurança foi Atingido! Contacte Suporte.';
+         999: result := 'ERRO Desconhecido! Contacte Suporte.';
+   else
+    begin
+      result := 'Retorno Desconhecido: ' + ret;  // Retorno desconhecido
+    end;
+   end;
+
+  Except
+    MessageDlg('Erro ao enviar mensagem! .:. Retorno Inválido',mtWarning,
+              [mbok],0);
+   result := 'Erro !';
+   exit;
+  End;
+
+End;
+
+{ TMyTransparentPanel }
+
+procedure TMyTransparentPanel.CreateParams(var Params: TCreateParams);
+begin
+  inherited CreateParams(Params);
+  if not (csDesigning in ComponentState)
+    then Params.ExStyle:=Params.ExStyle or WS_EX_TRANSPARENT;
+end;
+
+procedure TMyTransparentPanel.Paint;
+var
+  XBitMap: TBitMap;
+  XOldDC: HDC;
+  XRect: TRect;
+begin
+{This panel will be transparent only in Run Time}
+  if (csDesigning in ComponentState) 
+    then inherited Paint 
+  else begin
+    XRect:=ClientRect; 
+    XOldDC:=Canvas.Handle; 
+    XBitMap:=TBitMap.Create; 
+    try 
+      XBitMap.Height:=Height; XBitMap.Width:=Width; 
+      Canvas.Handle:=XBitMap.Canvas.Handle; 
+      inherited Paint; 
+      RedrawWindow(Parent.Handle, @XRect, 0, 
+                   RDW_ERASE or RDW_INVALIDATE or 
+                   RDW_NOCHILDREN or RDW_UPDATENOW); 
+    finally 
+      Canvas.Handle:=XOldDC; 
+      Canvas.BrushCopy(XRect, XBitMap, XRect, Color); 
+      XBitMap.Free; 
+      end; 
+    end; 
+end;
+
+end.

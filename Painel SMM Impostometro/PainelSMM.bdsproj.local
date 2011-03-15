@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>2008/10/07 22:20:15.250.pas,C:\Documents and Settings\Administrador\Meus documentos\Borland Studio Projects\Unit1.pas=C:\Documents and Settings\Administrador\Desktop\PainelSMMImpostometro\UConfiguracoes1.pas</Transaction>
+    <Transaction>2008/10/07 22:20:15.250.dfm,C:\Documents and Settings\Administrador\Meus documentos\Borland Studio Projects\Unit1.dfm=C:\Documents and Settings\Administrador\Desktop\PainelSMMImpostometro\UConfiguracoes1.dfm</Transaction>
+    <Transaction>2008/10/07 22:20:49.156.bdsproj,C:\Documents and Settings\Administrador\Meus documentos\Borland Studio Projects\Project1.bdsproj=C:\Documents and Settings\Administrador\Desktop\PainelSMMImpostometro\PainelSMM.bdsproj</Transaction>
+    <Transaction>2008/10/10 20:05:24.828.pas,D:\desenvolvimento\PainelSMMImpostometro\Unit1.pas=D:\desenvolvimento\PainelSMMImpostometro\NotifyIcon.pas</Transaction>
+    <Transaction>2008/11/19 22:32:32.440.pas,D:\desenvolvimento\PainelSMMImpostometro\Unit1.pas=C:\Documents and Settings\Administrador\Desktop\tarcisio teste portas\Unit1.pas</Transaction>
+    <Transaction>2008/11/19 22:32:32.440.dfm,D:\desenvolvimento\PainelSMMImpostometro\Unit1.dfm=C:\Documents and Settings\Administrador\Desktop\tarcisio teste portas\Unit1.dfm</Transaction>
+    <Transaction>2010/07/16 13:00:08.453.pas,C:\backup d\desenvolvimento\tarcisio teste portas\Unit1.pas=</Transaction>
+    <Transaction>2010/07/16 13:00:08.453.dfm,C:\backup d\desenvolvimento\tarcisio teste portas\Unit1.dfm=</Transaction>
+  </Transactions>
+</BorlandProject>
