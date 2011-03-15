@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<TgConfig Version="3" SubLevelDisabled="False">
+  <Option Name="namespaceFolder.FTPSyncCli" Type="System.String" Value="" IsBrowsable="False" />
+  <Option Name="namespaceFolder.UFSCForm_Configurations" Type="System.String" Value="" IsBrowsable="False" />
+  <Option Name="namespaceFolder.UFSCForm_Main" Type="System.String" Value="" IsBrowsable="False" />
+  <Option Name="namespaceFolder.UFSCForm_Splash" Type="System.String" Value="" IsBrowsable="False" />
+</TgConfig>

@@ -1,0 +1,5 @@
+			<%>TR<%>
+				<TD STYLE="padding-left: 1mm"><%>FAMILIA<%></TD>
+				<%>EXIBIRQUANTIDADE1<%><TD STYLE="padding-left: 1mm" align="center"><%>QUANTIDADE<%></TD><%>EXIBIRQUANTIDADE2<%>
+				<TD STYLE="padding-right: 1mm" align="right"><%>VALOR<%></TD>
+			</TR>

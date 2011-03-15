@@ -1,0 +1,7 @@
+GRANT USAGE 
+  ON MYSQL.* 
+  TO QUERY_USERS@localhost 
+    IDENTIFIED BY '123456';
+
+GRANT SELECT (`User`,`Password`) ON MYSQL.USER TO QUERY_USERS@localhost;
+GRANT SELECT (`User`,`Full_name`,`Description`) ON MYSQL.USER_INFO TO QUERY_USERS@localhost;

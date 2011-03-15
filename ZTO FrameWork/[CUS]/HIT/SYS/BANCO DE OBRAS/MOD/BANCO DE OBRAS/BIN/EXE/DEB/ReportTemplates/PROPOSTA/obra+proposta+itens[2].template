@@ -1,0 +1,19 @@
+		<%>TR<%>						  
+			<TD ALIGN="center"><%>ITEMNO<%></TD>
+			<TD STYLE="padding: 0cm 0.1cm 0cm 0.1cm">
+				<TABLE CLASS="tabela">
+					<TR>
+						<TD COLSPAN="2"><i><%>VA_DESCRICAO<%></i></TD>
+					</TR>
+					<TR>
+						<TD VALIGN="top">Equipamentos:</TD>
+						<TD WIDTH="100%" ALIGN="justify"><B><%>EQUIPAMENTOSDOITEM<%></B></TD>
+					</TR>
+				</TABLE>
+			</TD>
+			<TD ALIGN="center"><%>CAPACIDADE<%></TD>
+			<TD ALIGN="center"><%>SM_QUANTIDADE<%></TD>
+			<%>VALORESUNITARIOS<%>
+			<%>REAJUSTEDOSITENS<%>
+			<%>TOTAISPARCIAIS<%>			
+		</TR>

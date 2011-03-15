@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<TgConfig Version="3" SubLevelDisabled="False">
+  <Option Name="namespaceFolder.FTPSyncSer" Type="System.String" Value="" IsBrowsable="False" />
+  <Option Name="namespaceFolder.UFSSForm_Configurations" Type="System.String" Value="" IsBrowsable="False" />
+  <Option Name="namespaceFolder.UFSSForm_Main" Type="System.String" Value="" IsBrowsable="False" />
+  <Option Name="namespaceFolder.UFSSForm_Splash" Type="System.String" Value="" IsBrowsable="False" />
+</TgConfig>

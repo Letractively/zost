@@ -1,0 +1,12 @@
+			<TR STYLE="font-weight: bold; background-color: #006699; color: white">
+				<TD colspan="<%>COLSPAN<%>" STYLE="padding-left: 1mm">Situações para <i><%>DADODOCRITERIO<%></i></TD>
+			</TR>
+			<TR>
+				<TD colspan="<%>COLSPAN<%>">
+					<TABLE WIDTH="100%" CELLSPACING="0" CELLPADDING="0" CLASS="tabeladesituacoes">
+<%>DADODASITUACAO<%>
+					</TABLE>				
+				</TD>
+			</TR>
+			<TR style="background-color: black; font-size: 2px;"><TD COLSPAN="<%>COLSPAN<%>">&nbsp;</TD></TR>
+

@@ -1,0 +1,2 @@
+inherited BDODataModule_Relatorio_FAM: TBDODataModule_Relatorio_FAM
+end

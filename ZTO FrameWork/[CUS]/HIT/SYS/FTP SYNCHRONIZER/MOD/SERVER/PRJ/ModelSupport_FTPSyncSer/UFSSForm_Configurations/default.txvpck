@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<nodeSet>
+  <view uin="3vgp0bzhj0f22ke_v">
+    <property name="$defaultDiagram" value="true" />
+    <property name="$metaclass" value="Package Diagram" />
+    <property name="$name" value="default" />
+    <reference referencedUin="delphi:e_class:src:FTPSyncSer:UFSSForm_Configurations.@unitclass">
+      <property name="$shortcutReference" value="true" />
+      <reference referencedUin="delphi:e_field:src:FTPSyncSer:UFSSForm_Configurations.FSSForm_Configurations" />
+      <reference referencedUin="delphi:l_ast:src:FTPSyncSer:UFSSForm_Configurations.FSSForm_Configurations" />
+    </reference>
+    <reference referencedUin="delphi:e_class:src:FTPSyncSer:UFSSForm_Configurations.TFSSForm_Configurations">
+      <property name="$shortcutReference" value="true" />
+      <reference referencedUin="delphi:e_field:src:FTPSyncSer:UFSSForm_Configurations.TFSSForm_Configurations.LabelNomeDoBanco" />
+      <reference referencedUin="delphi:e_field:src:FTPSyncSer:UFSSForm_Configurations.TFSSForm_Configurations.LabelPortaMySQL" />
+      <reference referencedUin="delphi:e_method:src:FTPSyncSer:UFSSForm_Configurations.TFSSForm_Configurations.GuardarConfiguracoes()" />
+      <reference referencedUin="delphi:e_method:src:FTPSyncSer:UFSSForm_Configurations.TFSSForm_Configurations.FormCreate(System.Object)" />
+      <reference referencedUin="delphi:e_field:src:FTPSyncSer:UFSSForm_Configurations.TFSSForm_Configurations.DirAtual" />
+      <reference referencedUin="delphi:e_method:src:FTPSyncSer:UFSSForm_Configurations.TFSSForm_Configurations.ExibirConfiguracoes()" />
+      <reference referencedUin="delphi:e_field:src:FTPSyncSer:UFSSForm_Configurations.TFSSForm_Configurations.LabelNomeDeUsuarioMySQL" />
+      <reference referencedUin="delphi:e_field:src:FTPSyncSer:UFSSForm_Configurations.TFSSForm_Configurations.LabelSenhaMySQL" />
+      <reference referencedUin="delphi:e_field:src:FTPSyncSer:UFSSForm_Configurations.TFSSForm_Configurations.ComboBoxProtocolo" />
+      <reference referencedUin="delphi:e_field:src:FTPSyncSer:UFSSForm_Configurations.TFSSForm_Configurations.GroupBox1" />
+      <reference referencedUin="delphi:e_field:src:FTPSyncSer:UFSSForm_Configurations.TFSSForm_Configurations.EditPortaMySQL" />
+      <reference referencedUin="delphi:e_field:src:FTPSyncSer:UFSSForm_Configurations.TFSSForm_Configurations.EditSenhaMySQL" />
+      <reference referencedUin="delphi:e_field:src:FTPSyncSer:UFSSForm_Configurations.TFSSForm_Configurations.EditNomeDeUsuarioMySQL" />
+      <reference referencedUin="delphi:e_field:src:FTPSyncSer:UFSSForm_Configurations.TFSSForm_Configurations.GroupBox2" />
+      <reference referencedUin="delphi:e_field:src:FTPSyncSer:UFSSForm_Configurations.TFSSForm_Configurations.LabePortaFTP" />
+      <reference referencedUin="delphi:e_field:src:FTPSyncSer:UFSSForm_Configurations.TFSSForm_Configurations.EditPortaFTP" />
+      <reference referencedUin="delphi:e_field:src:FTPSyncSer:UFSSForm_Configurations.TFSSForm_Configurations.Label1" />
+      <reference referencedUin="delphi:e_field:src:FTPSyncSer:UFSSForm_Configurations.TFSSForm_Configurations.EditNomeDoBanco" />
+      <reference referencedUin="delphi:e_field:src:FTPSyncSer:UFSSForm_Configurations.TFSSForm_Configurations.GroupBox3" />
+      <reference referencedUin="delphi:e_field:src:FTPSyncSer:UFSSForm_Configurations.TFSSForm_Configurations.Label2" />
+      <reference referencedUin="delphi:e_field:src:FTPSyncSer:UFSSForm_Configurations.TFSSForm_Configurations.Edit1" />
+      <reference referencedUin="delphi:e_method:src:FTPSyncSer:UFSSForm_Configurations.TFSSForm_Configurations.Edit1KeyPress(System.Object,ref@System.Char)" />
+      <reference referencedUin="delphi:e_method:src:FTPSyncSer:UFSSForm_Configurations.TFSSForm_Configurations.FormClose(System.Object,ref@Forms.TCloseAction)" />
+      <reference referencedUin="delphi:e_method:src:FTPSyncSer:UFSSForm_Configurations.TFSSForm_Configurations.FormShow(System.Object)" />
+      <reference referencedUin="delphi:e_field:src:FTPSyncSer:UFSSForm_Configurations.TFSSForm_Configurations.LabelProtocolo" />
+    </reference>
+  </view>
+</nodeSet>

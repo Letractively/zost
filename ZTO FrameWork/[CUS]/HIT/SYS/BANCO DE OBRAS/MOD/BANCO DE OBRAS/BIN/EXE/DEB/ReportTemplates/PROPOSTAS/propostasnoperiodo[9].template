@@ -1,0 +1,21 @@
+		<TABLE WIDTH="100%" CELLSPACING="0" CELLPADDING="0" STYLE="margin: 0.3cm 0cm 0cm 0cm;">
+			<TR>
+				<TD WIDTH="100%" STYLE="font: italic bold 12px Arial, Helvetica, sans-serif; background-color: #C0C8FF;">&nbsp;[%]REG_INS_SIT[%]</td>
+			</TR>
+			<TR>
+				<TD WIDTH="100%" ALIGN="CENTER">
+					<TABLE WIDTH="100%" CELLSPACING="0" CELLPADDING="0" RULES="all" CLASS="tabeladeitens" COLS="5">
+						<TR STYLE="font-weight: bold; background-color: navy; color: white">
+							<TD ALIGN="center" width="95">Código</TD>
+							<TD ALIGN="center">Obra</TD>
+[%]EXIBIRINSTALADOR[%]<!-- instalador (opcional) -->
+[%]EXIBIRSITUACAO[%]<!-- situação (opcional) -->
+							<TD ALIGN="center" width="150">Localidade</TD>
+<%>EXIBIRVALOR<%><!-- valor da proposta (opcional) -->
+						</TR>
+<%>CONTEUDO<%><!-- linhas da tabela (resultset) -->
+					</TABLE>
+<%>TOTALGERAL<%><!-- somatório dos valores das propostas (opcional) -->
+				</TD>
+			</TR>
+		</TABLE>

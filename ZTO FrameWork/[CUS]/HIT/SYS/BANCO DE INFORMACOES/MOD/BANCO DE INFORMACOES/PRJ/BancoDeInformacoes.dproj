@@ -1,0 +1,124 @@
+﻿	<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+		<PropertyGroup>
+			<ProjectGuid>{B33FA551-1E2D-4B57-87F6-4FDC36EF19D1}</ProjectGuid>
+			<MainSource>BancoDeInformacoes.dpr</MainSource>
+			<Config Condition="'$(Config)'==''">Debug</Config>
+			<DCC_DCCCompiler>DCC32</DCC_DCCCompiler>
+			<ProjectVersion>12.0</ProjectVersion>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Config)'=='Base' or '$(Base)'!=''">
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Config)'=='Release' or '$(Cfg_1)'!=''">
+			<Cfg_1>true</Cfg_1>
+			<CfgParent>Base</CfgParent>
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Config)'=='Debug' or '$(Cfg_2)'!=''">
+			<Cfg_2>true</Cfg_2>
+			<CfgParent>Base</CfgParent>
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Base)'!=''">
+			<DCC_UnitSearchPath>$(BDS)\lib\Componentes\ICS\VC32\dcu;$(BDS)\lib\Componentes\ZEOS\packages\delphi10\build;$(BDS)\lib\Componentes\CFEdit\dcu;$(BDS)\lib\Componentes\BalloonToolTip\dcu;$(BDS)\lib\Componentes\CFDBValidationChecks\dcu;$(BDS)\lib\Componentes\CFDBGrid\dcu;$(BDS)\lib\Componentes\CFDBGrid\res;$(BDS)\lib\Componentes\Mozilla ActiveX Control\dcu;..\..\..\..\..\..\..\[FW1.1];..\..\..\..\..\..\..\[FW1.1]\Form repository;..\..\..\..\..\..\..\[FW1.1]\Libraries;..\..\..\..\..\..\..\[FW1.1]\Libraries\Crypt;..\..\..\..\..\..\..\[FW1.1]\Libraries\Crypt\Hashes;..\..\..\..\..\..\..\[FW1.1]\Libraries\Interposer;..\..\..\..\FTP Synchronizer\Libraries;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
+			<DCC_DependencyCheckOutputName>..\BIN\EXE\DEB\BancoDeInformacoes.exe</DCC_DependencyCheckOutputName>
+			<DCC_ImageBase>00400000</DCC_ImageBase>
+			<DCC_ExeOutput>..\BIN\EXE\DEB</DCC_ExeOutput>
+			<DCC_UnitAlias>WinTypes=Windows;WinProcs=Windows;DbiTypes=BDE;DbiProcs=BDE;DbiErrs=BDE;$(DCC_UnitAlias)</DCC_UnitAlias>
+			<DCC_Define>DEVELOPING;$(DCC_Define)</DCC_Define>
+			<DCC_Platform>x86</DCC_Platform>
+			<DebugSourcePath>C:\Arquivos de programas\Borland\BDS\4.0\lib\Componentes\CFDBValidationChecks\;C:\Arquivos de programas\Borland\BDS\4.0\lib\Componentes\ZEOS\src\component\;C:\Arquivos de programas\Borland\BDS\4.0\lib\Componentes\ZEOS\src\dbc\;$(DebugSourcePath)</DebugSourcePath>
+			<DCC_K>false</DCC_K>
+			<DCC_N>true</DCC_N>
+			<DCC_S>false</DCC_S>
+			<DCC_F>false</DCC_F>
+			<DCC_SymbolReferenceInfo>1</DCC_SymbolReferenceInfo>
+			<DCC_DcuOutput>..\BIN\DCU</DCC_DcuOutput>
+			<DCC_E>false</DCC_E>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Cfg_1)'!=''">
+			<DCC_LocalDebugSymbols>false</DCC_LocalDebugSymbols>
+			<DCC_Define>RELEASE;$(DCC_Define)</DCC_Define>
+			<DCC_SymbolReferenceInfo>0</DCC_SymbolReferenceInfo>
+			<DCC_DebugInformation>false</DCC_DebugInformation>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Cfg_2)'!=''">
+			<DCC_Define>DEBUG;$(DCC_Define)</DCC_Define>
+		</PropertyGroup>
+		<ItemGroup>
+			<DelphiCompile Include="BancoDeInformacoes.dpr">
+				<MainSource>MainSource</MainSource>
+			</DelphiCompile>
+			<DCCReference Include="..\SRC\UBDIDataModule.pas">
+				<Form>BDIDataModule</Form>
+				<DesignClass>TDataModule</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\SRC\UBDIDataModule_Main.pas">
+				<Form>BDIDataModule_Main</Form>
+				<DesignClass>TDataModule</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\SRC\UBDITypesConstantsAndClasses.pas"/>
+			<DCCReference Include="..\SRC\UBDIForm_Main.pas">
+				<Form>BDIForm_Main</Form>
+			</DCCReference>
+			<DCCReference Include="..\SRC\UBDIForm_Splash.pas">
+				<Form>BDIForm_Splash</Form>
+			</DCCReference>
+			<BuildConfiguration Include="Base">
+				<Key>Base</Key>
+			</BuildConfiguration>
+			<BuildConfiguration Include="Debug">
+				<Key>Cfg_2</Key>
+				<CfgParent>Base</CfgParent>
+			</BuildConfiguration>
+			<BuildConfiguration Include="Release">
+				<Key>Cfg_1</Key>
+				<CfgParent>Base</CfgParent>
+			</BuildConfiguration>
+		</ItemGroup>
+		<Import Project="$(BDS)\Bin\CodeGear.Delphi.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Delphi.Targets')"/>
+		<ProjectExtensions>
+			<Borland.Personality>Delphi.Personality.12</Borland.Personality>
+			<Borland.ProjectType/>
+			<BorlandProject>
+				<Delphi.Personality>
+					<Source>
+						<Source Name="MainSource">BancoDeInformacoes.dpr</Source>
+					</Source>
+					<Parameters>
+						<Parameters Name="UseLauncher">False</Parameters>
+						<Parameters Name="LoadAllSymbols">True</Parameters>
+						<Parameters Name="LoadUnspecifiedSymbols">False</Parameters>
+					</Parameters>
+					<VersionInfo>
+						<VersionInfo Name="IncludeVerInfo">True</VersionInfo>
+						<VersionInfo Name="AutoIncBuild">True</VersionInfo>
+						<VersionInfo Name="MajorVer">1</VersionInfo>
+						<VersionInfo Name="MinorVer">0</VersionInfo>
+						<VersionInfo Name="Release">2</VersionInfo>
+						<VersionInfo Name="Build">489</VersionInfo>
+						<VersionInfo Name="Debug">False</VersionInfo>
+						<VersionInfo Name="PreRelease">False</VersionInfo>
+						<VersionInfo Name="Special">False</VersionInfo>
+						<VersionInfo Name="Private">False</VersionInfo>
+						<VersionInfo Name="DLL">False</VersionInfo>
+						<VersionInfo Name="Locale">1046</VersionInfo>
+						<VersionInfo Name="CodePage">1252</VersionInfo>
+					</VersionInfo>
+					<VersionInfoKeys>
+						<VersionInfoKeys Name="CompanyName">Wildstar Corporation Limited</VersionInfoKeys>
+						<VersionInfoKeys Name="FileDescription">Módulo principal do Banco De Informações</VersionInfoKeys>
+						<VersionInfoKeys Name="FileVersion">1.0.2.489</VersionInfoKeys>
+						<VersionInfoKeys Name="InternalName"/>
+						<VersionInfoKeys Name="LegalCopyright"/>
+						<VersionInfoKeys Name="LegalTrademarks"/>
+						<VersionInfoKeys Name="OriginalFilename"/>
+						<VersionInfoKeys Name="ProductName"/>
+						<VersionInfoKeys Name="ProductVersion">1.0.0.0</VersionInfoKeys>
+						<VersionInfoKeys Name="Comments"/>
+					</VersionInfoKeys>
+				</Delphi.Personality>
+			</BorlandProject>
+			<ProjectFileVersion>12</ProjectFileVersion>
+		</ProjectExtensions>
+	</Project>

@@ -1,0 +1,2 @@
+inherited BDODataModule_Relatorio_JDO: TBDODataModule_Relatorio_JDO
+end

@@ -1,0 +1,6 @@
+ 		<TABLE WIDTH="100%" CELLSPACING="0" CELLPADDING="0" rules="all" CLASS="tabelarodape" STYLE="margin: 1cm 0cm 0cm 0cm;">
+			<TR>
+				<TD align="right" STYLE="padding-right: 1mm; font-size: 12px;"><b>Total geral</b></TD>
+				<TD ALIGN="center" WIDTH="120" STYLE="font-weight: bold; font-size: 12px; background-color: navy; color: white"><%>VALORTOTAL<%></TD>
+			</TR>
+		</TABLE>

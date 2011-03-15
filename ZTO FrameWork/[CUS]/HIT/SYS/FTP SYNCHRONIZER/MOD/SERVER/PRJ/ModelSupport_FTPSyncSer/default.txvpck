@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<nodeSet>
+  <view uin="yvg7tpssixkfkkg_v">
+    <property name="$defaultDiagram" value="true" />
+    <property name="$metaclass" value="Package Diagram" />
+    <property name="$name" value="default" />
+    <reference referencedUin="design:view:::ewgw8xvzi0uv0so_v">
+      <property name="$shortcutReference" value="true" />
+      <reference referencedUin="delphi:e_class:src:FTPSyncSer:FTPSyncSer.@unitclass" />
+    </reference>
+    <reference referencedUin="design:view:::eng3wbk8k0z1u4p_v">
+      <property name="$shortcutReference" value="true" />
+      <reference referencedUin="delphi:e_class:src:FTPSyncSer:UFSSForm_Splash.@unitclass" />
+      <reference referencedUin="delphi:e_class:src:FTPSyncSer:UFSSForm_Splash.TFSSForm_Splash" />
+    </reference>
+    <reference referencedUin="design:view:::4ogdf0k4k9xzvbk_v">
+      <property name="$shortcutReference" value="true" />
+      <reference referencedUin="delphi:e_class:src:FTPSyncSer:UFSSForm_Main.@unitclass" />
+      <reference referencedUin="delphi:e_class:src:FTPSyncSer:UFSSForm_Main.TFSSForm_Main" />
+    </reference>
+    <reference referencedUin="design:view:::3vgp0bzhj0f22ke_v">
+      <property name="$shortcutReference" value="true" />
+      <reference referencedUin="delphi:e_class:src:FTPSyncSer:UFSSForm_Configurations.@unitclass" />
+      <reference referencedUin="delphi:e_class:src:FTPSyncSer:UFSSForm_Configurations.TFSSForm_Configurations" />
+    </reference>
+  </view>
+</nodeSet>

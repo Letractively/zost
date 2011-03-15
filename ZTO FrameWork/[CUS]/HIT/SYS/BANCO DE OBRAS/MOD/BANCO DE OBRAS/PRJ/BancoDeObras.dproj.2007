@@ -1,0 +1,381 @@
+﻿	<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+		<PropertyGroup>
+			<ProjectGuid>{D03CABDB-2484-43AB-A415-42F7E637BEF2}</ProjectGuid>
+			<MainSource>BancoDeObras.dpr</MainSource>
+			<Config Condition="'$(Config)'==''">Debug</Config>
+			<DCC_DCCCompiler>DCC32</DCC_DCCCompiler>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Config)'=='Base' or '$(Base)'!=''">
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Config)'=='Release' or '$(Cfg_1)'!=''">
+			<Cfg_1>true</Cfg_1>
+			<CfgParent>Base</CfgParent>
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Config)'=='Debug' or '$(Cfg_2)'!=''">
+			<Cfg_2>true</Cfg_2>
+			<CfgParent>Base</CfgParent>
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Base)'!=''">
+			<DCC_UnitSearchPath>$(FW11);$(FW11)\Form repository;$(FW11)\Libraries;$(FW11)\Libraries\Crypt;$(FW11)\Libraries\Crypt\Hashes;$(FW11)\Libraries\Interposer;$(FW11)\Libraries\WebServices;$(HIT_FTPSYNCHRONIZER)\LIB;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
+			<DCC_DependencyCheckOutputName>..\BIN\EXE\DEB\BancoDeObras.exe</DCC_DependencyCheckOutputName>
+			<DCC_ImageBase>00400000</DCC_ImageBase>
+			<DCC_ExeOutput>..\BIN\EXE\DEB</DCC_ExeOutput>
+			<DCC_UnitAlias>WinTypes=Windows;WinProcs=Windows;DbiTypes=BDE;DbiProcs=BDE;DbiErrs=BDE;$(DCC_UnitAlias)</DCC_UnitAlias>
+			<DCC_Define>FTPSYNCCLI;BDO;CURRENCY_CONVERT_MANAGER;IE;xDEVELOPING;$(DCC_Define)</DCC_Define>
+			<DCC_Platform>x86</DCC_Platform>
+			<DCC_UsePackage>vcl;rtl;vclx;dbrtl;vcldb;dbxcds;dbexpress;xmlrtl;vclie;inet;inetdbbde;inetdbxpress;IndyCore;IndySystem;vclactnband;VclSmp;dsnap;bdertl;teeui;teedb;tee;vcldbx;webdsnap;ZComponent;ZDbc;ZPlain;ZCore;ZParseSql;CFDBGridPack;CFEditPack;DefinedCryptPack;MozillaControlPack;BalloonToolTip;adortl;vclib;ibxpress;IntrawebDB_80_100;Intraweb_80_100;dclOfficeXP;soaprtl;IndyProtocols;dsnapcon;websnap;CFDBValidationChecksPack;mxNativeExcel_d10;mxExport_D10;mxProtector_d10;mxCaptionBarButtons_d10;mxStorage_d10;mxWebUpdate_D10;mxFlatPack_D10;IcsDel100</DCC_UsePackage>
+			<DCC_K>false</DCC_K>
+			<DCC_N>true</DCC_N>
+			<DCC_S>false</DCC_S>
+			<DCC_F>false</DCC_F>
+			<DCC_SymbolReferenceInfo>1</DCC_SymbolReferenceInfo>
+			<DCC_DcuOutput>..\BIN\DCU</DCC_DcuOutput>
+			<DCC_E>false</DCC_E>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Cfg_1)'!=''">
+			<DCC_LocalDebugSymbols>false</DCC_LocalDebugSymbols>
+			<DCC_Define>RELEASE;$(DCC_Define)</DCC_Define>
+			<DCC_SymbolReferenceInfo>0</DCC_SymbolReferenceInfo>
+			<DCC_DebugInformation>false</DCC_DebugInformation>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Cfg_2)'!=''">
+			<DCC_Define>DEBUG;$(DCC_Define)</DCC_Define>
+		</PropertyGroup>
+		<ItemGroup>
+			<DelphiCompile Include="BancoDeObras.dpr">
+				<MainSource>MainSource</MainSource>
+			</DelphiCompile>
+			<None Include="ModelSupport_BancoDeObras\default.txaPackage"/>
+			<None Include="ModelSupport_BancoDeObras\UBDOForm_JustificativaSalva\default.txaPackage"/>
+			<None Include="ModelSupport_BancoDeObras\UBDODataModule_AutoSync\default.txaPackage"/>
+			<None Include="ModelSupport_BancoDeObras\UBDODataModule\default.txaPackage"/>
+			<None Include="ModelSupport_BancoDeObras\UBDODataModule_Administration\default.txaPackage"/>
+			<None Include="ModelSupport_BancoDeObras\UBDOForm_Main\default.txaPackage"/>
+			<None Include="ModelSupport_BancoDeObras\UBDOTypesConstantsAndClasses\default.txaPackage"/>
+			<None Include="ModelSupport_BancoDeObras\UBDODataModule_ImportarExportarObras\default.txaPackage"/>
+			<None Include="ModelSupport_BancoDeObras\UBDOForm_Projetistas\default.txaPackage"/>
+			<None Include="ModelSupport_BancoDeObras\UBDOForm_InformacoesDoEquipamento\default.txaPackage"/>
+			<None Include="ModelSupport_BancoDeObras\UBDODataModule_InformacoesDaProposta\default.txaPackage"/>
+			<None Include="ModelSupport_BancoDeObras\UBDOForm_Relatorio_OBR\default.txaPackage"/>
+			<None Include="ModelSupport_BancoDeObras\UBDODataModule_Regioes\default.txaPackage"/>
+			<None Include="ModelSupport_BancoDeObras\UBDODataModule_Obras\default.txaPackage"/>
+			<None Include="ModelSupport_BancoDeObras\UBDOForm_Relatorio_JDO\default.txaPackage"/>
+			<None Include="ModelSupport_BancoDeObras\UBDOForm_AvailableRegions\default.txaPackage"/>
+			<None Include="ModelSupport_BancoDeObras\UBDODataModule_Relatorio_JDO\default.txaPackage"/>
+			<None Include="ModelSupport_BancoDeObras\UBDOForm_TiposDeObra\default.txaPackage"/>
+			<None Include="ModelSupport_BancoDeObras\UBDOForm_Obras\default.txaPackage"/>
+			<None Include="ModelSupport_BancoDeObras\UBDOForm_Regioes\default.txaPackage"/>
+			<None Include="ModelSupport_BancoDeObras\UBDOForm_GeneralConfigurations\default.txaPackage"/>
+			<None Include="ModelSupport_BancoDeObras\UBDODataModule_Main\default.txaPackage"/>
+			<None Include="ModelSupport_BancoDeObras\UBDODataModule_InformacoesDoEquipamento\default.txaPackage"/>
+			<None Include="ModelSupport_BancoDeObras\UBDOForm_Splash\default.txaPackage"/>
+			<None Include="ModelSupport_BancoDeObras\UBDODataModule_Situacoes\default.txaPackage"/>
+			<None Include="ModelSupport_BancoDeObras\UBDODataModule_Relatorio_EQP\default.txaPackage"/>
+			<None Include="ModelSupport_BancoDeObras\UBDOForm_Instaladores\default.txaPackage"/>
+			<None Include="ModelSupport_BancoDeObras\UBDOForm_GeradorDeProposta\default.txaPackage"/>
+			<None Include="ModelSupport_BancoDeObras\UBDOForm_Situacoes\default.txaPackage"/>
+			<None Include="ModelSupport_BancoDeObras\UBDODataModule_EquipamentosEFamilias\default.txaPackage"/>
+			<None Include="ModelSupport_BancoDeObras\UBDOForm_GeradorDeRelatorio\default.txaPackage"/>
+			<None Include="ModelSupport_BancoDeObras\UBDODataModule_TiposDeObra\default.txaPackage"/>
+			<None Include="ModelSupport_BancoDeObras\BancoDeObras\default.txaPackage"/>
+			<None Include="ModelSupport_BancoDeObras\UBDOForm_ObrasSemelhantes\default.txaPackage"/>
+			<None Include="ModelSupport_BancoDeObras\UBDOForm_Relatorio_FAM\default.txaPackage"/>
+			<None Include="ModelSupport_BancoDeObras\UBDOForm_AutoSync\default.txaPackage"/>
+			<None Include="ModelSupport_BancoDeObras\UBDODataModule_Relatorio_OBR\default.txaPackage"/>
+			<None Include="ModelSupport_BancoDeObras\UBDOForm_JustificativaParaObra\default.txaPackage"/>
+			<None Include="ModelSupport_BancoDeObras\UBDODataModule_TabelasAuxiliares\default.txaPackage"/>
+			<None Include="ModelSupport_BancoDeObras\UBDOForm_Relatorio_EQP\default.txaPackage"/>
+			<None Include="ModelSupport_BancoDeObras\UBDOForm_TabelasAuxiliares\default.txaPackage"/>
+			<None Include="ModelSupport_BancoDeObras\UBDOForm_DialogTemplate\default.txaPackage"/>
+			<None Include="ModelSupport_BancoDeObras\UBDODataModule_GeradorDeProposta\default.txaPackage"/>
+			<None Include="ModelSupport_BancoDeObras\UBDOForm_ImportarExportarObras\default.txaPackage"/>
+			<None Include="ModelSupport_BancoDeObras\UBDOForm_Relatorio_PRO\default.txaPackage"/>
+			<None Include="ModelSupport_BancoDeObras\UBDODataModule_Projetistas\default.txaPackage"/>
+			<None Include="ModelSupport_BancoDeObras\UBDOForm_InformacoesDaProposta\default.txaPackage"/>
+			<None Include="ModelSupport_BancoDeObras\UBDODataModule_Relatorio_FAM\default.txaPackage"/>
+			<None Include="ModelSupport_BancoDeObras\UBDOForm_AdminModule\default.txaPackage"/>
+			<None Include="ModelSupport_BancoDeObras\UBDODataModule_Relatorio_PRO\default.txaPackage"/>
+			<None Include="ModelSupport_BancoDeObras\UBDODataModule_Instaladores\default.txaPackage"/>
+			<None Include="ModelSupport_BancoDeObras\UBDOForm_EquipamentosEFamilias\default.txaPackage"/>
+			<None Include="ModelSupport_BancoDeObras\UBDODataModule_GeradorDeRelatorio\default.txaPackage"/>
+			<None Include="ModelSupport_BancoDeObras\default.txvpck"/>
+			<None Include="ModelSupport_BancoDeObras\UBDODataModule\default.txvpck"/>
+			<None Include="ModelSupport_BancoDeObras\UBDODataModule_Regioes\default.txvpck"/>
+			<None Include="ModelSupport_BancoDeObras\UBDOForm_ImportarExportarObras\default.txvpck"/>
+			<None Include="ModelSupport_BancoDeObras\UBDODataModule_GeradorDeRelatorio\default.txvpck"/>
+			<None Include="ModelSupport_BancoDeObras\UBDODataModule_GeradorDeProposta\default.txvpck"/>
+			<None Include="ModelSupport_BancoDeObras\UBDOForm_Splash\default.txvpck"/>
+			<None Include="ModelSupport_BancoDeObras\UBDODataModule_Relatorio_JDO\default.txvpck"/>
+			<None Include="ModelSupport_BancoDeObras\UBDOForm_InformacoesDaProposta\default.txvpck"/>
+			<None Include="ModelSupport_BancoDeObras\UBDOForm_Relatorio_JDO\default.txvpck"/>
+			<None Include="ModelSupport_BancoDeObras\UBDODataModule_Obras\default.txvpck"/>
+			<None Include="ModelSupport_BancoDeObras\UBDODataModule_Relatorio_FAM\default.txvpck"/>
+			<None Include="ModelSupport_BancoDeObras\UBDODataModule_Projetistas\default.txvpck"/>
+			<None Include="ModelSupport_BancoDeObras\UBDODataModule_TiposDeObra\default.txvpck"/>
+			<None Include="ModelSupport_BancoDeObras\UBDOForm_Main\default.txvpck"/>
+			<None Include="ModelSupport_BancoDeObras\UBDOForm_Situacoes\default.txvpck"/>
+			<None Include="ModelSupport_BancoDeObras\UBDOForm_GeneralConfigurations\default.txvpck"/>
+			<None Include="ModelSupport_BancoDeObras\UBDOForm_TiposDeObra\default.txvpck"/>
+			<None Include="ModelSupport_BancoDeObras\UBDOForm_AdminModule\default.txvpck"/>
+			<None Include="ModelSupport_BancoDeObras\UBDOForm_DialogTemplate\default.txvpck"/>
+			<None Include="ModelSupport_BancoDeObras\UBDODataModule_Instaladores\default.txvpck"/>
+			<None Include="ModelSupport_BancoDeObras\UBDOForm_Regioes\default.txvpck"/>
+			<None Include="ModelSupport_BancoDeObras\UBDODataModule_EquipamentosEFamilias\default.txvpck"/>
+			<None Include="ModelSupport_BancoDeObras\UBDOForm_ObrasSemelhantes\default.txvpck"/>
+			<None Include="ModelSupport_BancoDeObras\UBDODataModule_TabelasAuxiliares\default.txvpck"/>
+			<None Include="ModelSupport_BancoDeObras\UBDODataModule_Situacoes\default.txvpck"/>
+			<None Include="ModelSupport_BancoDeObras\UBDODataModule_Administration\default.txvpck"/>
+			<None Include="ModelSupport_BancoDeObras\UBDODataModule_Relatorio_OBR\default.txvpck"/>
+			<None Include="ModelSupport_BancoDeObras\UBDOForm_GeradorDeRelatorio\default.txvpck"/>
+			<None Include="ModelSupport_BancoDeObras\UBDOTypesConstantsAndClasses\default.txvpck"/>
+			<None Include="ModelSupport_BancoDeObras\UBDOForm_EquipamentosEFamilias\default.txvpck"/>
+			<None Include="ModelSupport_BancoDeObras\BancoDeObras\default.txvpck"/>
+			<None Include="ModelSupport_BancoDeObras\UBDOForm_Relatorio_EQP\default.txvpck"/>
+			<None Include="ModelSupport_BancoDeObras\UBDODataModule_ImportarExportarObras\default.txvpck"/>
+			<None Include="ModelSupport_BancoDeObras\UBDOForm_Projetistas\default.txvpck"/>
+			<None Include="ModelSupport_BancoDeObras\UBDODataModule_AutoSync\default.txvpck"/>
+			<None Include="ModelSupport_BancoDeObras\UBDOForm_TabelasAuxiliares\default.txvpck"/>
+			<None Include="ModelSupport_BancoDeObras\UBDOForm_JustificativaSalva\default.txvpck"/>
+			<None Include="ModelSupport_BancoDeObras\UBDOForm_Relatorio_FAM\default.txvpck"/>
+			<None Include="ModelSupport_BancoDeObras\UBDODataModule_Relatorio_EQP\default.txvpck"/>
+			<None Include="ModelSupport_BancoDeObras\UBDODataModule_Relatorio_PRO\default.txvpck"/>
+			<None Include="ModelSupport_BancoDeObras\UBDOForm_Obras\default.txvpck"/>
+			<None Include="ModelSupport_BancoDeObras\UBDODataModule_InformacoesDaProposta\default.txvpck"/>
+			<None Include="ModelSupport_BancoDeObras\UBDOForm_GeradorDeProposta\default.txvpck"/>
+			<None Include="ModelSupport_BancoDeObras\UBDOForm_Instaladores\default.txvpck"/>
+			<None Include="ModelSupport_BancoDeObras\UBDOForm_AutoSync\default.txvpck"/>
+			<None Include="ModelSupport_BancoDeObras\UBDOForm_AvailableRegions\default.txvpck"/>
+			<None Include="ModelSupport_BancoDeObras\UBDODataModule_Main\default.txvpck"/>
+			<None Include="ModelSupport_BancoDeObras\UBDOForm_JustificativaParaObra\default.txvpck"/>
+			<None Include="ModelSupport_BancoDeObras\UBDOForm_Relatorio_PRO\default.txvpck"/>
+			<None Include="ModelSupport_BancoDeObras\UBDOForm_Relatorio_OBR\default.txvpck"/>
+			<None Include="ModelSupport_BancoDeObras\UBDODataModule_InformacoesDoEquipamento\default.txvpck"/>
+			<None Include="ModelSupport_BancoDeObras\UBDOForm_InformacoesDoEquipamento\default.txvpck"/>
+			<DCCReference Include="..\SRC\UBDOTypesConstantsAndClasses.pas"/>
+			<DCCReference Include="..\SRC\UBDODataModule.pas">
+				<Form>BDODataModule</Form>
+				<DesignClass>TDataModule</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\SRC\UBDOForm_GeradorDeRelatorio.pas">
+				<Form>BDOForm_GeradorDeRelatorio</Form>
+			</DCCReference>
+			<DCCReference Include="..\SRC\UBDOForm_DialogTemplate.pas">
+				<Form>BDOForm_DialogTemplate</Form>
+			</DCCReference>
+			<DCCReference Include="..\SRC\UBDODataModule_GeradorDeRelatorio.pas">
+				<Form>BDODataModule_GeradorDeRelatorio</Form>
+				<DesignClass>TDataModule</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\SRC\UBDODataModule_Main.pas">
+				<Form>BDODataModule_Main</Form>
+				<DesignClass>TDataModule</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\SRC\UBDOForm_Main.pas">
+				<Form>BDOForm_Main</Form>
+			</DCCReference>
+			<DCCReference Include="..\SRC\UBDOForm_Situacoes.pas">
+				<Form>BDOForm_Situacoes</Form>
+			</DCCReference>
+			<DCCReference Include="..\SRC\UBDODataModule_Situacoes.pas">
+				<Form>BDODataModule_Situacoes</Form>
+				<DesignClass>TDataModule</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\SRC\UBDOForm_Regioes.pas">
+				<Form>BDOForm_Regioes</Form>
+			</DCCReference>
+			<DCCReference Include="..\SRC\UBDODataModule_Regioes.pas">
+				<Form>BDODataModule_Regioes</Form>
+				<DesignClass>TDataModule</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\SRC\UBDOForm_TiposDeObra.pas">
+				<Form>BDOForm_TiposDeObra</Form>
+			</DCCReference>
+			<DCCReference Include="..\SRC\UBDODataModule_TiposDeObra.pas">
+				<Form>BDODataModule_TiposDeObra</Form>
+				<DesignClass>TDataModule</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\SRC\UBDOForm_Projetistas.pas">
+				<Form>BDOForm_Projetistas</Form>
+			</DCCReference>
+			<DCCReference Include="..\SRC\UBDODataModule_Projetistas.pas">
+				<Form>BDODataModule_Projetistas</Form>
+				<DesignClass>TDataModule</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\SRC\UBDOForm_Instaladores.pas">
+				<Form>BDOForm_Instaladores</Form>
+			</DCCReference>
+			<DCCReference Include="..\SRC\UBDODataModule_Instaladores.pas">
+				<Form>BDODataModule_Instaladores</Form>
+				<DesignClass>TDataModule</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\SRC\UBDOForm_EquipamentosEFamilias.pas">
+				<Form>BDOForm_EquipamentosEFamilias</Form>
+			</DCCReference>
+			<DCCReference Include="..\SRC\UBDODataModule_EquipamentosEFamilias.pas">
+				<Form>BDODataModule_EquipamentosEFamilias</Form>
+				<DesignClass>TDataModule</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\SRC\UBDOForm_AutoSync.pas">
+				<Form>BDOForm_AutoSync</Form>
+			</DCCReference>
+			<DCCReference Include="..\SRC\UBDODataModule_AutoSync.pas">
+				<Form>BDODataModule_AutoSync</Form>
+				<DesignClass>TDataModule</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\SRC\UBDOForm_GeneralConfigurations.pas">
+				<Form>BDOForm_GeneralConfigurations</Form>
+			</DCCReference>
+			<DCCReference Include="..\SRC\UBDOForm_TabelasAuxiliares.pas">
+				<Form>BDOForm_TabelasAuxiliares</Form>
+			</DCCReference>
+			<DCCReference Include="..\SRC\UBDODataModule_TabelasAuxiliares.pas">
+				<Form>BDODataModule_TabelasAuxiliares</Form>
+				<DesignClass>TDataModule</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\SRC\UBDODataModule_Administration.pas">
+				<Form>BDODataModule_Administration</Form>
+				<DesignClass>TDataModule</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\SRC\UBDOForm_AdminModule.pas">
+				<Form>BDOForm_AdminModule</Form>
+			</DCCReference>
+			<DCCReference Include="..\SRC\UBDOForm_AvailableRegions.pas">
+				<Form>BDOForm_AvailableRegions</Form>
+			</DCCReference>
+			<DCCReference Include="..\SRC\UBDOForm_Obras.pas">
+				<Form>BDOForm_Obras</Form>
+			</DCCReference>
+			<DCCReference Include="..\SRC\UBDODataModule_Obras.pas">
+				<Form>BDODataModule_Obras</Form>
+				<DesignClass>TDataModule</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\SRC\UBDODataModule_GeradorDeProposta.pas">
+				<Form>BDODataModule_GeradorDeProposta</Form>
+				<DesignClass>TDataModule</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\SRC\UBDOForm_GeradorDeProposta.pas">
+				<Form>BDOForm_GeradorDeProposta</Form>
+			</DCCReference>
+			<DCCReference Include="..\SRC\UBDODataModule_Relatorio_EQP.pas">
+				<Form>BDODataModule_Relatorio_EQP</Form>
+				<DesignClass>TDataModule</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\SRC\UBDOForm_Relatorio_EQP.pas">
+				<Form>BDOForm_Relatorio_EQP</Form>
+			</DCCReference>
+			<DCCReference Include="..\SRC\UBDODataModule_Relatorio_FAM.pas">
+				<Form>BDODataModule_Relatorio_FAM</Form>
+				<DesignClass>TDataModule</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\SRC\UBDOForm_Relatorio_FAM.pas">
+				<Form>BDOForm_Relatorio_FAM</Form>
+			</DCCReference>
+			<DCCReference Include="..\SRC\UBDODataModule_Relatorio_OBR.pas">
+				<Form>BDODataModule_Relatorio_OBR</Form>
+				<DesignClass>TDataModule</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\SRC\UBDOForm_Relatorio_OBR.pas">
+				<Form>BDOForm_Relatorio_OBR</Form>
+			</DCCReference>
+			<DCCReference Include="..\SRC\UBDODataModule_Relatorio_PRO.pas">
+				<Form>BDODataModule_Relatorio_PRO</Form>
+				<DesignClass>TDataModule</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\SRC\UBDOForm_Relatorio_PRO.pas">
+				<Form>BDOForm_Relatorio_PRO</Form>
+			</DCCReference>
+			<DCCReference Include="..\SRC\UBDOForm_InformacoesDaProposta.pas">
+				<Form>BDOForm_InformacoesDaProposta</Form>
+			</DCCReference>
+			<DCCReference Include="..\SRC\UBDODataModule_InformacoesDaProposta.pas">
+				<Form>BDODataModule_InformacoesDaProposta</Form>
+				<DesignClass>TDataModule</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\SRC\UBDOForm_JustificativaParaObra.pas">
+				<Form>BDOForm_JustificativaParaObra</Form>
+			</DCCReference>
+			<DCCReference Include="..\SRC\UBDOForm_JustificativaSalva.pas">
+				<Form>BDOForm_JustificativaSalva</Form>
+			</DCCReference>
+			<DCCReference Include="..\SRC\UBDOForm_ImportarExportarObras.pas">
+				<Form>BDOForm_ImportarExportarObras</Form>
+			</DCCReference>
+			<DCCReference Include="..\SRC\UBDODataModule_ImportarExportarObras.pas">
+				<Form>BDODataModule_ImportarExportarObras</Form>
+				<DesignClass>TDataModule</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\SRC\UBDODataModule_Relatorio_JDO.pas">
+				<Form>BDODataModule_Relatorio_JDO</Form>
+				<DesignClass>TDataModule</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\SRC\UBDOForm_Relatorio_JDO.pas">
+				<Form>BDOForm_Relatorio_JDO</Form>
+			</DCCReference>
+			<DCCReference Include="..\SRC\UBDOForm_ObrasSemelhantes.pas">
+				<Form>BDOForm_ObrasSemelhantes</Form>
+			</DCCReference>
+			<DCCReference Include="..\SRC\UBDODataModule_InformacoesDoEquipamento.pas">
+				<Form>BDODataModule_InformacoesDoEquipamento</Form>
+				<DesignClass>TDataModule</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\SRC\UBDOForm_InformacoesDoEquipamento.pas">
+				<Form>BDOForm_InformacoesDoEquipamento</Form>
+			</DCCReference>
+			<DCCReference Include="..\SRC\UBDOForm_Splash.pas">
+				<Form>BDOForm_Splash</Form>
+			</DCCReference>
+			<BuildConfiguration Include="Base">
+				<Key>Base</Key>
+			</BuildConfiguration>
+		</ItemGroup>
+		<Import Project="$(BDS)\Bin\CodeGear.Delphi.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Delphi.Targets')"/>
+		<ProjectExtensions>
+			<Borland.Personality>Delphi.Personality.12</Borland.Personality>
+			<Borland.ProjectType>VCLApplication</Borland.ProjectType>
+			<BorlandProject>
+				<Delphi.Personality>
+					<Source>
+						<Source Name="MainSource">BancoDeObras.dpr</Source>
+					</Source>
+					<Parameters>
+						<Parameters Name="HostApplication">C:\Backup 006\Tutoriais e projetos\Projetos\Delphi\Projetos {datacurta}\WSC FrameWork\[Customers]\Hitachi Ar Condicionado do Brasil\Systems\FTP Synchronizer\Modules\FTP Server\Bin\release\FTPSyncSer.exe</Parameters>
+						<Parameters Name="UseLauncher">False</Parameters>
+						<Parameters Name="LoadAllSymbols">True</Parameters>
+						<Parameters Name="LoadUnspecifiedSymbols">False</Parameters>
+					</Parameters>
+					<VersionInfo>
+						<VersionInfo Name="IncludeVerInfo">True</VersionInfo>
+						<VersionInfo Name="AutoIncBuild">True</VersionInfo>
+						<VersionInfo Name="MajorVer">3</VersionInfo>
+						<VersionInfo Name="MinorVer">1</VersionInfo>
+						<VersionInfo Name="Release">4</VersionInfo>
+						<VersionInfo Name="Build">178</VersionInfo>
+						<VersionInfo Name="Debug">False</VersionInfo>
+						<VersionInfo Name="PreRelease">False</VersionInfo>
+						<VersionInfo Name="Special">False</VersionInfo>
+						<VersionInfo Name="Private">False</VersionInfo>
+						<VersionInfo Name="DLL">False</VersionInfo>
+						<VersionInfo Name="Locale">1046</VersionInfo>
+						<VersionInfo Name="CodePage">1252</VersionInfo>
+					</VersionInfo>
+					<VersionInfoKeys>
+						<VersionInfoKeys Name="CompanyName">Hitachi Ar Condicionado do Brasil Ltda.</VersionInfoKeys>
+						<VersionInfoKeys Name="FileDescription">Módulo principal do sistema Banco de Obras</VersionInfoKeys>
+						<VersionInfoKeys Name="FileVersion">3.1.4.178</VersionInfoKeys>
+						<VersionInfoKeys Name="InternalName">BDO</VersionInfoKeys>
+						<VersionInfoKeys Name="LegalCopyright">Copyright Carlos Barreto Feitoza Filho &amp; Hitachi Ar Condicionado do Brasil Ltda.</VersionInfoKeys>
+						<VersionInfoKeys Name="LegalTrademarks"/>
+						<VersionInfoKeys Name="OriginalFilename">BancoDeObras.exe</VersionInfoKeys>
+						<VersionInfoKeys Name="ProductName">Banco de Obras</VersionInfoKeys>
+						<VersionInfoKeys Name="ProductVersion">3.1</VersionInfoKeys>
+						<VersionInfoKeys Name="Comments">Desenvolvido sob encomenda por Carlos Barreto Feitoza Filho (023.227.194-12) em Olinda, Pernambuco, Brasil</VersionInfoKeys>
+						<VersionInfoKeys Name="LastCompiledTime">31/10/2009 15:36:20</VersionInfoKeys>
+					</VersionInfoKeys>
+				</Delphi.Personality>
+			</BorlandProject>
+			<ProjectFileVersion>12</ProjectFileVersion>
+		</ProjectExtensions>
+	</Project>

@@ -1,0 +1,15 @@
+		
+		<TABLE WIDTH="100%" CELLSPACING="0" CELLPADDING="0" RULES="all" CLASS="tabeladefamilias">
+			<TR>
+				<TD STYLE="border: 1px solid #FFFFFF"><DIV STYLE="font-size: 15px;"><em><strong><%>CRITERIONOME<%></strong></em></DIV></TD>
+				<%>EXIBIRQUANTIDADE1<%><TD STYLE="border: 1px solid #FFFFFF">&nbsp;</TD><%>EXIBIRQUANTIDADE2<%>
+				<TD STYLE="border: 1px solid #FFFFFF">&nbsp;</TD>
+			</TR>
+			<TR class="linhacabecalho">
+				<TD STYLE="padding-left: 1mm">Família</TD>
+				<%>EXIBIRQUANTIDADE1<%><TD STYLE="padding-left: 1mm" width="150" align="center">Quantidade total</TD><%>EXIBIRQUANTIDADE2<%>
+				<TD STYLE="padding-right: 1mm" width="150" align="right">Valor total</TD>
+			</TR>
+<%>FAMILIAS<%>
+[%]SUMARIO[%]
+		</TABLE>

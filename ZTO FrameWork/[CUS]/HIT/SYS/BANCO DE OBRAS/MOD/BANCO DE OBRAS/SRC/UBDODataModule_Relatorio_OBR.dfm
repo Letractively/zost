@@ -1,0 +1,2 @@
+inherited BDODataModule_Relatorio_OBR: TBDODataModule_Relatorio_OBR
+end

@@ -1,0 +1,5 @@
+			<TR>
+				<TD STYLE="padding-right: 1mm; font-weight: bold;" align="right" [%]COLSPAN[%]>[%]DESCRICAOTOTAISPARCIAIS[%]</TD>
+				<%>EXIBIRQUANTIDADE1<%><TD STYLE="padding-left: 1mm; font-weight: bold; background-color: navy; color: white;" width="150" align="center">[%]SOMATORIOQUANTIDADES[%]</TD><%>EXIBIRQUANTIDADE2<%>
+				<TD STYLE="padding-right: 1mm; font-weight: bold; background-color: navy; color: white;" width="150" align="right">[%]SOMATORIOVALORES[%]</TD>
+			</TR>			
