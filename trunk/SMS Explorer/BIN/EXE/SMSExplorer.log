@@ -1,0 +1,21 @@
+Método: GravarNoBanco
+Erro..: None of the dynamic libraries can be found: libpq81.dll, libpq.dll
+=============================
+Método: GravarNoBanco
+Erro..: None of the dynamic libraries can be found: libmysqld51.dll, libmysqld50.dll, libmysqld.dll
+===============================================================================
+Método: GravarNoBanco
+Erro..: None of the dynamic libraries can be found: libmysqld51.dll, libmysqld50.dll, libmysqld.dll
+===============================================================================
+Método: GravarNoBanco
+Erro..: None of the dynamic libraries can be found: libmysqld51.dll, libmysqld50.dll, libmysqld.dll
+===============================================================================
+Método: GravarNoBanco
+Erro..: None of the dynamic libraries can be found: libmysqld51.dll, libmysqld50.dll, libmysqld.dll
+===============================================================================
+Método: GravarNoBanco
+Erro..: SQL Error: Can't connect to MySQL server on '127.0.0.1' (10061)
+===============================================================================
+Método: GravarNoBanco
+Erro..: SQL Error: Can't connect to MySQL server on '127.0.0.1' (10061)
+===============================================================================
