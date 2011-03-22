@@ -1,0 +1,2952 @@
+object TModifiedFiles
+  Files = <
+    item
+      LastModified = 38758.530949074080000000
+      FilePath = 'AClasseD5.bpl'
+    end
+    item
+      LastModified = 38218.658888888890000000
+      FilePath = 'AClasseD6.bpl'
+    end
+    item
+      LastModified = 38758.539212962960000000
+      FilePath = 'AClasseD7.bpl'
+    end
+    item
+      LastModified = 38758.531481481480000000
+      FilePath = 'AClsClGrdD5.bpl'
+    end
+    item
+      LastModified = 38758.530972222220000000
+      FilePath = 'AClsDBD5.bpl'
+    end
+    item
+      LastModified = 38218.658935185190000000
+      FilePath = 'AClsDBD6.bpl'
+    end
+    item
+      LastModified = 38758.539236111110000000
+      FilePath = 'AClsDBD7.bpl'
+    end
+    item
+      LastModified = 38758.530995370370000000
+      FilePath = 'AClsDBIP2000D5.bpl'
+    end
+    item
+      LastModified = 38218.658981481480000000
+      FilePath = 'AClsDBIP3000D6.bpl'
+    end
+    item
+      LastModified = 38758.539236111110000000
+      FilePath = 'AClsDBIP4000D7.bpl'
+    end
+    item
+      LastModified = 38758.530995370370000000
+      FilePath = 'AClsExtraD5.bpl'
+    end
+    item
+      LastModified = 38218.659004629630000000
+      FilePath = 'AClsExtraD6.bpl'
+    end
+    item
+      LastModified = 38758.539259259260000000
+      FilePath = 'AClsExtraD7.bpl'
+    end
+    item
+      LastModified = 38758.531018518520000000
+      FilePath = 'AClsPesqInstD5.bpl'
+    end
+    item
+      LastModified = 38218.659050925930000000
+      FilePath = 'AClsPesqInstD6.bpl'
+    end
+    item
+      LastModified = 38758.539259259260000000
+      FilePath = 'AClsPesqInstD7.bpl'
+    end
+    item
+      LastModified = 38758.530995370370000000
+      FilePath = 'AClsSombraD5.bpl'
+    end
+    item
+      LastModified = 38218.659027777780000000
+      FilePath = 'AClsSombraD6.bpl'
+    end
+    item
+      LastModified = 38758.539259259260000000
+      FilePath = 'AClsSombraD7.bpl'
+    end
+    item
+      LastModified = 36549.209027777780000000
+      FilePath = 'applet50.bpl'
+    end
+    item
+      LastModified = 37440.831342592600000000
+      FilePath = 'AstaD6.bpl'
+    end
+    item
+      LastModified = 40296.583055555560000000
+      FilePath = 'Atualizacoes.ini'
+    end
+    item
+      LastModified = 40310.442592592590000000
+      FilePath = 'Atualizacoes.txt'
+    end
+    item
+      LastModified = 37707.784328703700000000
+      FilePath = 'Autua.hlp'
+    end
+    item
+      LastModified = 40427.338888888890000000
+      FilePath = 'Autuac.exe'
+    end
+    item
+      LastModified = 38195.674837962960000000
+      FilePath = 'AxonBasePkg3rd.bpl'
+    end
+    item
+      LastModified = 38195.674884259260000000
+      FilePath = 'AxonBasePkgAccCtrl.bpl'
+    end
+    item
+      LastModified = 38204.522986111110000000
+      FilePath = 'AxonBasePkgAppCfg.bpl'
+    end
+    item
+      LastModified = 38204.522986111110000000
+      FilePath = 'AxonBasePkgAppKrnl.bpl'
+    end
+    item
+      LastModified = 38204.522962962960000000
+      FilePath = 'AxonBasePkgChart.bpl'
+    end
+    item
+      LastModified = 38195.674861111110000000
+      FilePath = 'AxonBasePkgUtils.bpl'
+    end
+    item
+      LastModified = 38204.522962962960000000
+      FilePath = 'AxonBasePkgVcl.bpl'
+    end
+    item
+      LastModified = 37597.427083333340000000
+      FilePath = 'BarraAzul.avi'
+    end
+    item
+      LastModified = 37033.125000000000000000
+      FilePath = 'bdertl60.bpl'
+    end
+    item
+      LastModified = 37033.125000000000000000
+      FilePath = 'cds60.bpl'
+    end
+    item
+      LastModified = 40427.338935185190000000
+      FilePath = 'Certidao.exe'
+    end
+    item
+      LastModified = 40409.448865740740000000
+      FilePath = 'CJFWebServices.dll'
+    end
+    item
+      LastModified = 38799.804236111110000000
+      FilePath = 'Colecoes.bpl'
+    end
+    item
+      LastModified = 38980.390486111110000000
+      FilePath = 'CompEspartaD5.bpl'
+    end
+    item
+      LastModified = 38506.452939814820000000
+      FilePath = 'CompEspartaD5.dcp'
+    end
+    item
+      LastModified = 36549.209027777780000000
+      FilePath = 'coride50.bpl'
+    end
+    item
+      LastModified = 36549.209027777780000000
+      FilePath = 'crbide50.bpl'
+    end
+    item
+      LastModified = 38567.517060185190000000
+      FilePath = 'dac50.bpl'
+    end
+    item
+      LastModified = 38218.618888888890000000
+      FilePath = 'DAClasseD5.bpl'
+    end
+    item
+      LastModified = 38218.617245370370000000
+      FilePath = 'DAClasseD6.bpl'
+    end
+    item
+      LastModified = 38218.615462962960000000
+      FilePath = 'DAClasseD7.bpl'
+    end
+    item
+      LastModified = 38246.405810185180000000
+      FilePath = 'DAClsClGrdD5.bpl'
+    end
+    item
+      LastModified = 38218.618912037040000000
+      FilePath = 'DAClsDBD5.bpl'
+    end
+    item
+      LastModified = 38218.617291666670000000
+      FilePath = 'DAClsDBD6.bpl'
+    end
+    item
+      LastModified = 38218.615509259260000000
+      FilePath = 'DAClsDBD7.bpl'
+    end
+    item
+      LastModified = 38218.618958333330000000
+      FilePath = 'DAClsDBIP2000D5.bpl'
+    end
+    item
+      LastModified = 38218.617337962960000000
+      FilePath = 'DAClsDBIP3000D6.bpl'
+    end
+    item
+      LastModified = 38218.615532407410000000
+      FilePath = 'DAClsDBIP4000D7.bpl'
+    end
+    item
+      LastModified = 38218.618981481480000000
+      FilePath = 'DAClsExtraD5.bpl'
+    end
+    item
+      LastModified = 38218.617337962960000000
+      FilePath = 'DAClsExtraD6.bpl'
+    end
+    item
+      LastModified = 38218.615555555550000000
+      FilePath = 'DAClsExtraD7.bpl'
+    end
+    item
+      LastModified = 38218.619027777780000000
+      FilePath = 'DAclsPesqInstD5.bpl'
+    end
+    item
+      LastModified = 38218.617384259260000000
+      FilePath = 'DAclsPesqInstD6.bpl'
+    end
+    item
+      LastModified = 38218.615601851850000000
+      FilePath = 'DAclsPesqInstD7.bpl'
+    end
+    item
+      LastModified = 38218.619004629630000000
+      FilePath = 'DAClsSombraD5.bpl'
+    end
+    item
+      LastModified = 38218.617361111110000000
+      FilePath = 'DAClsSombraD6.bpl'
+    end
+    item
+      LastModified = 38218.615578703710000000
+      FilePath = 'DAClsSombraD7.bpl'
+    end
+    item
+      LastModified = 37302.584722222220000000
+      FilePath = 'dbrtl60.bpl'
+    end
+    item
+      LastModified = 36549.209027777780000000
+      FilePath = 'dbwebxprt.bpl'
+    end
+    item
+      LastModified = 36549.209027777780000000
+      FilePath = 'dbx50.bpl'
+    end
+    item
+      LastModified = 36549.209027777780000000
+      FilePath = 'dcl31w50.bpl'
+    end
+    item
+      LastModified = 36549.209027777780000000
+      FilePath = 'dclado50.bpl'
+    end
+    item
+      LastModified = 36549.209027777780000000
+      FilePath = 'dclaxserver50.bpl'
+    end
+    item
+      LastModified = 36549.209027777780000000
+      FilePath = 'dclbde50.bpl'
+    end
+    item
+      LastModified = 37210.252083333330000000
+      FilePath = 'dclDAD55.bpl'
+    end
+    item
+      LastModified = 36549.209027777780000000
+      FilePath = 'dcldb50.bpl'
+    end
+    item
+      LastModified = 36549.209027777780000000
+      FilePath = 'dcldss50.bpl'
+    end
+    item
+      LastModified = 36549.209027777780000000
+      FilePath = 'dclib50.bpl'
+    end
+    item
+      LastModified = 36549.209027777780000000
+      FilePath = 'dclie50.bpl'
+    end
+    item
+      LastModified = 36549.209027777780000000
+      FilePath = 'dclisp50.bpl'
+    end
+    item
+      LastModified = 36549.209027777780000000
+      FilePath = 'dclite50.bpl'
+    end
+    item
+      LastModified = 36549.209027777780000000
+      FilePath = 'dclmid50.bpl'
+    end
+    item
+      LastModified = 36549.209027777780000000
+      FilePath = 'dclnet50.bpl'
+    end
+    item
+      LastModified = 36549.209027777780000000
+      FilePath = 'dclnmf50.bpl'
+    end
+    item
+      LastModified = 36549.209027777780000000
+      FilePath = 'dclocx50.bpl'
+    end
+    item
+      LastModified = 36549.209027777780000000
+      FilePath = 'dcloffice2k50.bpl'
+    end
+    item
+      LastModified = 36415.020902777770000000
+      FilePath = 'dclqrt50.bpl'
+    end
+    item
+      LastModified = 37210.252083333330000000
+      FilePath = 'dclRAP55.bpl'
+    end
+    item
+      LastModified = 37210.252083333330000000
+      FilePath = 'dclRBC55.bpl'
+    end
+    item
+      LastModified = 37210.252083333330000000
+      FilePath = 'dclRBE55.bpl'
+    end
+    item
+      LastModified = 37210.252083333330000000
+      FilePath = 'dclRBU55.bpl'
+    end
+    item
+      LastModified = 38189.715486111110000000
+      FilePath = 'DCLRX5.bpl'
+    end
+    item
+      LastModified = 38189.715740740740000000
+      FilePath = 'DCLRXBD5.bpl'
+    end
+    item
+      LastModified = 38189.715717592590000000
+      FilePath = 'DCLRXDB5.bpl'
+    end
+    item
+      LastModified = 36549.209027777780000000
+      FilePath = 'dclsmp50.bpl'
+    end
+    item
+      LastModified = 36549.209027777780000000
+      FilePath = 'dclsmpedit50.bpl'
+    end
+    item
+      LastModified = 36549.209027777780000000
+      FilePath = 'dclstd50.bpl'
+    end
+    item
+      LastModified = 36549.209027777780000000
+      FilePath = 'dcltee50.bpl'
+    end
+    item
+      LastModified = 36549.209027777780000000
+      FilePath = 'dcltqr50.bpl'
+    end
+    item
+      LastModified = 36549.209027777780000000
+      FilePath = 'dclwbm50.bpl'
+    end
+    item
+      LastModified = 36549.209027777780000000
+      FilePath = 'dfmpkg50.bpl'
+    end
+    item
+      LastModified = 38204.459699074080000000
+      FilePath = 'DGuardiaoD5.bpl'
+    end
+    item
+      LastModified = 38793.658541666660000000
+      FilePath = 'DGuardOdacD5.bpl'
+    end
+    item
+      LastModified = 38204.459675925930000000
+      FilePath = 'DHardShadowD5.bpl'
+    end
+    item
+      LastModified = 36549.209027777780000000
+      FilePath = 'direct50.bpl'
+    end
+    item
+      LastModified = 37707.784351851850000000
+      FilePath = 'Distrib.hlp'
+    end
+    item
+      LastModified = 40427.339004629630000000
+      FilePath = 'Distribuicao.exe'
+    end
+    item
+      LastModified = 37333.375856481480000000
+      FilePath = 'DMPSExtraD5.bpl'
+    end
+    item
+      LastModified = 38128.740462962960000000
+      FilePath = 'DMPSExtraD6.bpl'
+    end
+    item
+      LastModified = 38128.742175925920000000
+      FilePath = 'DMPSExtraD7.bpl'
+    end
+    item
+      LastModified = 38799.803541666670000000
+      FilePath = 'DMPSJudi.bpl'
+    end
+    item
+      LastModified = 36549.209027777780000000
+      FilePath = 'dphcrb50.bpl'
+    end
+    item
+      LastModified = 36549.209027777780000000
+      FilePath = 'dphide50.bpl'
+    end
+    item
+      LastModified = 36549.209027777780000000
+      FilePath = 'dphmts50.bpl'
+    end
+    item
+      LastModified = 36549.209027777780000000
+      FilePath = 'dphpro50.bpl'
+    end
+    item
+      LastModified = 38898.505694444440000000
+      FilePath = 'dsavegrid50.bpl'
+    end
+    item
+      LastModified = 38898.505694444440000000
+      FilePath = 'dsavegrid50.dcp'
+    end
+    item
+      LastModified = 37302.584722222220000000
+      FilePath = 'dsnap60.bpl'
+    end
+    item
+      LastModified = 36549.209027777780000000
+      FilePath = 'dsnide50.bpl'
+    end
+    item
+      LastModified = 36549.209027777780000000
+      FilePath = 'dss50.bpl'
+    end
+    item
+      LastModified = 37033.125000000000000000
+      FilePath = 'dss60.bpl'
+    end
+    item
+      LastModified = 37166.759282407410000000
+      FilePath = 'Esparta.jpg'
+    end
+    item
+      LastModified = 40424.661041666670000000
+      FilePath = 'EspartaSombras.bpl'
+    end
+    item
+      LastModified = 40424.661041666670000000
+      FilePath = 'EspartaSombras.dcp'
+    end
+    item
+      LastModified = 40337.562060185180000000
+      FilePath = 'EspartaSombras.~bpl'
+    end
+    item
+      LastModified = 37494.634259259260000000
+      FilePath = 'exprsd6.bpl'
+    end
+    item
+      LastModified = 40427.339027777780000000
+      FilePath = 'Financeiro.exe'
+    end
+    item
+      LastModified = 36756.374629629630000000
+      FilePath = 'firstclass2000d_vcl5.bpl'
+    end
+    item
+      LastModified = 36756.374606481480000000
+      FilePath = 'firstclass2000_vcl5.bpl'
+    end
+    item
+      LastModified = 36370.374606481480000000
+      FilePath = 'FirstClass_d4.bpl'
+    end
+    item
+      LastModified = 37707.784375000000000000
+      FilePath = 'Gabin.hlp'
+    end
+    item
+      LastModified = 40427.339143518520000000
+      FilePath = 'Gabinete.exe'
+    end
+    item
+      LastModified = 38219.284930555560000000
+      FilePath = 'ghostpdf.inf'
+    end
+    item
+      LastModified = 38402.735115740740000000
+      FilePath = 'ghostpdf.ppd'
+    end
+    item
+      LastModified = 38175.780902777780000000
+      FilePath = 'GridPackD6.bpl'
+    end
+    item
+      LastModified = 38758.531458333330000000
+      FilePath = 'GuardiaoD5.bpl'
+    end
+    item
+      LastModified = 38758.531481481480000000
+      FilePath = 'GuardOdacD5.bpl'
+    end
+    item
+      LastModified = 38758.531458333330000000
+      FilePath = 'HardShadowD5.bpl'
+    end
+    item
+      LastModified = 38758.531458333330000000
+      FilePath = 'HShadowOdacD5.bpl'
+    end
+    item
+      LastModified = 36549.209027777780000000
+      FilePath = 'ibevnt50.bpl'
+    end
+    item
+      LastModified = 37302.584722222220000000
+      FilePath = 'ibxpress60.bpl'
+    end
+    item
+      LastModified = 38141.735162037040000000
+      FilePath = 'Indy50.bpl'
+    end
+    item
+      LastModified = 38169.672685185190000000
+      FilePath = 'INDY60.bpl'
+    end
+    item
+      LastModified = 36549.209027777780000000
+      FilePath = 'inet50.bpl'
+    end
+    item
+      LastModified = 36549.209027777780000000
+      FilePath = 'inetdb50.bpl'
+    end
+    item
+      LastModified = 40427.339166666660000000
+      FilePath = 'Integracao.exe'
+    end
+    item
+      LastModified = 37477.500000000000000000
+      FilePath = 'IntrawebDB_50_70.bpl'
+    end
+    item
+      LastModified = 37477.500000000000000000
+      FilePath = 'Intraweb_50_70.bpl'
+    end
+    item
+      LastModified = 36370.635717592600000000
+      FilePath = 'ip40client.bpl'
+    end
+    item
+      LastModified = 36370.634699074070000000
+      FilePath = 'ip40_d4.bpl'
+    end
+    item
+      LastModified = 36965.585601851850000000
+      FilePath = 'IP50client_d5.bpl'
+    end
+    item
+      LastModified = 36965.585625000000000000
+      FilePath = 'ip50d_d5.bpl'
+    end
+    item
+      LastModified = 36965.567106481480000000
+      FilePath = 'IP50word2000_d5.bpl'
+    end
+    item
+      LastModified = 36965.585601851850000000
+      FilePath = 'IP50word_d5.bpl'
+    end
+    item
+      LastModified = 36965.585555555550000000
+      FilePath = 'ip50_d5.bpl'
+    end
+    item
+      LastModified = 40427.339189814820000000
+      FilePath = 'Mandados.exe'
+    end
+    item
+      LastModified = 37707.784398148150000000
+      FilePath = 'Movim.hlp'
+    end
+    item
+      LastModified = 40427.339282407410000000
+      FilePath = 'Movimentacao.exe'
+    end
+    item
+      LastModified = 37000.419444444440000000
+      FilePath = 'MPSExMumpsD5.bpl'
+    end
+    item
+      LastModified = 38128.741944444450000000
+      FilePath = 'MPSExtraD5.bpl'
+    end
+    item
+      LastModified = 38128.740439814810000000
+      FilePath = 'MPSExtraD6.bpl'
+    end
+    item
+      LastModified = 38128.742152777780000000
+      FilePath = 'MPSExtraD7.bpl'
+    end
+    item
+      LastModified = 38799.803495370370000000
+      FilePath = 'MPSJudi.bpl'
+    end
+    item
+      LastModified = 40288.650763888890000000
+      FilePath = 'MPSProcessoCNJ.dll'
+    end
+    item
+      LastModified = 37952.609490740740000000
+      FilePath = 'MPSUtils11D5R.bpl'
+    end
+    item
+      LastModified = 37952.610254629630000000
+      FilePath = 'MPSUtils11D7R.bpl'
+    end
+    item
+      LastModified = 38174.675972222220000000
+      FilePath = 'MPSUtils12D5D.bpl'
+    end
+    item
+      LastModified = 38145.692106481480000000
+      FilePath = 'MPSUtils12D5R.bpl'
+    end
+    item
+      LastModified = 38174.676597222220000000
+      FilePath = 'MPSUtils12D6D.bpl'
+    end
+    item
+      LastModified = 38145.737638888890000000
+      FilePath = 'MPSUtils12D6R.bpl'
+    end
+    item
+      LastModified = 38174.676944444440000000
+      FilePath = 'MPSUtils12D7D.bpl'
+    end
+    item
+      LastModified = 38145.696481481480000000
+      FilePath = 'MPSUtils12D7R.bpl'
+    end
+    item
+      LastModified = 38434.742777777780000000
+      FilePath = 'MPSUtils13D5R.bpl'
+    end
+    item
+      LastModified = 36549.209027777780000000
+      FilePath = 'mtside50.bpl'
+    end
+    item
+      LastModified = 37448.468726851850000000
+      FilePath = 'MUHTreeView.bpl'
+    end
+    item
+      LastModified = 36549.209027777780000000
+      FilePath = 'nmfast50.bpl'
+    end
+    item
+      LastModified = 40427.339351851850000000
+      FilePath = 'NotasTaqui.exe'
+    end
+    item
+      LastModified = 38567.517060185190000000
+      FilePath = 'odac50.bpl'
+    end
+    item
+      LastModified = 40235.773611111110000000
+      FilePath = 'PDC32.DLL'
+    end
+    item
+      LastModified = 40427.339444444440000000
+      FilePath = 'Precatorio.exe'
+    end
+    item
+      LastModified = 36549.209027777780000000
+      FilePath = 'proide50.bpl'
+    end
+    item
+      LastModified = 37707.784421296300000000
+      FilePath = 'Protoc.hlp'
+    end
+    item
+      LastModified = 40427.339513888890000000
+      FilePath = 'Protocolo.exe'
+    end
+    item
+      LastModified = 36415.016990740740000000
+      FilePath = 'qrpt50.bpl'
+    end
+    item
+      LastModified = 37033.125000000000000000
+      FilePath = 'qrpt60.bpl'
+    end
+    item
+      LastModified = 37210.252083333330000000
+      FilePath = 'rbADO55.bpl'
+    end
+    item
+      LastModified = 36836.211805555550000000
+      FilePath = 'rbBDE54.bpl'
+    end
+    item
+      LastModified = 37210.252083333330000000
+      FilePath = 'rbBDE55.bpl'
+    end
+    item
+      LastModified = 38173.650185185190000000
+      FilePath = 'RBBDE66.bpl'
+    end
+    item
+      LastModified = 36836.211805555550000000
+      FilePath = 'rbCIDE54.bpl'
+    end
+    item
+      LastModified = 37210.252083333330000000
+      FilePath = 'rbCIDE55.bpl'
+    end
+    item
+      LastModified = 38173.650185185190000000
+      FilePath = 'RBCIDE66.bpl'
+    end
+    item
+      LastModified = 36836.211805555550000000
+      FilePath = 'rbCT54.bpl'
+    end
+    item
+      LastModified = 37210.252083333330000000
+      FilePath = 'rbCT55.bpl'
+    end
+    item
+      LastModified = 38173.650185185190000000
+      FilePath = 'RBCT66.bpl'
+    end
+    item
+      LastModified = 36836.211805555550000000
+      FilePath = 'rbDAD54.bpl'
+    end
+    item
+      LastModified = 37210.252083333330000000
+      FilePath = 'rbDAD55.bpl'
+    end
+    item
+      LastModified = 38173.650185185190000000
+      FilePath = 'RBDAD66.bpl'
+    end
+    item
+      LastModified = 37210.252083333330000000
+      FilePath = 'rbDB55.bpl'
+    end
+    item
+      LastModified = 38173.650208333330000000
+      FilePath = 'RBDB66.bpl'
+    end
+    item
+      LastModified = 36836.211805555550000000
+      FilePath = 'rbDBDE54.bpl'
+    end
+    item
+      LastModified = 37210.252083333330000000
+      FilePath = 'rbDBDE55.bpl'
+    end
+    item
+      LastModified = 38173.650185185190000000
+      FilePath = 'RBDBDE66.bpl'
+    end
+    item
+      LastModified = 36836.211805555550000000
+      FilePath = 'rbDIDE54.bpl'
+    end
+    item
+      LastModified = 37210.252083333330000000
+      FilePath = 'rbDIDE55.bpl'
+    end
+    item
+      LastModified = 38173.650185185190000000
+      FilePath = 'RBDIDE66.bpl'
+    end
+    item
+      LastModified = 37210.252083333330000000
+      FilePath = 'rbIBE55.bpl'
+    end
+    item
+      LastModified = 36836.211805555550000000
+      FilePath = 'rbIDE54.bpl'
+    end
+    item
+      LastModified = 37210.252083333330000000
+      FilePath = 'rbIDE55.bpl'
+    end
+    item
+      LastModified = 38173.650185185190000000
+      FilePath = 'RBIDE66.bpl'
+    end
+    item
+      LastModified = 36836.211805555550000000
+      FilePath = 'rbRAP54.bpl'
+    end
+    item
+      LastModified = 37210.252083333330000000
+      FilePath = 'rbRAP55.bpl'
+    end
+    item
+      LastModified = 38173.650185185190000000
+      FilePath = 'RBRAP66.bpl'
+    end
+    item
+      LastModified = 36836.211805555550000000
+      FilePath = 'rbRCL54.bpl'
+    end
+    item
+      LastModified = 37210.252083333330000000
+      FilePath = 'rbRCL55.bpl'
+    end
+    item
+      LastModified = 38173.650208333330000000
+      FilePath = 'RBRCL66.bpl'
+    end
+    item
+      LastModified = 36836.211805555550000000
+      FilePath = 'rbRIDE54.bpl'
+    end
+    item
+      LastModified = 37210.252083333330000000
+      FilePath = 'rbRIDE55.bpl'
+    end
+    item
+      LastModified = 38173.650208333330000000
+      FilePath = 'RBRIDE66.bpl'
+    end
+    item
+      LastModified = 36836.211805555550000000
+      FilePath = 'rbTC41.bpl'
+    end
+    item
+      LastModified = 37139.251388888890000000
+      FilePath = 'rbTC51.bpl'
+    end
+    item
+      LastModified = 37210.252083333330000000
+      FilePath = 'rbTC55.bpl'
+    end
+    item
+      LastModified = 38173.650208333330000000
+      FilePath = 'RBTC66.bpl'
+    end
+    item
+      LastModified = 36836.211805555550000000
+      FilePath = 'rbTDBC41.bpl'
+    end
+    item
+      LastModified = 37139.251388888890000000
+      FilePath = 'rbTDBC51.bpl'
+    end
+    item
+      LastModified = 37210.252083333330000000
+      FilePath = 'rbTDBC55.bpl'
+    end
+    item
+      LastModified = 38173.650208333330000000
+      FilePath = 'RBTDBC66.bpl'
+    end
+    item
+      LastModified = 36836.211805555550000000
+      FilePath = 'rbUSER54.bpl'
+    end
+    item
+      LastModified = 37210.252083333330000000
+      FilePath = 'rbUSER55.bpl'
+    end
+    item
+      LastModified = 38173.650208333330000000
+      FilePath = 'RBUSER66.bpl'
+    end
+    item
+      LastModified = 36549.209027777780000000
+      FilePath = 'rcpkg50.bpl'
+    end
+    item
+      LastModified = 40427.339583333330000000
+      FilePath = 'Recurso.exe'
+    end
+    item
+      LastModified = 40427.339675925930000000
+      FilePath = 'Relatorios.exe'
+    end
+    item
+      LastModified = 40157.484027777780000000
+      FilePath = 'rpcc.dll'
+    end
+    item
+      LastModified = 40239.491666666670000000
+      FilePath = 'RPS32.DLL'
+    end
+    item
+      LastModified = 37302.584722222220000000
+      FilePath = 'rtl60.bpl'
+    end
+    item
+      LastModified = 37085.604259259260000000
+      FilePath = 'rxbde5.bpl'
+    end
+    item
+      LastModified = 36925.663842592590000000
+      FilePath = 'rxctl4.bpl'
+    end
+    item
+      LastModified = 37085.603865740740000000
+      FilePath = 'rxctl5.bpl'
+    end
+    item
+      LastModified = 36925.669560185180000000
+      FilePath = 'rxdb4.bpl'
+    end
+    item
+      LastModified = 37027.475231481480000000
+      FilePath = 'rxdb5.bpl'
+    end
+    item
+      LastModified = 40199.468055555550000000
+      FilePath = 'ssgp.dll'
+    end
+    item
+      LastModified = 36549.209027777780000000
+      FilePath = 'stride50.bpl'
+    end
+    item
+      LastModified = 40427.339699074070000000
+      FilePath = 'TabCad.exe'
+    end
+    item
+      LastModified = 36549.209027777780000000
+      FilePath = 'tee50.bpl'
+    end
+    item
+      LastModified = 37033.125000000000000000
+      FilePath = 'tee60.bpl'
+    end
+    item
+      LastModified = 36549.209027777780000000
+      FilePath = 'teedb50.bpl'
+    end
+    item
+      LastModified = 37033.125000000000000000
+      FilePath = 'teedb60.bpl'
+    end
+    item
+      LastModified = 36549.209027777780000000
+      FilePath = 'teeqr50.bpl'
+    end
+    item
+      LastModified = 36549.209027777780000000
+      FilePath = 'teeui50.bpl'
+    end
+    item
+      LastModified = 37033.125000000000000000
+      FilePath = 'teeui60.bpl'
+    end
+    item
+      LastModified = 40238.627083333330000000
+      FilePath = 'TER17.DLL'
+    end
+    item
+      LastModified = 36549.209027777780000000
+      FilePath = 'tlib50.bpl'
+    end
+    item
+      LastModified = 38189.716712962960000000
+      FilePath = 'tziptv5.bpl'
+    end
+    item
+      LastModified = 37860.459143518520000000
+      FilePath = 'VCL50.BPL'
+    end
+    item
+      LastModified = 37302.584722222220000000
+      FilePath = 'vcl60.bpl'
+    end
+    item
+      LastModified = 37861.921875000000000000
+      FilePath = 'vclado50.bpl'
+    end
+    item
+      LastModified = 37860.459143518520000000
+      FilePath = 'VCLBDE50.BPL'
+    end
+    item
+      LastModified = 37860.459166666670000000
+      FilePath = 'VCLDB50.BPL'
+    end
+    item
+      LastModified = 37302.584722222220000000
+      FilePath = 'vcldb60.bpl'
+    end
+    item
+      LastModified = 36549.250694444450000000
+      FilePath = 'vcldbx50.bpl'
+    end
+    item
+      LastModified = 36549.250694444450000000
+      FilePath = 'vclib50.bpl'
+    end
+    item
+      LastModified = 36549.209027777780000000
+      FilePath = 'vclide50.bpl'
+    end
+    item
+      LastModified = 36549.250694444450000000
+      FilePath = 'vclie50.bpl'
+    end
+    item
+      LastModified = 36549.250694444450000000
+      FilePath = 'vcljpg50.bpl'
+    end
+    item
+      LastModified = 37033.125000000000000000
+      FilePath = 'vcljpg60.bpl'
+    end
+    item
+      LastModified = 38506.436666666670000000
+      FilePath = 'vclmid50.bpl'
+    end
+    item
+      LastModified = 36549.250694444450000000
+      FilePath = 'vclsmp50.bpl'
+    end
+    item
+      LastModified = 37033.125000000000000000
+      FilePath = 'vclsmp60.bpl'
+    end
+    item
+      LastModified = 36549.250694444450000000
+      FilePath = 'vclx50.bpl'
+    end
+    item
+      LastModified = 37033.125000000000000000
+      FilePath = 'vclx60.bpl'
+    end
+    item
+      LastModified = 36549.209027777780000000
+      FilePath = 'webmid50.bpl'
+    end
+    item
+      LastModified = 35286.166666666660000000
+      FilePath = 'wwip4dtp.bpl'
+    end
+    item
+      LastModified = 37302.584722222220000000
+      FilePath = 'xmlrtl60.bpl'
+    end
+    item
+      LastModified = 37697.896203703710000000
+      FilePath = 'xtradev4.bpl'
+    end
+    item
+      LastModified = 38980.673541666660000000
+      FilePath = 'xtradev5.bpl'
+    end
+    item
+      LastModified = 38905.523356481480000000
+      FilePath = 'xtradev5.dcp'
+    end
+    item
+      LastModified = 37697.896250000000000000
+      FilePath = 'xtradev6.bpl'
+    end
+    item
+      LastModified = 37697.896273148150000000
+      FilePath = 'xtradev7.bpl'
+    end
+    item
+      LastModified = 38190.453703703700000000
+      FilePath = 'ZipD6.bpl'
+    end
+    item
+      LastModified = 38189.716712962960000000
+      FilePath = 'ztv50rt.bpl'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\acctest.ps'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\addxchar.ps'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\align.ps'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\bdftops'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\bdftops.ps'
+    end
+    item
+      LastModified = 36630.999976851850000000
+      FilePath = 'bin\bj8.rpd'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\caption.ps'
+    end
+    item
+      LastModified = 36789.603611111110000000
+      FilePath = 'bin\cbjc600.ppd'
+    end
+    item
+      LastModified = 36789.603611111110000000
+      FilePath = 'bin\cbjc800.ppd'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\cid2code.ps'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\cidfmap'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\decrypt.ps'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\docie.ps'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\dumphint'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\dumphint.ps'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\dvipdf'
+    end
+    item
+      LastModified = 38430.317175925930000000
+      FilePath = 'bin\EndOfTask.ps'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\eps2eps'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\FAPIcidfmap'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\FAPIconfig'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\FAPIfontmap'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\fixmswrd.pl'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\font2c'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\font2c.ps'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\font2pcl.ps'
+    end
+    item
+      LastModified = 37804.013912037040000000
+      FilePath = 'bin\Fontmap'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\Fontmap.GS'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\Fontmap.OS2'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\Fontmap.SGI'
+    end
+    item
+      LastModified = 38402.735115740740000000
+      FilePath = 'bin\ghostpdf.ppd'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\gsbj'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\gsdj'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\gsdj500'
+    end
+    item
+      LastModified = 38859.925115740740000000
+      FilePath = 'bin\gsdll32.dll'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\gslj'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\gslp'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\gslp.ps'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\gsnd'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\gsnup.ps'
+    end
+    item
+      LastModified = 39954.740393518520000000
+      FilePath = 'bin\gswin32.exe'
+    end
+    item
+      LastModified = 39954.740416666670000000
+      FilePath = 'bin\gswin32c.exe'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\gs_agl.ps'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\gs_btokn.ps'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\gs_ccfnt.ps'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\gs_ce_e.ps'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\gs_cff.ps'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\gs_cidcm.ps'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\gs_ciddc.ps'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\gs_cidfm.ps'
+    end
+    item
+      LastModified = 38757.453240740740000000
+      FilePath = 'bin\gs_cidfn.ps'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\gs_cidtt.ps'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\gs_ciecs2.ps'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\gs_ciecs3.ps'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\gs_cmap.ps'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\gs_cmdl.ps'
+    end
+    item
+      LastModified = 38811.405115740740000000
+      FilePath = 'bin\gs_cspace.ps'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\gs_css_e.ps'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\gs_dbt_e.ps'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\gs_devcs.ps'
+    end
+    item
+      LastModified = 38724.664282407410000000
+      FilePath = 'bin\gs_devn.ps'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\gs_devpxl.ps'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\gs_diskf.ps'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\gs_diskn.ps'
+    end
+    item
+      LastModified = 38811.405115740740000000
+      FilePath = 'bin\gs_dpnxt.ps'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\gs_dps.ps'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\gs_dps1.ps'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\gs_dps2.ps'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\gs_dscp.ps'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\gs_epsf.ps'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\gs_fapi.ps'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\gs_fform.ps'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\gs_fntem.ps'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\gs_fonts.ps'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\gs_frsd.ps'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\gs_icc.ps'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\gs_il1_e.ps'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\gs_il2_e.ps'
+    end
+    item
+      LastModified = 38811.405115740740000000
+      FilePath = 'bin\gs_img.ps'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\gs_indxd.ps'
+    end
+    item
+      LastModified = 38770.770231481480000000
+      FilePath = 'bin\gs_init.ps'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\gs_kanji.ps'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\gs_ksb_e.ps'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\gs_l2img.ps'
+    end
+    item
+      LastModified = 38846.069097222220000000
+      FilePath = 'bin\gs_lev2.ps'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\gs_lgo_e.ps'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\gs_lgx_e.ps'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\gs_ll3.ps'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\gs_mex_e.ps'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\gs_mgl_e.ps'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\gs_mro_e.ps'
+    end
+    item
+      LastModified = 38846.069097222220000000
+      FilePath = 'bin\gs_patrn.ps'
+    end
+    item
+      LastModified = 38738.155000000000000000
+      FilePath = 'bin\gs_pdfwr.ps'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\gs_pdf_e.ps'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\gs_pfile.ps'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\gs_rdlin.ps'
+    end
+    item
+      LastModified = 38819.037777777780000000
+      FilePath = 'bin\gs_res.ps'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\gs_resmp.ps'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\gs_resst.ps'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\gs_sepr.ps'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\gs_setpd.ps'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\gs_statd.ps'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\gs_std_e.ps'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\gs_sym_e.ps'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\gs_trap.ps'
+    end
+    item
+      LastModified = 38792.482962962960000000
+      FilePath = 'bin\gs_ttf.ps'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\gs_typ32.ps'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\gs_typ42.ps'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\gs_type1.ps'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\gs_wan_e.ps'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\gs_wl1_e.ps'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\gs_wl2_e.ps'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\gs_wl5_e.ps'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\ht_ccsto.ps'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\image-qa.ps'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\impath.ps'
+    end
+    item
+      LastModified = 37229.876504629630000000
+      FilePath = 'bin\Info-macos.plist'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\jispaper.ps'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\landscap.ps'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\level1.ps'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\lines.ps'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\lprsetup.sh'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\markhint.ps'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\markpath.ps'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\mkcidfm.ps'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\opdfread.ps'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\packfile.ps'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\pcharstr.ps'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\pdf2dsc'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\pdf2dsc.ps'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\pdf2ps'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\PDFA_def.ps'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\pdfopt'
+    end
+    item
+      LastModified = 38799.082476851850000000
+      FilePath = 'bin\pdfopt.ps'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\pdfwrite.ps'
+    end
+    item
+      LastModified = 38734.463171296290000000
+      FilePath = 'bin\PDFX_def.ps'
+    end
+    item
+      LastModified = 38735.622638888890000000
+      FilePath = 'bin\pdf_base.ps'
+    end
+    item
+      LastModified = 38809.384722222220000000
+      FilePath = 'bin\pdf_draw.ps'
+    end
+    item
+      LastModified = 38822.580347222230000000
+      FilePath = 'bin\pdf_font.ps'
+    end
+    item
+      LastModified = 38800.688958333330000000
+      FilePath = 'bin\pdf_main.ps'
+    end
+    item
+      LastModified = 38813.854699074070000000
+      FilePath = 'bin\pdf_ops.ps'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\pdf_rbld.ps'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\pdf_sec.ps'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\pf2afm'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\pf2afm.ps'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\pfbtopfa'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\pfbtopfa.ps'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\ppath.ps'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\pphs'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\pphs.ps'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\prfont.ps'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\printafm'
+    end
+    item
+      LastModified = 38799.632453703710000000
+      FilePath = 'bin\printafm.ps'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\ps2ai.ps'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\ps2ascii'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\ps2ascii.ps'
+    end
+    item
+      LastModified = 38745.790601851860000000
+      FilePath = 'bin\ps2epsi'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\ps2epsi.ps'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\ps2pdf'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\ps2pdf12'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\ps2pdf13'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\ps2pdf14'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\ps2pdfwr'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\ps2ps'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\ps2ps2'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\pv.sh'
+    end
+    item
+      LastModified = 36595.236643518520000000
+      FilePath = 'bin\quit.ps'
+    end
+    item
+      LastModified = 38136.832569444440000000
+      FilePath = 'bin\rinkj-2200-setup'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\rollconv.ps'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\showchar.ps'
+    end
+    item
+      LastModified = 36595.236643518520000000
+      FilePath = 'bin\showpage.ps'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\stcinfo.ps'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\stcolor.ps'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\stocht.ps'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\traceimg.ps'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\traceop.ps'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\type1enc.ps'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\type1ops.ps'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\uninfo.ps'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\unix-lpr.sh'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\unprot.ps'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\viewcmyk.ps'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\viewgif.ps'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\viewjpeg.ps'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\viewmiff.ps'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\viewpbm.ps'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\viewpcx.ps'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\viewps2a.ps'
+    end
+    item
+      LastModified = 39422.590856481480000000
+      FilePath = 'bin\Weboc.exe'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\wftopfa'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\wftopfa.ps'
+    end
+    item
+      LastModified = 38770.770231481480000000
+      FilePath = 'bin\winmaps.ps'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\wrfont.ps'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\xlatmap'
+    end
+    item
+      LastModified = 38715.705833333330000000
+      FilePath = 'bin\zeroline.ps'
+    end
+    item
+      LastModified = 37617.710578703710000000
+      FilePath = 'fonts\a010013l.afm'
+    end
+    item
+      LastModified = 37617.710578703710000000
+      FilePath = 'fonts\a010013l.pfb'
+    end
+    item
+      LastModified = 37617.710578703710000000
+      FilePath = 'fonts\a010013l.pfm'
+    end
+    item
+      LastModified = 37617.714930555560000000
+      FilePath = 'fonts\a010015l.afm'
+    end
+    item
+      LastModified = 37617.714930555560000000
+      FilePath = 'fonts\a010015l.pfb'
+    end
+    item
+      LastModified = 37617.714930555560000000
+      FilePath = 'fonts\a010015l.pfm'
+    end
+    item
+      LastModified = 37617.720324074070000000
+      FilePath = 'fonts\a010033l.afm'
+    end
+    item
+      LastModified = 37617.720324074070000000
+      FilePath = 'fonts\a010033l.pfb'
+    end
+    item
+      LastModified = 37617.720324074070000000
+      FilePath = 'fonts\a010033l.pfm'
+    end
+    item
+      LastModified = 37617.723194444440000000
+      FilePath = 'fonts\a010035l.afm'
+    end
+    item
+      LastModified = 37617.723194444440000000
+      FilePath = 'fonts\a010035l.pfb'
+    end
+    item
+      LastModified = 37617.723194444440000000
+      FilePath = 'fonts\a010035l.pfm'
+    end
+    item
+      LastModified = 37616.718657407410000000
+      FilePath = 'fonts\b018012l.afm'
+    end
+    item
+      LastModified = 37616.718657407410000000
+      FilePath = 'fonts\b018012l.pfb'
+    end
+    item
+      LastModified = 37616.718657407410000000
+      FilePath = 'fonts\b018012l.pfm'
+    end
+    item
+      LastModified = 37616.721018518520000000
+      FilePath = 'fonts\b018015l.afm'
+    end
+    item
+      LastModified = 37616.721018518520000000
+      FilePath = 'fonts\b018015l.pfb'
+    end
+    item
+      LastModified = 37616.721018518520000000
+      FilePath = 'fonts\b018015l.pfm'
+    end
+    item
+      LastModified = 37616.730023148150000000
+      FilePath = 'fonts\b018032l.afm'
+    end
+    item
+      LastModified = 37616.730023148150000000
+      FilePath = 'fonts\b018032l.pfb'
+    end
+    item
+      LastModified = 37616.730023148150000000
+      FilePath = 'fonts\b018032l.pfm'
+    end
+    item
+      LastModified = 37616.727662037040000000
+      FilePath = 'fonts\b018035l.afm'
+    end
+    item
+      LastModified = 37616.727662037040000000
+      FilePath = 'fonts\b018035l.pfb'
+    end
+    item
+      LastModified = 37616.727662037040000000
+      FilePath = 'fonts\b018035l.pfm'
+    end
+    item
+      LastModified = 37583.207152777780000000
+      FilePath = 'fonts\c059013l.afm'
+    end
+    item
+      LastModified = 37589.632337962960000000
+      FilePath = 'fonts\c059013l.pfb'
+    end
+    item
+      LastModified = 37583.207268518520000000
+      FilePath = 'fonts\c059016l.afm'
+    end
+    item
+      LastModified = 37589.632500000000000000
+      FilePath = 'fonts\c059016l.pfb'
+    end
+    item
+      LastModified = 37583.204722222220000000
+      FilePath = 'fonts\c059033l.afm'
+    end
+    item
+      LastModified = 37589.632662037040000000
+      FilePath = 'fonts\c059033l.pfb'
+    end
+    item
+      LastModified = 37583.204953703700000000
+      FilePath = 'fonts\c059036l.afm'
+    end
+    item
+      LastModified = 37589.633680555550000000
+      FilePath = 'fonts\c059036l.pfb'
+    end
+    item
+      LastModified = 37589.628287037030000000
+      FilePath = 'fonts\ChangeLog'
+    end
+    item
+      LastModified = 37005.741898148150000000
+      FilePath = 'fonts\COPYING'
+    end
+    item
+      LastModified = 36523.912546296300000000
+      FilePath = 'fonts\d050000l.afm'
+    end
+    item
+      LastModified = 36523.912546296300000000
+      FilePath = 'fonts\d050000l.pfb'
+    end
+    item
+      LastModified = 37271.578287037040000000
+      FilePath = 'fonts\fonts.dir'
+    end
+    item
+      LastModified = 37261.638981481480000000
+      FilePath = 'fonts\fonts.scale'
+    end
+    item
+      LastModified = 37622.452106481480000000
+      FilePath = 'fonts\n019003l.afm'
+    end
+    item
+      LastModified = 37622.452106481480000000
+      FilePath = 'fonts\n019003l.pfb'
+    end
+    item
+      LastModified = 37622.452106481480000000
+      FilePath = 'fonts\n019003l.pfm'
+    end
+    item
+      LastModified = 37622.452361111110000000
+      FilePath = 'fonts\n019004l.afm'
+    end
+    item
+      LastModified = 37622.452361111110000000
+      FilePath = 'fonts\n019004l.pfb'
+    end
+    item
+      LastModified = 37622.452361111110000000
+      FilePath = 'fonts\n019004l.pfm'
+    end
+    item
+      LastModified = 37622.452569444450000000
+      FilePath = 'fonts\n019023l.afm'
+    end
+    item
+      LastModified = 37622.452569444450000000
+      FilePath = 'fonts\n019023l.pfb'
+    end
+    item
+      LastModified = 37622.452569444450000000
+      FilePath = 'fonts\n019023l.pfm'
+    end
+    item
+      LastModified = 37622.452847222220000000
+      FilePath = 'fonts\n019024l.afm'
+    end
+    item
+      LastModified = 37622.452847222220000000
+      FilePath = 'fonts\n019024l.pfb'
+    end
+    item
+      LastModified = 37622.452847222220000000
+      FilePath = 'fonts\n019024l.pfm'
+    end
+    item
+      LastModified = 37583.206064814820000000
+      FilePath = 'fonts\n019043l.afm'
+    end
+    item
+      LastModified = 37589.634976851850000000
+      FilePath = 'fonts\n019043l.pfb'
+    end
+    item
+      LastModified = 37583.206203703700000000
+      FilePath = 'fonts\n019044l.afm'
+    end
+    item
+      LastModified = 37589.635115740740000000
+      FilePath = 'fonts\n019044l.pfb'
+    end
+    item
+      LastModified = 37583.206898148150000000
+      FilePath = 'fonts\n019063l.afm'
+    end
+    item
+      LastModified = 37589.635648148150000000
+      FilePath = 'fonts\n019063l.pfb'
+    end
+    item
+      LastModified = 37622.451782407410000000
+      FilePath = 'fonts\n019064l.afm'
+    end
+    item
+      LastModified = 37622.451782407410000000
+      FilePath = 'fonts\n019064l.pfb'
+    end
+    item
+      LastModified = 37622.451782407410000000
+      FilePath = 'fonts\n019064l.pfm'
+    end
+    item
+      LastModified = 37622.451273148140000000
+      FilePath = 'fonts\n021003l.afm'
+    end
+    item
+      LastModified = 37622.451273148140000000
+      FilePath = 'fonts\n021003l.pfb'
+    end
+    item
+      LastModified = 37622.451273148140000000
+      FilePath = 'fonts\n021003l.pfm'
+    end
+    item
+      LastModified = 37622.450972222220000000
+      FilePath = 'fonts\n021004l.afm'
+    end
+    item
+      LastModified = 37622.450972222220000000
+      FilePath = 'fonts\n021004l.pfb'
+    end
+    item
+      LastModified = 37622.450972222220000000
+      FilePath = 'fonts\n021004l.pfm'
+    end
+    item
+      LastModified = 37622.450578703710000000
+      FilePath = 'fonts\n021023l.afm'
+    end
+    item
+      LastModified = 37622.450578703710000000
+      FilePath = 'fonts\n021023l.pfb'
+    end
+    item
+      LastModified = 37622.450578703710000000
+      FilePath = 'fonts\n021023l.pfm'
+    end
+    item
+      LastModified = 37622.450231481480000000
+      FilePath = 'fonts\n021024l.afm'
+    end
+    item
+      LastModified = 37622.450231481480000000
+      FilePath = 'fonts\n021024l.pfb'
+    end
+    item
+      LastModified = 37622.450231481480000000
+      FilePath = 'fonts\n021024l.pfm'
+    end
+    item
+      LastModified = 37616.735810185190000000
+      FilePath = 'fonts\n022003l.afm'
+    end
+    item
+      LastModified = 37616.735810185190000000
+      FilePath = 'fonts\n022003l.pfb'
+    end
+    item
+      LastModified = 37616.736226851860000000
+      FilePath = 'fonts\n022004l.afm'
+    end
+    item
+      LastModified = 37616.736226851860000000
+      FilePath = 'fonts\n022004l.pfb'
+    end
+    item
+      LastModified = 37616.735393518520000000
+      FilePath = 'fonts\n022023l.afm'
+    end
+    item
+      LastModified = 37616.735393518520000000
+      FilePath = 'fonts\n022023l.pfb'
+    end
+    item
+      LastModified = 37616.736504629630000000
+      FilePath = 'fonts\n022024l.afm'
+    end
+    item
+      LastModified = 37616.736504629630000000
+      FilePath = 'fonts\n022024l.pfb'
+    end
+    item
+      LastModified = 37583.206412037030000000
+      FilePath = 'fonts\p052003l.afm'
+    end
+    item
+      LastModified = 37589.637754629630000000
+      FilePath = 'fonts\p052003l.pfb'
+    end
+    item
+      LastModified = 37583.206527777780000000
+      FilePath = 'fonts\p052004l.afm'
+    end
+    item
+      LastModified = 37589.637916666670000000
+      FilePath = 'fonts\p052004l.pfb'
+    end
+    item
+      LastModified = 37583.207384259260000000
+      FilePath = 'fonts\p052023l.afm'
+    end
+    item
+      LastModified = 37589.638055555560000000
+      FilePath = 'fonts\p052023l.pfb'
+    end
+    item
+      LastModified = 37583.204143518520000000
+      FilePath = 'fonts\p052024l.afm'
+    end
+    item
+      LastModified = 37589.638171296300000000
+      FilePath = 'fonts\p052024l.pfb'
+    end
+    item
+      LastModified = 37821.265486111110000000
+      FilePath = 'fonts\README'
+    end
+    item
+      LastModified = 37450.530393518520000000
+      FilePath = 'fonts\README.tweaks'
+    end
+    item
+      LastModified = 36523.912546296300000000
+      FilePath = 'fonts\s050000l.afm'
+    end
+    item
+      LastModified = 36523.912546296300000000
+      FilePath = 'fonts\s050000l.pfb'
+    end
+    item
+      LastModified = 37291.649745370370000000
+      FilePath = 'fonts\TODO'
+    end
+    item
+      LastModified = 40310.457083333330000000
+      FilePath = 'fonts\uninstal.txt'
+    end
+    item
+      LastModified = 40310.450023148150000000
+      FilePath = 'fonts\uninstal.txt.bak'
+    end
+    item
+      LastModified = 37616.737083333330000000
+      FilePath = 'fonts\z003034l.afm'
+    end
+    item
+      LastModified = 37616.737083333330000000
+      FilePath = 'fonts\z003034l.pfb'
+    end
+    item
+      LastModified = 37616.737083333330000000
+      FilePath = 'fonts\z003034l.pfm'
+    end
+    item
+      LastModified = 39608.596967592600000000
+      FilePath = 'Imagens\Balc'#227'o.bmp'
+    end
+    item
+      LastModified = 37454.658726851850000000
+      FilePath = 'Imagens\Balc'#198'o.bmp'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\Barra00pct.jpg'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\Barra100pct.jpg'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\Barra10pct.jpg'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\Barra20pct.jpg'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\Barra30pct.jpg'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\Barra40pct.jpg'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\Barra50pct.jpg'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\Barra60pct.jpg'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\Barra70pct.jpg'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\Barra80pct.jpg'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\Barra90pct.jpg'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\BarraAzul.avi'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\BarraAzul.gif'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\Bateria.bmp'
+    end
+    item
+      LastModified = 39608.596967592600000000
+      FilePath = 'Imagens\btnLimpar.bmp'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\btnSelecionar.bmp'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\cabeca.bmp'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\check.bmp'
+    end
+    item
+      LastModified = 39608.596967592600000000
+      FilePath = 'Imagens\CodBarras.bmp'
+    end
+    item
+      LastModified = 37557.796296296300000000
+      FilePath = 'Imagens\ConfProc.bmp'
+    end
+    item
+      LastModified = 37557.810555555550000000
+      FilePath = 'Imagens\ConfProc2.bmp'
+    end
+    item
+      LastModified = 37557.812337962960000000
+      FilePath = 'Imagens\confProc3.bmp'
+    end
+    item
+      LastModified = 37557.816504629630000000
+      FilePath = 'Imagens\confProc4.bmp'
+    end
+    item
+      LastModified = 37203.611851851850000000
+      FilePath = 'Imagens\DuasDireita.bmp'
+    end
+    item
+      LastModified = 37203.612847222220000000
+      FilePath = 'Imagens\DuasEsquerda.bmp'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\E-mail.bmp'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\error.bmp'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\EspartaTiler.bmp'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\etiquetas (2).jpg'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\etiquetas (2).tif'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\etiquetas (3).jpg'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\etiquetas (3).tif'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\Fax.bmp'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\Financeiro.bmp'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\fundobotao1.bmp'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\fundobotao1.cpt'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\fundobotao2.bmp'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\fundobotao2.cpt'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\fundobotao3.bmp'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\fundobotao3.cpt'
+    end
+    item
+      LastModified = 39608.596967592600000000
+      FilePath = 'Imagens\fundobotao4.bmp'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\fundobotao4.cpt'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\Malote.bmp'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\Noite.jpg'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\parana03.jpg'
+    end
+    item
+      LastModified = 37203.631689814810000000
+      FilePath = 'Imagens\PraBaixo.bmp'
+    end
+    item
+      LastModified = 37203.631527777780000000
+      FilePath = 'Imagens\PraCima.bmp'
+    end
+    item
+      LastModified = 38772.611666666660000000
+      FilePath = 'Imagens\PrecaImagens.zip'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\refresh.bmp'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\SetaBaixo.bmp'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\SetaCima.bmp'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\TBAUTUAC.BMP'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\TBCONPRO.BMP'
+    end
+    item
+      LastModified = 37546.635787037030000000
+      FilePath = 'Imagens\TextoWord.bmp'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\TimbreP&B.bmp'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\TimbreP&B.jpg'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\toolbar_acopadrao.bmp'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\toolbar_acopadrao256.bmp'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\toolbar_acopadraoPB.bmp'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\toolbar_Audit.bmp'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\toolbar_Audit256.bmp'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\toolbar_AuditPB.bmp'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\toolbar_autuacao.bmp'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\toolbar_autuacao256.bmp'
+    end
+    item
+      LastModified = 39608.596967592600000000
+      FilePath = 'Imagens\toolbar_autuacaoconf.bmp'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\toolbar_autuacaoconf256.bmp'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\toolbar_autuacaoconfPB.bmp'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\toolbar_autuacaoII.bmp'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\toolbar_autuacaoII256.bmp'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\toolbar_autuacaoIIPB.bmp'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\toolbar_autuacaoII_iext.bmp'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\toolbar_autuacaoII_iext256.bmp'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\toolbar_autuacaoII_iextPB.bmp'
+    end
+    item
+      LastModified = 39608.596967592600000000
+      FilePath = 'Imagens\toolbar_autuacaoII_iint.bmp'
+    end
+    item
+      LastModified = 39608.596967592600000000
+      FilePath = 'Imagens\toolbar_autuacaoII_iint256.bmp'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\toolbar_autuacaoII_iintPB.bmp'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\toolbar_autuacaoPB.bmp'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\toolbar_autuaprec.bmp'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\toolbar_autuaprec256.bmp'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\toolbar_autuaprecPB.bmp'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\toolbar_cabeca.bmp'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\toolbar_cabeca256.bmp'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\toolbar_cabecaPB.bmp'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\toolbar_cadsessao.bmp'
+    end
+    item
+      LastModified = 39608.596967592600000000
+      FilePath = 'Imagens\toolbar_cadsessao256.bmp'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\toolbar_cadsessaoPB.bmp'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\toolbar_consdoc.bmp'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\toolbar_consdoc256.bmp'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\toolbar_consdocPB.bmp'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\toolbar_conspess.bmp'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\toolbar_conspess256.bmp'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\toolbar_conspessPB.bmp'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\toolbar_conspet.bmp'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\toolbar_conspet256.bmp'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\toolbar_conspetPB.bmp'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\toolbar_consprec.bmp'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\toolbar_consprec256.bmp'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\toolbar_consprecPB.bmp'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\toolbar_consproc.bmp'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\toolbar_consproc2.bmp'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\toolbar_consproc256.bmp'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\toolbar_consprocPB.bmp'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\toolbar_consprocPB2.bmp'
+    end
+    item
+      LastModified = 40352.474768518520000000
+      FilePath = 'Imagens\toolbar_decis.bmp'
+    end
+    item
+      LastModified = 40352.474768518520000000
+      FilePath = 'Imagens\toolbar_decis256.bmp'
+    end
+    item
+      LastModified = 40352.474768518520000000
+      FilePath = 'Imagens\toolbar_decisPB.bmp'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\toolbar_despa.bmp'
+    end
+    item
+      LastModified = 40337.555231481490000000
+      FilePath = 'Imagens\toolbar_despa256.bmp'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\toolbar_despaPB.bmp'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\toolbar_distrAuditoria.bmp'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\toolbar_distrAuditoriaPB.bmp'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\toolbar_distrauto.bmp'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\toolbar_distrauto256.bmp'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\toolbar_distrautoPB.bmp'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\toolbar_estudo.bmp'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\toolbar_estudo256.bmp'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\toolbar_estudoPB.bmp'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\toolbar_estudo_varios.bmp'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\toolbar_estudo_varios256.bmp'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\toolbar_estudo_variosPB.bmp'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\toolbar_gerprocgab.bmp'
+    end
+    item
+      LastModified = 39608.596967592600000000
+      FilePath = 'Imagens\toolbar_gerprocgab256.bmp'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\toolbar_gerprocgabPB.bmp'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\toolbar_guiaenvio.bmp'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\toolbar_guiaenvio256.bmp'
+    end
+    item
+      LastModified = 39608.596967592600000000
+      FilePath = 'Imagens\toolbar_guiaenvioPB.bmp'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\toolbar_guiareceb.bmp'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\toolbar_guiareceb256.bmp'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\toolbar_guiarecebext.bmp'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\toolbar_guiarecebext256.bmp'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\toolbar_guiarecebextPB.bmp'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\toolbar_guiarecebPB.bmp'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\toolbar_indiv.bmp'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\toolbar_indiv256.bmp'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\toolbar_indivPB.bmp'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\toolbar_mandadoDoc.bmp'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\toolbar_mandadosColor.bmp'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\toolbar_memcalc.bmp'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\toolbar_memcalc256.bmp'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\toolbar_memcalcPB.bmp'
+    end
+    item
+      LastModified = 39608.596967592600000000
+      FilePath = 'Imagens\toolbar_movunit.bmp'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\toolbar_movunit256.bmp'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\toolbar_movunitPB.bmp'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\toolbar_movvarios.bmp'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\toolbar_movvarios256.bmp'
+    end
+    item
+      LastModified = 39608.596967592600000000
+      FilePath = 'Imagens\toolbar_movvariosPB.bmp'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\toolbar_pautaext.bmp'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\toolbar_pautaext256.bmp'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\toolbar_pautaextPB.bmp'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\toolbar_pautaint.bmp'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\toolbar_pautaint256.bmp'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\toolbar_pautaintPB.bmp'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\toolbar_prot.bmp'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\toolbar_prot256.bmp'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\toolbar_protPB.bmp'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\toolbar_pubconf.bmp'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\toolbar_pubconf256.bmp'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\toolbar_pubconfPB.bmp'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\toolbar_pubexp.bmp'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\toolbar_pubexp256.bmp'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\toolbar_pubexpPB.bmp'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\toolbar_sessaojulg.bmp'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\toolbar_sessaojulg256.bmp'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\toolbar_sessaojulgPB.bmp'
+    end
+    item
+      LastModified = 39608.596944444440000000
+      FilePath = 'Imagens\trocar.bmp'
+    end
+    item
+      LastModified = 37203.612129629630000000
+      FilePath = 'Imagens\UmaDireita.bmp'
+    end
+    item
+      LastModified = 37203.612523148150000000
+      FilePath = 'Imagens\UmaEsquerda.bmp'
+    end
+    item
+      LastModified = 37803.707060185190000000
+      FilePath = 'Imagens\vssver.scc'
+    end>
+  Directory = '\\Nnery\esparta'
+end
