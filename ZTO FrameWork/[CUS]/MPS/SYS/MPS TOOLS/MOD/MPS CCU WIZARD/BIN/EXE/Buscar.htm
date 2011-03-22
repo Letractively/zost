@@ -1,0 +1,260 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head id="Head1"><title>
+	
+    Lançamentos CCU
+
+</title>
+    <link href="/Content/css/layout.css" rel="stylesheet" type="text/css" />
+    <link href="/Content/css/style.css" rel="stylesheet" type="text/css" />
+    <link href="/Content/css/menu/layout.css" rel="stylesheet"
+        type="text/css" />
+    <link href="/Content/css/menu/style.css" rel="stylesheet" type="text/css" />
+    <link href="/Content/css/jquery-ui-1.8.4.custom.css" rel="Stylesheet"
+        type="text/css" />
+    <script src="/Content/scripts/jquery-1.4.2.js" type="text/javascript"></script>
+    <script src="/Content/scripts/jquery-ui-1.8.4.custom.min.js"
+        type="text/javascript"></script>
+    <script src="/Content/scripts/jquery.ui.datepicker-pt-BR.js"
+        type="text/javascript"></script>
+    <script src="/Content/scripts/jquery.maskedinput-1.2.2.js"
+        type="text/javascript"></script>
+    <script src="/Content/scripts/jquery.inputFilter.js" type="text/javascript"></script>
+    <script src="/Content/scripts/jquery.tmpl.js" type="text/javascript"></script>
+    <script src="/Content/scripts/jquery.maskMoney.0.2.js" type="text/javascript"></script>
+    <script src="/Content/scripts/jquery.maskInt.js" type="text/javascript"></script>
+    <script src="/Content/scripts/MicrosoftAjax.js" type="text/javascript"></script>
+    <script src="/Content/scripts/MicrosoftMvcValidation.js" type="text/javascript"></script>
+    <script src="/Content/scripts/mps.gti.menu.js" type="text/javascript"></script>
+    <script src="/Content/scripts/mps.gti.framework.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#container').GTIFrameworkStart();
+            $('#menuOptions').GTIMenu();
+            $('#notificationGroups').accordion({
+                autoHeight: true,
+                header: ".notification"
+            });
+            $(".ccu").inputFilter({ "mask": "^[A-Za-z]{0,3}[0-9]{0,7}$" });
+            $.datepicker.setDefaults($.datepicker.regional["pt-BR"]);
+            $(".dateTime").datepicker();
+            $(".date").mask("99/99/9999");
+            $(".monthDate").mask("99/9999");
+            $(".time").mask("99:99");
+            $(".phone").mask("(999) 999-9999");
+            $(".placa").maskInt();
+            $(".matricula").inputFilter({ "mask": "^\\d{1,3}$" });
+            $(".numero").maskInt({ "length": 6 });
+            $(".rt").maskInt({ "length": 6 });
+            $(".currency").maskMoney({ "symbol": "R$", "decimal": ",", "thousands": "", "allowZero": false });
+
+            $(".postLink").live('click', function (event) {
+                event.preventDefault();
+                $.post(this.href, {},
+                function (data, status, request) {
+                    window.location.reload();
+                });
+            });
+
+            $('.ui-widget-content input').live('focusin', function () { $(this).addClass("ui-state-focus"); })
+                                         .live('focusout', function () { $(this).removeClass("ui-state-focus"); });
+
+            $('.ui-state-default').live('mouseover', function () { $(this).addClass("ui-state-hover"); })
+                                .live('mouseout', function () { $(this).removeClass("ui-state-hover ui-state-active"); })
+                                .live('mousedown', function () { $(this).addClass("ui-state-active"); })
+                                .live('mouseup', function () { $(this).removeClass("ui-state-active"); });
+        });
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div id="header">
+            <div id="menu">
+                <ul id="menuOptions">
+                    <li>
+                        <a href="/">In&#237;cio</a>
+                    </li>
+                    <li>
+                        <a href="/">Minhas atividades</a>
+                        <ul>
+                            
+                            <li id="ccuMenuItem">
+                                <a href="/CCU">Lan&#231;ar CCU</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="/Unidades">Ger&#234;ncias</a>
+                        <ul>
+                            <li><a href="/Gerencias/GTI/" target="_blank">GTI</a></li>
+                            <li><a href="http://mpsnt04/Suporte/" target="_blank">Suporte</a></li>
+                            <li><a href="http://mpsnt04/Jud/" target="_blank">Jud</a></li>
+                            <li><a href="http://mpsnt04/meios/" target="_blank">Sistemas Meios</a></li>
+                            <li>
+                                <a href="/Clientes">Clientes/Projetos</a>
+                            </li>
+                            <li>
+                                <a href="/Unidades">Unidades</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li><a>Utilidades</a>
+                        <ul>
+                            <li id="rtMenuItem"><a href="http://rt.mps.com.br/" target="_blank">RT - Request Tracker</a></li>
+                            <li id="wikiMenuItem"><a href="http://mpsnt04/wiki/" target="_blank">Wiki</a></li>
+                            <li id="ramaisMenuItem">
+                                <a href="/Ramais">Lista de ramais</a>
+                            </li>
+                            <li id="listaEmailsMenuItem">
+                                <a href="/Emails">Lista de emails</a></li>
+                            <li id="webmailMenuItem"><a href="https://webmail.mps.com.br/" target="_blank">Webmail
+                                MPS</a></li>
+                            <li id="contraChequeMenuItem"><a href="/CCheque" target="_blank">
+                                Contra-cheque</a></li>
+                            
+                        </ul>
+                    </li>
+                    <li><a>Documentos</a>
+                        <ul>
+                            <li id="manualMenuItem"><a href='/Content/dados/manual_funcionario.pdf'
+                                target="_blank">Manual do Colaborador</a></li>
+                            <li>
+                                <a href="/Padroes">Padr&#245;es</a></li>
+                            <li>
+                                <a href="/Motivacao">Motiva&#231;&#227;o e sucesso</a></li>
+                        </ul>
+                    </li>
+                    <li><a>Sites hospedados</a>
+                        <ul>
+                            <li><a href="http://mpsnt04/ConsBat/" target="_blank">ConsBatistela</a></li>
+                            <li><a href="http://mpsnt04/ConsScania/" target="_blank">ConsScania</a></li>
+                            <li><a href="http://mpsnt04/TAMG/index.html" target="_blank">TAMG</a></li>
+                            <li><a href="http://mpsnt04/TJCE/" target="_blank">TJCE</a></li>
+                            <li><a href="http://mpsnt04/TJPR/index.html" target="_blank">TJPR</a></li>
+                            <li><a href="http://mpsnt04/Vendas/" target="_blank">Vendas</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="https://fenix.mpsinf.com.br/" target="_blank">Fênix</a></li>
+                </ul>
+            </div>
+            <p class="loginDisplay">
+                
+Bem-vindo <strong>
+    MPS\carlosbarreto</strong>!
+
+
+            </p>
+            <p class="solicitacoes">
+                <a href="mailto:gti@mpsinf.com.br">Reclamações/Solicitações/Dúvidas</a>
+            </p>
+        </div>
+        <div id="middle">
+            
+    <div class="contentPanel fullHeight">
+        <div style="height: 70px; position: absolute; top: 0px; width: 100%">
+            <h1>
+                CCU</h1>
+            <div class="ui-widget ui-widget-content">
+                <p>
+                    Usuário:
+                    CARLOS BARRETO FEITOZA FILHO
+                    , Matrícula:
+                    729</p>
+                <p>
+                    Mês/Ano:
+                    12/2010</p>
+                <p>
+                    Data inicial válida para lançamento:
+                    11/12/2010</p>
+            </div>
+        </div>
+        <div style="position: absolute; top: 70px; bottom: 0px; width: 100%">
+            <form action="/CCU/Lancar" id="form0" method="post"><div class="validation-summary-valid ui-widget ui-state-error ui-corner-all" id="validationSummary"><span>Foram encontrados erros no lan&#231;amento</span>
+<ul><li style="display:none"></li>
+</ul></div>
+            <fieldset class="ui-widget ui-widget-content">
+                <div>
+                    <input id="Senha" name="Senha" type="hidden" value="MPS" />
+                </div>
+                <div>
+                    <input id="Matricula" name="Matricula" type="hidden" value="729" />
+                </div>
+                <div>
+                    <input id="MesAno" name="MesAno" type="hidden" value="12/2010" />
+                </div>
+                <div style="position: absolute; height: 25px;">
+                    <label for="Lancamentos">Lan&#231;amentos</label>
+                </div>
+                <div class="textAreaField ui-corner-all">
+                    <textarea cols="20" id="Lancamentos" name="Lancamentos" rows="2">
+* 01/12
+0840-1130 TRE1580308 RT#594: Rol dos Culpados
+1228-1800 TRE1580308 RT#594: Rol dos Culpados     
+
+* 02/12
+0840-1130 TRE1580308 RT#594: Rol dos Culpados
+1225-1800 TRE1580308 RT#594: Rol dos Culpados    
+
+* 03/12
+0835-1130 TRE1580320 Solicitante: Roberto Am&#226;ncio | Tela: Gera&#231;&#227;o de Arquivo do CNJ | Procedimento: Gera&#231;&#227;o de Arquivo do CNJ | Problema: Lentid&#227;o | Solu&#231;&#227;o: Em andamento
+1225-1800 TRE1580320 Solicitante: Roberto Am&#226;ncio | Tela: Gera&#231;&#227;o de Arquivo do CNJ | Procedimento: Gera&#231;&#227;o de Arquivo do CNJ | Problema: Lentid&#227;o | Solu&#231;&#227;o: Em andamento   
+
+* 06/12
+0842-1130 TRE1580320 Solicitante: Roberto Am&#226;ncio | Tela: Gera&#231;&#227;o de Arquivo do CNJ | Procedimento: Gera&#231;&#227;o de Arquivo do CNJ | Problema: Lentid&#227;o | Solu&#231;&#227;o: Em andamento
+1228-1800 TRE1580320 Solicitante: Roberto Am&#226;ncio | Tela: Gera&#231;&#227;o de Arquivo do CNJ | Procedimento: Gera&#231;&#227;o de Arquivo do CNJ | Problema: Lentid&#227;o | Solu&#231;&#227;o: Em andamento      
+
+* 07/12
+0850-1130 TRE1580320 Solicitante: Roberto Am&#226;ncio | Tela: Gera&#231;&#227;o de Arquivo do CNJ | Procedimento: Gera&#231;&#227;o de Arquivo do CNJ | Problema: Lentid&#227;o | Solu&#231;&#227;o: Em andamento
+1230-1800 TRE1580320 Solicitante: Roberto Am&#226;ncio | Tela: Gera&#231;&#227;o de Arquivo do CNJ | Procedimento: Gera&#231;&#227;o de Arquivo do CNJ | Problema: Lentid&#227;o | Solu&#231;&#227;o: Em andamento     
+
+* 08/12
+1000-1800 TRE0000052 FERIADO LOCAL (Dia consagrado &#224; Justi&#231;a / N. Sra. da Concei&#231;&#227;o)    
+
+* 09/12
+0827-1130 TRE1580320 Solicitante: Roberto Am&#226;ncio | Tela: Gera&#231;&#227;o de Arquivo do CNJ | Procedimento: Gera&#231;&#227;o de Arquivo do CNJ | Problema: Lentid&#227;o | Solu&#231;&#227;o: Em andamento
+1225-1800 TRE1580320 Solicitante: Roberto Am&#226;ncio | Tela: Gera&#231;&#227;o de Arquivo do CNJ | Procedimento: Gera&#231;&#227;o de Arquivo do CNJ | Problema: Lentid&#227;o | Solu&#231;&#227;o: Em andamento   
+
+* 10/12
+0850-1130 TRE1580320 Solicitante: Roberto Am&#226;ncio | Tela: Gera&#231;&#227;o de Arquivo do CNJ | Procedimento: Gera&#231;&#227;o de Arquivo do CNJ | Problema: Lentid&#227;o | Solu&#231;&#227;o: Em andamento
+1230-1800 TRE1580320 Solicitante: Roberto Am&#226;ncio | Tela: Gera&#231;&#227;o de Arquivo do CNJ | Procedimento: Gera&#231;&#227;o de Arquivo do CNJ | Problema: Lentid&#227;o | Solu&#231;&#227;o: Em andamento  
+
+* 13/12
+0845-1132 TRE1580320 Solicitante: Roberto Am&#226;ncio | Tela: Gera&#231;&#227;o de Arquivo do CNJ | Procedimento: Gera&#231;&#227;o de Arquivo do CNJ | Problema: Lentid&#227;o | Solu&#231;&#227;o: Em andamento
+1225-1800 TRE1580320 Solicitante: Roberto Am&#226;ncio | Tela: Gera&#231;&#227;o de Arquivo do CNJ | Procedimento: Gera&#231;&#227;o de Arquivo do CNJ | Problema: Lentid&#227;o | Solu&#231;&#227;o: Em andamento   
+
+* 14/12
+0835-1130 TRE1580320 Solicitante: Roberto Am&#226;ncio | Tela: Gera&#231;&#227;o de Arquivo do CNJ | Procedimento: Gera&#231;&#227;o de Arquivo do CNJ | Problema: Lentid&#227;o | Solu&#231;&#227;o: Em andamento
+1229-1803 TRE1580320 Solicitante: Roberto Am&#226;ncio | Tela: Gera&#231;&#227;o de Arquivo do CNJ | Procedimento: Gera&#231;&#227;o de Arquivo do CNJ | Problema: Lentid&#227;o | Solu&#231;&#227;o: Em andamento  
+
+* 15/12
+0900-1130 TRE1580320 Solicitante: Roberto Am&#226;ncio | Tela: Gera&#231;&#227;o de Arquivo do CNJ | Procedimento: Gera&#231;&#227;o de Arquivo do CNJ | Problema: Lentid&#227;o | Solu&#231;&#227;o: Em andamento
+1230-1800 TRE1580320 Solicitante: Roberto Am&#226;ncio | Tela: Gera&#231;&#227;o de Arquivo do CNJ | Procedimento: Gera&#231;&#227;o de Arquivo do CNJ | Problema: Lentid&#227;o | Solu&#231;&#227;o: Em andamento 
+
+* 16/12
+0800-1130 TRE1580320 Solicitante: Roberto Am&#226;ncio | Tela: Gera&#231;&#227;o de Arquivo do CNJ | Procedimento: Gera&#231;&#227;o de Arquivo do CNJ | Problema: Lentid&#227;o | Solu&#231;&#227;o: Em andamento
+1225-1700 TRE1580320 Solicitante: Roberto Am&#226;ncio | Tela: Gera&#231;&#227;o de Arquivo do CNJ | Procedimento: Gera&#231;&#227;o de Arquivo do CNJ | Problema: Lentid&#227;o | Solu&#231;&#227;o: Em andamento</textarea>
+                    <span class="field-validation-valid" id="Lancamentos_validationMessage"></span>
+                </div>
+                <p style="display: block; position: absolute; bottom: 0; height: 25px;">
+                    <button type="submit" class="ui-state-default button">
+                        Lançar</button>
+                    <a class="button ui-state-default" href="/CCU">Voltar a busca</a>
+                </p>
+            </fieldset>
+            </form><script type="text/javascript">
+//<![CDATA[
+if (!window.mvcClientValidationMetadata) { window.mvcClientValidationMetadata = []; }
+window.mvcClientValidationMetadata.push({"Fields":[{"FieldName":"Lancamentos","ReplaceValidationMessageContents":true,"ValidationMessageId":"Lancamentos_validationMessage","ValidationRules":[]}],"FormId":"form0","ReplaceValidationSummary":true,"ValidationSummaryId":"validationSummary"});
+//]]>
+</script>
+        </div>
+    </div>
+
+        </div>
+        <div id="footer">
+            <p>
+                Intranet MPS - Gerência em Tecnologia da Informação - MPS Informática Ltda</p>
+        </div>
+    </div>
+</body>
+</html>
