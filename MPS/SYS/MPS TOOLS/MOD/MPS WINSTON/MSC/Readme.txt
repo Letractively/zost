@@ -1,1 +1,0 @@
-Pasta para conteúdo sem classificação específica
