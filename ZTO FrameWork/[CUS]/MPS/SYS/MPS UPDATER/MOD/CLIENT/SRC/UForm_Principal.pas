@@ -1,4 +1,5 @@
 { TODO -oCARLOS FEITOZA -cCORRE플O : POR QUE A TRANSFERENCIA P핾A EM ALGUNS ARQUIVOS ALEATORIOAMENTE? }
+{ TODO -oCARLOS FEITOZA -cCORRE플O : AO FECHAR A APLICA플O ACREDITO QUE A THREAD DE VERIFICA플O TENHA DE SER PARADA, POR EST� DANDO ERRO NISSO }
 unit UForm_Principal;
 
 interface
@@ -73,7 +74,7 @@ begin
 
   DataModule_Principal.AutoChecagem.Resume;
 
-  DataModule_Principal.Action_EsconderNaBarraDeTarefas.Execute;
+//  DataModule_Principal.Action_EsconderNaBarraDeTarefas.Execute;
   ModoMini(False);
 end;
 

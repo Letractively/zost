@@ -350,7 +350,7 @@ begin
     10061: ShowErrorMessage('! O servidor recusou sua conexão. Ele pode estar desativado. Tente novamente em alguns minutos. Caso o problema persista, favor entrar em contato com o suporte.',Form_Principal.RichEdit_Log);
     10060: ShowErrorMessage('! O servidor está ativo mas não respondeu dentro do limite de tempo esperado. Favor tentar novamente em alguns minutos. Se o problema persistir por mais de uma hora, favor entrar em contato com o suporte.',Form_Principal.RichEdit_Log);
   end;
-  Application.Processmessages;
+//  Application.Processmessages;
 end;
 
 procedure TDataModule_Principal.FtpClient_PrincipalResponse(Sender: TObject);
@@ -745,7 +745,7 @@ begin
 
       FProximaChecagem := IncMinute(FProximaChecagem,FIntervaloDeChecagem);
 
-      Application.ProcessMessages;
+//      Application.ProcessMessages;
     end;
   end;
 end;

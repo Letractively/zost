@@ -472,7 +472,7 @@ var
 begin
   if SHBrowseForObject(Form_Principal
                       ,'Selecione uma pasta...'
-                      ,'Por favor selecione uma pasta para ser monitorada pelo' +
+                      ,'Por favor selecione uma pasta para ser monitorada pelo ' +
                        'MPS Updater. Todas as modificações em arquivos e diret' +
                        'órios contidos nesta pasta provocarão atualizações na ' +
                        'tabela de ARQUIVOS',Selecao) then
@@ -1567,22 +1567,25 @@ begin
     SISTEMAS.Next
   end;
 
-  try
-    ShowNotificationMessage := False;
+  if FMonitoredSystems.Count > 0 then
+    try
+      ShowNotificationMessage := False;
 
-    { Para cada sistema monitorado devemos atualizar as tabelas de monitoramento }
-    ShowOnLog('Atualizando tabelas de monitoramento...',Form_Principal.RichEdit_LogMonitoramento);
-    Form_Principal.RichEdit_LogMonitoramento.Update;
-    for i := 0 to Pred(FMonitoredSystems.Count) do
-    begin
-      ShowOnLog('> ID#' + IntToStr(FMonitoredSystems[i].ID) + ': ' + FMonitoredSystems[i].SystemName + '...',Form_Principal.RichEdit_LogMonitoramento);
-      FMonitoredSystems[i].DoNotification;
-      Form_Principal.RichEdit_LogMonitoramento.Lines[Pred(Form_Principal.RichEdit_LogMonitoramento.Lines.Count)] := Form_Principal.RichEdit_LogMonitoramento.Lines[Pred(Form_Principal.RichEdit_LogMonitoramento.Lines.Count)] + ' Concluído!';
-    end;
+      { Para cada sistema monitorado devemos atualizar as tabelas de monitoramento }
+      ShowOnLog('Atualizando tabelas de monitoramento...',Form_Principal.RichEdit_LogMonitoramento);
+      Form_Principal.RichEdit_LogMonitoramento.Update;
+      for i := 0 to Pred(FMonitoredSystems.Count) do
+      begin
+        ShowOnLog('> ID#' + IntToStr(FMonitoredSystems[i].ID) + ': ' + FMonitoredSystems[i].SystemName + '...',Form_Principal.RichEdit_LogMonitoramento);
+        FMonitoredSystems[i].DoNotification;
+        Form_Principal.RichEdit_LogMonitoramento.Lines[Pred(Form_Principal.RichEdit_LogMonitoramento.Lines.Count)] := Form_Principal.RichEdit_LogMonitoramento.Lines[Pred(Form_Principal.RichEdit_LogMonitoramento.Lines.Count)] + ' Concluído!';
+      end;
 
-  finally
-    ShowNotificationMessage := True;
-  end;
+    finally
+      ShowNotificationMessage := True;
+    end
+  else
+    ShowOnLog('> Não há nenhum sistema sendo monitorado!',Form_Principal.RichEdit_LogMonitoramento);
 
   ShowOnLog('-------------------------------------------------------------------------------------',Form_Principal.RichEdit_LogMonitoramento);
 	FtpServer_Main.Banner := Format(_WELCOME,[FormatDateTime('yyyy',Now)]);

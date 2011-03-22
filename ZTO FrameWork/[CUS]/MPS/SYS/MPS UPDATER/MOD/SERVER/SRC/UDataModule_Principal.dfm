@@ -640,7 +640,7 @@ object DataModule_Principal: TDataModule_Principal
   end
   object CFDBValidationChecks_SIS: TCFDBValidationChecks
     DataSet = SISTEMAS
-    TableName = 'SISTEMAS'
+    TableName = 'MPSUPDATER.SISTEMAS'
     KeyField = 'BI_SISTEMAS_ID'
     CheckableFields = <
       item
@@ -705,7 +705,7 @@ object DataModule_Principal: TDataModule_Principal
       item
         FieldName = 'VA_CHAVEDEINSTALACAO'
         FieldDescription = 'Chave de instala'#231#227'o do sistema'
-        CheckBlank.Active = False
+        CheckBlank.Active = True
         CheckDuplicates.Active = True
         CheckDuplicates.NumericComparision = False
         CheckNumber.Active = False
@@ -729,17 +729,17 @@ object DataModule_Principal: TDataModule_Principal
   end
   object ZUpdateSQL_SIS: TZUpdateSQL
     DeleteSQL.Strings = (
-      'DELETE FROM SISTEMAS'
+      'DELETE FROM MPSUPDATER.SISTEMAS'
       ' WHERE BI_SISTEMAS_ID = :OLD_BI_SISTEMAS_ID')
     InsertSQL.Strings = (
       
-        'INSERT INTO SISTEMAS (VA_NOME,VA_DIRETORIO,VA_DESCRICAO,VA_CHAVE' +
-        'DEINSTALACAO)'
+        'INSERT INTO MPSUPDATER.SISTEMAS (VA_NOME,VA_DIRETORIO,VA_DESCRIC' +
+        'AO,VA_CHAVEDEINSTALACAO)'
       
         '              VALUES (:VA_NOME,:VA_DIRETORIO,:VA_DESCRICAO,:VA_C' +
         'HAVEDEINSTALACAO)')
     ModifySQL.Strings = (
-      'UPDATE SISTEMAS'
+      'UPDATE MPSUPDATER.SISTEMAS'
       '   SET VA_NOME              = :VA_NOME'
       '     , VA_DIRETORIO         = :VA_DIRETORIO'
       '     , VA_DESCRICAO         = :VA_DESCRICAO'

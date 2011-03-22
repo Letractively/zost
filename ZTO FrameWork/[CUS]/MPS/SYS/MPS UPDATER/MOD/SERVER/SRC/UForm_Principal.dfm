@@ -47,11 +47,15 @@ object Form_Principal: TForm_Principal
     Top = 25
     Width = 794
     Height = 343
-    ActivePage = TabSheet_Log
+    ActivePage = TabSheet_Sistemas
     Align = alClient
     TabOrder = 1
     object TabSheet_Log: TTabSheet
       Caption = 'Log de atividade'
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object RichEdit_LogFTP: TRichEdit
         AlignWithMargins = True
         Left = 6
@@ -505,6 +509,10 @@ object Form_Principal: TForm_Principal
     object TabSheet_Arquivos: TTabSheet
       Caption = 'Arquivos'
       ImageIndex = 2
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Panel_Arquivos: TPanel
         AlignWithMargins = True
         Left = 6
@@ -523,8 +531,8 @@ object Form_Principal: TForm_Principal
           AlignWithMargins = True
           Left = 8
           Top = 2
-          Width = 758
-          Height = 37
+          Width = 741
+          Height = 26
           Margins.Left = 6
           Margins.Top = 0
           Margins.Right = 6
@@ -540,8 +548,6 @@ object Form_Principal: TForm_Principal
           Transparent = True
           Layout = tlCenter
           WordWrap = True
-          ExplicitWidth = 741
-          ExplicitHeight = 26
         end
       end
       object ZTODBGrid_ArquivosSistemas: TZTODBGrid
@@ -867,6 +873,10 @@ object Form_Principal: TForm_Principal
     object TabSheet_Usuarios: TTabSheet
       Caption = 'Usu'#225'rios'
       ImageIndex = 3
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Panel_Usuarios: TPanel
         AlignWithMargins = True
         Left = 6
@@ -886,7 +896,7 @@ object Form_Principal: TForm_Principal
           Left = 8
           Top = 2
           Width = 758
-          Height = 37
+          Height = 26
           Margins.Left = 6
           Margins.Top = 0
           Margins.Right = 6
@@ -901,7 +911,6 @@ object Form_Principal: TForm_Principal
           Transparent = True
           Layout = tlCenter
           WordWrap = True
-          ExplicitHeight = 26
         end
       end
       object Panel1: TPanel
