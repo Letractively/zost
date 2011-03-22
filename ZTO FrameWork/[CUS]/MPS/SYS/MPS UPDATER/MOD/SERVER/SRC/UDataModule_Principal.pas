@@ -258,12 +258,12 @@ var
   SQL: String;
 begin
 
-  if Form_Principal.CFDBGrid_Arquivos.SelectedRows.Count > 0 then
+  if Form_Principal.ZTODBGrid_Arquivos.SelectedRows.Count > 0 then
   begin
     SQL := '';
-    for i := 0 to Pred(Form_Principal.CFDBGrid_Arquivos.SelectedRows.Count) do
+    for i := 0 to Pred(Form_Principal.ZTODBGrid_Arquivos.SelectedRows.Count) do
     begin
-      ARQUIVOS.Bookmark := Form_Principal.CFDBGrid_Arquivos.SelectedRows[i];
+      ARQUIVOS.Bookmark := Form_Principal.ZTODBGrid_Arquivos.SelectedRows[i];
 
       if i > 0 then
         SQL := SQL + '            ';
@@ -271,7 +271,7 @@ begin
       SQL := SQL + Format(EXC_INSERT_TEMPLATE,[ARQUIVOSBI_SISTEMAS_ID.AsInteger,ARQUIVOSVA_CAMINHOCOMPLETO.AsString]);
 
 
-      if i < Pred(Form_Principal.CFDBGrid_Arquivos.SelectedRows.Count) then
+      if i < Pred(Form_Principal.ZTODBGrid_Arquivos.SelectedRows.Count) then
         SQL := SQL + ','#13#10;
     end;
 //
@@ -527,9 +527,9 @@ begin
       { Se confirmou as operações }
       if ShowModal = mrOk then
       begin
-        for i := 0 to Pred(CFDBGrid_SIS.SelectedRows.Count) do
+        for i := 0 to Pred(ZTODBGrid_SIS.SelectedRows.Count) do
         begin
-          SISTEMAS.Bookmark := CFDBGrid_SIS.SelectedRows[i];
+          SISTEMAS.Bookmark := ZTODBGrid_SIS.SelectedRows[i];
 
           if i > 0 then
             SqlInsert := SqlInsert + '          , ';
@@ -560,9 +560,9 @@ var
 begin
   SqlDelete := '';
 
-  for i := 0 to Pred(Form_Principal.CFDBGrid_SistemasDosUsuarios.SelectedRows.Count) do
+  for i := 0 to Pred(Form_Principal.ZTODBGrid_SistemasDosUsuarios.SelectedRows.Count) do
   begin
-    SISTEMASDOSUSUARIOS.Bookmark := Form_Principal.CFDBGrid_SistemasDosUsuarios.SelectedRows[i];
+    SISTEMASDOSUSUARIOS.Bookmark := Form_Principal.ZTODBGrid_SistemasDosUsuarios.SelectedRows[i];
 
     if i > 0 then
       SqlDelete := SqlDelete + ',';
@@ -575,7 +575,7 @@ begin
   SqlDelete := StringReplace(SQL_DELETE,'<VALUES>',SqlDelete,[]);
   ExecuteQuery(ZConnection_Principal,SqlDelete);
 
-  Form_Principal.CFDBGrid_SistemasDosUsuarios.SelectedRows.Clear;
+  Form_Principal.ZTODBGrid_SistemasDosUsuarios.SelectedRows.Clear;
 
   SISTEMASDOSUSUARIOS.Refresh;
 end;
@@ -671,7 +671,7 @@ end;
 
 procedure TDataModule_Principal.DataSource_SDUDataChange(Sender: TObject; Field: TField);
 begin
-  Action_SDU_Remover.Enabled := (SISTEMASDOSUSUARIOS.RecordCount > 0) and (Form_Principal.CFDBGrid_SistemasDosUsuarios.SelectedRows.Count > 0);
+  Action_SDU_Remover.Enabled := (SISTEMASDOSUSUARIOS.RecordCount > 0) and (Form_Principal.ZTODBGrid_SistemasDosUsuarios.SelectedRows.Count > 0);
 end;
 
 procedure TDataModule_Principal.FtpServer_MainAnswerToClient(Sender: TObject; Client: TFtpCtrlSocket; var Answer: TFtpString);

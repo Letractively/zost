@@ -16,7 +16,7 @@ object Form_Sistemas: TForm_Sistemas
   Position = poScreenCenter
   PixelsPerInch = 96
   TextHeight = 13
-  object CFDBGrid_SIS: TCFDBGrid
+  object ZTODBGrid_SIS: TZTODBGrid
     AlignWithMargins = True
     Left = 6
     Top = 6
@@ -29,8 +29,14 @@ object Form_Sistemas: TForm_Sistemas
     DataSource = DataModule_Principal.DataSource_SIS
     Options = [dgIndicator, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgAlwaysShowSelection, dgConfirmDelete, dgCancelOnExit, dgMultiSelect]
     OptionsEx = [dgAllowTitleClick, dgPersistentSelection]
+    TabOrder = 0
+    TitleFont.Charset = DEFAULT_CHARSET
+    TitleFont.Color = clWindowText
+    TitleFont.Height = -11
+    TitleFont.Name = 'Tahoma'
+    TitleFont.Style = []
     RowColors = <>
-    OnAfterMultiselect = CFDBGrid_SISAfterMultiselect
+    OnAfterMultiselect = ZTODBGrid_SISAfterMultiselect
     Columns = <
       item
         Expanded = False

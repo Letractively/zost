@@ -47,7 +47,7 @@ object Form_Principal: TForm_Principal
     Top = 25
     Width = 794
     Height = 343
-    ActivePage = TabSheet_Arquivos
+    ActivePage = TabSheet_Log
     Align = alClient
     TabOrder = 1
     object TabSheet_Log: TTabSheet

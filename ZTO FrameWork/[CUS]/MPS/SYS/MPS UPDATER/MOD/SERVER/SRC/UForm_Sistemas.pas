@@ -4,16 +4,16 @@ interface
 
 uses
     Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-    Dialogs, Grids, DBGrids, UCFDBGrid, ExtCtrls, StdCtrls, Buttons;
+    Dialogs, Grids, DBGrids, ExtCtrls, StdCtrls, Buttons,
+    ZTO.Components.DataControls.ZTODBGrid;
 
 type
     TForm_Sistemas = class(TForm)
-      CFDBGrid_SIS: TCFDBGrid;
-    Panel_SIS: TPanel;
-    BitBtn_Cancelar: TBitBtn;
-    BitBtn_Confirmar: TBitBtn;
-    procedure CFDBGrid_SISAfterMultiselect(aSender: TObject;
-      aMultiSelectEventTrigger: TMultiSelectEventTrigger);
+			ZTODBGrid_SIS: TZTODBGrid;
+			Panel_SIS: TPanel;
+    	BitBtn_Cancelar: TBitBtn;
+    	BitBtn_Confirmar: TBitBtn;
+    	procedure ZTODBGrid_SISAfterMultiselect(aSender: TObject; aMultiSelectEventTrigger: TMultiSelectEventTrigger);
     private
       { Private declarations }
     public
@@ -27,9 +27,9 @@ uses
 
 {$R *.dfm}
 
-procedure TForm_Sistemas.CFDBGrid_SISAfterMultiselect(aSender: TObject; aMultiSelectEventTrigger: TMultiSelectEventTrigger);
+procedure TForm_Sistemas.ZTODBGrid_SISAfterMultiselect(aSender: TObject; aMultiSelectEventTrigger: TMultiSelectEventTrigger);
 begin
-  BitBtn_Confirmar.Enabled := CFDBGrid_SIS.SelectedRows.Count > 0;
+  BitBtn_Confirmar.Enabled := ZTODBGrid_SIS.SelectedRows.Count > 0;
   
 end;
 
