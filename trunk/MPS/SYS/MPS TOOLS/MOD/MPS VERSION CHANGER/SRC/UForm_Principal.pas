@@ -117,7 +117,7 @@ type
     procedure CarregarConfiguracoes;
     procedure AplicarVersao;
     function ItensChecados: Cardinal;
-    function AddEndSlash(const aPath: TFileName): ShortString;
+    function AddEndSlash(const aPath: TFileName): String;
   public
     { Public declarations }
   end;
@@ -643,4 +643,43 @@ begin
 //  Action_Bpl.Execute;
 end;
 
+{
+VS_VERSION_INFO VERSIONINFO
+FILEVERSION     %MajorVer%,%MinorVer%,%MaintVer%,%SVNRevision%
+PRODUCTVERSION  %MajorVer%,%MinorVer%,%MaintVer%,%SVNRevision%
+FILEFLAGSMASK   VS_FFI_FILEFLAGSMASK
+FILEFLAGS       %VerFileFlags%
+#ifdef LINUX
+FILEOS          VOS_UNKNOWN
+#else
+FILEOS          VOS_NT_WINDOWS32
+#endif
+FILETYPE        VFT_APP
+FILESUBTYPE     VFT2_UNKNOWN
+BEGIN
+     BLOCK "StringFileInfo"
+     BEGIN
+         BLOCK "040904E4"
+         BEGIN
+             VALUE "CompanyName",         "Scooter Software\0"
+             VALUE "FileDescription",     "%VerInfoProductName%\0"
+             VALUE "FileVersion",         "%MajorVer%.%MinorVer%.%MaintVer%.%SVNRevision%\0"
+             VALUE "LegalCopyright",      "Copyright © %Year% Scooter Software, Inc.\0"
+             VALUE "LegalTrademarks",     "Beyond Compare ® is a registered trademark of Scooter Software, Inc.\0"
+             VALUE "OriginalFilename",    "%VerInfoOriginalFilename%\0"
+             VALUE "ProductName",         "%VerInfoProductName%\0"
+             VALUE "ProductVersion",      "%MajorVer%.%MinorVer%\0"
+             VALUE "Comments",            "Beyond Compare 3\0"
+             VALUE "Subversion Revision", "%SVNRevision%\0"
+             VALUE "CompileDate",         "%CompileDate%\0"
+         END
+     END
+     BLOCK "VarFileInfo"
+     BEGIN
+         VALUE "Translation", 0x0409, 1252
+     END
+END
+
+
+}
 end.
