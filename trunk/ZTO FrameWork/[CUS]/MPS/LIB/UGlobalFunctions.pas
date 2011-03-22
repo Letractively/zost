@@ -1018,7 +1018,7 @@ begin
     ShowOnLog('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~',aRichEdit);
     ShowOnLog('Aguardando ' + IntToStr(aCommandDelay) + ' segundo(s) antes da próxima ação...',aRichEdit);
     ShowOnLog('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~',aRichEdit);
-    WaitFor(aCommandDelay);
+    WaitFor(aCommandDelay,False);
   end;
 end;
 
