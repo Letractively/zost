@@ -119,7 +119,7 @@
 			<Linker Name="ExeDescription"></Linker>
 		</Linker>
 		<Directories>
-			<Directories Name="OutputDir">..\BIN\EXE\REL</Directories>
+			<Directories Name="OutputDir">..\BIN\EXE</Directories>
 			<Directories Name="UnitOutputDir">..\BIN\DCU</Directories>
 			<Directories Name="PackageDLLOutputDir"></Directories>
 			<Directories Name="PackageDCPOutputDir"></Directories>
