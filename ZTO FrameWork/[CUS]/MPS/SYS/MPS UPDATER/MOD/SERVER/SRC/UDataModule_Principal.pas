@@ -938,7 +938,57 @@ begin
   end;
 end;
 
-function ModifiedFiles(aSistema, aFormatoDoArquivo: ShortString; aData: TDateTime): String;
+function ExcludedFilesList(aSistema, aFormatoDoArquivo: ShortString): String;
+//const
+//  SQL_SELECT = 'SELECT ARQ.DT_DATAEHORA'#13#10 +
+//               '     , ARQ.VA_CAMINHOCOMPLETO'#13#10 +
+//               '     , SIS.VA_DIRETORIO'#13#10 +
+//               '     , SIS.VA_CHAVEDEINSTALACAO'#13#10 +
+//               '  FROM MPSUPDATER.ARQUIVOS ARQ'#13#10 +
+//               '  JOIN MPSUPDATER.SISTEMAS SIS USING(BI_SISTEMAS_ID)'#13#10 +
+//               ' WHERE SIS.VA_NOME = <VA_NOME>';
+//var
+//  MonitoredFiles: TMonitoredFiles;
+begin
+//  Result := '';
+//  MonitoredFiles := nil;
+//
+//  with TZReadOnlyQuery.Create(Self) do
+//    try
+//      MonitoredFiles := TMonitoredFiles.Create(Self);
+//
+//      Connection := ZConnection_Principal;
+//      SQL.Text := StringReplace(SQL_SELECT,'<VA_NOME>',QuotedStr(aSistema),[rfReplaceAll]);
+//      Open;
+//
+//      if not Eof then
+//      begin
+//        MonitoredFiles.Directory := FieldByName('VA_DIRETORIO').AsString;
+//        MonitoredFiles.ChaveDeInstalacao := FieldByName('VA_CHAVEDEINSTALACAO').AsString;
+//      end;
+//
+//      while not Eof do
+//      begin
+//        with MonitoredFiles.Files.Add do
+//        begin
+//          LastModified := FieldByName('DT_DATAEHORA').AsDateTime;
+//          FilePath := FieldByName('VA_CAMINHOCOMPLETO').AsString;
+//        end;
+//        Next;
+//      end;
+//
+//      if aFormatoDoArquivo = 'XML' then
+//        Result := Trim(MonitoredFiles.ToXML)
+//      else
+//        Result := Trim(MonitoredFiles.ToString);
+//
+//    finally
+//      MonitoredFiles.Free;
+//      Free;
+//    end;
+end;
+
+function MonitoredFilesList(aSistema, aFormatoDoArquivo: ShortString): String;
 const
   SQL_SELECT = 'SELECT ARQ.DT_DATAEHORA'#13#10 +
                '     , ARQ.VA_CAMINHOCOMPLETO'#13#10 +
@@ -946,33 +996,30 @@ const
                '     , SIS.VA_CHAVEDEINSTALACAO'#13#10 +
                '  FROM MPSUPDATER.ARQUIVOS ARQ'#13#10 +
                '  JOIN MPSUPDATER.SISTEMAS SIS USING(BI_SISTEMAS_ID)'#13#10 +
-               ' WHERE SIS.VA_NOME = <VA_NOME>'#13#10 +
-               '   AND ARQ.DT_DATAEHORA > <DT_DATAEHORA>';
+               ' WHERE SIS.VA_NOME = <VA_NOME>';
 var
-  ModifiedFiles: TModifiedFiles;
+  MonitoredFiles: TMonitoredFiles;
 begin
   Result := '';
-  ModifiedFiles := nil;
-  
+  MonitoredFiles := nil;
+
   with TZReadOnlyQuery.Create(Self) do
     try
-      ModifiedFiles := TModifiedFiles.Create(Self);
+      MonitoredFiles := TMonitoredFiles.Create(Self);
 
       Connection := ZConnection_Principal;
       SQL.Text := StringReplace(SQL_SELECT,'<VA_NOME>',QuotedStr(aSistema),[rfReplaceAll]);
-      SQL.Text := StringReplace(SQL.Text,'<DT_DATAEHORA>',FormatDateTime('yyyymmddhhnnss',aData),[rfReplaceAll]);
-
       Open;
 
       if not Eof then
       begin
-        ModifiedFiles.Directory := FieldByName('VA_DIRETORIO').AsString;
-        ModifiedFiles.ChaveDeInstalacao := FieldByName('VA_CHAVEDEINSTALACAO').AsString;
+        MonitoredFiles.Directory := FieldByName('VA_DIRETORIO').AsString;
+        MonitoredFiles.ChaveDeInstalacao := FieldByName('VA_CHAVEDEINSTALACAO').AsString;
       end;
-  
+
       while not Eof do
       begin
-        with ModifiedFiles.Files.Add do
+        with MonitoredFiles.Files.Add do
         begin
           LastModified := FieldByName('DT_DATAEHORA').AsDateTime;
           FilePath := FieldByName('VA_CAMINHOCOMPLETO').AsString;
@@ -981,12 +1028,12 @@ begin
       end;
 
       if aFormatoDoArquivo = 'XML' then
-        Result := Trim(ModifiedFiles.ToXML)
+        Result := Trim(MonitoredFiles.ToXML)
       else
-        Result := Trim(ModifiedFiles.ToString);
+        Result := Trim(MonitoredFiles.ToString);
 
     finally
-      ModifiedFiles.Free;
+      MonitoredFiles.Free;
       Free;
     end;
 end;
@@ -997,39 +1044,61 @@ var
 begin
   Arquivo := UpperCase(ExtractFileName(aClient.FilePath));
 
-  // MODIFIEDFILES{<sistema>,<formato>,<data>}.CMD
+  // MODIFIEDFILES{<sistema>,<formato>}.CMD
   // Este comando gera um arquivo contendo os nomes e caminhos dos arquivos
-  // modificados no sistema <sistema> a partir da data <data> especificada. O
-  // formato do arquivo gerado é definido no parâmetro <formato> que pode
-  // assumir XML ou OBJ
+  // monitorados no sistema <sistema>. O formato do arquivo gerado é definido no
+  // parâmetro <formato> que pode assumir XML ou OBJ
   { -------------------------------------------------------------------------- }
-  if MatchesMask(Arquivo,CMD_MODIFIEDFILES) then
+  if MatchesMask(Arquivo,CMD_MONITOREDFILESLIST) then
   begin
     ShowOnLog('@ Executando comando ' + Arquivo,Form_Principal.RichEdit_LogFTP);
 
     { Gerando o arquivo }
-    SendStatus(aClient,'== MODIFIEDFILES: Iniciando geração de conteúdo... ============================');
+    SendStatus(aClient,'== MONITOREDFILESLIST: Iniciando geração de conteúdo... =======================');
     SendStatus(aClient,'-------------------------------------------------------------------------------');
     SendStatus(aClient,'UM ARQUIVO ESTÁ SENDO GERADO COM AS CONFIGURAÇÕES A SEGUIR');
     SendStatus(aClient,'');
     SendStatus(aClient,'SISTEMA............: ' + GetParameter(Arquivo,0).AsShortString);
-    SendStatus(aClient,'DATA DE ATUALIZAÇÃO: ' + FormatDateTime('dd/mm/yyyy',GetParameter(Arquivo,2).AsDateTime));
     SendStatus(aClient,'FORMATO DE GERAÇÃO.: ' + GetParameter(Arquivo,1).AsShortString);
     SendStatus(aClient,'-------------------------------------------------------------------------------');
 
-    Arquivo := ModifiedFiles(GetParameter(Arquivo,0).AsShortString
-                            ,GetParameter(Arquivo,1).AsShortString
-                            ,GetParameter(Arquivo,2).AsDateTime);
+    Arquivo := MonitoredFilesList(GetParameter(Arquivo,0).AsShortString
+                                 ,GetParameter(Arquivo,1).AsShortString);
 
     SendStatus(aClient,'DFS: ' + IntToStr(CreateSendStream(aClient,Arquivo[1])));
     SendStatus(aClient,'-------------------------------------------------------------------------------');
-    SendStatus(aClient,'== MODIFIEDFILES: Conteúdo gerado com sucesso =================================');
+    SendStatus(aClient,'== MONITOREDFILESLIST: Conteúdo gerado com sucesso ============================');
+  end;
+  // EXCLUDEDFILESLIST{<sistema>,<formato>}.CMD
+  // Este comando gera um arquivo contendo os nomes e caminhos dos arquivos
+  // marcados para exclusão no sistema <sistema>. O formato do arquivo gerado é
+  // definido no parâmetro <formato> que pode assumir XML ou OBJ
+  { -------------------------------------------------------------------------- }
+  if MatchesMask(Arquivo,CMD_EXCLUDEDFILESLIST) then
+  begin
+    ShowOnLog('@ Executando comando ' + Arquivo,Form_Principal.RichEdit_LogFTP);
+
+    { Gerando o arquivo }
+    SendStatus(aClient,'== EXCLUDEDFILESLIST: Iniciando geração de conteúdo... ========================');
+    SendStatus(aClient,'-------------------------------------------------------------------------------');
+    SendStatus(aClient,'UM ARQUIVO ESTÁ SENDO GERADO COM AS CONFIGURAÇÕES A SEGUIR');
+    SendStatus(aClient,'');
+    SendStatus(aClient,'SISTEMA............: ' + GetParameter(Arquivo,0).AsShortString);
+    SendStatus(aClient,'FORMATO DE GERAÇÃO.: ' + GetParameter(Arquivo,1).AsShortString);
+    SendStatus(aClient,'-------------------------------------------------------------------------------');
+
+    Arquivo := ExcludedFilesList(GetParameter(Arquivo,0).AsShortString
+                                ,GetParameter(Arquivo,1).AsShortString);
+
+    SendStatus(aClient,'DFS: ' + IntToStr(CreateSendStream(aClient,Arquivo[1])));
+    SendStatus(aClient,'-------------------------------------------------------------------------------');
+    SendStatus(aClient,'== EXCLUDEDFILESLIST: Conteúdo gerado com sucesso =============================');
   end;
 end;
 
 procedure TDataModule_Principal.FtpServer_MainGetProcessing(Sender: TObject; Client: TFtpCtrlSocket; var DelayedSend: Boolean);
 begin
-    ProcessRequest(TConnectedClient(Client));
+  ProcessRequest(TConnectedClient(Client));
 end;
 
 procedure TDataModule_Principal.FtpServer_MainRetrSessionConnected(Sender: TObject; Client: TFtpCtrlSocket; Data: TWSocket; AError: Word);
@@ -1152,7 +1221,7 @@ begin
       SQL.Text := StringReplace(SQL_SELECT,'<BI_USUARIOS_ID>',IntToStr(aUserID),[]);
       SQL.Text := StringReplace(SQL.Text,'<VA_DIRETORIO>',QuotedStr(StringReplace(aDir,'\','\\',[rfReplaceAll])),[]);
 
-//      SQL.SaveTofile('c:\carlos.txt');
+      SQL.SaveTofile('d:\carlos.txt');
 
       Open;
 

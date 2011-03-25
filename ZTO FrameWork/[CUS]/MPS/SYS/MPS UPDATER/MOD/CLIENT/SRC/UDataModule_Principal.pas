@@ -1,4 +1,7 @@
 { TODO -oCARLOS FEITOZA -cMELHORIA : ANTES DE BAIXAR UM ARQUIVO DEVE-SE VERIFICAR SE ELE REALMENTE PRECISA SER BAIXADO. COMPARAR AS DATAS DE MODIFICAÇÃO }
+{ TODO -oCARLOS FEITOZA -cADIÇÃO : PARA CADA SISTEMA NO INI, SEPARADO POR ";", DEVEMOS REALIZAR A CHECAGEM (RealizarChecagem, RealizarAtualizacao e ObterListaDeArquivosModificados). ATUALMENTE APENAS UM SISTEMA ESTÁ SENDO CHECADO }
+{ TODO -oCARLOS FEITOZA -cADIÇÃO : NO SERVIDOR CRIAR UM COMANDO PARA OBTER APENAS A RESPOSTA DE EXISTIR OU NÃO ARQUIVOS A MODIFICAR. ATUALMENTE TODA A LISTA DE ARQUIVOS MODIFICADO É RETORNADA SEM NECESSIDADE. }
+{ TODO -oCARLOS FEITOZA -cCORREÇÃO : ALTERAR OS NOMES DOS SCRIPTS PARA ALGO MAIS EXPLICATIVO, COMO SINCRONIZAÇÃO, ETC }
 unit UDataModule_Principal;
 
 interface
@@ -68,12 +71,13 @@ type
                                const aLabelPercentArquivo
                                    , aLabelPercentGeral: TLabel); overload;
     procedure RealizarChecagem; overload;
-    procedure ObterListaDeArquivosModificados(aProgressBarArquivo: TProgressBar;
+    procedure ObterListaDeArquivosMonitorados(aProgressBarArquivo: TProgressBar;
                                               aRichEdit: TRichEdit);
     procedure ObterArquivoAtualizado(aProgressBarArquivo: TProgressBar;
                                      aRootDirectory
                                     ,aFileName
-                                    ,aDefaultLocalDir: ShortString;
+                                    ,aDefaultLocalDir
+                                    ,aInstallationKey: String;
                                      aRichEdit: TRichEdit);
     procedure MinimizarNaBarraDeTarefas(aSender: TObject);
     procedure AtivarEAtualizar;
@@ -387,7 +391,8 @@ end;
 procedure TDataModule_Principal.ObterArquivoAtualizado(aProgressBarArquivo: TProgressBar;
                                                        aRootDirectory
                                                       ,aFileName
-                                                      ,aDefaultLocalDir: ShortString;
+                                                      ,aDefaultLocalDir
+                                                      ,aInstallationKey: String;
                                                        aRichEdit: TRichEdit);
 var
   LocaFileName: ShortString;
@@ -398,7 +403,8 @@ begin
                 ,aRichEdit);
 
   LocaFileName := ReplaceSpecialConstants(aFileName
-                                         ,aDefaultLocalDir);
+                                         ,aDefaultLocalDir
+                                         ,aInstallationKey);
 
   if not DirectoryExists(ExtractFilePath(LocaFileName)) then
     ForceDirectories(ExtractFilePath(LocaFileName));
@@ -418,7 +424,7 @@ begin
     raise EInvalidPath.Create('Não foi possível obter o arquivo "' + aFileName + '"');
 end;
 
-procedure TDataModule_Principal.ObterListaDeArquivosModificados(aProgressBarArquivo: TProgressBar;
+procedure TDataModule_Principal.ObterListaDeArquivosMonitorados(aProgressBarArquivo: TProgressBar;
                                                                 aRichEdit: TRichEdit);
 var
   Comando, Sistema, Formato: ShortString;
@@ -430,22 +436,23 @@ begin
       Formato := FORMATOS[ReadInteger('CONFIGURACOES','FORMATO',0)];
       Data := ReadFloat('ULTIMASINCRONIZACAO','DATA',0.0);
 
-      Comando := StringReplace(CMD_MODIFIEDFILES,'*',Sistema,[]);
+      { O comando vai trazer uma lista com todos os arquivos e suas datas.
+      Localmente estes arquivos }
+      Comando := StringReplace(CMD_MONITOREDFILESLIST,'*',Sistema,[]);
       Comando := StringReplace(Comando,'???',Formato,[]);
-      Comando := StringReplace(Comando,'*',FloatToStr(Data,GetUSFormatSettings),[]);
 
-      Form_Principal.Label_ModoMini.Caption := 'Obtendo a lista de alterações...';
+      Form_Principal.Label_ModoMini.Caption := 'Obtendo a lista de arquivos monitorados...';
       Form_Principal.Label_ModoMini.Update;
 
       if not ObterArquivo(FtpClient_Principal
                          ,aProgressBarArquivo
                          ,nil
-                         ,FFTPDirectory + '\' + MODIFIEDFILES
+                         ,FFTPDirectory + '\' + MONITOREDFILESLIST
                          ,Comando
                          ,aRichEdit
                          ,False
                          ,1) then
-        raise Exception.Create('Não foi possível obter a lista de arquivos modificados');
+        raise Exception.Create('Não foi possível obter a lista de arquivos monitorados');
     finally
       Free;
     end;
@@ -510,7 +517,7 @@ begin
 
         InitializeProgress(aProgressBarGeral,aLabelPercentGeral,1);
 
-        ObterListaDeArquivosModificados(aProgressBarArquivo
+        ObterListaDeArquivosMonitorados(aProgressBarArquivo
                                        ,aRichEdit);
 
         SetProgressWith(aProgressBarGeral,aLabelPercentGeral,1);
@@ -522,9 +529,9 @@ begin
         Formato := ReadInteger('CONFIGURACOES','FORMATO',TXT);
 
         if Formato = TXT then
-          MF.LoadFromTextualRepresentation(LoadTextFile(FFTPDirectory + '\' + MODIFIEDFILES))
+          MF.LoadFromTextualRepresentation(LoadTextFile(FFTPDirectory + '\' + MONITOREDFILESLIST))
         else if Formato = BIN then
-          MF.LoadFromBinaryFile(FFTPDirectory + '\' + MODIFIEDFILES);
+          MF.LoadFromBinaryFile(FFTPDirectory + '\' + MONITOREDFILESLIST);
 
         { Neste ponto existem arquivos que precisam ser obtidos do servidor.
         Toda informação está disponível. É só baixar cada coisa em seu lugar }
@@ -541,7 +548,14 @@ begin
                 ObterArquivoAtualizado(aProgressBarArquivo
                                       ,MF.Directory
                                       ,MF.Files[i].FilePath
-                                      ,'C:\' + ReadString('CONFIGURACOES','SISTEMA','')
+                                      // Por padrão, o local de instalação de
+                                      // arquivos, quando não especificado
+                                      // explicitamente é C:\<NOMEDOSISTEMA> OU
+                                      // C:\<NOMEDOSISTEMA> quando um nome de
+                                      // sistema não tiver sido especificado nas
+                                      // configurações
+                                      ,'C:\' + ReadString('CONFIGURACOES','SISTEMA','MPSUPDATER')
+                                      ,MF.ChaveDeInstalacao
                                       ,aRichEdit);
                 Inc(ArquivosAtualizados);
               except
@@ -656,7 +670,7 @@ begin
 
         InitializeProgress(aProgressBarGeral,aLabelPercentGeral,1);
 
-        ObterListaDeArquivosModificados(aProgressBarArquivo
+        ObterListaDeArquivosMonitorados(aProgressBarArquivo
                                        ,aRichEdit);
 
         SetProgressWith(aProgressBarGeral,aLabelPercentGeral,1);
@@ -668,9 +682,9 @@ begin
         Formato := ReadInteger('CONFIGURACOES','FORMATO',TXT);
 
         if Formato = TXT then
-          MF.LoadFromTextualRepresentation(LoadTextFile(FFTPDirectory + '\' + MODIFIEDFILES))
+          MF.LoadFromTextualRepresentation(LoadTextFile(FFTPDirectory + '\' + MONITOREDFILESLIST))
         else if Formato = BIN then
-          MF.LoadFromBinaryFile(FFTPDirectory + '\' + MODIFIEDFILES);
+          MF.LoadFromBinaryFile(FFTPDirectory + '\' + MONITOREDFILESLIST);
 
         { Neste ponto existem arquivos que precisam ser obtidos do servidor.
         Toda informação está disponível. É só baixar cada coisa em seu lugar }

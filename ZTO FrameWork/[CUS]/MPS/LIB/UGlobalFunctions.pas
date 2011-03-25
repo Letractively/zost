@@ -1,3 +1,5 @@
+{ TODO -oCARLOS FEITOZA -cADIÇÃO : ALTERAR O PROCEDURE ReplaceSpecialConstants DE FORMA QUE ESTE CONSIDER WINDOWS DE 64 BITS }
+{ TODO -oCARLOS FEITOZA -cADIÇÃO : CRIAR UM OBJETO NOS MOLDES DE "TMONITOREDFILES" DE NOME "TEXCLUDEDFILES" }
 unit UGlobalFunctions;
 
 interface
@@ -77,7 +79,7 @@ type
     property FileInfo[i: Cardinal]: TFileInfo read GetFileInfo; default;
   end;
 
-  TModifiedFiles = class(TObjectFile)
+  TMonitoredFiles = class(TObjectFile)
   private
     FFiles: TFiles;
     FDirectory: ShortString;
@@ -145,7 +147,8 @@ procedure SendStatus(aClient: TConnectedClient;
 function GetUSFormatSettings: TFormatSettings;
 
 function ReplaceSpecialConstants(aFilePath
-                                ,aDefaultLocation: TFileName): ShortString;
+                                ,aDefaultLocation: TFileName;
+                                 aInstallationKey: String): String;
 
 function ParamIsPresent(aParamName: ShortString): Boolean;
 
@@ -165,8 +168,11 @@ const
   um cliente de FTP comum ou o mesmo nome do comando sem os parâmetros, quando
   obtido a partir do MPS Updater Client }
 
-  MODIFIEDFILES = 'MODIFIEDFILES';
-  CMD_MODIFIEDFILES = MODIFIEDFILES + '{*,???,*}';
+  MONITOREDFILESLIST = 'MONITOREDFILESLIST';
+  CMD_MONITOREDFILESLIST = MONITOREDFILESLIST + '{*,???}';
+
+  EXCLUDEDFILESLIST = 'EXCLUDEDFILESLIST';
+  CMD_EXCLUDEDFILESLIST = EXCLUDEDFILESLIST + '{*,???}';
 
   {$IFDEF SERVER}
   _COPYRIGHT = 'Copyright %s MPS Informática Ltda. Todos os direitos reservados.';
@@ -187,11 +193,11 @@ const
 //  	'  FROM MYSQL.USER'#13#10 +
 //    ' WHERE USER.USER = ''%s'''#13#10 +
 //    '   AND USER.PASSWORD = PASSWORD(''%s'')';
-  	SQL_SELECT_ALL_USERS = '   SELECT VA_NOME'#13#10 +
-                           '        , VA_EMAIL'#13#10 +
-                           '        , BI_USUARIOS_ID'#13#10 +
-                           '     FROM MPSUPDATER.USUARIOS'#13#10 +
-  	                       '    WHERE VA_LOGIN = ''%s'' AND VA_SENHA = MD5(''%s'')';
+  SQL_SELECT_ALL_USERS = '   SELECT VA_NOME'#13#10 +
+                         '        , VA_EMAIL'#13#10 +
+                         '        , BI_USUARIOS_ID'#13#10 +
+                         '     FROM MPSUPDATER.USUARIOS'#13#10 +
+                         '    WHERE VA_LOGIN = ''%s'' AND VA_SENHA = MD5(''%s'')';
   {$ELSE}
   _DUMMY = '';
   {$ENDIF}
@@ -203,7 +209,8 @@ uses Graphics
    , StrUtils
    , Forms
    , ShlObj
-   , ShFolder;
+   , ShFolder
+   , Registry;
 
 const
   _APP   = '{APP}';
@@ -211,6 +218,8 @@ const
   _SYS   = '{SYS}';
   _SD    = '{SD}';
   _PF    = '{PF}';
+  _PF32  = '{PF32}';
+  _PF64  = '{PF64}';
   _CF    = '{CF}';
   _FONTS = '{FONTS}';
 
@@ -308,16 +317,24 @@ begin
   Result := StrPas(Buffer);
 end;
 
-function GetAppDir: ShortString;
+function GetAppDir(aInstallationKey: String): String;
 begin
-  { É necessário ter o instalador e um GUID onde deveremos procurar pelo
-  diretório de instalação. Até lá isso não poderá ser usado}
   Result := '';
+  with TRegistry.Create do
+    try
+      RootKey := HKEY_LOCAL_MACHINE;
+      if OpenKeyReadOnly('SOFTWARE\MICROSOFT\WINDOWS\CURRENTVERSION\UNINSTALL\' + aInstallationKey) then
+        Result := ReadString('Inno Setup: App Path');
+    finally
+      Free;
+    end;
 end;
 
 function ReplaceSpecialConstants(aFilePath
-                                ,aDefaultLocation: TFileName): ShortString;
-
+                                ,aDefaultLocation: TFileName;
+                                 aInstallationKey: String): String;
+var
+  AppDir: String;
 begin
   // {app} = Diretório onde a aplicação foi instalada com o instalador
   //         automático INNO SETUP
@@ -325,14 +342,21 @@ begin
   // {sys} = Diretório "System" ou "System32"
   // {sd} = Diretório do sistema, tipicamente "C:"
   // {pf} = Diretório "Arquivos de Programas"
+  // {pf32} = Diretório "Arquivos de Programas" para programas de 32 bits. Tipicamente "C:\Program Files" em Windows de 32-bit e "C:\Program Files (x86)" em Windows de 64 bits
+  // {pf64} = Diretório "Arquivos de Programas" para programas de 64 bits. Tipicamente "C:\Program Files". Deve lançar uma exceção quando tentar usar esta constante em Windows de 32 bits
   // {cf} = Diretório "Arquivos Comuns"
   // {fonts} = Diretório "Fonts"
 
   Result := UpperCase(aFilePath);
 
   if Pos(_APP,Result) = 1 then
-    Result := StringReplace(Result
-                           ,_APP,GetAppDir,[])
+  begin
+    AppDir := GetAppDir(aInstallationKey);
+    if AppDir <> '' then
+      Result := StringReplace(Result,_APP,AppDir,[])
+    else
+      Result := StringReplace(Result,_APP,aDefaultLocation,[])
+  end
   else if Pos(_WIN,Result) = 1 then
     Result := StringReplace(Result
                            ,_WIN,GetWinDir,[])
@@ -451,6 +475,9 @@ begin
     if (Pos('RETORNO:>',Linhas[0]) = 1) or (Pos('COMANDO:>',Linhas[0]) = 1) or (Linhas[0][1] = '!') or (Linhas[0][1] = '§') or (Linhas[0][1] = '@') then
       for i := 0 to Pred(Linhas.Count) do
       begin
+        { Este IF e seu ELSE escrevem no log apenas a parte inicial da linha,
+        que consiste, da data mais o colchete ou das linhas verticais, mais o
+        colchete no caso de um comando ou resposta com mais de uma linha }
         if i = 0 then
         begin
           LinhaAExibir := Linhas[0];
@@ -471,63 +498,12 @@ begin
                  ,aRichEdit.Font.Name
                  ,aRichEdit.Font.Size
                  ,[]);
-
-          { RETORNO:> ??? - XXXXXXXXXXXX }
-
-          {$IFDEF CLIENT}
-          { Pintando erros de vermelho }
-          if Pos('RETORNO:> 666 - ',LinhaAExibir) = 1 then
-          begin
-            AddText('RETORNO:> '
-                   ,clBlue
-                   ,aRichEdit.Font.Name
-                   ,aRichEdit.Font.Size
-                   ,[fsBold]);
-
-            AddText(Copy(LinhaAExibir,Pos('666',LinhaAExibir),Length(LinhaAExibir)) + #13#10
-                   ,clRed
-                   ,aRichEdit.Font.Name
-                   ,aRichEdit.Font.Size
-                   ,[fsBold]);
-          end
-          else
-          {$ENDIF}
-          if Pos('RETORNO:>',LinhaAExibir) = 1 then
-            AddText(LinhaAExibir + #13#10
-                   ,clBlue
-                   ,aRichEdit.Font.Name
-                   ,aRichEdit.Font.Size
-                   ,[fsBold])
-          else if Pos('COMANDO:>',LinhaAExibir) = 1 then
-            AddText(LinhaAExibir + #13#10
-                   ,clGreen
-                   ,aRichEdit.Font.Name
-                   ,aRichEdit.Font.Size
-                   ,[fsBold])
-          else if LinhaAExibir[1] = '!' then
-            AddText(LinhaAExibir + #13#10
-                   ,clRed
-                   ,aRichEdit.Font.Name
-                   ,aRichEdit.Font.Size
-                   ,[fsBold])
-          else if LinhaAExibir[1] = '§' then
-            AddText(LinhaAExibir + #13#10
-                   ,$000080FF
-                   ,aRichEdit.Font.Name
-                   ,aRichEdit.Font.Size
-                   ,[fsBold])
-          else if LinhaAExibir[1] = '@' then
-            AddText(LinhaAExibir + #13#10
-                   ,clPurple
-                   ,aRichEdit.Font.Name
-                   ,aRichEdit.Font.Size
-                   ,[fsBold])
         end
         else
         begin
           // 24/08/2010 09:08:26 ] § XXXX LINHA xxxx
           // ||||||||||||||||||| ] § XXXX LINHA xxxx
-          if (Linhas[0][1] <> '!') and  (Linhas[0][1] <> '§') and (Linhas[0][1] <> '@') then
+          if (Linhas[0][1] <> '!') and (Linhas[0][1] <> '§') and (Linhas[0][1] <> '@') then
             LinhaAExibir := FirstAndSecondTokens(Linhas[0]) + ' - ' + Linhas[i]
           else
             LinhaAExibir := FirstToken(Linhas[0]) + ' ' + Linhas[i];
@@ -547,27 +523,60 @@ begin
                  ,aRichEdit.Font.Name
                  ,aRichEdit.Font.Size
                  ,[]);
-
-          { § XXXX LINHA xxxx }
-          if LinhaAExibir[1] = '!' then
-            AddText(LinhaAExibir + #13#10
-                   ,clRed
-                   ,aRichEdit.Font.Name
-                   ,aRichEdit.Font.Size
-                   ,[fsBold])
-          else if LinhaAExibir[1] = '§' then
-            AddText(LinhaAExibir + #13#10
-                   ,$000080FF
-                   ,aRichEdit.Font.Name
-                   ,aRichEdit.Font.Size
-                   ,[fsBold])
-          else if LinhaAExibir[1] = '@' then
-            AddText(LinhaAExibir + #13#10
-                   ,clPurple
-                   ,aRichEdit.Font.Name
-                   ,aRichEdit.Font.Size
-                   ,[fsBold]);
         end;
+
+        { A partir daqui será inserida a parte da linha que tem a informação }
+
+        { RETORNO:> ??? - XXXXXXXXXXXX }
+
+        {$IFDEF FTPSYNCCLI}
+        { Pintando erros de vermelho }
+        if Pos('RETORNO:> 666 - ',LinhaAExibir) = 1 then
+        begin
+          AddText('RETORNO:> '
+                 ,clBlue
+                 ,aRichEdit.Font.Name
+                 ,aRichEdit.Font.Size
+                 ,[fsBold]);
+
+          AddText(Copy(LinhaAExibir,Pos('666',LinhaAExibir),Length(LinhaAExibir)) + #13#10
+                 ,clRed
+                 ,aRichEdit.Font.Name
+                 ,aRichEdit.Font.Size
+                 ,[fsBold]);
+        end
+        else
+        {$ENDIF}
+        if Pos('RETORNO:>',LinhaAExibir) = 1 then
+          AddText(LinhaAExibir + #13#10
+                 ,clBlue
+                 ,aRichEdit.Font.Name
+                 ,aRichEdit.Font.Size
+                 ,[fsBold])
+        else if Pos('COMANDO:>',LinhaAExibir) = 1 then
+          AddText(LinhaAExibir + #13#10
+                 ,clGreen
+                 ,aRichEdit.Font.Name
+                 ,aRichEdit.Font.Size
+                 ,[fsBold])
+        else if LinhaAExibir[1] = '!' then
+          AddText(LinhaAExibir + #13#10
+                 ,clRed
+                 ,aRichEdit.Font.Name
+                 ,aRichEdit.Font.Size
+                 ,[fsBold])
+        else if LinhaAExibir[1] = '§' then
+          AddText(LinhaAExibir + #13#10
+                 ,$000080FF
+                 ,aRichEdit.Font.Name
+                 ,aRichEdit.Font.Size
+                 ,[fsBold])
+        else if LinhaAExibir[1] = '@' then
+          AddText(LinhaAExibir + #13#10
+                 ,clPurple
+                 ,aRichEdit.Font.Name
+                 ,aRichEdit.Font.Size
+                 ,[fsBold]);
       end
     else
       for i := 0 to Pred(Linhas.Count) do
@@ -581,7 +590,7 @@ begin
       end;
   finally
     Linhas.Free;
-    SendMessage(aRichEdit.Handle,EM_SCROLLCARET,0,0);
+    SendMessage(aRichEdit.Handle,WM_VSCROLL,SB_BOTTOM,0);
   end;
 end;
 
@@ -1035,18 +1044,18 @@ end;
 
 { TModifiedFiles }
 
-procedure TModifiedFiles.Clear;
+procedure TMonitoredFiles.Clear;
 begin
   FFiles.Clear;
 end;
 
-constructor TModifiedFiles.Create(aOwner: TComponent);
+constructor TMonitoredFiles.Create(aOwner: TComponent);
 begin
   inherited;
   FFiles := TFiles.Create(TFileInfo);
 end;
 
-destructor TModifiedFiles.Destroy;
+destructor TMonitoredFiles.Destroy;
 begin
   FFiles.Free;
   inherited;
