@@ -389,21 +389,21 @@ var
     ROConnection: TZConnection;
 begin
 	Result := False;
-    ROConnection := nil;
-  	RODataSet := nil;
+  ROConnection := nil;
+	RODataSet := nil;
+ 	try
   	try
-		try
-        	FFSYGlobals.ConfigureConnection(ROConnection);
-            FFSYGlobals.ConfigureDataSet(ROConnection,RODataSet,Format(SQL_SELECT_ALL_USERS,[Usuario,Senha]));
-            { Verificando senha e login -- Inicio ============================ }
+      FFSYGlobals.ConfigureConnection(ROConnection);
+      FFSYGlobals.ConfigureDataSet(ROConnection,RODataSet,Format(SQL_SELECT_ALL_USERS,[Usuario,Senha]));
+      { Verificando senha e login -- Inicio ============================ }
 			if RODataSet.RecordCount = 1 then
-            begin
-            	Result := True;
-                (ClienteConectado as TConnectedClient).UserName := ClienteConectado.UserName;
-                (ClienteConectado as TConnectedClient).PassWord := ClienteConectado.PassWord;
-                (ClienteConectado as TConnectedClient).RealName := RODataSet.FieldByName('FULL_NAME').AsString;
-                (ClienteConectado as TConnectedClient).Description := RODataSet.FieldByName('DESCRIPTION').AsString;
-            end;
+      begin
+        Result := True;
+        (ClienteConectado as TConnectedClient).UserName := ClienteConectado.UserName;
+        (ClienteConectado as TConnectedClient).PassWord := ClienteConectado.PassWord;
+        (ClienteConectado as TConnectedClient).RealName := RODataSet.FieldByName('FULL_NAME').AsString;
+        (ClienteConectado as TConnectedClient).Description := RODataSet.FieldByName('DESCRIPTION').AsString;
+      end;
             { Verificando senha e login -- Fim =============================== }
         except
         	raise;
@@ -677,7 +677,8 @@ begin
 end;
 
 
-{ TODO -oCARLOS FEITOZA -cEXPLICAÇÃO : Este procedure processa uma requisição de um cliente e gera ao final um arquivo de acordo com a requisição feita }
+{ TODO -oCARLOS FEITOZA -cEXPLICAÇÃO : Este procedure processa uma requisição de
+um cliente e gera ao final um arquivo de acordo com a requisição feita }
 procedure TFSSForm_Main.ProcessRequest(aClient: TConnectedClient);
 { ---------------------------------------------------------------------------- }
 procedure ReadParameters(out aRetrSessionParameters: TRetrSessionParameters);
@@ -702,12 +703,12 @@ var
 	TempStr: String;
     ClientDelta, ServerDelta: TSynchronizationFile;
 begin
-    FConnectedClient := aClient;
+  FConnectedClient := aClient;
 
-    ReadParameters(RetrSessionParameters);
-    FVerboseMode := RetrSessionParameters.VerboseMode;
+  ReadParameters(RetrSessionParameters);
+  FVerboseMode := RetrSessionParameters.VerboseMode;
 
-    try
+  try
         { GET.DBCHECKSUM.DAT.PHPS: Este script obtém todas as tabelas do banco
         de dados, depois circula por todas elas, gerando o checksum que é
         retornado ao cliente
@@ -739,6 +740,10 @@ begin
     begin
         FFSYGlobals.ShowOnLog('@ Executando script ' + ExtractFileName(FTPSCR_SERVERINFO),RichEditLog);
         DeleteFile(aClient.HomeDir + FTPFIL_SERVERINFO);
+
+        { Previne que os dados sejam enviados automaticamente, permitindo que o
+        envio seja feito em OnRetrSessionConnected }
+        aClient.DataStream := TMemoryStream.Create;
 
         { Criando o arquivo localmente }
         FFSYGlobals.SendStatus(aClient,'== SERVERINFO: Iniciando geração de conteúdo... ===================================');
@@ -777,6 +782,7 @@ begin
         try
             FFSYGlobals.ShowOnLog('@ Executando script ' + ExtractFileName(FTPSCR_SERVER_DELTA),RichEditLog);
             DeleteFile(aClient.HomeDir + FTPFIL_SERVER_DELTA);
+            aClient.DataStream := TMemoryStream.Create;
 
             { Gerando a primeira parte do Delta de retorno apenas com as
             alterações de outros clientes }
@@ -861,6 +867,7 @@ begin
     begin
         FFSYGlobals.ShowOnLog('@ Executando script ' + ExtractFileName(FTPSCR_SERVER_DATABASE),RichEditLog);
         DeleteFile(aClient.HomeDir + FTPFIL_SERVER_DATABASE);
+        aClient.DataStream := TMemoryStream.Create;
 
         { Gerando o conteúdo a ser retornado ao cliente e salvando-o em
         arquivo comprimido, caso necessário }
@@ -880,6 +887,7 @@ begin
     begin
         FFSYGlobals.ShowOnLog('@ Executando script ' + ExtractFileName(FTPSCR_CONFIRMEVERYTHING),RichEditLog);
         DeleteFile(aClient.HomeDir + FTPFIL_CONFIRMEVERYTHING);
+        aClient.DataStream := TMemoryStream.Create;
 
         if Assigned(aClient.DataBaseConnection) then
             aClient.DataBaseConnection.Tag := 0;
@@ -906,6 +914,7 @@ begin
     begin
         FFSYGlobals.ShowOnLog('@ Executando script ' + ExtractFileName(FTPSCR_REMOTESNAPSHOT),RichEditLog);
         DeleteFile(aClient.HomeDir + FTPFIL_REMOTESNAPSHOT);
+        aClient.DataStream := TMemoryStream.Create;
 
         { Gerando o conteúdo a ser retornado ao cliente e salvando-o em
         arquivo comprimido, caso necessário }
@@ -925,6 +934,7 @@ begin
     begin
         FFSYGlobals.ShowOnLog('@ Executando script ' + ExtractFileName(FTPSCR_TEMPFILENAMES),RichEditLog);
         DeleteFile(aClient.HomeDir + FTPFIL_TEMPFILENAMES);
+        aClient.DataStream := TMemoryStream.Create;
 
         { Gerando o conteúdo a ser retornado ao cliente }
         FFSYGlobals.SendStatus(aClient,'== TEMPFILENAMES: Iniciando geração de conteúdo... ================================');
@@ -1035,16 +1045,18 @@ begin
     { A configuração a seguir permite limitar o acesso a um determinado diretório }
     // else if MatchesMask(Client.FilePath, '*\VIRTUAL\FORBIDEN*') then
         // raise Exception.Create('Access prohibed !')
-    except
+  except
         on E: Exception do
             AbortEverything(aClient,E.Message);
-    end;
+  end;
 end;
 
-{ TODO -oCARLOS FEITOZA -cEXPLICAÇÃO : Este evento é lançado imediatamente antes do envio de um arquivo solicitado e serve para processar tal arquivo, gerando-o, comprimindo-o etc. }
+{ TODO -oCARLOS FEITOZA -cEXPLICAÇÃO : Este evento é lançado imediatamente antes
+do envio de um arquivo solicitado e serve para processar tal arquivo, gerando-o,
+comprimindo-o etc. }
 procedure TFSSForm_Main.DoGetProcessing;
 begin
-    ProcessRequest(TConnectedClient(Client));
+  ProcessRequest(TConnectedClient(Client));
 end;
 
 { TODO -oCARLOS FEITOZA -cEXPLICAÇÃO : Este evento é lançado no momento do envio

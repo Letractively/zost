@@ -1475,7 +1475,7 @@ end;
 procedure TFSYGlobals.ShowOnLog(const aText: String; aRichEdit: TRichEdit);
 var
   Linhas: TStringList;
-  i{, Idx}: Word;
+  i: Word;
   LinhaAExibir: String;
 
   function FirstToken(Line: String): String;
@@ -1495,80 +1495,242 @@ var
   	Result := Copy(Line,1,Pred(Idx));
   end;
 
+  procedure AddText(aLine: String; aColor: TColor; aFontName: TFontName; aFontSize: Byte; aFontStyle: TFontStyles);
+  begin
+    aRichEdit.SelAttributes.Color := aColor;
+    aRichEdit.SelAttributes.Name  := aFontName;
+    aRichEdit.SelAttributes.Size  := aFontSize;
+    aRichEdit.SelAttributes.Style := aFontStyle;
+    aRichEdit.SelText             := aLine;
+  end;
+
 begin
 	Linhas := nil;
-  	try
-  		Linhas := TStringList.Create;
+
+  try
+    Linhas := TStringList.Create;
 		Linhas.Text := StringReplace(aText,'\n',#13#10,[rfReplaceAll]);
 
-    	if (Pos('RETORNO:>',Linhas[0]) = 1) or (Pos('COMANDO:>',Linhas[0]) = 1) or (Linhas[0][1] = '!') or (Linhas[0][1] = '§') or (Linhas[0][1] = '@') then
-      		for i := 0 to Pred(Linhas.Count) do
-      		begin
-        		if i = 0 then
-        		begin
-          			LinhaAExibir := Linhas[0];
-          			aRichEdit.Lines.Add(FormatDateTime('dd/mm/yyyy hh:nn:ss',Now()) + ' ] ' + LinhaAExibir);
-                end
-                else
-                begin
-        	        if (Linhas[0][1] <> '!') and  (Linhas[0][1] <> '§') and (Linhas[0][1] <> '@') then
-						LinhaAExibir := FirstAndSecondTokens(Linhas[0]) + ' - ' + Linhas[i]
-                    else
-          	            LinhaAExibir := FirstToken(Linhas[0]) + ' ' + Linhas[i];
+    if (Pos('RETORNO:>',Linhas[0]) = 1) or (Pos('COMANDO:>',Linhas[0]) = 1) or (Linhas[0][1] = '!') or (Linhas[0][1] = '§') or (Linhas[0][1] = '@') then
+      for i := 0 to Pred(Linhas.Count) do
+      begin
+        { Este IF e seu ELSE escrevem no log apenas a parte inicial da linha,
+        que consiste, da data mais o colchete ou das linhas verticais, mais o
+        colchete no caso de um comando ou resposta com mais de uma linha }
+        if i = 0 then
+        begin
+          LinhaAExibir := Linhas[0];
 
-                    aRichEdit.Lines.Add('||||||||||||||||||| ] ' + LinhaAExibir);
-                end;
+          aRichEdit.SelStart := aRichEdit.GetTextLen;
+          { dd/mm/yyyy hh:nn:ss ] RETORNO:> ??? - XXXXXXXXXXXX }
 
-                { A partir daqui, a última linha do RichEdit contém algo como
-                dd/mm/yyyy hh:nn:ss ] RETORNO:> ??? - XXXXXXXXXXXX }
+          { dd/mm/yyyy hh:nn:ss }
+          AddText(FormatDateTime('dd/mm/yyyy hh:nn:ss',Now())
+                 ,clWindowText
+                 ,aRichEdit.Font.Name
+                 ,aRichEdit.Font.Size
+                 ,[fsBold]);
 
-                { Tornando negrito e na cor preta a string inteira }
-                aRichEdit.SelStart := Length(aRichEdit.Text) - Length(aRichEdit.Lines[Pred(aRichEdit.Lines.Count)]) - 2;
-                aRichEdit.SelLength := Length(aRichEdit.Lines[Pred(aRichEdit.Lines.Count)]);
-                aRichEdit.SelAttributes.Color := clWindowText;
-                aRichEdit.SelAttributes.Style := [fsBold];
-
-                { Removendo o atributo negrito do colchete (]) }
-                aRichEdit.SelStart := aRichEdit.SelStart + 20;
-                aRichEdit.SelLength := 1;
-                aRichEdit.SelAttributes.Style := [];
-
-                { Seleconando a segunda parte do texto }
-                aRichEdit.SelStart := Length(aRichEdit.Text) - Length(aRichEdit.Lines[Pred(aRichEdit.Lines.Count)]) + 20;
-                aRichEdit.SelLength := Length(LinhaAExibir);
-
-                { Pintando a linha da mensagem de acordo com o texto }
-                if Pos('RETORNO:>',LinhaAExibir) = 1 then
-                  aRichEdit.SelAttributes.Color := clBlue
-                else if Pos('COMANDO:>',LinhaAExibir) = 1 then
-                  aRichEdit.SelAttributes.Color := clGreen
-                else if LinhaAExibir[1] = '!' then
-                  aRichEdit.SelAttributes.Color := clRed
-                else if LinhaAExibir[1] = '§' then
-                  aRichEdit.SelAttributes.Color := $000080FF
-                else if LinhaAExibir[1] = '@' then
-                  aRichEdit.SelAttributes.Color := clPurple;
-
-                {$IFDEF FTPSYNCCLI}
-                { Pintando erros de vermelho }
-                if Pos('RETORNO:> 666 - ',LinhaAExibir) = 1 then
-                begin
-                  aRichEdit.SelStart := aRichEdit.SelStart + 10;
-                  aRichEdit.SelLength := Length(LinhaAExibir) - 10;
-                  aRichEdit.SelAttributes.Color := clRed;
-                end;
-                {$ENDIF}
-
-                aRichEdit.SelLength := 0;
-            end
+          { ] }
+          AddText(' ] '
+                 ,clWindowText
+                 ,aRichEdit.Font.Name
+                 ,aRichEdit.Font.Size
+                 ,[]);
+        end
         else
-            for i := 0 to Pred(Linhas.Count) do
-                aRichEdit.Lines.Add('------------------- ] ' + Linhas[i]);
-    finally
-  	    Linhas.Free;
-        SendMessage(aRichEdit.Handle,EM_SCROLLCARET,0,0);
-    end;
+        begin
+          // 24/08/2010 09:08:26 ] § XXXX LINHA xxxx
+          // ||||||||||||||||||| ] § XXXX LINHA xxxx
+          if (Linhas[0][1] <> '!') and (Linhas[0][1] <> '§') and (Linhas[0][1] <> '@') then
+            LinhaAExibir := FirstAndSecondTokens(Linhas[0]) + ' - ' + Linhas[i]
+          else
+            LinhaAExibir := FirstToken(Linhas[0]) + ' ' + Linhas[i];
+
+          aRichEdit.SelStart := aRichEdit.GetTextLen;
+
+          { ||||||||||||||||||| }
+          AddText('|||||||||||||||||||'
+                 ,clWindowText
+                 ,aRichEdit.Font.Name
+                 ,aRichEdit.Font.Size
+                 ,[fsBold]);
+
+          { ] }
+          AddText(' ] '
+                 ,clWindowText
+                 ,aRichEdit.Font.Name
+                 ,aRichEdit.Font.Size
+                 ,[]);
+        end;
+
+        { A partir daqui será inserida a parte da linha que tem a informação }
+
+        { RETORNO:> ??? - XXXXXXXXXXXX }
+
+        {$IFDEF FTPSYNCCLI}
+        { Pintando erros de vermelho }
+        if Pos('RETORNO:> 666 - ',LinhaAExibir) = 1 then
+        begin
+          AddText('RETORNO:> '
+                 ,clBlue
+                 ,aRichEdit.Font.Name
+                 ,aRichEdit.Font.Size
+                 ,[fsBold]);
+
+          AddText(Copy(LinhaAExibir,Pos('666',LinhaAExibir),Length(LinhaAExibir)) + #13#10
+                 ,clRed
+                 ,aRichEdit.Font.Name
+                 ,aRichEdit.Font.Size
+                 ,[fsBold]);
+        end
+        else
+        {$ENDIF}
+        if Pos('RETORNO:>',LinhaAExibir) = 1 then
+          AddText(LinhaAExibir + #13#10
+                 ,clBlue
+                 ,aRichEdit.Font.Name
+                 ,aRichEdit.Font.Size
+                 ,[fsBold])
+        else if Pos('COMANDO:>',LinhaAExibir) = 1 then
+          AddText(LinhaAExibir + #13#10
+                 ,clGreen
+                 ,aRichEdit.Font.Name
+                 ,aRichEdit.Font.Size
+                 ,[fsBold])
+        else if LinhaAExibir[1] = '!' then
+          AddText(LinhaAExibir + #13#10
+                 ,clRed
+                 ,aRichEdit.Font.Name
+                 ,aRichEdit.Font.Size
+                 ,[fsBold])
+        else if LinhaAExibir[1] = '§' then
+          AddText(LinhaAExibir + #13#10
+                 ,$000080FF
+                 ,aRichEdit.Font.Name
+                 ,aRichEdit.Font.Size
+                 ,[fsBold])
+        else if LinhaAExibir[1] = '@' then
+          AddText(LinhaAExibir + #13#10
+                 ,clPurple
+                 ,aRichEdit.Font.Name
+                 ,aRichEdit.Font.Size
+                 ,[fsBold]);
+      end
+    else
+      for i := 0 to Pred(Linhas.Count) do
+      begin
+        aRichEdit.SelStart := aRichEdit.GetTextLen;
+        AddText('------------------- ] ' + Linhas[i] + #13#10
+               ,clWindowText
+               ,aRichEdit.Font.Name
+               ,aRichEdit.Font.Size
+               ,[]);
+      end;
+  finally
+    Linhas.Free;
+    SendMessage(aRichEdit.Handle,WM_VSCROLL,SB_BOTTOM,0);
+  end;
 end;
+
+//procedure TFSYGlobals.ShowOnLog(const aText: String; aRichEdit: TRichEdit);
+//var
+//  Linhas: TStringList;
+//  i{, Idx}: Word;
+//  LinhaAExibir: String;
+//
+//  function FirstToken(Line: String): String;
+//  begin
+//  	Result := Copy(Line,1,Pred(Pos(' ',Line)));
+//  end;
+//
+//  function FirstAndSecondTokens(Line: String): String;
+//  var
+//    Idx: Word;
+//    TmpStr: String;
+//  begin
+//  	TmpStr := Line; //RETORNO:> XXX - XXXXXX
+//		Idx := Pos(' ',TmpStr);
+//    Delete(TmpStr,1,Idx); //XXX - XXXXXX
+//    Inc(Idx,Pos(' ',TmpStr));
+//  	Result := Copy(Line,1,Pred(Idx));
+//  end;
+//
+//begin
+//  Linhas := nil;
+//  try
+//    Linhas := TStringList.Create;
+//    Linhas.Text := StringReplace(aText,'\n',#13#10,[rfReplaceAll]);
+//
+//    if (Pos('RETORNO:>',Linhas[0]) = 1) or (Pos('COMANDO:>',Linhas[0]) = 1) or (Linhas[0][1] = '!') or (Linhas[0][1] = '§') or (Linhas[0][1] = '@') then
+//      for i := 0 to Pred(Linhas.Count) do
+//      begin
+//        if i = 0 then
+//        begin
+//          LinhaAExibir := Linhas[0];
+//          aRichEdit.Lines.Add(FormatDateTime('dd/mm/yyyy hh:nn:ss',Now()) + ' ] ' + LinhaAExibir);
+//        end
+//        else
+//        begin
+//          if (Linhas[0][1] <> '!') and  (Linhas[0][1] <> '§') and (Linhas[0][1] <> '@') then
+//            LinhaAExibir := FirstAndSecondTokens(Linhas[0]) + ' - ' + Linhas[i]
+//          else
+//            LinhaAExibir := FirstToken(Linhas[0]) + ' ' + Linhas[i];
+//
+//          aRichEdit.Lines.Add('||||||||||||||||||| ] ' + LinhaAExibir);
+//        end;
+//
+//        { A partir daqui, a última linha do RichEdit contém algo como
+//        dd/mm/yyyy hh:nn:ss ] RETORNO:> ??? - XXXXXXXXXXXX }
+//
+//        { Tornando negrito e na cor preta a string inteira }
+//        aRichEdit.SelStart := Length(aRichEdit.Text) - Length(aRichEdit.Lines[Pred(aRichEdit.Lines.Count)]) - 2;
+//        aRichEdit.SelLength := Length(aRichEdit.Lines[Pred(aRichEdit.Lines.Count)]);
+//        aRichEdit.SelAttributes.Color := clWindowText;
+//        aRichEdit.SelAttributes.Style := [fsBold];
+//
+//        { Removendo o atributo negrito do colchete (]) }
+//        aRichEdit.SelStart := aRichEdit.SelStart + 20;
+//        aRichEdit.SelLength := 1;
+//        aRichEdit.SelAttributes.Style := [];
+//
+//        { Seleconando a segunda parte do texto }
+//        aRichEdit.SelStart := Length(aRichEdit.Text) - Length(aRichEdit.Lines[Pred(aRichEdit.Lines.Count)]) + 20;
+//        aRichEdit.SelLength := Length(LinhaAExibir);
+//
+//        { Pintando a linha da mensagem de acordo com o texto }
+//        if Pos('RETORNO:>',LinhaAExibir) = 1 then
+//          aRichEdit.SelAttributes.Color := clBlue
+//        else if Pos('COMANDO:>',LinhaAExibir) = 1 then
+//          aRichEdit.SelAttributes.Color := clGreen
+//        else if LinhaAExibir[1] = '!' then
+//          aRichEdit.SelAttributes.Color := clRed
+//        else if LinhaAExibir[1] = '§' then
+//          aRichEdit.SelAttributes.Color := $000080FF
+//        else if LinhaAExibir[1] = '@' then
+//          aRichEdit.SelAttributes.Color := clPurple;
+//
+//        {$IFDEF FTPSYNCCLI}
+//        { Pintando erros de vermelho }
+//        if Pos('RETORNO:> 666 - ',LinhaAExibir) = 1 then
+//        begin
+//          aRichEdit.SelStart := aRichEdit.SelStart + 10;
+//          aRichEdit.SelLength := Length(LinhaAExibir) - 10;
+//          aRichEdit.SelAttributes.Color := clRed;
+//        end;
+//        {$ENDIF}
+//
+//        aRichEdit.SelLength := 0;
+//      end
+//    else
+//      for i := 0 to Pred(Linhas.Count) do
+//        aRichEdit.Lines.Add('------------------- ] ' + Linhas[i]);
+//  finally
+//    Linhas.Free;
+//    SendMessage(aRichEdit.Handle,EM_SCROLLCARET,0,0);
+//  end;
+//end;
+
 
 {$IFDEF FTPSYNCSER}
 function TFSYGlobals.MySQLGetLastPrimaryKeyValue(aZConnection: TZConnection; aPrimaryKeyName, aTableName: String): Cardinal;

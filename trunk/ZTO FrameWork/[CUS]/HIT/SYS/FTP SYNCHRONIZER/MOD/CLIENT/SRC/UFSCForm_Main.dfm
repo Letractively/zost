@@ -55,7 +55,7 @@ object FSCForm_Main: TFSCForm_Main
     Top = 25
     Width = 843
     Height = 172
-    ActivePage = TabSheet1
+    ActivePage = TabSheet2
     TabOrder = 1
     OnChanging = PageControl1Changing
     object TabSheet1: TTabSheet
@@ -66,6 +66,10 @@ object FSCForm_Main: TFSCForm_Main
       Font.Name = 'Tahoma'
       Font.Style = []
       ParentFont = False
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Label2: TLabel
         Left = 6
         Top = 6
@@ -206,6 +210,10 @@ object FSCForm_Main: TFSCForm_Main
     object TabSheet3: TTabSheet
       Caption = 'Gerador de snapshots'
       ImageIndex = 2
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Label4: TLabel
         Left = 6
         Top = 6

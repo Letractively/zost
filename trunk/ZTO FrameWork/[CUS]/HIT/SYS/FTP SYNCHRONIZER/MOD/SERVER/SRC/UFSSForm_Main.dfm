@@ -238,7 +238,7 @@ object FSSForm_Main: TFSSForm_Main
     Options = []
     MD5UseThreadFileSize = 0
     TimeoutSecsLogin = 60
-    TimeoutSecsIdle = 300
+    TimeoutSecsIdle = 600
     TimeoutSecsXfer = 60
     ZlibMinLevel = 1
     ZlibMaxLevel = 9
