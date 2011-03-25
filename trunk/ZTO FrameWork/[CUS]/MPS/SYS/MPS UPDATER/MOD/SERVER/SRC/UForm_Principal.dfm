@@ -47,15 +47,11 @@ object Form_Principal: TForm_Principal
     Top = 25
     Width = 794
     Height = 343
-    ActivePage = TabSheet_Sistemas
+    ActivePage = TabSheet_Log
     Align = alClient
     TabOrder = 1
     object TabSheet_Log: TTabSheet
       Caption = 'Log de atividade'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object RichEdit_LogFTP: TRichEdit
         AlignWithMargins = True
         Left = 6
