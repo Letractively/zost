@@ -4079,13 +4079,22 @@ end;
 { Escreve uma string inteira dentro de um arquivo, sobrescrevendo-o ou criando-o
 se necessário for }
 class procedure TXXXDataModule.SaveTextFile(aText: String; const aFileName: TFileName);
+{$IFDEF UNICODE}
+var
+  TempStr: AnsiString;
+{$ENDIF}
 begin
 	with TFileStream.Create(aFileName, fmCreate) do
-    	try
-        	Write(Pointer(aText)^, Length(aText));
-        finally
-        	Free;
-    	end;
+  try
+    {$IFDEF UNICODE}
+    TempStr := aText;
+    Write(Pointer(TempStr)^, Length(TempStr) * SizeOf(AnsiChar));
+    {$ELSE}
+    Write(Pointer(aText)^, Length(aText));
+    {$ENDIF}
+  finally
+    Free;
+  end;
 end;
 
 function TXXXDataModule.LoadTextFile(const aFileName: TFileName): String;

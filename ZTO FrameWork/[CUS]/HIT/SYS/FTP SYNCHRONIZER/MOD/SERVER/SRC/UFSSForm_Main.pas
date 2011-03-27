@@ -718,6 +718,10 @@ begin
             FFSYGlobals.ShowOnLog('@ Executando script ' + ExtractFileName(FTPSCR_DBCHECKSUM),RichEditLog);
             DeleteFile(aClient.HomeDir + FTPFIL_DBCHECKSUM);
 
+            { Previne que os dados sejam enviados automaticamente, permitindo que o
+            envio seja feito em OnRetrSessionConnected }
+            aClient.DataStream := TMemoryStream.Create;
+
             { Criando o arquivo localmente }
             FFSYGlobals.SendStatus(aClient,'== DBCHECKSUM: Iniciando geração de conteúdo... ===================================');
             FFSYGlobals.SendStatus(aClient,'-----------------------------------------------------------------------------------');
