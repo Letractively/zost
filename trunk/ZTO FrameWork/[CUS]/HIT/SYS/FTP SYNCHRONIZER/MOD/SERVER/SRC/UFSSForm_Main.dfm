@@ -239,7 +239,7 @@ object FSSForm_Main: TFSSForm_Main
     MD5UseThreadFileSize = 0
     TimeoutSecsLogin = 60
     TimeoutSecsIdle = 600
-    TimeoutSecsXfer = 60
+    TimeoutSecsXfer = 300
     ZlibMinLevel = 1
     ZlibMaxLevel = 9
     ZlibNoCompExt = '.zip;.rar;.7z;.cab;.lzh;.gz;.avi;.wmv;.mpg;.mp3;.jpg;.png;'
