@@ -1,0 +1,60 @@
+/*** coisas do carrossel de imagens ***/
+.stepcarousel{
+  position: relative; /*leave this value alone*/
+  border: 10px solid black;
+  overflow: scroll; /*leave this value alone*/
+  /*width: 100%;*/ /*Width of Carousel Viewer itself*/
+  height: 220px; /*Height should enough to fit largest content's height*/
+}
+
+.stepcarousel .belt{
+  position: absolute; /*leave this value alone*/
+  left: 0;
+  top: 0;
+}
+
+.stepcarousel .panel{
+  float: left; /*leave this value alone*/
+  overflow: hidden; /*clip content that go outside dimensions of holding panel DIV*/
+  margin: 10px; /*margin around each panel*/
+  width: 250px; /*Width of each panel holding each content. If removed, widths should be individually defined on each content DIV then. */
+}
+/******/
+
+body {
+  text-align: center;
+}
+
+div.body {
+  width: 946px;
+  text-align: left;
+  margin: 20px auto 20px auto;
+  /*border: 1px solid black;
+  border-left: 2px solid #ff6600;
+  border-right: 2px solid #ff6600;
+  border-top: 2px solid #ff6600;*/
+}
+
+div.cabecalho {
+  height: 100px;
+  border: 2px ;
+}
+
+div.conteudo {
+  border: 1px ;
+  padding: 10px;
+}
+
+div.rodape {
+  height: 7 0px;
+  border: 6px ;
+  text-align: center
+}
+
+p.texto {
+  text-align: justify;
+}
+
+p.texto:first-letter {
+  margin-left: 2cm;
+}
