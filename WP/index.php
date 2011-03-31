@@ -17,7 +17,7 @@
       <div class="menu"></div>
       <div class="propagandas"></div>
       <div class="conteudo">
-<? require("./php/conteudo.php"); ?>
+        <img src="img/DSC06332.jpg" class="magnify" style="width:200px; height:100px; border=10; top=10"  alt="Teste" />
       </div>
       <div class="rodape"></div>
     </div>
