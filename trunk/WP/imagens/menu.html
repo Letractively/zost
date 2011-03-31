@@ -1,0 +1,83 @@
+<!--Insert the following into the BODY of your page-->
+
+<script language="JavaScript1.2">
+<!--
+
+/*
+Context Menu script II (By Dheera Venkatraman at dheera@dheera.net)
+Submitted to Dynamic Drive to feature script in archive
+For full source, usage terms, and 100's more DHTML scripts, visit http://dynamicdrive.com
+*/
+
+var isie=0;
+if(window.navigator.appName=="Microsoft Internet Explorer"&&window.navigator.appVersion.substring(window.navigator.appVersion.indexOf("MSIE")+5,window.navigator.appVersion.indexOf("MSIE")+8)>=5.5) {
+isie=1;
+}
+else {
+isie=0;
+}
+if(isie) {
+var html="";
+html+='<TABLE STYLE="border:1pt solid #808080" BGCOLOR="#CCCCCC" WIDTH="140" HEIGHT="220" CELLPADDING="0" CELLSPACING="1">';
+html+='<ST'+'YLE TYPE="text/css">\n';
+html+='a:link {text-decoration:none;font-family:Arial;font-size:8pt;}\n';
+html+='a:visited {text-decoration:none;font-family:Arial;font-size:8pt;}\n';
+html+='td {font-size:8pt;}\n';
+html+='</ST'+'YLE>\n';
+html+='<SC'+'RIPT LANGUAGE="JavaScript">\n';
+html+='\n<'+'!--\n';
+html+='window.onerror=null;\n';
+html+='/'+' -'+'->\n';
+html+='</'+'SCRIPT>\n';
+html+='<TR><TD STYLE="border:1pt solid #CCCCCC" ID="i0" ONMOUSEOVER="document.all.i0.style.background=\'#CFD6E8\';document.all.i0.style.border=\'1pt solid #737B92\';" ONMOUSEOUT="document.all.i0.style.background=\'#CCCCCC\';document.all.i0.style.border=\'1pt solid #CCCCCC\';" ONCLICK="window.history.go(-1);">&nbsp;<IMG SRC="menuback.gif" WIDTH="12" HEIGHT="12" BORDER="0" HSPACE="0" VSPACE="0" ALIGN="absmiddle">&nbsp;Back</TD></TR>';
+
+html+='<TR><TD STYLE="border:1pt solid #CCCCCC" ID="i1" ONMOUSEOVER="document.all.i1.style.background=\'#CFD6E8\';document.all.i1.style.border=\'1pt solid #737B92\';" ONMOUSEOUT="document.all.i1.style.background=\'#CCCCCC\';document.all.i1.style.border=\'1pt solid #CCCCCC\';" ONCLICK="window.history.go(1);">&nbsp;<IMG SRC="menuforward.gif" WIDTH="12" HEIGHT="12" BORDER="0" HSPACE="0" VSPACE="0" ALIGN="absmiddle">&nbsp;Forward</TD></TR>';
+
+html+='<TR><TD STYLE="border:1pt solid #CCCCCC"><IMG SRC="pixel.gif" WIDTH="130" HEIGHT="1"></TD></TR>';
+
+html+='<TR><TD STYLE="border:1pt solid #CCCCCC" ID="i4" ONMOUSEOVER="document.all.i4.style.background=\'#CFD6E8\';document.all.i4.style.border=\'1pt solid #737B92\';" ONMOUSEOUT="document.all.i4.style.background=\'#CCCCCC\';document.all.i4.style.border=\'1pt solid #CCCCCC\';" ONCLICK="window.parent.external.AddFavorite(window.top.location.href,window.top.document.title);">&nbsp;<IMG SRC="menufavorite.gif" WIDTH="12" HEIGHT="12" BORDER="0" HSPACE="0" VSPACE="0" ALIGN="absmiddle">&nbsp;Add to Favorites...</TD></TR>';
+
+html+='<TR><TD STYLE="border:1pt solid #CCCCCC" ID="i5" ONMOUSEOVER="document.all.i5.style.background=\'#CFD6E8\';document.all.i5.style.border=\'1pt solid #737B92\';" ONMOUSEOUT="document.all.i5.style.background=\'#CCCCCC\';document.all.i5.style.border=\'1pt solid #CCCCCC\';" ONCLICK="window.parent.location=\'view-source:\'+window.parent.location.href;">&nbsp;<IMG SRC="menusource.gif" WIDTH="12" HEIGHT="12" BORDER="0" HSPACE="0" VSPACE="0" ALIGN="absmiddle">&nbsp;View Source</TD></TR>';
+
+html+='<TR><TD STYLE="border:1pt solid #CCCCCC"><IMG SRC="pixel.gif" WIDTH="130" HEIGHT="1"></TD></TR>';
+
+html+='<TR><TD STYLE="border:1pt solid #CCCCCC" ID="i6" ONMOUSEOVER="document.all.i6.style.background=\'#CFD6E8\';document.all.i6.style.border=\'1pt solid #737B92\';" ONMOUSEOUT="document.all.i6.style.background=\'#CCCCCC\';document.all.i6.style.border=\'1pt solid #CCCCCC\';" ONCLICK="window.parent.print();">&nbsp;<IMG SRC="menuprint.gif" WIDTH="12" HEIGHT="12" BORDER="0" HSPACE="0" VSPACE="0" ALIGN="absmiddle">&nbsp;Print</TD></TR>';
+
+html+='<TR><TD STYLE="border:1pt solid #CCCCCC" ID="i7" ONMOUSEOVER="document.all.i7.style.background=\'#CFD6E8\';document.all.i7.style.border=\'1pt solid #737B92\';" ONMOUSEOUT="document.all.i7.style.background=\'#CCCCCC\';document.all.i7.style.border=\'1pt solid #CCCCCC\';" ONCLICK="window.parent.location.href=window.parent.location.href;">&nbsp;<IMG SRC="menurefresh.gif" WIDTH="12" HEIGHT="12" BORDER="0" HSPACE="0" VSPACE="0" ALIGN="absmiddle">&nbsp;Refresh</TD></TR>';
+
+html+='<TR><TD STYLE="border:1pt solid #CCCCCC"><IMG SRC="pixel.gif" WIDTH="130" HEIGHT="1"></TD></TR>';
+
+html+='<TR><TD STYLE="border:1pt solid #CCCCCC" ID="i8" ONMOUSEOVER="document.all.i8.style.background=\'#CFD6E8\';document.all.i8.style.border=\'1pt solid #737B92\';" ONMOUSEOUT="document.all.i8.style.background=\'#CCCCCC\';document.all.i8.style.border=\'1pt solid #CCCCCC\';" ONCLICK="if(window.parent.document.body.style.zoom!=0) window.parent.document.body.style.zoom*=1.6; else window.parent.document.body.style.zoom=1.6;">&nbsp;<IMG SRC="menuzoom.gif" WIDTH="12" HEIGHT="12" BORDER="0" HSPACE="0" VSPACE="0" ALIGN="absmiddle">&nbsp;Zoom In</TD></TR>';
+
+html+='<TR><TD STYLE="border:1pt solid #CCCCCC" ID="i9" ONMOUSEOVER="document.all.i9.style.background=\'#CFD6E8\';document.all.i9.style.border=\'1pt solid #737B92\';" ONMOUSEOUT="document.all.i9.style.background=\'#CCCCCC\';document.all.i9.style.border=\'1pt solid #CCCCCC\';" ONCLICK="if(window.parent.document.body.style.zoom!=0) window.parent.document.body.style.zoom*=0.625; else window.parent.document.body.style.zoom=0.625;">&nbsp;<IMG SRC="menuzoom.gif" WIDTH="12" HEIGHT="12" BORDER="0" HSPACE="0" VSPACE="0" ALIGN="absmiddle">&nbsp;Zoom Out</TD></TR>';
+
+html+='</TABLE>';
+
+var oPopup = window.createPopup();
+
+}
+
+function dopopup(x,y) {
+if(isie) {
+var oPopupBody = oPopup.document.body;
+oPopupBody.innerHTML = html;
+oPopup.show(x, y, 140, 220, document.body);
+}
+}
+
+function click(e) {
+if(isie) {
+if(document.all) {
+if(event.button==2||event.button==3) {
+dopopup(event.x-1,event.y-1);
+}
+}
+}
+}
+
+if(isie) {
+document.oncontextmenu = function() { dopopup(event.x,event.y);return false; }
+document.onmousedown = click;
+}
+// --> 
+</script>
