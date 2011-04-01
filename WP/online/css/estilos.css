@@ -1,11 +1,12 @@
 body {
-  margin: 0px;
   text-align: center;
+  margin: 0px;
   background-image: url("../img/fundocabecalho.png");
   background-repeat: repeat-x;
 }
 
 div.site {
+  margin: 0px auto 0px auto;
   width: 800px;
 }
 
@@ -30,8 +31,7 @@ div.propagandas {
 }
 
 div.conteudo {
-  
-  
+    
 }
 
 div.rodape {

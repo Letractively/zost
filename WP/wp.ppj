@@ -1,7 +1,7 @@
 [PHPEdProject]
 RelativeRootDir=online
-URL=
-MappingRemoteDir=
+URL=http://localhost
+MappingRemoteDir=D:\ZOST\TRUNK\WP\online
 MappingPublishingRoot=
 DriverID=
 SourceControl=0
@@ -10,13 +10,13 @@ DefaultFile=
 HideFiles=
 HideDirs=CVS;.svn
 EncoderEnabled=0
-MappingRemote0=
+MappingRemote0=D:\ZOST\TRUNK\WP\online
 MappingLocal0=D:\ZOST\TRUNK\WP\online
-MappingURL0=
+MappingURL0=http://localhost
 MappingPublishing0=
 MappingCount=1
 MappingMainIdx=0
-RunMode=1
+RunMode=2
 CustomPropCount=0
 PublishingFilterCount=1
 PublishingAllowFilterCount=1
@@ -26,16 +26,28 @@ CvsHost=
 CvsRoot=
 CvsModule=
 CvsUser=
-CvsPassw=g8ehH5Clfw1FsTvvcUWrcUHZt4KAgYafHI3Cy/jZPjcUZfrj4E5/x1xDu/Poia5nBBVqE2DhZv/87aIr2Dkelw==
+CvsPassw=K1X0EthNd/WdqbM3Kf2zWYnxL2rI6Y7H5HVKc5Cj2FncTYKLuJn+99QluqMw8baPzP3yu6hJbifE1SrTIKEmvw==
 CvsUseUtf8=0
 CvsCVSROOT=:pserver:@
 IncPath_count=0
-ParserProp_Override=0
-ParserProp_PHP_SubLang=2
+ParserProp_Override=1
+ParserProp_PHP_SubLang=3
 ParserPropPHPShortTags=1
 ParserProp_PHP_AspTags=0
 ParserProp_JS_ParsePHP=1
 ParserProp_CSS_ParsePHP=1
+[Debugger]
+custom=0
+host=clienthost
+errlevel=3 - All errors and warnings
+sesstimeout=15
+cp=System default encoding
+stopbeginning=1
+dbgsessions=1
+showmaperrors=1
+readonlyed=0
+profwithdbg=0
+Custom.Debug.Settings=0
 [Encoder]
 destinationtype=0
 compatibilitylevel=1
@@ -59,19 +71,8 @@ headertype=0
 [PHPEdProject.Encodings]
 \=UTF-8
 [Wizard]
-srunmode=1
+srunmode=2
 swebrooturl=http://localhost/
 sprojectroot=D:\ZOST\TRUNK\WP\online
 sremotewebroot=d:\zost\trunk\wp\online\
-[Debugger]
-custom=0
-host=clienthost
-errlevel=3 - All errors and warnings
-sesstimeout=15
-cp=System default encoding
-stopbeginning=1
-dbgsessions=1
-showmaperrors=1
-readonlyed=0
-profwithdbg=0
-Custom.Debug.Settings=0
+slocalwebroot=D:\ZOST\TRUNK\WP\online
