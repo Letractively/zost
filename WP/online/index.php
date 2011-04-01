@@ -15,14 +15,14 @@
     <div class="site">
       <div class="cabecalho"></div>
       <div class="menu">
-        <a href="#" class="menuitem">Item aqui</a>
-        <a href="#" class="menuitem">Item aqui</a>
-        <a href="#" class="menuitem">Item aqui</a>
-        <a href="#" class="menuitem">Item aqui</a>
+        <a href="#" class="menuitem"><b class="menuitem">Item aqui</b></a>
+        <a href="#" class="menuitem"><b class="menuitem">Item aqui</b></a>
+        <a href="#" class="menuitem"><b class="menuitem">Item aqui</b></a>
+        <a href="#" class="menuitem"><b class="menuitem">Item aqui</b></a>
       </div>
       <div class="propagandas"></div>
       <div class="conteudo">
-        <img src="img/DSC06332.jpg" class="magnify" style="width:200px; height:100px;"  alt="Teste" />
+        <iframe src="sit/galeria.php" width="100%" frameborder="0" height="500"></iframe>
       </div>
       <div class="rodape"></div>
     </div>
