@@ -15,14 +15,28 @@
     <div class="site">
       <div class="cabecalho"></div>
       <div class="menu">
-        <a href="#" class="menuitem"><b class="menuitem">Item aqui</b></a>
-        <a href="#" class="menuitem"><b class="menuitem">Item aqui</b></a>
-        <a href="#" class="menuitem"><b class="menuitem">Item aqui</b></a>
-        <a href="#" class="menuitem"><b class="menuitem">Item aqui</b></a>
+        <a href="../index.php" class="menuitem"><b class="menuitem">Home</b></a>
+        <a href="sit/t1.html" class="menuitem"><b class="menuitem">Área de Lazer</b></a>
+        <a href="sit/t2.html" class="menuitem"><b class="menuitem">Equipamentos</b></a>
+        <a href="sit/t3.html" class="menuitem"><b class="menuitem">Precos</b></a>
+        <a href="sit/t4.html" class="menuitem"><b class="menuitem">Contatos/Reserva</b></a>
       </div>
       <div class="propagandas"></div>
       <div class="conteudo">
-        <iframe src="sit/galeria.php" width="100%" frameborder="0" height="500"></iframe>
+             <tr>
+                <td colspan="4" valign="top"><h3>Imagens de nossa área de lazer.</h3></td>
+                
+              </tr>
+             <tr>
+                <td colspan="4" valign="top"><h3>Nossos Equipamentos.</h3></td>
+              </tr>
+             <tr>
+                <td colspan="4" valign="top"><h3>Confira os Preços</h3></td>
+              </tr>
+             <tr>
+                <td colspan="4" valign="top"><h3>Contato / Reservas</h3></td>
+              </tr>
+       <!-- <iframe src="sit/galeria.php" width="100%" frameborder="0" height="500"></iframe>-->
       </div>
       <div class="rodape"></div>
     </div>
