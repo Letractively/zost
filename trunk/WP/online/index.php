@@ -15,7 +15,7 @@
     <div class="site">
       <div class="cabecalho"></div>
       <div class="menu">
-        <a href="../index.php" class="menuitem"><b class="menuitem">Home</b></a>
+        <a href="#" src="index.php"  class="menuitem"><b class="menuitem">Home</b></a>
         <a href="sit/t1.html" class="menuitem"><b class="menuitem">Área de Lazer</b></a>
         <a href="sit/t2.html" class="menuitem"><b class="menuitem">Equipamentos</b></a>
         <a href="sit/t3.html" class="menuitem"><b class="menuitem">Precos</b></a>
