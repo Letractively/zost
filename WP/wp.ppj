@@ -11,7 +11,7 @@ HideFiles=
 HideDirs=CVS;.svn
 EncoderEnabled=0
 MappingRemote0=D:\ZOST\TRUNK\WP\online
-MappingLocal0=D:\ZOST\TRUNK\WP\online
+MappingLocal0=C:\Carlos_SVN\zost\WP\online
 MappingURL0=http://localhost
 MappingPublishing0=
 MappingCount=1
@@ -26,7 +26,7 @@ CvsHost=
 CvsRoot=
 CvsModule=
 CvsUser=
-CvsPassw=K1X0EthNd/WdqbM3Kf2zWYnxL2rI6Y7H5HVKc5Cj2FncTYKLuJn+99QluqMw8baPzP3yu6hJbifE1SrTIKEmvw==
+CvsPassw=1hnbZC+Y9HAypID6vogQPBYsfHdf3E2Ci7iZ/kesobKjMPG2j8z98ruoSW4nxNUq0yChJr+8rWLrmPneV7SFmg==
 CvsUseUtf8=0
 CvsCVSROOT=:pserver:@
 IncPath_count=0
