@@ -24,8 +24,7 @@
       <div class="propagandas"></div>
       <div class="conteudo">
              <tr>
-                <td colspan="4" valign="top"><h3>Imagens de nossa área de lazer.</h3></td>
-                
+                <td colspan="4" valign="top"><h3>Imagens de nossa área de lazer.</h3></td>                
               </tr>
              <tr>
                 <td colspan="4" valign="top"><h3>Nossos Equipamentos.</h3></td>
