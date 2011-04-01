@@ -45,3 +45,19 @@ p {
 p:first-letter {
   margin-left: 1.5cm;
 }
+
+a.menuitem {
+  line-height: 37px;
+  font-family: sans-serif;
+  font-size: 11pt;
+  font-weight: bold;
+  text-decoration: none;
+  color: #C0C0C0;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+a.menuitem:hover {
+  color: #FFFFFF;
+  background-color: #FFFFFF;
+}

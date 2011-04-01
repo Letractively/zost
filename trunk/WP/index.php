@@ -14,10 +14,15 @@
   <body>
     <div class="site">
       <div class="cabecalho"></div>
-      <div class="menu"></div>
+      <div class="menu">
+        <a href="#" class="menuitem">Item aqui</a>
+        <a href="#" class="menuitem">Item aqui</a>
+        <a href="#" class="menuitem">Item aqui</a>
+        <a href="#" class="menuitem">Item aqui</a>
+      </div>
       <div class="propagandas"></div>
       <div class="conteudo">
-        <img src="img/DSC06332.jpg" class="magnify" style="width:200px; height:100px; border=10; top=10"  alt="Teste" />
+        <img src="img/DSC06332.jpg" class="magnify" style="width:200px; height:100px;"  alt="Teste" />
       </div>
       <div class="rodape"></div>
     </div>
