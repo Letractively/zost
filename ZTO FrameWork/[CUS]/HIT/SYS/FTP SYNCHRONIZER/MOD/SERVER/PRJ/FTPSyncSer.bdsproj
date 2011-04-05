@@ -119,7 +119,7 @@
 			<Linker Name="GenerateHpps">False</Linker>
 		</Linker>
 		<Directories>
-			<Directories Name="OutputDir">..\BIN\EXE\DEB</Directories>
+			<Directories Name="OutputDir">..\BIN\EXE</Directories>
 			<Directories Name="UnitOutputDir">..\BIN\DCU</Directories>
 			<Directories Name="PackageDLLOutputDir"></Directories>
 			<Directories Name="PackageDCPOutputDir"></Directories>
@@ -150,7 +150,7 @@
 			<VersionInfo Name="MajorVer">3</VersionInfo>
 			<VersionInfo Name="MinorVer">1</VersionInfo>
 			<VersionInfo Name="Release">4</VersionInfo>
-			<VersionInfo Name="Build">156</VersionInfo>
+			<VersionInfo Name="Build">167</VersionInfo>
 			<VersionInfo Name="Debug">False</VersionInfo>
 			<VersionInfo Name="PreRelease">False</VersionInfo>
 			<VersionInfo Name="Special">False</VersionInfo>
@@ -160,7 +160,7 @@
 			<VersionInfo Name="CodePage">1252</VersionInfo>
 		</VersionInfo>
 		<VersionInfoKeys>
-			<VersionInfoKeys Name="FileVersion">3.1.4.156</VersionInfoKeys>
+			<VersionInfoKeys Name="FileVersion">3.1.4.167</VersionInfoKeys>
 			<VersionInfoKeys Name="ProductVersion">3.1</VersionInfoKeys>
 			<VersionInfoKeys Name="CompanyName">Hitachi Ar Condicionado do Brasil Ltda.</VersionInfoKeys>
 			<VersionInfoKeys Name="FileDescription">Servidor de sincronização via FTP</VersionInfoKeys>
