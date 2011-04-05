@@ -119,7 +119,7 @@
 			<Linker Name="GenerateHpps">False</Linker>
 		</Linker>
 		<Directories>
-			<Directories Name="OutputDir">..\BIN\EXE\DEB</Directories>
+			<Directories Name="OutputDir">..\BIN\EXE</Directories>
 			<Directories Name="UnitOutputDir">..\BIN\DCU</Directories>
 			<Directories Name="PackageDLLOutputDir"></Directories>
 			<Directories Name="PackageDCPOutputDir"></Directories>
@@ -147,10 +147,10 @@
 		<VersionInfo>
 			<VersionInfo Name="IncludeVerInfo">True</VersionInfo>
 			<VersionInfo Name="AutoIncBuild">True</VersionInfo>
-			<VersionInfo Name="MajorVer">3</VersionInfo>
-			<VersionInfo Name="MinorVer">1</VersionInfo>
-			<VersionInfo Name="Release">4</VersionInfo>
-			<VersionInfo Name="Build">162</VersionInfo>
+			<VersionInfo Name="MajorVer">4</VersionInfo>
+			<VersionInfo Name="MinorVer">0</VersionInfo>
+			<VersionInfo Name="Release">0</VersionInfo>
+			<VersionInfo Name="Build">7</VersionInfo>
 			<VersionInfo Name="Debug">False</VersionInfo>
 			<VersionInfo Name="PreRelease">False</VersionInfo>
 			<VersionInfo Name="Special">False</VersionInfo>
@@ -162,13 +162,13 @@
 		<VersionInfoKeys>
 			<VersionInfoKeys Name="CompanyName">Hitachi Ar Condicionado do Brasil Ltda.</VersionInfoKeys>
 			<VersionInfoKeys Name="FileDescription">Cliente de sincronização via FTP</VersionInfoKeys>
-			<VersionInfoKeys Name="FileVersion">3.1.4.162</VersionInfoKeys>
+			<VersionInfoKeys Name="FileVersion">4.0.0.7</VersionInfoKeys>
 			<VersionInfoKeys Name="InternalName">FTPSYNC-CLI</VersionInfoKeys>
-			<VersionInfoKeys Name="LegalCopyright">Copyright 2009 Carlos Barreto Feitoza Filho. Todos os direitos reservados.</VersionInfoKeys>
+			<VersionInfoKeys Name="LegalCopyright">Copyright 2011 Carlos Barreto Feitoza Filho. Todos os direitos reservados.</VersionInfoKeys>
 			<VersionInfoKeys Name="LegalTrademarks">Windows, Windows XP e Tecnologia NT são marcas registradas da Microsft Corporation. Todos os direitos reservados. Qualquer outra marca citada, quando não informado o contrário, pertecen ao seu respectivo dono.</VersionInfoKeys>
 			<VersionInfoKeys Name="OriginalFilename">FTPSynCli.exe</VersionInfoKeys>
 			<VersionInfoKeys Name="ProductName">FTP Synchronizer</VersionInfoKeys>
-			<VersionInfoKeys Name="ProductVersion">3.1</VersionInfoKeys>
+			<VersionInfoKeys Name="ProductVersion">4.0</VersionInfoKeys>
 			<VersionInfoKeys Name="Comments">Desenvolvido sob encomenda por Carlos Barreto Feitoza Filho (023.227.194-12) em Olinda, Pernambuco, Brasil</VersionInfoKeys>
 			<VersionInfoKeys Name="LastCompiledTime">31/10/2009 15:36:40</VersionInfoKeys>
 		</VersionInfoKeys>

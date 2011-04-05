@@ -216,15 +216,14 @@ procedure TFSCForm_Main.SincronizarC_AClick(Sender: TObject);
 var
 	WillGetTempData: Boolean;
   TempBusy: Boolean;
-  Question: String;
 begin
 	WillGetTempData := False;
 	try
 	  Busy := True;
     TempBusy := Busy;
-    Question := 'A operação que está para ser iniciada DESTRUIRÁ/SUBSTITUIRÁ o banco de dados "' + ShortString(FFSYGlobals.Configurations.DB_DataBase) + '". Esta operação não poderá ser interrompida e nem desfeita. Tem certeza?';
+
 		try
-			if MessageBox(Handle,PWideChar(Question),'Tem certeza?',MB_ICONWARNING or MB_YESNO) = idYes then
+			if MessageBox(Handle,PAnsiChar('A operação que está para ser iniciada DESTRUIRÁ/SUBSTITUIRÁ o banco de dados "' + ShortString(FFSYGlobals.Configurations.DB_DataBase) + '". Esta operação não poderá ser interrompida e nem desfeita. Tem certeza?'),'Tem certeza?',MB_ICONWARNING or MB_YESNO) = idYes then
 			begin
 				RichEditLog.Clear;
 				FFSYGlobals.SynchronizeFull(FTPClient

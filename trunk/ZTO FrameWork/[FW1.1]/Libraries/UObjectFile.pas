@@ -16,7 +16,7 @@ type
         procedure LoadFromBinaryFile(const aFileName: TFileName);
         procedure LoadFromTextualRepresentation(const aTextualRepresentation: String);
         procedure SaveToBinaryFile(const aFileName: TFileName);
-        function ToString: String; override;
+        function ToString: String;
         function ToXML: String;
     end;
 

@@ -312,9 +312,9 @@ object FSCForm_Main: TFSCForm_Main
     UseSystemFont = False
     ActionManager = ActionManager1
     Caption = 'MenuPrincipal'
-    ColorMap.HighlightColor = clWhite
+    ColorMap.HighlightColor = 15660791
     ColorMap.BtnSelectedColor = clBtnFace
-    ColorMap.UnusedColor = clWhite
+    ColorMap.UnusedColor = 15660791
     EdgeBorders = [ebBottom]
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
