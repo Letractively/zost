@@ -75,7 +75,7 @@ type
 		function ReadConfigurations(const aConfigFile: TFileName = ''): Boolean;
 
         class procedure SetLabelDescriptionValue(const aLabelDescription, aLabelValue: TLabel; const aValue: String; const aSpacing: Byte = 2);
-		class function Hex(aAscii: String): String;
+		class function Hex(aAscii: AnsiString): AnsiString;
         class function MySQLFormat(const aFormat: String; const aArgs: array of const): String;
         function CmdLineParamValue(const aParamName: String; out aParamValue: String; const aParamStarter: Char = '/'): Boolean;
 
@@ -261,13 +261,13 @@ uses
 
 { TFSYGlobals }
 
-class function TFSYGlobals.Hex(aASCII: String): String;
+class function TFSYGlobals.Hex(aASCII: AnsiString): AnsiString;
 begin
 	Result := TXXXDataModule.Hex(aASCII);
     if Result <> '' then
     	Result := 'x' + QuotedStr(Result)
     else
-        Result := 'NULL';
+      Result := 'NULL';
 end;
 
 function TFSYGlobals.CmdLineParamValue(const aParamName: String; out aParamValue: String; const aParamStarter: Char = '/'): Boolean;
