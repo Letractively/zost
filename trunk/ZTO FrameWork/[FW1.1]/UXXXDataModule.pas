@@ -207,7 +207,7 @@ type
                                            const aParameters: TMySQLBackupDataBaseParameters): String;
         class procedure InitializeZConnection(const aZConnection: TZConnection; aProtocol, aHostName, aDatabase, aUser, aPassword: String; aPortNumb: Word; aTransactIsolationLevel: TZTransactIsolationLevel);
 	    class function GetStringCheckSum(const aInputString: String; aHashAlgorithms: THashAlgorithms; aFinalHashAlgorithm: THashAlgorithm = haIgnore): String; static;
-    	class function Hex(aAscii: String): String;
+    	class function Hex(aASCII: AnsiString): AnsiString;
         class function MySQLFormat(const aFormat: String; const aArgs: array of const): String;
         class procedure SetLabelDescriptionValue(const aLabelDescription, aLabelValue: TLabel; const aValue: String; const aSpacing: Byte = 2); overload; static;
         class procedure SetLabelDescriptionValue(const aLabelDescription: TLabel; const aLabelValue: TDBText; const aSpacing: Byte = 2); overload; static;
@@ -3989,22 +3989,21 @@ begin
     end;
 end;
 
-class function TXXXDataModule.Hex(aAscii: String): String;
+class function TXXXDataModule.Hex(aAscii: AnsiString): AnsiString;
 var
 	i, StrLength: Cardinal;
-    ConvertedStr: String;
+  ConvertedStr: String;
 begin
 	Result := '';
-    ConvertedStr := '';
+  ConvertedStr := '';
 
-  	StrLength := Length(aAscii);
-    if StrLength > 0 then
-    begin
-	    for i := 1 to StrLength do
-    		ConvertedStr := ConvertedStr + UpperCase(IntToHex(Ord(aAscii[i]),2));
-
-        Result := ConvertedStr;
-    end;
+ 	StrLength := Length(aAscii);
+  if StrLength > 0 then
+  begin
+    for i := 1 to StrLength do
+   		ConvertedStr := ConvertedStr + UpperCase(IntToHex(Ord(aAscii[i]),2));
+    Result := ConvertedStr;
+  end;
 end;
 
 function TXXXDataModule.MakeStr(const aArgs: array of const; aSeparator: Char = ','): string;
