@@ -122,7 +122,7 @@ type
     { Private declarations }
     SelectedWSCCustomer: TWSCCustomer;
     procedure GetChecksum;
-    procedure DoGetChecksum(aTableName: ShortString; aTableNo, aTableCount: Word; aTableChecksum: ShortString; const aIgnored: Boolean);
+    procedure DoGetChecksum(aTableName: String; aTableNo, aTableCount: Word; aTableChecksum: String; const aIgnored: Boolean);
   public
     { Public declarations }
   end;
@@ -149,10 +149,10 @@ begin
     GetChecksum;
 end;
 
-procedure TForm1.DoGetChecksum(      aTableName: ShortString;
+procedure TForm1.DoGetChecksum(      aTableName: String;
                                      aTableNo
                                    , aTableCount: Word;
-                                     aTableChecksum: ShortString;
+                                     aTableChecksum: String;
                                const aIgnored: Boolean);
 begin
     if not aIgnored then

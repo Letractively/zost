@@ -223,7 +223,7 @@ begin
     TempBusy := Busy;
 
 		try
-			if MessageBox(Handle,PAnsiChar('A operação que está para ser iniciada DESTRUIRÁ/SUBSTITUIRÁ o banco de dados "' + ShortString(FFSYGlobals.Configurations.DB_DataBase) + '". Esta operação não poderá ser interrompida e nem desfeita. Tem certeza?'),'Tem certeza?',MB_ICONWARNING or MB_YESNO) = idYes then
+			if MessageBox(Handle,PWideChar('A operação que está para ser iniciada DESTRUIRÁ/SUBSTITUIRÁ o banco de dados "' + String(FFSYGlobals.Configurations.DB_DataBase) + '". Esta operação não poderá ser interrompida e nem desfeita. Tem certeza?'),'Tem certeza?',MB_ICONWARNING or MB_YESNO) = idYes then
 			begin
 				RichEditLog.Clear;
 				FFSYGlobals.SynchronizeFull(FTPClient
