@@ -120,6 +120,10 @@ object FSCForm_Main: TFSCForm_Main
     object TabSheet2: TTabSheet
       Caption = 'Sincroniza'#231#227'o completa'
       ImageIndex = 1
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Label1: TLabel
         Left = 6
         Top = 6
@@ -206,6 +210,10 @@ object FSCForm_Main: TFSCForm_Main
     object TabSheet3: TTabSheet
       Caption = 'Gerador de snapshots'
       ImageIndex = 2
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Label4: TLabel
         Left = 6
         Top = 6
@@ -304,9 +312,9 @@ object FSCForm_Main: TFSCForm_Main
     UseSystemFont = False
     ActionManager = ActionManager1
     Caption = 'MenuPrincipal'
-    ColorMap.HighlightColor = 15660791
+    ColorMap.HighlightColor = clWhite
     ColorMap.BtnSelectedColor = clBtnFace
-    ColorMap.UnusedColor = 15660791
+    ColorMap.UnusedColor = clWhite
     EdgeBorders = [ebBottom]
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText

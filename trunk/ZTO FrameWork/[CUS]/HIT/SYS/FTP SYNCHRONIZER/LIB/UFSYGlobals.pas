@@ -205,7 +205,7 @@ type
     	procedure ConfigureDataSet(aZConnection: TZConnection; var aDataSet: TZQuery; aSQLCommand: String); overload;
         procedure ShowOnLog(const aText: String; aRichEdit: TRichEdit);
         procedure SaveTextFile(aText: String; const aFileName: TFileName);
-        function LoadTextFile(const aFileName: TFileName): String;
+        function LoadTextFile(const aFileName: TFileName): AnsiString;
         procedure WaitFor(const aSeconds: Byte; const aUseProcessMessages: Boolean = True);
         {$IFDEF FTPSYNCCLI}
     	procedure AddAllUniqueIndexes(aRichEdit: TRichEdit);
@@ -3714,22 +3714,22 @@ begin
     TXXXDataModule.SaveTextFile(aText,aFileName);
 end;
 
-function TFSYGlobals.LoadTextFile(const aFileName: TFileName): String;
+function TFSYGlobals.LoadTextFile(const aFileName: TFileName): AnsiString;
 begin
 	Result := '';
 
 	with TFileStream.Create(aFileName, fmOpenRead or fmShareDenyWrite) do
-        try
-    		try
-      			SetLength(Result, Size);
-                Read(Pointer(Result)^, Size);
-            except
-            	Result := ''; { Desaloca a memória };
-      			raise;
-            end;
-        finally
-            Free;
-        end;
+    try
+      try
+      	SetLength(Result, Size);
+        Read(Pointer(Result)^, Size);
+      except
+        Result := ''; { Desaloca a memória };
+      	raise;
+      end;
+    finally
+      Free;
+    end;
 end;
 
 class procedure TFSYGlobals.SetLabelDescriptionValue(const aLabelDescription, aLabelValue: TLabel; const aValue: String; const aSpacing: Byte = 2);
