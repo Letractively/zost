@@ -1,14 +1,14 @@
-{ TODO -oCARLOS FEITOZA -cMELHORIA : ANTES DE BAIXAR UM ARQUIVO DEVE-SE VERIFICAR SE ELE REALMENTE PRECISA SER BAIXADO. COMPARAR AS DATAS DE MODIFICAÇÃO }
 { TODO -oCARLOS FEITOZA -cADIÇÃO : PARA CADA SISTEMA NO INI, SEPARADO POR ";", DEVEMOS REALIZAR A CHECAGEM (RealizarChecagem, RealizarAtualizacao e ObterListaDeArquivosModificados). ATUALMENTE APENAS UM SISTEMA ESTÁ SENDO CHECADO }
 { TODO -oCARLOS FEITOZA -cADIÇÃO : NO SERVIDOR CRIAR UM COMANDO PARA OBTER APENAS A RESPOSTA DE EXISTIR OU NÃO ARQUIVOS A MODIFICAR. ATUALMENTE TODA A LISTA DE ARQUIVOS MODIFICADO É RETORNADA SEM NECESSIDADE. }
 { TODO -oCARLOS FEITOZA -cCORREÇÃO : ALTERAR OS NOMES DOS SCRIPTS PARA ALGO MAIS EXPLICATIVO, COMO SINCRONIZAÇÃO, ETC }
+{ TODO -oCARLOS FEITOZA -cINFORMAÇÃO : AINDA NÃO É POSSÍVEL MANIPULAR DIRETÓRIOS VAZIOS, POR ISSO, DIRETÓRIOS QUE PRECISAM SER VAZIOS PRECISAM DE AO MENOS UM ARQUIVO DENTRO DELE }
 unit UDataModule_Principal;
 
 interface
 
 uses
   SysUtils, Classes, OverbyteIcsFtpCli, OverbyteIcsLogger, OverbyteIcsWndControl,
-  ActnList, ComCtrls, ExtCtrls, Menus, Messages, StdCtrls;
+  ActnList, ComCtrls, ExtCtrls, Menus, Messages, StdCtrls, UGlobalFunctions;
 
 type
   TTrayIcon = class(ExtCtrls.TTrayIcon)
@@ -18,6 +18,13 @@ type
     procedure WindowProc(var Message: TMessage); override;
   public
     property OnClickFor: ShortInt read FOnClickFor write FOnClickFor;
+  end;
+
+  TStringList = class(Classes.TStringList)
+  private
+  protected
+  public
+    function IndexOfPart(const S: String): Integer;
   end;
   
   TAutoChecagem = class(TThread)
@@ -70,14 +77,16 @@ type
                                      aRichEdit: TRichEdit;
                                const aLabelPercentArquivo
                                    , aLabelPercentGeral: TLabel); overload;
+    {$HINTS OFF}
     procedure RealizarChecagem; overload;
+    {$HINTS ON}
     procedure ObterListaDeArquivosMonitorados(aProgressBarArquivo: TProgressBar;
                                               aRichEdit: TRichEdit);
+    procedure ExcluirArquivo(aFileName: TFileName; aRichEdit: TRichEdit);
+    procedure ExcluirDiretorio(aDirName: TFileName; aRichEdit: TRichEdit);
     procedure ObterArquivoAtualizado(aProgressBarArquivo: TProgressBar;
-                                     aRootDirectory
-                                    ,aFileName
-                                    ,aDefaultLocalDir
-                                    ,aInstallationKey: String;
+                                     aRootDirectory: TFileName;
+                                     aFileName: TFileInfo;
                                      aRichEdit: TRichEdit);
     procedure MinimizarNaBarraDeTarefas(aSender: TObject);
     procedure AtivarEAtualizar;
@@ -87,7 +96,7 @@ type
     procedure RessetarProgressos;
     procedure UpdateLastSynchronizationInfo;
     procedure AtualizarStatus;
-    function PrecisaAtualizar(aArquivoLocal: TFileName; aDataDeModificacaoArquivoRemoto: TDateTime): Boolean; 
+    procedure ConfigurarAcoes(aMonitoredFiles: TMonitoredFiles);
   public
     { Public declarations }
     procedure RealizarAtualizacao; overload;
@@ -102,16 +111,16 @@ var
 
 implementation
 
-uses UForm_Principal, IniFiles, Forms, UGlobalFunctions, StrUtils, Windows,
-     USingleEncrypt, DateUtils, ShellApi;
+uses UForm_Principal, IniFiles, Forms, StrUtils, Windows,
+     USingleEncrypt, DateUtils, ShellApi, UObjectFile;
 
 {$R *.dfm}
 
 resourcestring
   LOGTEXT0 = '§ Foram detectadas versões atualizadas dos softwares da MPS. É altamente recomendável realizar a atualização.';
-  LOGTEXT1 = '§ Não existem arquivos a serem atualizados. Todos os arquivos locais estão em suas versões mais recentes!';
-  LOGTEXT2 = '§ Todos os arquivos foram atualizados com sucesso! Os softwares da MPS estão em suas versões mais recentes neste computador.';
-  LOGTEXT3 = '§ O MPS Updater não conseguiu atualizar todos os arquivos';
+  LOGTEXT1 = '§ Não existem arquivos a serem processados. Todos os arquivos locais estão em suas versões mais recentes!';
+  LOGTEXT2 = '§ Todos os arquivos foram processados com sucesso! Agora, os softwares da MPS estão em suas versões mais recentes neste computador.';
+  LOGTEXT3 = '§ O MPS Updater não conseguiu processar todos os arquivos';
 
   BALLOONTEXT0 = 'Clique neste ícone com o botão direito do mouse para acessar o menu do MPS Updater';
   BALLOONTEXT1 = 'O MPS Updater detectou novas versões dos softwares da MPS. Clique neste balão para atualizar para as versões mais recentes';
@@ -134,7 +143,7 @@ procedure TDataModule_Principal.UpdateLastSynchronizationInfo;
 begin
   with TIniFile.Create(ChangeFileExt(Application.ExeName,'.ini')) do
     try
-      Form_Principal.StatusBar1.Panels[1].Text := 'Última sincronização em ' + FormatDateTime('dd/mm/yyyy "às" hh:nn:ss',ReadFloat('ULTIMASINCRONIZACAO','DATA',0.0));
+      Form_Principal.StatusBar2.Panels[1].Text := 'Última sincronização em ' + FormatDateTime('dd/mm/yyyy "às" hh:nn:ss',ReadFloat('ULTIMASINCRONIZACAO','DATA',0.0));
     finally
       Free;
     end;
@@ -147,6 +156,7 @@ begin
     RealizarAtualizacao;
   finally
     Action_AtualizarAgora.Enabled := True;
+    Form_Principal.StatusBar1.Panels[0].Text := '';
   end;
 end;
 
@@ -187,12 +197,13 @@ begin
   Form_Principal.Label_ModoMini.Caption := Form_Principal.Label_ModoMini.Caption + ' (' + FormatFloat('###,###,###,###',Form_Principal.ProgressBar_Arquivo.Max) + ' Bytes)';
   Form_Principal.Label_ModoMini.Update;
 
-  Form_Principal.StatusBar1.Panels[2].Text := Form_Principal.Label_ModoMini.Caption;
+  Form_Principal.StatusBar1.Panels[0].Text := Form_Principal.Label_ModoMini.Caption;
 end;
 
 procedure TDataModule_Principal.AtualizarTextoAutoChecagem;
 begin
-  Form_Principal.StatusBar1.Panels[0].Text := FormatDateTime(AUTOCHECAGEMSTR,Now - FAutoChecagem.ProximaChecagem);
+  if Assigned(Form_Principal) and Assigned(Form_Principal.StatusBar2) then
+    Form_Principal.StatusBar2.Panels[0].Text := FormatDateTime(AUTOCHECAGEMSTR,Now - FAutoChecagem.ProximaChecagem);
 end;
 
 procedure TDataModule_Principal.ConfigureBalloonHint(aQual: Byte);
@@ -236,22 +247,6 @@ begin
   end;
 end;
 
-procedure TDataModule_Principal.ContinuarAutoChecagem;
-begin
-  if FAutoChecagem.IntervaloDeChecagem > 0 then
-  begin
-    with TIniFile.Create(ChangeFileExt(Application.ExeName,'.ini')) do
-      try
-        FAutoChecagem.IntervaloDeChecagem := ReadInteger('AUTOCHECAGEM','INTERVALO',0);
-        FAutoChecagem.ProximaChecagem := IncMinute(Now,ReadInteger('AUTOCHECAGEM','INTERVALO',0));
-      finally
-        Free;
-      end;
-
-    FAutoChecagem.Resume;
-  end;
-end;
-
 procedure TDataModule_Principal.DataModuleCreate(Sender: TObject);
 begin
   FFTPDirectory := GetCurrentDir + '\FTPSync';
@@ -282,13 +277,13 @@ end;
 
 procedure TDataModule_Principal.FtpClient_PrincipalCommand(Sender: TObject; var Cmd: string);
 var
-	Comando: ShortString;
+	Comando: String;
 begin
 	Comando := Cmd;
   	if Pos('PASS',Comando) = 1 then
   		Comando := 'PASS <SENHA OCULTADA>';
 
-  ShowOnLog('COMANDO:> ' + Comando,Form_Principal.RichEdit_Log);
+  ShowOnLog(PutLineBreaks('COMANDO:> ' + Comando,89),Form_Principal.RichEdit_Log);
 end;
 
 procedure TDataModule_Principal.FtpClient_PrincipalDisplay(Sender: TObject; var Msg: string);
@@ -312,22 +307,21 @@ begin
 
 		Msg := StringReplace(Msg,'< ','',[]);
  		Msg := StringReplace(Msg,'! ','',[]);
-  	ShowOnLog('RETORNO:> ' + Msg,Form_Principal.RichEdit_Log);
+  	ShowOnLog(PutLineBreaks('RETORNO:> ' + Msg,89),Form_Principal.RichEdit_Log);
   end
 end;
 
 procedure TDataModule_Principal.FtpClient_PrincipalProgress64(Sender: TObject; Count: Int64; var Abort: Boolean);
 begin
   FProgressCount := Count;
-
   SetProgressWith(Form_Principal.ProgressBar_Arquivo
                  ,Form_Principal.Label_ProgressDoArquivo
-                 ,Count);
+                 ,FProgressCount);
 end;
 
 procedure TDataModule_Principal.FtpClient_PrincipalRequestDone(Sender: TObject; RqType: TFtpRequest; ErrCode: Word);
 var
-  Comando, Texto: ShortString;
+  Comando, Texto: String;
 begin
   case RqType of
     ftpOpenAsync: Comando := 'OPEN';
@@ -346,7 +340,7 @@ begin
   Texto := '@ Comando "' + Comando + '" concluído (Código de retorno = ' + IntToStr(ErrCode) + ') ';
   Texto := Texto + DupeString('<',89 - Length(Texto));
 
-  ShowOnLog(Texto,Form_Principal.RichEdit_Log);
+  ShowOnLog(PutLineBreaks(Texto,89),Form_Principal.RichEdit_Log);
 
   { Caso algum erro ocorra devemos exibir uma informação de acordo com o mesmo }
   case ErrCode of
@@ -354,7 +348,6 @@ begin
     10061: ShowErrorMessage('! O servidor recusou sua conexão. Ele pode estar desativado. Tente novamente em alguns minutos. Caso o problema persista, favor entrar em contato com o suporte.',Form_Principal.RichEdit_Log);
     10060: ShowErrorMessage('! O servidor está ativo mas não respondeu dentro do limite de tempo esperado. Favor tentar novamente em alguns minutos. Se o problema persistir por mais de uma hora, favor entrar em contato com o suporte.',Form_Principal.RichEdit_Log);
   end;
-//  Application.Processmessages;
 end;
 
 procedure TDataModule_Principal.FtpClient_PrincipalResponse(Sender: TObject);
@@ -377,7 +370,7 @@ end;
 
 procedure TDataModule_Principal.FtpClient_PrincipalSessionClosed(Sender: TObject; ErrCode: Word);
 begin
-	ShowOnLog('§ A conexão com o servidor foi encerrada...',Form_Principal.RichEdit_Log);
+	ShowOnLog(PutLineBreaks('§ A conexão com o servidor foi encerrada...',98),Form_Principal.RichEdit_Log);
 end;
 
 procedure TDataModule_Principal.MinimizarNaBarraDeTarefas(aSender: TObject);
@@ -388,56 +381,75 @@ begin
   Form_Principal.Hide;
 end;
 
+procedure TDataModule_Principal.ExcluirArquivo(aFileName: TFileName; aRichEdit: TRichEdit);
+begin
+  ShowOnLog(PutLineBreaks('§ Excluindo arquivo "' + aFileName + '"...',89), aRichEdit);
+
+  Form_Principal.Label_ModoMini.Caption := 'Excluindo o arquivo: ' + aFileName;
+  Form_Principal.Label_ModoMini.Update;
+
+  Form_Principal.StatusBar1.Panels[0].Text := Form_Principal.Label_ModoMini.Caption;
+
+  if not SysUtils.DeleteFile(aFileName) then
+    raise EUnsuccessfulExclusion.Create('Não foi possível excluir o arquivo "' + aFileName + '"');
+end;
+
+procedure TDataModule_Principal.ExcluirDiretorio(aDirName: TFileName; aRichEdit: TRichEdit);
+begin
+  ShowOnLog(PutLineBreaks('§ Excluindo diretório "' + aDirName + '"...',89), aRichEdit);
+
+  Form_Principal.Label_ModoMini.Caption := 'Excluindo o diretório: ' + aDirName;
+  Form_Principal.Label_ModoMini.Update;
+
+  Form_Principal.StatusBar1.Panels[0].Text := Form_Principal.Label_ModoMini.Caption;
+
+  RmDir(aDirName);
+end;
+
 procedure TDataModule_Principal.ObterArquivoAtualizado(aProgressBarArquivo: TProgressBar;
-                                                       aRootDirectory
-                                                      ,aFileName
-                                                      ,aDefaultLocalDir
-                                                      ,aInstallationKey: String;
+                                                       aRootDirectory: TFileName;
+                                                       aFileName: TFileInfo;
                                                        aRichEdit: TRichEdit);
-var
-  LocaFileName: ShortString;
 begin
   { Muda para o diretório do servidor onde está o arquivo que queremos baixar }
   MudarDiretorio(FtpClient_Principal
-                ,aRootDirectory + '\' + ExtractFilePath(aFileName)
+                ,aRootDirectory + '\' + ExtractFilePath(aFileName.FilePath)
                 ,aRichEdit);
 
-  LocaFileName := ReplaceSpecialConstants(aFileName
-                                         ,aDefaultLocalDir
-                                         ,aInstallationKey);
+  if not DirectoryExists(ExtractFilePath(aFileName.TranslatedFilePath)) then
+    ForceDirectories(ExtractFilePath(aFileName.TranslatedFilePath));
 
-  if not DirectoryExists(ExtractFilePath(LocaFileName)) then
-    ForceDirectories(ExtractFilePath(LocaFileName));
-
-  Form_Principal.Label_ModoMini.Caption := 'Atualizando o arquivo: ' + aFileName;
+  Form_Principal.Label_ModoMini.Caption := 'Baixando o arquivo: ' + aFileName.TranslatedFilePath;
   Form_Principal.Label_ModoMini.Update;
 
-  Form_Principal.StatusBar1.Panels[2].Text := Form_Principal.Label_ModoMini.Caption;
+  Form_Principal.StatusBar1.Panels[0].Text := Form_Principal.Label_ModoMini.Caption;
 
   if not ObterArquivo(FtpClient_Principal
                      ,aProgressBarArquivo
                      ,nil
-                     ,LocaFileName
-                     ,ExtractFileName(aFileName)
+                     ,aFileName.TranslatedFilePath
+                     ,ExtractFileName(aFileName.TranslatedFilePath)
                      ,aRichEdit
                      ,True) then
-    raise EInvalidPath.Create('Não foi possível obter o arquivo "' + aFileName + '"');
+    raise EInvalidPath.Create('Não foi possível obter o arquivo "' + aFileName.TranslatedFilePath + '"');
 end;
 
 procedure TDataModule_Principal.ObterListaDeArquivosMonitorados(aProgressBarArquivo: TProgressBar;
                                                                 aRichEdit: TRichEdit);
 var
-  Comando, Sistema, Formato: ShortString;
-  Data: Double;
+  Comando, Sistema, Formato: String;
+//  Data: Double;
 begin
   with TIniFile.Create(ChangeFileExt(Application.ExeName,'.ini')) do
     try
       Sistema := ReadString('CONFIGURACOES','SISTEMA','');
       Formato := FORMATOS[ReadInteger('CONFIGURACOES','FORMATO',0)];
-      Data := ReadFloat('ULTIMASINCRONIZACAO','DATA',0.0);
+//      Data := ReadFloat('ULTIMASINCRONIZACAO','DATA',0.0);
 
       { O comando vai trazer uma lista com todos os arquivos e suas datas.
-      Localmente estes arquivos }
+      Localmente estes arquivos devem ser comparados com os existentes e só
+      serão baixados aqueles que realmente precisam de atualização ou que não
+      existam }
       Comando := StringReplace(CMD_MONITOREDFILESLIST,'*',Sistema,[]);
       Comando := StringReplace(Comando,'???',Formato,[]);
 
@@ -461,7 +473,27 @@ end;
 procedure TDataModule_Principal.PararAutoChecagem;
 begin
   if FAutoChecagem.IntervaloDeChecagem > 0 then
+  begin
     FAutoChecagem.Suspend;
+    Form_Principal.StatusBar2.Panels[0].Text := 'Autochecagem desligada';
+    Form_Principal.Update;
+  end;
+end;
+
+procedure TDataModule_Principal.ContinuarAutoChecagem;
+begin
+  if FAutoChecagem.IntervaloDeChecagem > 0 then
+  begin
+    with TIniFile.Create(ChangeFileExt(Application.ExeName,'.ini')) do
+      try
+        FAutoChecagem.IntervaloDeChecagem := ReadInteger('AUTOCHECAGEM','INTERVALO',0);
+        FAutoChecagem.ProximaChecagem := IncMinute(Now,ReadInteger('AUTOCHECAGEM','INTERVALO',0));
+      finally
+        Free;
+      end;
+
+    FAutoChecagem.Resume;
+  end;
 end;
 
 function TDataModule_Principal.PodeFechar(aQual: Byte): Boolean;
@@ -474,14 +506,86 @@ begin
   end;
 end;
 
-function TDataModule_Principal.PrecisaAtualizar(aArquivoLocal: TFileName;
-                                                aDataDeModificacaoArquivoRemoto: TDateTime): Boolean;
-begin
-  Application.MessageBox('complete isso','complete isso',0);
-//  TFileInformation.GetInfo(aArquivoLocal,'')
-//FileDate(
-//  if FileExists() and
+type
+  TCallbackData = record
+    MonitoredFiles: TMonitoredFiles;
+  end;
 
+var
+  CallbackData: TCallbackData;
+
+function ProcessarArquivos(aSearchRec: TSearchRec): Boolean;
+begin
+  if CallbackData.MonitoredFiles.Files.IndexOfTranslatedFilePath(ExpandFileName(aSearchRec.Name)) = -1 then
+  begin
+    with CallbackData.MonitoredFiles.Files.Add do
+    begin
+      FilePath := ExpandFileName(aSearchRec.Name);
+      ActionOnFile := aofDeleteFile;
+    end;
+  end;
+  Result := True;
+end;
+
+function ProcessarDiretorios(aSearchRec: TSearchRec): Boolean;
+begin
+ if CallbackData.MonitoredFiles.Files.IndexOfTranslatedFilePath(ExpandFileName('.'),True) = -1 then
+  begin
+    with CallbackData.MonitoredFiles.Files.Add do
+    begin
+      FilePath := ExpandFileName('.');
+      ActionOnFile := aofDeleteDir;
+    end;
+  end;
+  Result := True;
+end;
+
+
+{ Altera aMonitoredFiles alterando a propriedade ActionOnFile de cada arquivo
+para aofUpdate, quando o arquivo remoto não existir localmente ou for mais
+novo. Também adiciona itens que precisam ser excluídos dos diretórios locais com
+a ação aofDelete. }
+procedure TDataModule_Principal.ConfigurarAcoes(aMonitoredFiles: TMonitoredFiles);
+{ ---------------------------------------------------------------------------- }
+function ObterAcao(aArquivoLocal: TFileName; aDataDeModificacaoArquivoRemoto: TDateTime): TActionOnFile;
+begin
+  Result := aofNone;
+  if not FileExists(aArquivoLocal) or (aDataDeModificacaoArquivoRemoto > GetFileModificationDate(aArquivoLocal)) then
+    Result := aofDownload;
+end;
+{ ---------------------------------------------------------------------------- }
+var
+  i: Word;
+  Diretorio: String;
+{ ---------------------------------------------------------------------------- }
+begin
+  { O primeiro loop atualiza ActionOnFile de cada arquivo }
+  if aMonitoredFiles.Files.Count > 0 then
+    for i := 0 to Pred(aMonitoredFiles.Files.Count) do
+      aMonitoredFiles.Files[i].ActionOnFile := ObterAcao(aMonitoredFiles.Files[i].TranslatedFilePath
+                                                        ,aMonitoredFiles.Files[i].LastModified);
+
+  { O segundo loop vai varrer todos os diretórios locais que foram referenciados
+  em aMonitoredFiles, verificando quem realmente precisa existir localmente e
+  caso não precise, uma nova entrada é adicionada em aMonitoredFiles com
+  ActionOnFile configurada como aofDelete }
+  with TStringList.Create do
+    try
+      CallbackData.MonitoredFiles := aMonitoredFiles;
+
+      for i := 0 to Pred(aMonitoredFiles.Files.Count) do
+      begin
+        Diretorio := ExtractFilePath(aMonitoredFiles.Files[i].TranslatedFilePath);
+
+        if IndexOfPart(Diretorio) = -1 then
+        begin
+          ProcessTree(Diretorio, '*.*', True, ProcessarArquivos, ProcessarDiretorios);
+          Add(Diretorio);
+        end;
+      end;
+    finally
+      Free;
+    end;
 end;
 
 procedure TDataModule_Principal.RealizarAtualizacao(const aProgressBarArquivo
@@ -490,9 +594,9 @@ procedure TDataModule_Principal.RealizarAtualizacao(const aProgressBarArquivo
                                                     const aLabelPercentArquivo
                                                         , aLabelPercentGeral: TLabel);
 var
-  MF: TModifiedFiles;
+  MF: TMonitoredFiles;
   Formato: Byte;
-  i, ArquivosAtualizados: Cardinal;
+  i, ArquivosABaixar, ArquivosAExcluir, DiretoriosAExcluir: Cardinal;
 begin
   RessetarProgressos;
   
@@ -500,8 +604,10 @@ begin
   with TIniFile.Create(ChangeFileExt(Application.ExeName,'.ini')) do
     try
       PararAutoChecagem;
-
-      MF := TModifiedFiles.Create(Self);
+      // Por padrão, o local de instalação de arquivos, quando não especificado
+      // explicitamente é C:\<NOMEDOSISTEMA> OU C:\MPSUPDATER quando um nome de
+      // sistema não tiver sido especificado nas configurações
+      MF := TMonitoredFiles.Create(Self,'C:\' + ReadString('CONFIGURACOES','SISTEMA','MPSUPDATER'));
       try
         Form_Principal.RichEdit_Log.Clear;
 
@@ -533,59 +639,118 @@ begin
         else if Formato = BIN then
           MF.LoadFromBinaryFile(FFTPDirectory + '\' + MONITOREDFILESLIST);
 
-        { Neste ponto existem arquivos que precisam ser obtidos do servidor.
-        Toda informação está disponível. É só baixar cada coisa em seu lugar }
         if MF.Files.Count > 0 then
         begin
-          ArquivosAtualizados := 0;
+          ShowOnLog(PutLineBreaks('§ Processando lista de arquivos monitorados...',89),Form_Principal.RichEdit_Log);
+          { Varre MF, marcando cada arquivo de acordo com a ação que será
+          executada localmente e adiciona a ele arquivos que precisam ser
+          excluídos }
+          ConfigurarAcoes(MF);
 
-          InitializeProgress(aProgressBarGeral,aLabelPercentGeral,MF.Files.Count);
+//          with TStringList.Create do
+//            try
+//              Text := MF.ToString;
+//              SaveToFile('d:\carlos.txt');
+//            finally
+//              Free;
+//            end;
+//          exit;
 
-          { Devemos baixar cada arquivo da lista de arquivos atualizados }
-          for i := 0 to Pred(MF.Files.Count) do
-            try
-              try
-                ObterArquivoAtualizado(aProgressBarArquivo
-                                      ,MF.Directory
-                                      ,MF.Files[i].FilePath
-                                      // Por padrão, o local de instalação de
-                                      // arquivos, quando não especificado
-                                      // explicitamente é C:\<NOMEDOSISTEMA> OU
-                                      // C:\<NOMEDOSISTEMA> quando um nome de
-                                      // sistema não tiver sido especificado nas
-                                      // configurações
-                                      ,'C:\' + ReadString('CONFIGURACOES','SISTEMA','MPSUPDATER')
-                                      ,MF.ChaveDeInstalacao
-                                      ,aRichEdit);
-                Inc(ArquivosAtualizados);
-              except
-                { De todas as exceções lançadas dentro de "ObterArquivoAtualizado",
-                apenas EInvalidPath deve ser silenciosa e não impedir o restante
-                do processamento. Todas as outras exceções são passadas adiante }
-                on E: EInvalidPath do
-                  ShowOnLog('! ' + E.Message,Form_Principal.RichEdit_Log);
-                else
-                  raise;
-              end;
-            finally
-              SetProgressWith(aProgressBarGeral,aLabelPercentGeral,Succ(i))
-            end;
+          { Finalmente, atualizando os arquivos... }
+          ArquivosABaixar    := MF.Files.DownloadCount;
+          ArquivosAExcluir   := MF.Files.DeleteFileCount;
+          DiretoriosAExcluir := MF.Files.DeleteDirCount;
 
-          if ArquivosAtualizados = MF.Files.Count then
+          if (ArquivosABaixar + ArquivosAExcluir + DiretoriosAExcluir) > 0 then
           begin
-            ShowOnLog(PutLineBreaks(LOGTEXT2,89),Form_Principal.RichEdit_Log);
-            ConfigureBalloonHint(2);
+            { Usa as contagens das atualizações mais exclusões }
+            InitializeProgress(aProgressBarGeral,aLabelPercentGeral,ArquivosABaixar + ArquivosAExcluir + DiretoriosAExcluir);
 
-            { No final do procedimento devemos salvar a data da nossa última
-            sincronização bem sucedida }
-            WriteFloat('ULTIMASINCRONIZACAO','DATA',Now);
-            UpdateFile; // Atualiza o arquivo imediatamente!
-            UpdateLastSynchronizationInfo;
+            ShowOnLog(PutLineBreaks('§ A lista contém ' + IntToStr(ArquivosABaixar) + ' download(s), ' + IntToStr(ArquivosAExcluir) + ' exclusão(ões) de arquivo(s) e ' + IntToStr(DiretoriosAExcluir) + ' exclusão(ões) de diretório(s).',89),Form_Principal.RichEdit_Log);
+
+            { O primeiro loop processa apenas arquivos, excluindo-os ou
+            baixando-os segundo a necessidade }
+            for i := 0 to Pred(MF.Files.Count) do
+              if MF.Files[i].ActionOnFile in [aofDownload,aofDeleteFile] then
+                try
+                  try
+                    if MF.Files[i].ActionOnFile = aofDownload then
+                    begin
+                      ObterArquivoAtualizado(aProgressBarArquivo
+                                            ,MF.Directory
+                                            ,MF.Files[i]
+                                            ,aRichEdit);
+                      Dec(ArquivosABaixar);
+                    end
+                    else if MF.Files[i].ActionOnFile = aofDeleteFile then
+                    begin
+                      ExcluirArquivo(MF.Files[i].FilePath,aRichEdit);
+                      Dec(ArquivosAExcluir);
+                    end
+                  except
+                    { De todas as exceções lançadas, apenas EInvalidPath e
+                    EUnsuccessfulExclusion devem ser silenciosa e não impedir o
+                    restante do processamento. Todas as outras exceções são passadas
+                    adiante }
+                    on E: EInvalidPath do ShowOnLog(PutLineBreaks('! ' + E.Message,89),Form_Principal.RichEdit_Log);
+                    on E: EUnsuccessfulExclusion do ShowOnLog(PutLineBreaks('! ' + E.Message,89),Form_Principal.RichEdit_Log);
+                    else
+                      raise;
+                  end;
+                finally
+                  IncreaseProgress(aProgressBarGeral,aLabelPercentGeral);
+//                  SetProgressWith(aProgressBarGeral,aLabelPercentGeral,Succ(i))
+                end;
+
+            { O segundo loop processa apenas diretórios, excluindo-os ou
+            baixando-os segundo a necessidade }
+            for i := 0 to Pred(MF.Files.Count) do
+              if MF.Files[i].ActionOnFile = aofDeleteDir then
+                try
+                  try
+                    if MF.Files[i].ActionOnFile = aofDeleteDir then
+                    begin
+                      ExcluirDiretorio(MF.Files[i].FilePath,aRichEdit);
+                      Dec(DiretoriosAExcluir);
+                    end;
+                  except
+                    { De todas as exceções lançadas, apenas EInvalidPath e
+                    EUnsuccessfulExclusion devem ser silenciosa e não impedir o
+                    restante do processamento. Todas as outras exceções são passadas
+                    adiante }
+                    on E: EInvalidPath do ShowOnLog(PutLineBreaks('! ' + E.Message,89),Form_Principal.RichEdit_Log);
+                    on E: EUnsuccessfulExclusion do ShowOnLog(PutLineBreaks('! ' + E.Message,89),Form_Principal.RichEdit_Log);
+                    else
+                      raise;
+                  end;
+                finally
+                  IncreaseProgress(aProgressBarGeral,aLabelPercentGeral);
+//                  SetProgressWith(aProgressBarGeral,aLabelPercentGeral,Succ(i))
+                end;
+
+            { Caso todos os arquivos tenham sido processados, mostra a mensagem de
+            erro, do contrário informa que problemas aconteceram }
+            if (ArquivosABaixar = 0) and (ArquivosAExcluir = 0) and (DiretoriosAExcluir = 0) then
+            begin
+              ShowOnLog(PutLineBreaks(LOGTEXT2,89),Form_Principal.RichEdit_Log);
+              ConfigureBalloonHint(2);
+
+              { No final do procedimento devemos salvar a data da nossa última
+              sincronização bem sucedida }
+              WriteFloat('ULTIMASINCRONIZACAO','DATA',Now);
+              UpdateFile; // Atualiza o arquivo imediatamente!
+              UpdateLastSynchronizationInfo;
+            end
+            else
+            begin
+              ShowOnLog(PutLineBreaks(LOGTEXT3,89),Form_Principal.RichEdit_Log);
+              ConfigureBalloonHint(3);
+            end;
           end
           else
           begin
-            ShowOnLog(PutLineBreaks(LOGTEXT3,89),Form_Principal.RichEdit_Log);
-            ConfigureBalloonHint(3);
+            ShowOnLog(PutLineBreaks(LOGTEXT1,89),Form_Principal.RichEdit_Log);
+            ConfigureBalloonHint(4);
           end;
         end
         else
@@ -599,7 +764,7 @@ begin
         TrayIcon_Principal.ShowBalloonHint;
       except
         on E: Exception do
-          ShowOnLog('! ' + E.Message,Form_Principal.RichEdit_Log);
+          ShowOnLog(PutLineBreaks('! ' + E.Message,89),Form_Principal.RichEdit_Log);
       end;
 
     finally
@@ -647,14 +812,16 @@ procedure TDataModule_Principal.RealizarChecagem(const aProgressBarArquivo
                                                  const aLabelPercentArquivo
                                                      , aLabelPercentGeral: TLabel);
 var
-  MF: TModifiedFiles;
+  MF: TMonitoredFiles;
   Formato: Byte;
+  ArquivosABaixar, ArquivosAExcluir, DiretoriosAExcluir: Cardinal;
 begin
   RessetarProgressos;
 
   with TIniFile.Create(ChangeFileExt(Application.ExeName,'.ini')) do
     try
-      MF := TModifiedFiles.Create(Self);
+      PararAutoChecagem;
+      MF := TMonitoredFiles.Create(Self,'C:\' + ReadString('CONFIGURACOES','SISTEMA','MPSUPDATER'));
       try
         Form_Principal.RichEdit_Log.Clear;
 
@@ -686,20 +853,43 @@ begin
         else if Formato = BIN then
           MF.LoadFromBinaryFile(FFTPDirectory + '\' + MONITOREDFILESLIST);
 
+
         { Neste ponto existem arquivos que precisam ser obtidos do servidor.
         Toda informação está disponível. É só baixar cada coisa em seu lugar }
         if MF.Files.Count > 0 then
         begin
-          ShowOnLog(PutLineBreaks(LOGTEXT0,89),Form_Principal.RichEdit_Log);
-          ConfigureBalloonHint(1);
-          TrayIcon_Principal.ShowBalloonHint;
+          ShowOnLog(PutLineBreaks('§ Processando lista de arquivos monitorados...',89),Form_Principal.RichEdit_Log);
+          { Detectando possíveis atualizações }
+          ConfigurarAcoes(MF);
+
+//          with TStringList.Create do
+//            try
+//              Text := MF.ToString;
+//              SaveToFile('d:\carlos.txt');
+//            finally
+//              Free;
+//            end;
+
+          ArquivosABaixar    := MF.Files.DownloadCount;
+          ArquivosAExcluir   := MF.Files.DeleteFileCount;
+          DiretoriosAExcluir := MF.Files.DeleteDirCount;
+
+          if (ArquivosABaixar + ArquivosAExcluir + DiretoriosAExcluir) > 0 then
+          begin
+            ShowOnLog(PutLineBreaks('§ A lista contém ' + IntToStr(ArquivosABaixar) + ' download(s), ' + IntToStr(ArquivosAExcluir) + ' exclusão(ões) de arquivo(s) e ' + IntToStr(DiretoriosAExcluir) + ' exclusão(ões) de diretório(s).',89),Form_Principal.RichEdit_Log);
+            ShowOnLog(PutLineBreaks(LOGTEXT0,89),Form_Principal.RichEdit_Log);
+            ConfigureBalloonHint(1);
+            TrayIcon_Principal.ShowBalloonHint;
+          end
+          else
+            ShowOnLog(PutLineBreaks(LOGTEXT1,89),Form_Principal.RichEdit_Log);
         end
         else
           ShowOnLog(PutLineBreaks(LOGTEXT1,89),Form_Principal.RichEdit_Log);
 
       except
         on E: Exception do
-          ShowOnLog('! ' + E.Message,Form_Principal.RichEdit_Log);
+          ShowOnLog(PutLineBreaks('! ' + E.Message,89),Form_Principal.RichEdit_Log);
       end;
 
     finally
@@ -709,6 +899,7 @@ begin
 
       MF.Free;
       Free;
+      ContinuarAutoChecagem;
     end;
 end;
 
@@ -748,16 +939,19 @@ begin
       begin
         { Se o Thread tiver acabado, sai imediatamente sem fazer mais nada! }
         if Terminated then
-          Exit;
+          Break;
 
         Synchronize(DataModule_Principal.AtualizarTextoAutoChecagem);
       end;
 
+      if Terminated then
+        Exit;
+
+      FProximaChecagem := IncMinute(FProximaChecagem,FIntervaloDeChecagem);
+
       { Quando o fluxo chega neste ponto uma nova verificação é feita e em seguida
       o tempo de nova checagem é recalculado e... }
       Synchronize(DataModule_Principal.RealizarChecagem);
-
-      FProximaChecagem := IncMinute(FProximaChecagem,FIntervaloDeChecagem);
 
 //      Application.ProcessMessages;
     end;
@@ -784,6 +978,22 @@ begin
   else
     Inherited;
   end;
+end;
+
+{ TStringList }
+
+function TStringList.IndexOfPart(const S: String): Integer;
+var
+  i: Cardinal;
+begin
+  Result := -1;
+  if Count > 0 then
+    for i := 0 to Pred(Count) do
+      if Pos(S,Strings[i]) > 0 then
+      begin
+        Result := i;
+        Break;
+      end;
 end;
 
 end.

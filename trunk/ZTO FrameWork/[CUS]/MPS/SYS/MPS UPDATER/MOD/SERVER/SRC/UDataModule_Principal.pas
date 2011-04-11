@@ -676,7 +676,7 @@ end;
 
 procedure TDataModule_Principal.FtpServer_MainAnswerToClient(Sender: TObject; Client: TFtpCtrlSocket; var Answer: TFtpString);
 begin
-	ShowOnLog('RETORNO:> ' + Answer + ' (' + Client.GetPeerAddr + ')',Form_Principal.RichEdit_LogFTP);
+	ShowOnLog(PutLineBreaks('RETORNO:> ' + Answer + ' (' + Client.GetPeerAddr + ')',85),Form_Principal.RichEdit_LogFTP);
 end;
 
 procedure TDataModule_Principal.FtpServer_MainAuthenticate(Sender: TObject; Client: TFtpCtrlSocket; UserName, Password: TFtpString; var Authenticated: Boolean);
@@ -923,7 +923,6 @@ begin
         AsInt64       := StrToInt64Def(Strings[aParamIndex],0);
 
         AsChar        := Strings[aParamIndex][1];
-        AsShortString := ShortString(Strings[aParamIndex]);
         AsString      := Strings[aParamIndex];
 
         AsSingle      := StrToFloatDef(Strings[aParamIndex],0,FS);
@@ -1005,7 +1004,7 @@ begin
 
   with TZReadOnlyQuery.Create(Self) do
     try
-      MonitoredFiles := TMonitoredFiles.Create(Self);
+      MonitoredFiles := TMonitoredFiles.Create(Self,'');
 
       Connection := ZConnection_Principal;
       SQL.Text := StringReplace(SQL_SELECT,'<VA_NOME>',QuotedStr(aSistema),[rfReplaceAll]);
@@ -1014,7 +1013,7 @@ begin
       if not Eof then
       begin
         MonitoredFiles.Directory := FieldByName('VA_DIRETORIO').AsString;
-        MonitoredFiles.ChaveDeInstalacao := FieldByName('VA_CHAVEDEINSTALACAO').AsString;
+        MonitoredFiles.InstallationKey := FieldByName('VA_CHAVEDEINSTALACAO').AsString;
       end;
 
       while not Eof do
@@ -1044,7 +1043,7 @@ var
 begin
   Arquivo := UpperCase(ExtractFileName(aClient.FilePath));
 
-  // MODIFIEDFILES{<sistema>,<formato>}.CMD
+  // MONITOREDFILESLIST{<sistema>,<formato>}.CMD
   // Este comando gera um arquivo contendo os nomes e caminhos dos arquivos
   // monitorados no sistema <sistema>. O formato do arquivo gerado é definido no
   // parâmetro <formato> que pode assumir XML ou OBJ
@@ -1058,12 +1057,12 @@ begin
     SendStatus(aClient,'-------------------------------------------------------------------------------');
     SendStatus(aClient,'UM ARQUIVO ESTÁ SENDO GERADO COM AS CONFIGURAÇÕES A SEGUIR');
     SendStatus(aClient,'');
-    SendStatus(aClient,'SISTEMA............: ' + GetParameter(Arquivo,0).AsShortString);
-    SendStatus(aClient,'FORMATO DE GERAÇÃO.: ' + GetParameter(Arquivo,1).AsShortString);
+    SendStatus(aClient,'SISTEMA............: ' + GetParameter(Arquivo,0).AsString);
+    SendStatus(aClient,'FORMATO DE GERAÇÃO.: ' + GetParameter(Arquivo,1).AsString);
     SendStatus(aClient,'-------------------------------------------------------------------------------');
 
-    Arquivo := MonitoredFilesList(GetParameter(Arquivo,0).AsShortString
-                                 ,GetParameter(Arquivo,1).AsShortString);
+    Arquivo := MonitoredFilesList(GetParameter(Arquivo,0).AsString
+                                 ,GetParameter(Arquivo,1).AsString);
 
     SendStatus(aClient,'DFS: ' + IntToStr(CreateSendStream(aClient,Arquivo[1])));
     SendStatus(aClient,'-------------------------------------------------------------------------------');
@@ -1083,12 +1082,12 @@ begin
     SendStatus(aClient,'-------------------------------------------------------------------------------');
     SendStatus(aClient,'UM ARQUIVO ESTÁ SENDO GERADO COM AS CONFIGURAÇÕES A SEGUIR');
     SendStatus(aClient,'');
-    SendStatus(aClient,'SISTEMA............: ' + GetParameter(Arquivo,0).AsShortString);
-    SendStatus(aClient,'FORMATO DE GERAÇÃO.: ' + GetParameter(Arquivo,1).AsShortString);
+    SendStatus(aClient,'SISTEMA............: ' + GetParameter(Arquivo,0).AsString);
+    SendStatus(aClient,'FORMATO DE GERAÇÃO.: ' + GetParameter(Arquivo,1).AsString);
     SendStatus(aClient,'-------------------------------------------------------------------------------');
 
-    Arquivo := ExcludedFilesList(GetParameter(Arquivo,0).AsShortString
-                                ,GetParameter(Arquivo,1).AsShortString);
+    Arquivo := ExcludedFilesList(GetParameter(Arquivo,0).AsString
+                                ,GetParameter(Arquivo,1).AsString);
 
     SendStatus(aClient,'DFS: ' + IntToStr(CreateSendStream(aClient,Arquivo[1])));
     SendStatus(aClient,'-------------------------------------------------------------------------------');
@@ -1658,7 +1657,7 @@ begin
 
   ShowOnLog('-------------------------------------------------------------------------------------',Form_Principal.RichEdit_LogMonitoramento);
 	FtpServer_Main.Banner := Format(_WELCOME,[FormatDateTime('yyyy',Now)]);
-  ShowOnLog('MPS Updater - v' + TFileInformation.GetInfo(ParamStr(0),'FULLVERSION').AsShortString,Form_Principal.RichEdit_LogMonitoramento);
+  ShowOnLog('MPS Updater - v' + TFileInformation.GetInfo(ParamStr(0),'FULLVERSION').AsString,Form_Principal.RichEdit_LogMonitoramento);
 
   ShowOnLog(Format(_COPYRIGHT,[FormatDateTime('yyyy',Now)]),Form_Principal.RichEdit_LogMonitoramento);
   ShowOnLog('-------------------------------------------------------------------------------------',Form_Principal.RichEdit_LogMonitoramento);
