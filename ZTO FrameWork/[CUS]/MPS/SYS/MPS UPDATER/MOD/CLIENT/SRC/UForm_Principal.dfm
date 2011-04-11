@@ -24,7 +24,7 @@ object Form_Principal: TForm_Principal
     Left = 6
     Top = 6
     Width = 802
-    Height = 184
+    Height = 165
     Margins.Left = 6
     Margins.Top = 6
     Margins.Right = 6
@@ -42,6 +42,18 @@ object Form_Principal: TForm_Principal
   end
   object StatusBar1: TStatusBar
     Left = 0
+    Top = 254
+    Width = 814
+    Height = 19
+    Panels = <
+      item
+        Alignment = taCenter
+        Width = 50
+      end>
+    SizeGrip = False
+  end
+  object StatusBar2: TStatusBar
+    Left = 0
     Top = 273
     Width = 814
     Height = 19
@@ -55,15 +67,12 @@ object Form_Principal: TForm_Principal
         Alignment = taCenter
         Text = #218'ltima sincroniza'#231#227'o em dd/mm/yyyy '#224's hh:nn:ss'
         Width = 250
-      end
-      item
-        Width = 50
       end>
   end
   object Panel_LayerInferior: TPanel
     AlignWithMargins = True
     Left = 6
-    Top = 196
+    Top = 177
     Width = 802
     Height = 71
     Margins.Left = 6
@@ -72,7 +81,7 @@ object Form_Principal: TForm_Principal
     Margins.Bottom = 6
     Align = alBottom
     BevelOuter = bvNone
-    TabOrder = 2
+    TabOrder = 3
     DesignSize = (
       802
       71)
@@ -201,6 +210,7 @@ object Form_Principal: TForm_Principal
         ParentColor = False
         ParentFont = False
         Layout = tlCenter
+        OnClick = Label1Click
       end
       object ProgressBar_Arquivo: TProgressBar
         Left = 152

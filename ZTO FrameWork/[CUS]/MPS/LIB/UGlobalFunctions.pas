@@ -20,7 +20,6 @@ type
     AsInteger: Integer;
     AsInt64: Int64;
     AsChar: Char;
-    AsShortString: ShortString;
     AsString: String;
     AsSingle: Single;
     AsFloat: Single;
@@ -30,68 +29,92 @@ type
   end;
 
   EInvalidPath = class(Exception);
+  EUnsuccessfulExclusion = class(Exception);
 
   TFileSizeUnit = (fsuBytes, fsuKBytes, fsuMBytes, fsuGBytes, fsuTBytes);
 
   TSyncCmd = function: Boolean of object;
+
+  TProcessCallBack = function (aSearchRec: TSearchRec): Boolean;
 
   TFileInformation = class
   private
     FFileInfo: TVSFixedFileInfo;
     FFileName: TFileName;
 	  procedure SetFileName(const Value: TFileName);
-    function GetFileInfo(const aInfo: ShortString): TMultiTypedResult;
+    function GetFileInfo(const aInfo: String): TMultiTypedResult;
   public
-    class function GetInfo(const aFileName: TFileName; const aInfo: ShortString): TMultiTypedResult;
+    class function GetInfo(const aFileName: TFileName; const aInfo: String): TMultiTypedResult;
     property FileName: TFileName read FFileName write SetFileName;
-    property FileInfo[const Info: ShortString]: TMultiTypedResult read GetFileInfo;
+    property FileInfo[const Info: String]: TMultiTypedResult read GetFileInfo;
   end;
 
   TConnectedClient  = class(TFtpCtrlSocket)
   private
-    FRealName: ShortString;
-    FEmail: ShortString;
-    FIP: ShortString;
+    FRealName: String;
+    FEmail: String;
+    FIP: String;
     FID: Cardinal;
   public
     constructor Create(AOwner: TComponent); override;
 
     property ID: Cardinal read FID write FID;
-    property RealName: ShortString read FRealName write FRealName;
-    property Email: ShortString read FEmail write FEmail;
-    property IP: ShortString read FIP write FIP;
+    property RealName: String read FRealName write FRealName;
+    property Email: String read FEmail write FEmail;
+    property IP: String read FIP write FIP;
   end;
+
+  TActionOnFile = (aofNone, aofDownload, aofDeleteFile, aofDeleteDir);
 
   TFileInfo = class(TCollectionItem)
   private
     FFilePath: TFileName;
     FLastModified: TDateTime;
+    FActionOnFile: TActionOnFile;
+    function GetTranslatedFilePath: TFileName;
+  public
+    constructor Create(Collection: TCollection); override;
+    property TranslatedFilePath: TFileName read GetTranslatedFilePath;
   published
     property LastModified: TDateTime read FLastModified write FLastModified;
     property FilePath: TFileName read FFilePath write FFilePath;
+    property ActionOnFile: TActionOnFile read FActionOnFile write FActionOnFile;
   end;
+
+  TMonitoredFiles = class;
 
   TFiles = class(TCollection)
   private
+    FMonitoredFiles: TMonitoredFiles;
     function GetFileInfo(i: Cardinal): TFileInfo;
   public
+    function IndexOfFilePath(aFilePath: TFileName; aPartial: Boolean = False): Integer;
+    function IndexOfTranslatedFilePath(aFilePath: TFileName; aPartial: Boolean = False): Integer;
+    function DownloadCount: Integer;
+    function DeleteFileCount: Integer;
+    function DeleteDirCount: Integer;
     function Add: TFileInfo;
     property FileInfo[i: Cardinal]: TFileInfo read GetFileInfo; default;
+    property MonitoredFiles: TMonitoredFiles read FMonitoredFiles write FMonitoredFiles;
   end;
 
   TMonitoredFiles = class(TObjectFile)
   private
     FFiles: TFiles;
-    FDirectory: ShortString;
-    FChaveDeInstalacao: ShortString;
+    FDirectory: String;
+    FInstallationKey: String;
+    FDefaultAppDir: String;
+    function GetAppDir: String;
   public
-    constructor Create(aOwner: TComponent); override;
+    constructor Create(aOwner: TComponent; aDefaultAppDir: String); reintroduce;
     destructor Destroy; override;
     procedure Clear; override;
+    property DefaultAppDir: String read FDefaultAppDir;
+    property AppDir: String read GetAppDir;
   published
     property Files: TFiles read FFiles write FFiles;
-    property Directory: ShortString read FDirectory write FDirectory;
-    property ChaveDeInstalacao: ShortString read FChaveDeInstalacao write FChaveDeInstalacao;
+    property Directory: String read FDirectory write FDirectory; { diretório sendo monitorado no servidor }
+    property InstallationKey: String read FInstallationKey write FInstallationKey;
   end;
 
 procedure ShowOnLog(const aText: String; aRichEdit: TRichEdit);
@@ -101,18 +124,18 @@ function PutLineBreaks(const aText: String; aCharsPerLine: Byte): String;
 function ExecuteCmd(aFTPClient       : TFtpClient;
                     aSyncCmd         : TSyncCmd;
                     aRichEdit        : TRichEdit;
-                    aDescription     : ShortString = '';
+                    aDescription     : String = '';
                     aCommandDelay    : Word = 0;
                     aProgressBar     : TProgressBar = nil;
                     aLabelPercentDone: TLabel = nil): Boolean;
 
 procedure Autenticar(aFTPClient: TFtpClient;
                      aUserName
-                    ,aPassWord : ShortString;
+                    ,aPassWord : String;
                      aRichEdit : TRichEdit);
 
 procedure Conectar(aFTPClient: TFtpClient;
-                   aHostName : ShortString;
+                   aHostName : String;
                    aPortNumb : Word;
                    aRichEdit : TRichEdit);
 
@@ -120,14 +143,14 @@ procedure Desconectar(aFTPClient: TFtpClient;
                       aRichEdit : TRichEdit);
 
 procedure MudarDiretorio(aFTPClient: TFtpClient;
-                         aDiretorio: ShortString;
+                         aDiretorio: String;
                          aRichEdit : TRichEdit);
 
 function ObterArquivo(aFTPClient       : TFtpClient;
                       aProgressBar     : TProgressBar;
                       aLabelPercentDone: TLabel;
                       aLocalFileName
-                     ,aRemoteFileName  : ShortString;
+                     ,aRemoteFileName  : String;
                       aRichEdit        : TRichEdit;
                       aObterTamanho    : Boolean = False;
                       aMaxTries        : Byte = 5): Boolean;
@@ -143,21 +166,19 @@ procedure InitializeProgress(aProgressBar: TProgressBar; aLabelPercentDone: TLab
 procedure IncreaseProgress(aProgressBar: TProgressBar; aLabelPercentDone: TLabel);
 procedure SetProgressWith(aProgressBar: TProgressBar; aLabelPercentDone: TLabel; aPosition: Cardinal);
 procedure SendStatus(aClient: TConnectedClient;
-                     aStatus: ShortString);
+                     aStatus: String);
 function GetUSFormatSettings: TFormatSettings;
 
-function ReplaceSpecialConstants(aFilePath
-                                ,aDefaultLocation: TFileName;
-                                 aInstallationKey: String): String;
+function ParamIsPresent(aParamName: String): Boolean;
+function GetFileModificationDate(aFileName: String): TDateTime;
+function GetParamValue(aParamName: String): String;
 
-function ParamIsPresent(aParamName: ShortString): Boolean;
-
-function GetParamValue(aParamName: ShortString): ShortString;
+procedure ProcessTree(aRoot, aMask: String; aRecursive: Boolean; aProcessFiles, aProcessDirs: TProcessCallBack);
 
 const
   TXT = 0;
   BIN = 1;
-  FORMATOS: array [0..1] of ShortString = ('OBJ','XML');
+  FORMATOS: array [0..1] of String = ('OBJ','XML');
 
   { Comandos podem ter parâmetos ou não. Se houver parametros estes são
   colocados dentro das chaves, separados por vírgulas. Comandos podem ter
@@ -212,28 +233,19 @@ uses Graphics
    , ShFolder
    , Registry;
 
-const
-  _APP   = '{APP}';
-  _WIN   = '{WIN}';
-  _SYS   = '{SYS}';
-  _SD    = '{SD}';
-  _PF    = '{PF}';
-  _PF32  = '{PF32}';
-  _PF64  = '{PF64}';
-  _CF    = '{CF}';
-  _FONTS = '{FONTS}';
+function GetFileModificationDate(aFileName: String): TDateTime;
+var
+  SearchRec: TSearchRec;
+begin
+  try
+    FindFirst(aFileName,0,SearchRec);
+    Result := FileDateToDatetime(SearchRec.Time);
+  finally
+    FindClose(SearchRec);
+  end;
+end;
 
-  // {app} = Diretório onde a aplicação foi instalada com o instalador
-  //         automático INNO SETUP
-  // {win} = Diretório do windows. Tipicamente C:\WINDOWS ou C:\WINNT
-  // {sys} = Diretório "System" ou "System32"
-  // {sd} = Diretório do sistema, tipicamente "C:"
-  // {pf} = Diretório "Arquivos de Programas"
-  // {cf} = Diretório "Arquivos Comuns"
-  // {fonts} = Diretório "Fonts"
-
-
-function ParamIsPresent(aParamName: ShortString): Boolean;
+function ParamIsPresent(aParamName: String): Boolean;
 var
   i: Byte;
 begin
@@ -248,7 +260,7 @@ begin
       end;
 end;
 
-function GetParamValue(aParamName: ShortString): ShortString;
+function GetParamValue(aParamName: String): String;
 var
   i: Byte;
 begin
@@ -263,130 +275,6 @@ begin
       end;
 end;
 
-function GetWinDir: ShortString;
-var
-  Buffer: array[0..Pred(MAX_PATH)] of Char;
-begin
-  GetWindowsDirectory(Buffer, SizeOf(Buffer) div SizeOf(Buffer[0]));
-  Result := StrPas(Buffer);
-end;
-
-function GetSystemDir: ShortString;
-var
-  Buffer: array[0..Pred(MAX_PATH)] of Char;
-begin
-  GetSystemDirectory(Buffer, SizeOf(Buffer) div SizeOf(Buffer[0]));
-  Result := StrPas(Buffer);
-end;
-
-function GetSystemDrive: ShortString;
-begin
-  Result := Copy(GetWinDir,1,2);
-end;
-
-function GetProgramFilesDir: ShortString;
-var
-  Buffer: array[0..Pred(MAX_PATH)] of Char;
-begin
-  SHGetSpecialFolderPath(0
-                        ,Buffer
-                        ,CSIDL_PROGRAM_FILES
-                        ,False);
-  Result := StrPas(Buffer);
-end;
-
-function GetCommonFilesDir: ShortString;
-var
-  Buffer: array[0..Pred(MAX_PATH)] of Char;
-begin
-  SHGetSpecialFolderPath(0
-                        ,Buffer
-                        ,CSIDL_PROGRAM_FILES_COMMON
-                        ,False);
-  Result := StrPas(Buffer);
-end;
-
-function GetFontsDir: ShortString;
-var
-  Buffer: array[0..Pred(MAX_PATH)] of Char;
-begin
-  SHGetSpecialFolderPath(0
-                        ,Buffer
-                        ,CSIDL_FONTS
-                        ,False);
-  Result := StrPas(Buffer);
-end;
-
-function GetAppDir(aInstallationKey: String): String;
-begin
-  Result := '';
-  with TRegistry.Create do
-    try
-      RootKey := HKEY_LOCAL_MACHINE;
-      if OpenKeyReadOnly('SOFTWARE\MICROSOFT\WINDOWS\CURRENTVERSION\UNINSTALL\' + aInstallationKey) then
-        Result := ReadString('Inno Setup: App Path');
-    finally
-      Free;
-    end;
-end;
-
-function ReplaceSpecialConstants(aFilePath
-                                ,aDefaultLocation: TFileName;
-                                 aInstallationKey: String): String;
-var
-  AppDir: String;
-begin
-  // {app} = Diretório onde a aplicação foi instalada com o instalador
-  //         automático INNO SETUP
-  // {win} = Diretório do windows. Tipicamente C:\WINDOWS ou C:\WINNT
-  // {sys} = Diretório "System" ou "System32"
-  // {sd} = Diretório do sistema, tipicamente "C:"
-  // {pf} = Diretório "Arquivos de Programas"
-  // {pf32} = Diretório "Arquivos de Programas" para programas de 32 bits. Tipicamente "C:\Program Files" em Windows de 32-bit e "C:\Program Files (x86)" em Windows de 64 bits
-  // {pf64} = Diretório "Arquivos de Programas" para programas de 64 bits. Tipicamente "C:\Program Files". Deve lançar uma exceção quando tentar usar esta constante em Windows de 32 bits
-  // {cf} = Diretório "Arquivos Comuns"
-  // {fonts} = Diretório "Fonts"
-
-  Result := UpperCase(aFilePath);
-
-  if Pos(_APP,Result) = 1 then
-  begin
-    AppDir := GetAppDir(aInstallationKey);
-    if AppDir <> '' then
-      Result := StringReplace(Result,_APP,AppDir,[])
-    else
-      Result := StringReplace(Result,_APP,aDefaultLocation,[])
-  end
-  else if Pos(_WIN,Result) = 1 then
-    Result := StringReplace(Result
-                           ,_WIN,GetWinDir,[])
-  else if Pos(_SYS,Result) = 1 then
-    Result := StringReplace(Result
-                           ,_SYS,GetSystemDir,[])
-  else if Pos(_SD,Result) = 1 then
-    Result := StringReplace(Result
-                           ,_SD,GetSystemDrive,[])
-  else if Pos(_PF,Result) = 1 then
-    Result := StringReplace(Result
-                           ,_PF,GetProgramFilesDir,[])
-  else if Pos(_CF,Result) = 1 then
-    Result := StringReplace(Result
-                           ,_CF,GetCommonFilesDir,[])
-  else if Pos(_FONTS,Result) = 1 then
-    Result := StringReplace(Result
-                           ,_FONTS,GetFontsDir,[])
-  else
-  begin
-    if aDefaultLocation <> '' then
-    begin
-      { Seria bom aqui validar o caminho padrão antes de usá-lo }
-      Result := aDefaultLocation + '\' + Result
-    end
-    else
-      raise EInvalidPath.Create('Não há constante de substituição e não foi informado um local padrão para o caminho "' + aFilePath + '". Não é possível obter este arquivo');
-  end;
-end;
-
 function GetUSFormatSettings: TFormatSettings;
 begin
   ZeroMemory(@Result,SizeOf(TFormatSettings));
@@ -394,7 +282,7 @@ begin
 end;
 
 procedure SendStatus(aClient: TConnectedClient;
-                     aStatus: ShortString);
+                     aStatus: String);
 begin
 	if Assigned(aClient) then
       aClient.SendAnswer('150-' + aStatus);
@@ -403,7 +291,7 @@ end;
 function PutLineBreaks(const aText: String; aCharsPerLine: Byte): String;
 var
   BreakPos: Byte;
-  LineToAdd: ShortString;
+  LineToAdd: String;
   BreakableText: String;
 begin
   if Length(aText) > aCharsPerLine then
@@ -437,14 +325,14 @@ procedure ShowOnLog(const aText: String; aRichEdit: TRichEdit);
 var
   Linhas: TStringList;
   i: Word;
-  LinhaAExibir: ShortString;
+  LinhaAExibir: String;
 
-  function FirstToken(Line: String): ShortString;
+  function FirstToken(Line: String): String;
   begin
   	Result := Copy(Line,1,Pred(Pos(' ',Line)));
   end;
 
-  function FirstAndSecondTokens(Line: String): ShortString;
+  function FirstAndSecondTokens(Line: String): String;
   var
     Idx: Word;
     TmpStr: String;
@@ -504,7 +392,7 @@ begin
           // 24/08/2010 09:08:26 ] § XXXX LINHA xxxx
           // ||||||||||||||||||| ] § XXXX LINHA xxxx
           if (Linhas[0][1] <> '!') and (Linhas[0][1] <> '§') and (Linhas[0][1] <> '@') then
-            LinhaAExibir := FirstAndSecondTokens(Linhas[0]) + ' - ' + Linhas[i]
+            LinhaAExibir := FirstAndSecondTokens(Linhas[0]) + ' ' + Linhas[i]
           else
             LinhaAExibir := FirstToken(Linhas[0]) + ' ' + Linhas[i];
 
@@ -603,14 +491,14 @@ procedure ShowOnLog(const aText: String; aRichEdit: TRichEdit);
 var
   Linhas: TStringList;
   i: Word;
-  LinhaAExibir: ShortString;
+  LinhaAExibir: String;
 
-  function FirstToken(Line: String): ShortString;
+  function FirstToken(Line: String): String;
   begin
   	Result := Copy(Line,1,Pred(Pos(' ',Line)));
   end;
 
-  function FirstAndSecondTokens(Line: String): ShortString;
+  function FirstAndSecondTokens(Line: String): String;
   var
     Idx: Word;
     TmpStr: String;
@@ -705,7 +593,7 @@ end;
 
 { TODO -oCarlos Feitoza : Esta função está incompleta. Ela só está retornando as
 informações de versão. Por favor complete-a! }
-function TFileInformation.GetFileInfo(const aInfo: ShortString): TMultiTypedResult;
+function TFileInformation.GetFileInfo(const aInfo: String): TMultiTypedResult;
 var
   W32FAD: PWin32FileAttributeData;
   SystemTime: TSystemTime;
@@ -718,27 +606,27 @@ begin
     if aInfo = 'MAJORVERSION' then
     begin
       AsWord := HiWord(FFileInfo.dwFileVersionMS);
-	    AsShortString := IntToStr(AsWord);
+	    AsString := IntToStr(AsWord);
     end
     else if aInfo = 'MINORVERSION' then
     begin
       AsWord := LoWord(FFileInfo.dwFileVersionMS);
-	    AsShortString := IntToStr(AsWord);
+	    AsString := IntToStr(AsWord);
     end
     else if aInfo = 'RELEASE' then
     begin
       AsWord := HiWord(FFileInfo.dwFileVersionLS);
-	    AsShortString := IntToStr(AsWord);
+	    AsString := IntToStr(AsWord);
     end
     else if aInfo = 'BUILD' then
     begin
       AsWord := LoWord(FFileInfo.dwFileVersionLS);
-	    AsShortString := IntToStr(AsWord);
+	    AsString := IntToStr(AsWord);
     end
     else if aInfo = 'FULLVERSION' then
     begin
-	    AsShortString := GetFileInfo('MAJORVERSION').AsShortString + '.' + GetFileInfo('MINORVERSION').AsShortString + '.' + GetFileInfo('RELEASE').AsShortString + '.' + GetFileInfo('BUILD').AsShortString;
-      AsInt64 := StrToInt64(GetFileInfo('MAJORVERSION').AsShortString + GetFileInfo('MINORVERSION').AsShortString + GetFileInfo('RELEASE').AsShortString + GetFileInfo('BUILD').AsShortString);
+	    AsString := GetFileInfo('MAJORVERSION').AsString + '.' + GetFileInfo('MINORVERSION').AsString + '.' + GetFileInfo('RELEASE').AsString + '.' + GetFileInfo('BUILD').AsString;
+      AsInt64 := StrToInt64(GetFileInfo('MAJORVERSION').AsString + GetFileInfo('MINORVERSION').AsString + GetFileInfo('RELEASE').AsString + GetFileInfo('BUILD').AsString);
     end
     else if aInfo = 'MODIFIEDDATETIME' then
     begin
@@ -752,7 +640,7 @@ begin
   end;
 end;
 
-class function TFileInformation.GetInfo(const aFileName: TFileName; const aInfo: ShortString): TMultiTypedResult;
+class function TFileInformation.GetInfo(const aFileName: TFileName; const aInfo: String): TMultiTypedResult;
 begin
   with TFileInformation.Create do
   try
@@ -816,13 +704,18 @@ end;
 procedure SetProgressWith(aProgressBar: TProgressBar; aLabelPercentDone: TLabel; aPosition: Cardinal);
 begin
 	if Assigned(aProgressBar) then
+  begin
   	aProgressBar.Position := aPosition;
+    aProgressBar.Update;
+  end;
 
   if Assigned(aLabelPercentDone) then
+  begin
   	if aProgressBar.Max > 0 then
   		aLabelPercentDone.Caption := Format('%d%%',[Round(aProgressBar.Position / aProgressBar.Max * 100)])
   	else
   		aLabelPercentDone.Caption := '0%';
+  end;
 end;
 
 procedure InitializeProgress(aProgressBar: TProgressBar; aLabelPercentDone: TLabel; aMax: Cardinal);
@@ -914,7 +807,7 @@ begin
 end;
 
 procedure Conectar(aFTPClient: TFtpClient;
-                   aHostName : ShortString;
+                   aHostName : String;
                    aPortNumb : Word;
                    aRichEdit : TRichEdit);
 begin
@@ -927,10 +820,10 @@ end;
 
 procedure Autenticar(aFTPClient: TFtpClient;
                      aUserName
-                    ,aPassWord : ShortString;
+                    ,aPassWord : String;
                      aRichEdit : TRichEdit);
 var
-	ErrorText: ShortString;
+	ErrorText: String;
 begin
   ErrorText := 'Não foi possível autenticar sua conexão. Usuário e/ou senha inválidos.';
 
@@ -952,7 +845,7 @@ begin
 end;
 
 procedure MudarDiretorio(aFTPClient: TFtpClient;
-                         aDiretorio: ShortString;
+                         aDiretorio: String;
                          aRichEdit : TRichEdit);
 begin
     aFtpClient.HostDirName := aDiretorio;
@@ -965,7 +858,7 @@ function ObterArquivo(aFTPClient       : TFtpClient;
                       aProgressBar     : TProgressBar;
                       aLabelPercentDone: TLabel;
                       aLocalFileName
-                     ,aRemoteFileName  : ShortString;
+                     ,aRemoteFileName  : String;
                       aRichEdit        : TRichEdit;
                       aObterTamanho    : Boolean = False;
                       aMaxTries        : Byte = 5): Boolean;
@@ -1006,12 +899,12 @@ end;
 function ExecuteCmd(aFTPClient       : TFtpClient;
                     aSyncCmd         : TSyncCmd;
                     aRichEdit        : TRichEdit;
-                    aDescription     : ShortString = '';
+                    aDescription     : String = '';
                     aCommandDelay    : Word = 0;
                     aProgressBar     : TProgressBar = nil;
                     aLabelPercentDone: TLabel = nil): Boolean;
 var
-	Text: ShortString;
+	Text: String;
 begin
   Text := '@ Executando comando "' + aDescription + '"... ';
   Text := Text + DupeString('>',89 - Length(Text));
@@ -1028,6 +921,62 @@ begin
     ShowOnLog('Aguardando ' + IntToStr(aCommandDelay) + ' segundo(s) antes da próxima ação...',aRichEdit);
     ShowOnLog('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~',aRichEdit);
     WaitFor(aCommandDelay,False);
+  end;
+end;
+
+{ O conceito da função abaixo é interessante. Altere ela de forma que ela
+funcione também para processar diretórios. Atualmente ela só executa
+"aProcessCallBack" para arquivos }
+procedure ProcessTree(aRoot, aMask: String; aRecursive: Boolean; aProcessFiles, aProcessDirs: TProcessCallBack);
+{ ---------------------------------------------------------------------------- }
+procedure SearchTree;
+var
+  SearchRec: TSearchRec;
+begin
+  { Processa arquivos na pasta atual }
+  if FindFirst(aMask, 0, SearchRec) = 0 then
+    try
+      repeat
+        if not aProcessFiles(SearchRec) then
+          Break;
+      until FindNext(SearchRec) <> 0;
+    finally
+      SysUtils.FindClose(SearchRec);
+    end;
+  { Processa pastas dentro da pasta atual apenas se a recursividade estiver
+  ativa }
+  if aRecursive then
+    if FindFirst('*.*', faDirectory, SearchRec) = 0 then
+      try
+        repeat
+          if ((SearchRec.attr and faDirectory = faDirectory) and (SearchRec.name <> '.') and (SearchRec.name <> '..')) then
+          begin
+            ChDir(SearchRec.Name);
+            if Assigned(aProcessDirs) then
+              aProcessDirs(SearchRec);
+
+            SearchTree;
+
+            ChDir('..');
+          end;
+        until FindNext(SearchRec) <> 0;
+      finally
+        SysUtils.FindClose(SearchRec);
+      end;
+  end;
+{ ---------------------------------------------------------------------------- }
+var
+  CurrentDir: String;
+begin
+  if DirectoryExists(aRoot) then
+  begin
+    CurrentDir := GetCurrentDir;
+    try
+      ChDir(aRoot);
+      SearchTree;
+    finally
+      ChDir(CurrentDir);
+    end;
   end;
 end;
 
@@ -1049,16 +998,24 @@ begin
   FFiles.Clear;
 end;
 
-constructor TMonitoredFiles.Create(aOwner: TComponent);
+constructor TMonitoredFiles.Create(aOwner: TComponent; aDefaultAppDir: String);
 begin
-  inherited;
+  inherited Create(aOwner);
+  FDefaultAppDir := aDefaultAppDir;
+
   FFiles := TFiles.Create(TFileInfo);
+  FFiles.MonitoredFiles := Self;
 end;
 
 destructor TMonitoredFiles.Destroy;
 begin
   FFiles.Free;
   inherited;
+end;
+
+function TMonitoredFiles.GetAppDir: String;
+begin
+
 end;
 
 { TFiles }
@@ -1068,9 +1025,236 @@ begin
 	Result := TFileInfo(inherited Add);
 end;
 
+function TFiles.DeleteDirCount: Integer;
+var
+  i: Integer;
+begin
+  Result := 0;
+
+  for i := 0 to Pred(Count) do
+    if TFileInfo(Items[i]).ActionOnFile = aofDeleteDir then
+      Inc(Result);
+end;
+
+function TFiles.DeleteFileCount: Integer;
+var
+  i: Integer;
+begin
+  Result := 0;
+
+  for i := 0 to Pred(Count) do
+    if TFileInfo(Items[i]).ActionOnFile = aofDeleteFile then
+      Inc(Result);
+end;
+
 function TFiles.GetFileInfo(i: Cardinal): TFileInfo;
 begin
 	Result := TFileInfo(inherited Items[i]);
+end;
+
+function TFiles.IndexOfFilePath(aFilePath: TFileName; aPartial: Boolean = False): Integer;
+var
+  i: Cardinal;
+begin
+  Result := -1;
+  if aPartial then
+  begin
+    if Count > 0 then
+      for i := 0 to Pred(Count) do
+        if Pos(UpperCase(aFilePath),UpperCase(TFileInfo(Items[i]).FilePath)) > 0 then
+        begin
+          Result := i;
+          Break;
+        end;
+  end
+  else
+  begin
+    if Count > 0 then
+      for i := 0 to Pred(Count) do
+        if UpperCase(TFileInfo(Items[i]).FilePath) = UpperCase(aFilePath) then
+        begin
+          Result := i;
+          Break;
+        end;
+  end;
+end;
+
+function TFiles.IndexOfTranslatedFilePath(aFilePath: TFileName; aPartial: Boolean = False): Integer;
+var
+  i: Cardinal;
+begin
+  Result := -1;
+  if aPartial then
+  begin
+    if Count > 0 then
+      for i := 0 to Pred(Count) do
+      begin
+        if Pos(UpperCase(aFilePath),UpperCase(TFileInfo(Items[i]).TranslatedFilePath)) > 0 then
+        begin
+          Result := i;
+          Break;
+        end;
+      end;
+  end
+  else
+  begin
+    if Count > 0 then
+      for i := 0 to Pred(Count) do
+      begin
+        if UpperCase(TFileInfo(Items[i]).TranslatedFilePath) = UpperCase(aFilePath) then
+        begin
+          Result := i;
+          Break;
+        end;
+      end;
+  end;
+end;
+
+function TFiles.DownloadCount: Integer;
+var
+  i: Integer;
+begin
+  Result := 0;
+
+  for i := 0 to Pred(Count) do
+    if TFileInfo(Items[i]).ActionOnFile = aofDownload then
+      Inc(Result);
+end;
+
+{ TFileInfo }
+
+const
+  _APP   = '{APP}';
+  _WIN   = '{WIN}';
+  _SYS   = '{SYS}';
+  _SD    = '{SD}';
+  _PF    = '{PF}';
+  _PF32  = '{PF32}';
+  _PF64  = '{PF64}';
+  _CF    = '{CF}';
+  _FONTS = '{FONTS}';
+
+constructor TFileInfo.Create(Collection: TCollection);
+begin
+  inherited;
+  FActionOnFile := aofNone;
+end;
+
+function GetWinDir: String;
+var
+  Buffer: array[0..Pred(MAX_PATH)] of Char;
+begin
+  GetWindowsDirectory(Buffer, SizeOf(Buffer) div SizeOf(Buffer[0]));
+  Result := StrPas(Buffer);
+end;
+
+function GetSystemDir: String;
+var
+  Buffer: array[0..Pred(MAX_PATH)] of Char;
+begin
+  GetSystemDirectory(Buffer, SizeOf(Buffer) div SizeOf(Buffer[0]));
+  Result := StrPas(Buffer);
+end;
+
+function GetSystemDrive: String;
+begin
+  Result := Copy(GetWinDir,1,2);
+end;
+
+function GetProgramFilesDir: String;
+var
+  Buffer: array[0..Pred(MAX_PATH)] of Char;
+begin
+  SHGetSpecialFolderPath(0
+                        ,Buffer
+                        ,CSIDL_PROGRAM_FILES
+                        ,False);
+  Result := StrPas(Buffer);
+end;
+
+function GetCommonFilesDir: String;
+var
+  Buffer: array[0..Pred(MAX_PATH)] of Char;
+begin
+  SHGetSpecialFolderPath(0
+                        ,Buffer
+                        ,CSIDL_PROGRAM_FILES_COMMON
+                        ,False);
+  Result := StrPas(Buffer);
+end;
+
+function GetFontsDir: String;
+var
+  Buffer: array[0..Pred(MAX_PATH)] of Char;
+begin
+  SHGetSpecialFolderPath(0
+                        ,Buffer
+                        ,CSIDL_FONTS
+                        ,False);
+  Result := StrPas(Buffer);
+end;
+
+function GetAppDir(aInstallationKey: String): String;
+begin
+  Result := '';
+  with TRegistry.Create do
+    try
+      RootKey := HKEY_LOCAL_MACHINE;
+      if OpenKeyReadOnly('SOFTWARE\MICROSOFT\WINDOWS\CURRENTVERSION\UNINSTALL\' + aInstallationKey) then
+        Result := ReadString('Inno Setup: App Path');
+    finally
+      Free;
+    end;
+end;
+
+function TFileInfo.GetTranslatedFilePath: TFileName;
+var
+  AppDir: String;
+begin
+  // {app} = Diretório onde a aplicação foi instalada com o instalador
+  //         automático INNO SETUP
+  // {win} = Diretório do windows. Tipicamente C:\WINDOWS ou C:\WINNT
+  // {sys} = Diretório "System" ou "System32"
+  // {sd} = Diretório do sistema, tipicamente "C:"
+  // {pf} = Diretório "Arquivos de Programas"
+  // {pf32} = Diretório "Arquivos de Programas" para programas de 32 bits. Tipicamente "C:\Program Files" em Windows de 32-bit e "C:\Program Files (x86)" em Windows de 64 bits
+  // {pf64} = Diretório "Arquivos de Programas" para programas de 64 bits. Tipicamente "C:\Program Files". Deve lançar uma exceção quando tentar usar esta constante em Windows de 32 bits
+  // {cf} = Diretório "Arquivos Comuns"
+  // {fonts} = Diretório "Fonts"
+
+  Result := UpperCase(FFilePath);
+
+  if Pos(_APP,Result) = 1 then
+  begin
+    AppDir := GetAppDir(TFiles(Collection).MonitoredFiles.InstallationKey);
+    if AppDir <> '' then
+      Result := StringReplace(Result,_APP,AppDir,[])
+    else
+    begin
+      if TFiles(Collection).MonitoredFiles.DefaultAppDir <> '' then
+        Result := StringReplace(Result,_APP,TFiles(Collection).MonitoredFiles.DefaultAppDir,[])
+      else
+        raise EInvalidPath.Create('Não foi possível encontrar o diretório de instalação e não foi informado um local padrão. Não é possível traduzir o caminho "' + FFilePath + '"');
+    end;
+  end
+  else if Pos(_WIN,Result) = 1 then
+    Result := StringReplace(Result
+                           ,_WIN,GetWinDir,[])
+  else if Pos(_SYS,Result) = 1 then
+    Result := StringReplace(Result
+                           ,_SYS,GetSystemDir,[])
+  else if Pos(_SD,Result) = 1 then
+    Result := StringReplace(Result
+                           ,_SD,GetSystemDrive,[])
+  else if Pos(_PF,Result) = 1 then
+    Result := StringReplace(Result
+                           ,_PF,GetProgramFilesDir,[])
+  else if Pos(_CF,Result) = 1 then
+    Result := StringReplace(Result
+                           ,_CF,GetCommonFilesDir,[])
+  else if Pos(_FONTS,Result) = 1 then
+    Result := StringReplace(Result
+                           ,_FONTS,GetFontsDir,[]);
 end;
 
 end.

@@ -28,10 +28,12 @@ type
     Label_ProgressGeral: TLabel;
     Label1: TLabel;
     Label2: TLabel;
+    StatusBar2: TStatusBar;
     procedure BitBtn_ConfigurarClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure FormShow(Sender: TObject);
     procedure FormCreate(Sender: TObject);
+    procedure Label1Click(Sender: TObject);
   private
     { Private declarations }
     procedure DelayedAction;
@@ -74,7 +76,7 @@ begin
 
   DataModule_Principal.AutoChecagem.Resume;
 
-//  DataModule_Principal.Action_EsconderNaBarraDeTarefas.Execute;
+  DataModule_Principal.Action_EsconderNaBarraDeTarefas.Execute;
   ModoMini(False);
 end;
 
@@ -84,11 +86,12 @@ begin
   begin
     AutoSize := True;
     StatusBar1.Hide;
+    StatusBar2.Hide;
     Panel_LayerBotoes.Hide;
     RichEdit_Log.Hide;
     Panel_ModoMini.Show;
     Panel_LayerInferior.Align := alNone;
-    Panel_LayerInferior.Width := 500;
+    Panel_LayerInferior.Width := 600;
     Position := poDesktopCenter;
     Position := poScreenCenter;
   end
@@ -96,6 +99,7 @@ begin
   begin
     AutoSize := False;
     StatusBar1.Show;
+    StatusBar2.Show;
     Panel_LayerBotoes.Show;
     RichEdit_Log.Show;
     Width := 820;
@@ -122,6 +126,13 @@ procedure TForm_Principal.FormShow(Sender: TObject);
 begin
   DelayedAction;
   OnShow := nil;
+end;
+
+procedure TForm_Principal.Label1Click(Sender: TObject);
+begin
+  showmessage(inttostr(ProgressBar_Arquivo.position))
+
+
 end;
 
 end.

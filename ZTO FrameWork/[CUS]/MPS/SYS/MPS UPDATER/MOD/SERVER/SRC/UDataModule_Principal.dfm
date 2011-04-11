@@ -825,13 +825,13 @@ object DataModule_Principal: TDataModule_Principal
     ListenBackLog = 5
     Banner = '220 - MPS Updater'
     UserData = 0
-    MaxClients = 10
+    MaxClients = 100
     PasvPortRangeStart = 0
     PasvPortRangeSize = 0
     Options = [ftpsCalcMD5OnTheFly]
     MD5UseThreadFileSize = 0
     TimeoutSecsLogin = 60
-    TimeoutSecsIdle = 300
+    TimeoutSecsIdle = 600
     TimeoutSecsXfer = 60
     ZlibMinLevel = 1
     ZlibMaxLevel = 9

@@ -5,7 +5,7 @@ object DataModule_Principal: TDataModule_Principal
   Height = 207
   Width = 203
   object FtpClient_Principal: TFtpClient
-    Timeout = 120
+    Timeout = 600
     MultiThreaded = False
     Port = '4321'
     CodePage = 0
