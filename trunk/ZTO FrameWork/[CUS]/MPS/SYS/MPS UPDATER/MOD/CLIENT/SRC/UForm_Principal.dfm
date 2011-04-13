@@ -1,6 +1,6 @@
 object Form_Principal: TForm_Principal
-  Left = 206
-  Top = 169
+  Left = 0
+  Top = 0
   BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = bsSingle
   Caption = 'MPS Updater (Client)'
