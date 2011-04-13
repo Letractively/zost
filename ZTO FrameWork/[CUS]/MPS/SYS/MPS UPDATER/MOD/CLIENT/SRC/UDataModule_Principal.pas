@@ -579,7 +579,9 @@ begin
 
         if IndexOfPart(Diretorio) = -1 then
         begin
-          ProcessTree(Diretorio, '*.*', True, ProcessarArquivos, ProcessarDiretorios);
+          { Só deve processar diretórios (para detecção de exclusões) abaixo de "APP" }
+          if Pos('{APP}',UpperCase(aMonitoredFiles.Files[i].FilePath)) = 1 then
+            ProcessTree(Diretorio, '*.*', True, ProcessarArquivos, ProcessarDiretorios);
           Add(Diretorio);
         end;
       end;

@@ -103,13 +103,11 @@ type
     FFiles: TFiles;
     FDirectory: String;
     FInstallationKey: String;
-    FDefaultAppDir: String;
     function GetAppDir: String;
   public
     constructor Create(aOwner: TComponent; aDefaultAppDir: String); reintroduce;
     destructor Destroy; override;
     procedure Clear; override;
-    property DefaultAppDir: String read FDefaultAppDir;
     property AppDir: String read GetAppDir;
   published
     property Files: TFiles read FFiles write FFiles;
