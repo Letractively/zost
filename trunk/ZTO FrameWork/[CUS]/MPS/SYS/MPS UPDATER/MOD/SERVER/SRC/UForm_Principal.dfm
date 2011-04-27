@@ -505,10 +505,6 @@ object Form_Principal: TForm_Principal
     object TabSheet_Arquivos: TTabSheet
       Caption = 'Arquivos'
       ImageIndex = 2
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Panel_Arquivos: TPanel
         AlignWithMargins = True
         Left = 6
@@ -527,8 +523,8 @@ object Form_Principal: TForm_Principal
           AlignWithMargins = True
           Left = 8
           Top = 2
-          Width = 741
-          Height = 26
+          Width = 758
+          Height = 37
           Margins.Left = 6
           Margins.Top = 0
           Margins.Right = 6
@@ -544,6 +540,8 @@ object Form_Principal: TForm_Principal
           Transparent = True
           Layout = tlCenter
           WordWrap = True
+          ExplicitWidth = 741
+          ExplicitHeight = 26
         end
       end
       object ZTODBGrid_ArquivosSistemas: TZTODBGrid
@@ -869,10 +867,6 @@ object Form_Principal: TForm_Principal
     object TabSheet_Usuarios: TTabSheet
       Caption = 'Usu'#225'rios'
       ImageIndex = 3
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Panel_Usuarios: TPanel
         AlignWithMargins = True
         Left = 6
@@ -892,7 +886,7 @@ object Form_Principal: TForm_Principal
           Left = 8
           Top = 2
           Width = 758
-          Height = 26
+          Height = 37
           Margins.Left = 6
           Margins.Top = 0
           Margins.Right = 6
@@ -907,6 +901,7 @@ object Form_Principal: TForm_Principal
           Transparent = True
           Layout = tlCenter
           WordWrap = True
+          ExplicitHeight = 26
         end
       end
       object Panel1: TPanel
@@ -1377,6 +1372,12 @@ object Form_Principal: TForm_Principal
       end>
     Left = 738
     StyleName = 'XP Style'
+    object Action_SalvarLogComo: TAction
+      Caption = 'Salvar log como...'
+    end
+    object Action_SalvarELimparLog: TAction
+      Caption = 'Salvar e limpar log'
+    end
   end
   object BalloonToolTip_Principal: TBalloonToolTip
     ParseLinks = False

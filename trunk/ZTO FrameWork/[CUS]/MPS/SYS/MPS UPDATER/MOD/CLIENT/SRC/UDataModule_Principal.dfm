@@ -54,11 +54,12 @@ object DataModule_Principal: TDataModule_Principal
     end
   end
   object TrayIcon_Principal: TTrayIcon
+    Hint = 'O MPS Updater ainda est'#225' ativo!'
     BalloonHint = 
       'Clique neste '#237'cone com o bot'#227'o direito do mouse para acessar o m' +
       'enu do MPS Updater'
     BalloonTitle = 'O MPS Updater ainda est'#225' ativo!'
-    BalloonTimeout = 10000
+    BalloonTimeout = 1000
     BalloonFlags = bfInfo
     Icon.Data = {
       0000010001001010000001001800680300001600000028000000100000002000

@@ -79,6 +79,8 @@ type
     Label_SIS_VA_CHAVEDEINSTALACAO: TLabel;
     DBNavigator_EXC_Exclusoes: TDBNavigator;
     StatusBar_Exclusoes: TStatusBar;
+    Action_SalvarLogComo: TAction;
+    Action_SalvarELimparLog: TAction;
     procedure FormShow(Sender: TObject);
     procedure DBNavigator_SistemasClick(Sender: TObject; Button: TNavigateBtn);
     procedure FormCreate(Sender: TObject);

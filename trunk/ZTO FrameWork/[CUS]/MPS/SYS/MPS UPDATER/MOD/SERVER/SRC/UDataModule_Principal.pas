@@ -11,7 +11,6 @@ uses
   Menus, ActnPopup;
 
 type
-
   TFileInfo = class (TCollectionItem)
   private
     FFullPath: ShortString;
@@ -219,6 +218,8 @@ type
     function IsSuperUser(aID: Cardinal): Boolean;
     procedure MinimizarNaBarraDeTarefas(aSender: TObject);
     procedure ExcluirArquivosSelecionados;
+    function HostNameToIP(const HostName: string): string;
+    function IPToHostName(aIP: String): String;
   public
     { Public declarations }
   end;
@@ -334,6 +335,58 @@ end;
 
 
 }
+
+function TDataModule_Principal.IPToHostName(aIP: String): String;
+var
+  SockAddrIn: TSockAddrIn;
+  HostEnt: PHostEnt;
+  WSAData: TWSAData;
+begin
+  Result := '';
+  WSAStartup($101, WSAData);
+
+  try
+    SockAddrIn.sin_addr.s_addr := inet_addr(PChar(aIP));
+
+    HostEnt := gethostbyaddr(@SockAddrIn.sin_addr.S_addr, 4, AF_INET);
+
+    if Assigned(HostEnt) then
+      Result := StrPas(Hostent^.h_name);
+  finally
+    WSACleanup;
+  end;
+end;
+
+function TDataModule_Principal.HostNameToIP(const HostName: string): string;
+type
+  TaPInAddr = array[0..10] of PInAddr;
+  PaPInAddr = ^TaPInAddr;
+var
+  phe: PHostEnt;
+  pptr: PaPInAddr;
+  i: Integer;
+  GInitData: TWSAData;
+begin
+  Result := '';
+  WSAStartup($101, GInitData);
+
+  try
+    phe := GetHostByName(PChar(HostName));
+    if not Assigned(phe) then
+      Exit;
+
+    pPtr := PaPInAddr(phe^.h_addr_list);
+
+    i := 0;
+    while pPtr^[i] <> nil do
+    begin
+      Result := inet_ntoa(pptr^[i]^);
+      Inc(i);
+    end;
+  finally
+    WSACleanup;
+  end;
+end;
 
 procedure TDataModule_Principal.EXCLUSOESAfterInsert(DataSet: TDataSet);
 begin
@@ -676,7 +729,7 @@ end;
 
 procedure TDataModule_Principal.FtpServer_MainAnswerToClient(Sender: TObject; Client: TFtpCtrlSocket; var Answer: TFtpString);
 begin
-	ShowOnLog(PutLineBreaks('RETORNO:> ' + Answer + ' (' + Client.GetPeerAddr + ')',85),Form_Principal.RichEdit_LogFTP);
+	ShowOnLog(PutLineBreaks('RETORNO:> ' + Answer + ' ' + IPToHostName(Client.GetPeerAddr) + ' (' + Client.GetPeerAddr + ':' + Client.GetPeerPort + ')',85),Form_Principal.RichEdit_LogFTP);
 end;
 
 procedure TDataModule_Principal.FtpServer_MainAuthenticate(Sender: TObject; Client: TFtpCtrlSocket; UserName, Password: TFtpString; var Authenticated: Boolean);
@@ -738,7 +791,7 @@ begin
   if UpperCase(Keyword) = 'PASS' then
     Parametros := '<SENHA OCULTADA>';
 
-	ShowOnLog('COMANDO:> ' + Keyword + ' ' + Parametros + ' (' + Client.GetPeerAddr + ')',Form_Principal.RichEdit_LogFTP);
+	ShowOnLog('COMANDO:> ' + Keyword + ' ' + Parametros + ' ' + IPToHostName(Client.GetPeerAddr) + ' (' + Client.GetPeerAddr + ':' + Client.GetPeerPort + ')',Form_Principal.RichEdit_LogFTP);
 end;
 
 procedure TDataModule_Principal.UpdateClientCount;
@@ -828,7 +881,7 @@ begin
   end
   else
   begin
-    ShowOnLog('§ O cliente ' + Client.GetPeerAddr + '/' + Client.GetPeerPort + ' acabou de conectar-se',Form_Principal.RichEdit_LogFTP);
+    ShowOnLog('§ Cliente ' + IPToHostName(Client.GetPeerAddr) + ' (' + Client.GetPeerAddr + ':' + Client.GetPeerPort + ') conectado',Form_Principal.RichEdit_LogFTP);
 
 //    UpdateClientCount;
 
@@ -839,7 +892,7 @@ end;
 
 procedure TDataModule_Principal.FtpServer_MainClientDisconnect(Sender: TObject; Client: TFtpCtrlSocket; AError: Word);
 begin
-  ShowOnLog('§ Cliente (' + Client.GetPeerAddr + '/' + Client.GetPeerPort + ') desconectado',Form_Principal.RichEdit_LogFTP);
+  ShowOnLog('§ Cliente ' + IPToHostName(Client.GetPeerAddr) + ' (' + Client.GetPeerAddr + ':' + Client.GetPeerPort + ') desconectado',Form_Principal.RichEdit_LogFTP);
 //  UpdateClientCount;
 end;
 
@@ -854,7 +907,7 @@ end;
 procedure TDataModule_Principal.FtpServer_MainRetrDataSent(Sender: TObject; Client: TFtpCtrlSocket; Data: TWSocket; AError: Word);
 begin
   if AError <> 0 then
-    ShowOnLog('! ' + Client.GetPeerAddr + ' Dados não enviados. Erro #' + IntToStr(AError),Form_Principal.RichEdit_LogFTP);
+    ShowOnLog('! ' + IPToHostName(Client.GetPeerAddr) + ' (' + Client.GetPeerAddr + ':' + Client.GetPeerPort + ') Dados não enviados. Erro #' + IntToStr(AError),Form_Principal.RichEdit_LogFTP);
   { TODO : No futuro coloque uma barra de progresso multipropósito. Aqui ela
   cresce de acordo com a quantidade de dados enviados ao cliente. }
 end;
@@ -862,9 +915,9 @@ end;
 procedure TDataModule_Principal.FtpServer_MainRetrSessionClosed(Sender: TObject; Client: TFtpCtrlSocket; Data: TWSocket; AError: Word);
 begin
   if AError <> 0 then
-    ShowOnLog('! ' + Client.GetPeerAddr + ' Sessão de dados finalizada. Erro #' + IntToStr(AError),Form_Principal.RichEdit_LogFTP)
+    ShowOnLog('! ' + IPToHostName(Client.GetPeerAddr) + ' (' + Client.GetPeerAddr + ':' + Client.GetPeerPort + ') Sessão de dados finalizada. Erro #' + IntToStr(AError),Form_Principal.RichEdit_LogFTP)
   else
-    ShowOnLog('§ ' + Client.GetPeerAddr + ' Sessão de dados finalizada sem erros!',Form_Principal.RichEdit_LogFTP);
+    ShowOnLog('§ ' + IPToHostName(Client.GetPeerAddr) + ' (' + Client.GetPeerAddr + ':' + Client.GetPeerPort + ') Sessão de dados finalizada sem erros!',Form_Principal.RichEdit_LogFTP);
 
   if AError = 0 then
     if Client.UserData = 1 then
@@ -1103,9 +1156,9 @@ end;
 procedure TDataModule_Principal.FtpServer_MainRetrSessionConnected(Sender: TObject; Client: TFtpCtrlSocket; Data: TWSocket; AError: Word);
 begin
   if AError <> 0 then
-    ShowOnLog('! ' + Client.GetPeerAddr + ' Sessão de dados iniciada. Erro #' + IntToStr(AError),Form_Principal.RichEdit_LogFTP)
+    ShowOnLog('! ' + IPToHostName(Client.GetPeerAddr) + ' (' + Client.GetPeerAddr + ':' + Client.GetPeerPort + ') Sessão de dados iniciada. Erro #' + IntToStr(AError),Form_Principal.RichEdit_LogFTP)
   else
-    ShowOnLog('§ ' + Client.GetPeerAddr + ' Sessão de dados iniciada sem erros!',Form_Principal.RichEdit_LogFTP);
+    ShowOnLog('§ ' + IPToHostName(Client.GetPeerAddr) + ' (' + Client.GetPeerAddr + ':' + Client.GetPeerPort + ') Sessão de dados iniciada sem erros!',Form_Principal.RichEdit_LogFTP);
 end;
 
 procedure TDataModule_Principal.FtpServer_MainStart(Sender: TObject);
@@ -1125,17 +1178,17 @@ end;
 procedure TDataModule_Principal.FtpServer_MainStorSessionClosed(Sender: TObject; Client: TFtpCtrlSocket; Data: TWSocket; AError: Word);
 begin
   if AError <> 0 then
-	  ShowOnLog('! ' + Client.GetPeerAddr + ' Sessão de dados finalizada de forma incorreta. Erro #' + IntToStr(AError),Form_Principal.RichEdit_LogFTP)
+	  ShowOnLog('! ' + IPToHostName(Client.GetPeerAddr) + ' (' + Client.GetPeerAddr + ':' + Client.GetPeerPort + ') Sessão de dados finalizada de forma incorreta. Erro #' + IntToStr(AError),Form_Principal.RichEdit_LogFTP)
   else
-    ShowOnLog('§ ' + Client.GetPeerAddr + ' Sessão de dados finalizada sem erros!',Form_Principal.RichEdit_LogFTP);
+    ShowOnLog('§ ' + IPToHostName(Client.GetPeerAddr) + ' (' + Client.GetPeerAddr + ':' + Client.GetPeerPort + ') Sessão de dados finalizada sem erros!',Form_Principal.RichEdit_LogFTP);
 end;
 
 procedure TDataModule_Principal.FtpServer_MainStorSessionConnected(Sender: TObject; Client: TFtpCtrlSocket; Data: TWSocket; AError: Word);
 begin
   if AError <> 0 then
-    ShowOnLog('! ' + Client.GetPeerAddr + ' Não foi possível iniciar a sessão de dados. Erro #' + IntToStr(AError),Form_Principal.RichEdit_LogFTP)
+    ShowOnLog('! ' + IPToHostName(Client.GetPeerAddr) + ' (' + Client.GetPeerAddr + ':' + Client.GetPeerPort + ') Não foi possível iniciar a sessão de dados. Erro #' + IntToStr(AError),Form_Principal.RichEdit_LogFTP)
   else
-    ShowOnLog('§ ' + Client.GetPeerAddr + ' A sessão de dados foi iniciada sem erros!',Form_Principal.RichEdit_LogFTP);
+    ShowOnLog('§ ' + IPToHostName(Client.GetPeerAddr) + ' (' + Client.GetPeerAddr + ':' + Client.GetPeerPort + ') A sessão de dados foi iniciada sem erros!',Form_Principal.RichEdit_LogFTP);
 end;
 
 procedure TDataModule_Principal.FtpServer_MainValidateDele(Sender: TObject; Client: TFtpCtrlSocket; var FilePath: TFtpString; var Allowed: Boolean);

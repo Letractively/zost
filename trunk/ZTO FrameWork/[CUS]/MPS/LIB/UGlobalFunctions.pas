@@ -30,6 +30,7 @@ type
 
   EInvalidPath = class(Exception);
   EUnsuccessfulExclusion = class(Exception);
+  ERunningApplication = class(Exception);
 
   TFileSizeUnit = (fsuBytes, fsuKBytes, fsuMBytes, fsuGBytes, fsuTBytes);
 
@@ -103,15 +104,17 @@ type
     FFiles: TFiles;
     FDirectory: String;
     FInstallationKey: String;
-    function GetAppDir: String;
+    FDefaultAppDir: String;
+//    function GetAppDir: String;
   public
     constructor Create(aOwner: TComponent; aDefaultAppDir: String); reintroduce;
     destructor Destroy; override;
     procedure Clear; override;
-    property AppDir: String read GetAppDir;
+//    property AppDir: String read GetAppDir;
   published
     property Files: TFiles read FFiles write FFiles;
     property Directory: String read FDirectory write FDirectory; { diretório sendo monitorado no servidor }
+    property DefaultAppDir: String read FDefaultAppDir;
     property InstallationKey: String read FInstallationKey write FInstallationKey;
   end;
 
@@ -172,6 +175,7 @@ function GetFileModificationDate(aFileName: String): TDateTime;
 function GetParamValue(aParamName: String): String;
 
 procedure ProcessTree(aRoot, aMask: String; aRecursive: Boolean; aProcessFiles, aProcessDirs: TProcessCallBack);
+function ProcessExists(aExeFileName: String): Boolean;
 
 const
   TXT = 0;
@@ -229,7 +233,39 @@ uses Graphics
    , Forms
    , ShlObj
    , ShFolder
-   , Registry;
+   , Registry
+   , TlHelp32;
+
+function ProcessExists(aExeFileName: String): Boolean;
+var
+  ContinueLoop: Boolean;
+  SnapshotHandle: THandle;
+  ProcessEntry32: TProcessEntry32;
+begin
+  Result := False;
+
+  SnapshotHandle := 0;
+  try
+    SnapshotHandle := CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
+
+    ProcessEntry32.dwSize := SizeOf(TProcessEntry32);
+
+    ContinueLoop := Process32First(SnapshotHandle, ProcessEntry32);
+
+    while Integer(ContinueLoop) <> 0 do
+    begin
+      if ((UpperCase(ExtractFileName(ProcessEntry32.szExeFile)) = UpperCase(aExeFileName)) or (UpperCase(ProcessEntry32.szExeFile) = UpperCase(aExeFileName))) then
+      begin
+        Result := True;
+        Break;
+      end;
+
+      ContinueLoop := Process32Next(SnapshotHandle, ProcessEntry32);
+    end;
+  finally
+    CloseHandle(SnapshotHandle);
+  end;
+end;
 
 function GetFileModificationDate(aFileName: String): TDateTime;
 var
@@ -1011,10 +1047,10 @@ begin
   inherited;
 end;
 
-function TMonitoredFiles.GetAppDir: String;
-begin
-
-end;
+//function TMonitoredFiles.GetAppDir: String;
+//begin
+//
+//end;
 
 { TFiles }
 
