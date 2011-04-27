@@ -97,12 +97,14 @@ type
     procedure UpdateLastSynchronizationInfo;
     procedure AtualizarStatus;
     procedure ConfigurarAcoes(aMonitoredFiles: TMonitoredFiles);
+    procedure VerificarEmExecucao(aMonitoredFiles: TMonitoredFiles);
+    procedure ShowOnBalloon(aText, aTitle: String; aType: TBalloonFlags);
+    procedure ShowErrorMessage(aText: String; aRichEdit: TRichEdit);
   public
     { Public declarations }
     procedure RealizarAtualizacao; overload;
     function PodeFechar(aQual: Byte): Boolean;
     procedure ConfigureBalloonHint(aQual: Byte);
-    procedure ShowErrorMessage(aText: String; aRichEdit: TRichEdit);
     property AutoChecagem: TAutoChecagem read FAutoChecagem;
  end;
 
@@ -210,35 +212,35 @@ procedure TDataModule_Principal.ConfigureBalloonHint(aQual: Byte);
 begin
   case aQual of
     0: begin
-      TrayIcon_Principal.BalloonTimeout := 10000;
+      TrayIcon_Principal.BalloonTimeout := 5000;
       TrayIcon_Principal.BalloonFlags := bfInfo;
       TrayIcon_Principal.OnClickFor := 0;
       TrayIcon_Principal.BalloonHint := BALLOONTEXT0;
       TrayIcon_Principal.BalloonTitle := BALLOONTITLE0;
     end;
     1: begin
-      TrayIcon_Principal.BalloonTimeout := 10000;
+      TrayIcon_Principal.BalloonTimeout := 5000;
       TrayIcon_Principal.BalloonFlags := bfWarning;
       TrayIcon_Principal.OnClickFor := 1;
       TrayIcon_Principal.BalloonHint := BALLOONTEXT1;
       TrayIcon_Principal.BalloonTitle := BALLOONTITLE1;
     end;
     2: begin
-      TrayIcon_Principal.BalloonTimeout := 10000;
+      TrayIcon_Principal.BalloonTimeout := 5000;
       TrayIcon_Principal.BalloonFlags := bfInfo;
       TrayIcon_Principal.OnClickFor := 2;
       TrayIcon_Principal.BalloonHint := BALLOONTEXT2;
       TrayIcon_Principal.BalloonTitle := BALLOONTITLE2;
     end;
     3: begin
-      TrayIcon_Principal.BalloonTimeout := 10000;
+      TrayIcon_Principal.BalloonTimeout := 5000;
       TrayIcon_Principal.BalloonFlags := bfError;
       TrayIcon_Principal.OnClickFor := 3;
       TrayIcon_Principal.BalloonHint := BALLOONTEXT3;
       TrayIcon_Principal.BalloonTitle := BALLOONTITLE3;
     end;
     4: begin
-      TrayIcon_Principal.BalloonTimeout := 10000;
+      TrayIcon_Principal.BalloonTimeout := 5000;
       TrayIcon_Principal.BalloonFlags := bfInfo;
       TrayIcon_Principal.OnClickFor := 4;
       TrayIcon_Principal.BalloonHint := BALLOONTEXT4;
@@ -370,7 +372,7 @@ end;
 
 procedure TDataModule_Principal.FtpClient_PrincipalSessionClosed(Sender: TObject; ErrCode: Word);
 begin
-	ShowOnLog(PutLineBreaks('§ A conexão com o servidor foi encerrada...',98),Form_Principal.RichEdit_Log);
+	ShowOnLog(PutLineBreaks('§ A conexão com o servidor foi encerrada...',89),Form_Principal.RichEdit_Log);
 end;
 
 procedure TDataModule_Principal.MinimizarNaBarraDeTarefas(aSender: TObject);
@@ -540,6 +542,43 @@ begin
   Result := True;
 end;
 
+{ Varre aMonitoredFiles buscando todos os arquivos executáveis e verificando se
+existem instâncias em execução destes executáveis, desde que eles estejam
+marcados para serem baixados. Este método deve ser chamado após o método
+"ConfigurarAcoes" }
+procedure TDataModule_Principal.VerificarEmExecucao(aMonitoredFiles: TMonitoredFiles);
+var
+  i: Cardinal;
+  ErrorMsg: String;
+begin
+  with TStringList.Create do
+    try
+      for i := 0 to Pred(aMonitoredFiles.Files.Count) do
+      begin
+        if (aMonitoredFiles.Files[i].ActionOnFile in [aofDownload,aofDeleteFile]) and (Pos('.exe',aMonitoredFiles.Files[i].FilePath) > 0 ) then
+          if ProcessExists(ExtractFileName(aMonitoredFiles.Files[i].FilePath)) then
+          begin
+            Add(ExtractFileName(aMonitoredFiles.Files[i].FilePath));
+          end;
+      end;
+
+      if Count > 0 then
+      begin
+        for i := 0 to Pred(Count) do
+          Strings[i] := '"' + Strings[i] + '"';
+
+        if Count > 1 then
+          ErrorMsg := 'Os programas ' + StringReplace(Trim(Text),#13#10,', ',[rfReplaceAll]) + ' encontram-se em execução e não podem ser processados. A atualização não pode ser realizada. Feche os programas listados e tente novamente'
+        else
+          ErrorMsg := 'O programa ' + StringReplace(Trim(Text),#13#10,', ',[rfReplaceAll]) + ' encontra-se em execução e não pode ser processado. A atualização não pode ser realizada. Feche o programa e tente novamente';
+
+        ShowOnBalloon(ErrorMsg,'MPS Updater: Problema ao executar tarefa!',bfError);
+        raise ERunningApplication.Create(ErrorMsg);
+      end;
+    finally
+      Free;
+    end;
+end;
 
 { Altera aMonitoredFiles alterando a propriedade ActionOnFile de cada arquivo
 para aofUpdate, quando o arquivo remoto não existir localmente ou for mais
@@ -601,7 +640,7 @@ var
   i, ArquivosABaixar, ArquivosAExcluir, DiretoriosAExcluir: Cardinal;
 begin
   RessetarProgressos;
-  
+
   { TODO -oCARLOS FEITOZA -cMELHORIA : Verifique aqui se existem módulos abertos }
   with TIniFile.Create(ChangeFileExt(Application.ExeName,'.ini')) do
     try
@@ -665,10 +704,14 @@ begin
 
           if (ArquivosABaixar + ArquivosAExcluir + DiretoriosAExcluir) > 0 then
           begin
+            ShowOnLog(PutLineBreaks('§ A lista contém ' + IntToStr(ArquivosABaixar) + ' download(s), ' + IntToStr(ArquivosAExcluir) + ' exclusão(ões) de arquivo(s) e ' + IntToStr(DiretoriosAExcluir) + ' exclusão(ões) de diretório(s).',89),Form_Principal.RichEdit_Log);
+
+            { Verifica se existe algum aplicativo em execução dentre aqueles que
+            precisam ser processados (excluídos ou atualizados) }
+            VerificarEmExecucao(MF);
+
             { Usa as contagens das atualizações mais exclusões }
             InitializeProgress(aProgressBarGeral,aLabelPercentGeral,ArquivosABaixar + ArquivosAExcluir + DiretoriosAExcluir);
-
-            ShowOnLog(PutLineBreaks('§ A lista contém ' + IntToStr(ArquivosABaixar) + ' download(s), ' + IntToStr(ArquivosAExcluir) + ' exclusão(ões) de arquivo(s) e ' + IntToStr(DiretoriosAExcluir) + ' exclusão(ões) de diretório(s).',89),Form_Principal.RichEdit_Log);
 
             { O primeiro loop processa apenas arquivos, excluindo-os ou
             baixando-os segundo a necessidade }
@@ -905,17 +948,23 @@ begin
     end;
 end;
 
+procedure TDataModule_Principal.ShowOnBalloon(aText, aTitle: String; aType: TBalloonFlags);
+begin
+//[HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced]
+//"EnableBalloonTips"=dword:00000001
+  if TrayIcon_Principal.Visible then
+  begin
+    TrayIcon_Principal.BalloonTitle := aTitle;
+    TrayIcon_Principal.BalloonFlags := aType;
+    TrayIcon_Principal.BalloonHint  := aText;
+    TrayIcon_Principal.ShowBalloonHint;
+  end;
+end;
+
 procedure TDataModule_Principal.ShowErrorMessage(aText: String; aRichEdit: TRichEdit);
 begin
   ShowOnLog(PutLineBreaks(aText,89),aRichEdit);
-
-  if TrayIcon_Principal.Visible then
-  begin
-    TrayIcon_Principal.BalloonTitle := 'MPS Updater: Problema ao executar tarefa!';
-    TrayIcon_Principal.BalloonFlags := bfError;
-    TrayIcon_Principal.BalloonHint  := Copy(aText,3,Length(aText));
-    TrayIcon_Principal.ShowBalloonHint;
-  end;
+  ShowOnBalloon(Copy(aText,3,Length(aText)),'MPS Updater: Problema ao executar tarefa!',bfError);
 end;
 
 { TAutoChecagem }

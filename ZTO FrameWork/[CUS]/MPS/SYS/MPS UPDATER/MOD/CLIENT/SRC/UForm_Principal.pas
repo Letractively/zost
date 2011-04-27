@@ -39,6 +39,7 @@ type
     procedure DelayedAction;
     procedure DoDelayedAction(var Msg: TMessage);
     procedure ModoMini(aLigado: Boolean);
+    procedure WMQueryEndSession(var Msg: TWMQueryEndSession); message WM_QUERYENDSESSION;
   public
     { Public declarations }
   end;
@@ -109,6 +110,12 @@ begin
     Position := poDesktopCenter;
     Position := poScreenCenter;
   end;
+end;
+
+procedure TForm_Principal.WMQueryEndSession(var Msg: TWMQueryEndSession);
+begin
+  { Permite o desligamento automático da aplicação sem realizar a pergunta }
+  Msg.Result := 1;
 end;
 
 procedure TForm_Principal.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
