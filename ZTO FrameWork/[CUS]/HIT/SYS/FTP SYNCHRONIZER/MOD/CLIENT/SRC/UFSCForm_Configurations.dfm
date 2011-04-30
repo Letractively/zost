@@ -3,8 +3,8 @@ object FSCForm_Configurations: TFSCForm_Configurations
   Top = 0
   BorderStyle = bsDialog
   Caption = 'Dados para acesso'
-  ClientHeight = 264
-  ClientWidth = 451
+  ClientHeight = 269
+  ClientWidth = 522
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -19,12 +19,19 @@ object FSCForm_Configurations: TFSCForm_Configurations
   PixelsPerInch = 96
   TextHeight = 13
   object GroupBox1: TGroupBox
+    AlignWithMargins = True
     Left = 6
     Top = 3
-    Width = 440
+    Width = 510
     Height = 97
+    Margins.Left = 6
+    Margins.Right = 6
+    Margins.Bottom = 5
+    Align = alTop
     Caption = ' MySQL Local (mysql@localhost) '
     TabOrder = 0
+    ExplicitTop = 2
+    ExplicitWidth = 440
     object LabelProtocolo: TLabel
       Left = 6
       Top = 14
@@ -46,7 +53,7 @@ object FSCForm_Configurations: TFSCForm_Configurations
       Transparent = True
     end
     object LabelPortaMySQL: TLabel
-      Left = 383
+      Left = 454
       Top = 14
       Width = 26
       Height = 13
@@ -63,7 +70,7 @@ object FSCForm_Configurations: TFSCForm_Configurations
       Transparent = True
     end
     object LabelSenhaMySQL: TLabel
-      Left = 223
+      Left = 258
       Top = 55
       Width = 30
       Height = 13
@@ -97,21 +104,21 @@ object FSCForm_Configurations: TFSCForm_Configurations
     object EditNomeDoBanco: TEdit
       Left = 151
       Top = 28
-      Width = 226
+      Width = 297
       Height = 21
       TabOrder = 1
     end
     object EditPortaMySQL: TEdit
-      Left = 383
+      Left = 454
       Top = 28
       Width = 50
       Height = 21
       TabOrder = 2
     end
     object EditSenhaMySQL: TEdit
-      Left = 223
+      Left = 258
       Top = 69
-      Width = 210
+      Width = 246
       Height = 21
       PasswordChar = #248
       TabOrder = 4
@@ -119,18 +126,26 @@ object FSCForm_Configurations: TFSCForm_Configurations
     object EditNomeDeUsuarioMySQL: TEdit
       Left = 6
       Top = 69
-      Width = 209
+      Width = 246
       Height = 21
       TabOrder = 3
     end
   end
   object GroupBox2: TGroupBox
+    AlignWithMargins = True
     Left = 6
-    Top = 103
-    Width = 440
+    Top = 105
+    Width = 510
     Height = 97
+    Margins.Left = 6
+    Margins.Top = 0
+    Margins.Right = 6
+    Margins.Bottom = 5
+    Align = alTop
     Caption = ' Servidor de FTP '
     TabOrder = 1
+    ExplicitTop = 103
+    ExplicitWidth = 440
     object LabelEnderecoDoServidor: TLabel
       Left = 6
       Top = 14
@@ -142,7 +157,7 @@ object FSCForm_Configurations: TFSCForm_Configurations
       Transparent = True
     end
     object LabePortaFTP: TLabel
-      Left = 383
+      Left = 454
       Top = 14
       Width = 26
       Height = 13
@@ -159,7 +174,7 @@ object FSCForm_Configurations: TFSCForm_Configurations
       Transparent = True
     end
     object LabelSenhaFTP: TLabel
-      Left = 223
+      Left = 258
       Top = 55
       Width = 30
       Height = 13
@@ -168,21 +183,21 @@ object FSCForm_Configurations: TFSCForm_Configurations
     object EditEnderecoDoServidor: TEdit
       Left = 6
       Top = 28
-      Width = 372
+      Width = 442
       Height = 21
       TabOrder = 0
     end
     object EditPortaFTP: TEdit
-      Left = 383
+      Left = 454
       Top = 28
       Width = 50
       Height = 21
       TabOrder = 1
     end
     object EditSenhaFTP: TEdit
-      Left = 223
+      Left = 258
       Top = 69
-      Width = 210
+      Width = 246
       Height = 21
       PasswordChar = #248
       TabOrder = 3
@@ -190,20 +205,27 @@ object FSCForm_Configurations: TFSCForm_Configurations
     object EditNomeDeUsuarioFTP: TEdit
       Left = 6
       Top = 69
-      Width = 209
+      Width = 246
       Height = 21
       TabOrder = 2
     end
   end
   object GroupBox_ConfiguracoesGerais: TGroupBox
+    AlignWithMargins = True
     Left = 6
-    Top = 203
-    Width = 440
+    Top = 207
+    Width = 510
     Height = 56
+    Margins.Left = 6
+    Margins.Top = 0
+    Margins.Right = 6
+    Align = alTop
     Caption = ' Cliente de FTP '
     TabOrder = 2
+    ExplicitTop = 203
+    ExplicitWidth = 440
     object CheckBox_ModoPassivo: TCheckBox
-      Left = 194
+      Left = 220
       Top = 36
       Width = 82
       Height = 13
@@ -213,16 +235,16 @@ object FSCForm_Configurations: TFSCForm_Configurations
     object LabeledEdit_DelayDeComandos: TLabeledEdit
       Left = 6
       Top = 28
-      Width = 182
+      Width = 114
       Height = 21
-      EditLabel.Width = 182
+      EditLabel.Width = 114
       EditLabel.Height = 13
-      EditLabel.Caption = 'Atraso de comandos (0 = sem atraso)'
+      EditLabel.Caption = 'Atraso de comandos (s)'
       LabelSpacing = 1
       TabOrder = 0
     end
     object CheckBox_VerboseMode: TCheckBox
-      Left = 194
+      Left = 220
       Top = 13
       Width = 94
       Height = 17
@@ -230,7 +252,7 @@ object FSCForm_Configurations: TFSCForm_Configurations
       TabOrder = 1
     end
     object CheckBox_ChecarMD5: TCheckBox
-      Left = 294
+      Left = 394
       Top = 13
       Width = 108
       Height = 13
@@ -238,12 +260,23 @@ object FSCForm_Configurations: TFSCForm_Configurations
       TabOrder = 2
     end
     object CheckBox_Compressao: TCheckBox
-      Left = 294
+      Left = 394
       Top = 36
       Width = 99
       Height = 13
       Caption = 'Usar compress'#227'o'
       TabOrder = 4
+    end
+    object LabeledEdit_TimeOut: TLabeledEdit
+      Left = 126
+      Top = 28
+      Width = 88
+      Height = 21
+      EditLabel.Width = 88
+      EditLabel.Height = 13
+      EditLabel.Caption = 'Espera m'#225'xima (s)'
+      LabelSpacing = 1
+      TabOrder = 5
     end
   end
 end

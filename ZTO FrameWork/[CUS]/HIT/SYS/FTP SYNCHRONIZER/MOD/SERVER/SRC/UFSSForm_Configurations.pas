@@ -27,12 +27,13 @@ type
     GroupBox3: TGroupBox;
     Label2: TLabel;
     Edit1: TCFEdit;
+    LabeledEdit_TimeOut: TLabeledEdit;
     procedure Edit1KeyPress(Sender: TObject; var Key: Char);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormShow(Sender: TObject);
     procedure FormCreate(Sender: TObject);
   private
-    DirAtual: ShortString;
+    DirAtual: String;
     procedure ExibirConfiguracoes;
     procedure GuardarConfiguracoes;
     { Private declarations }
@@ -92,13 +93,14 @@ procedure TFSSForm_Configurations.GuardarConfiguracoes;
 begin
 	with FSSForm_Main.FSYGlobals.Configurations do
 	begin
-		DB_Protocol	:= ComboBoxProtocolo.Items[ComboBoxProtocolo.ItemIndex];
-		DB_DataBase	:= EditNomeDoBanco.Text;
+		DB_Protocol	:= ShortString(ComboBoxProtocolo.Items[ComboBoxProtocolo.ItemIndex]);
+		DB_DataBase	:= ShortString(EditNomeDoBanco.Text);
 		DB_PortNumb	:= StrToInt(EditPortaMySQL.Text);
-		DB_UserName	:= EditNomeDeUsuarioMySQL.Text;
-		DB_Password	:= EditSenhaMySQL.Text;
+		DB_UserName	:= ShortString(EditNomeDeUsuarioMySQL.Text);
+		DB_Password	:= ShortString(EditSenhaMySQL.Text);
 
 		FT_PortNumb	:= StrToInt(EditPortaFTP.Text);
+    FT_TimeOut  := StrToInt(LabeledEdit_TimeOut.Text);
 
     SalvarLogACada := StrToInt(Edit1.Text);
 	end;
@@ -108,12 +110,14 @@ procedure TFSSForm_Configurations.ExibirConfiguracoes;
 begin
 	with FSSForm_Main.FSYGlobals.Configurations do
 	begin
-		ComboBoxProtocolo.ItemIndex := ComboBoxProtocolo.Items.IndexOf(DB_Protocol);
-		EditNomeDoBanco.Text := DB_DataBase;
+		ComboBoxProtocolo.ItemIndex := ComboBoxProtocolo.Items.IndexOf(String(DB_Protocol));
+		EditNomeDoBanco.Text := String(DB_DataBase);
 		EditPortaMySQL.Text := IntToStr(DB_PortNumb);
-		EditNomeDeUsuarioMySQL.Text := DB_UserName;
-		EditSenhaMySQL.Text := DB_Password;
+		EditNomeDeUsuarioMySQL.Text := String(DB_UserName);
+		EditSenhaMySQL.Text := String(DB_Password);
 		EditPortaFTP.Text := IntToStr(FT_PortNumb);
+    LabeledEdit_TimeOut.Text := IntToStr(FT_TimeOut);
+
     Edit1.Text := IntToStr(SalvarLogACada);
 	end;
 end;
@@ -139,7 +143,7 @@ end;
 
 procedure TFSSForm_Configurations.Edit1KeyPress(Sender: TObject; var Key: Char);
 begin
-	if not (Key in ['0'..'9']) then
+	if not CharInSet(Key,['0'..'9']) then
   	Key := #0; 
 end;
 

@@ -121,28 +121,28 @@ begin
   WSI := WinsockInfo;
 
   if Self.Tag = 0 then
-    begin
-        FFSYGlobals.ShowOnLog('Usando:',RichEditLog);
-        FFSYGlobals.ShowOnLog('  ' + Trim(OverbyteIcsWSocket.CopyRight),RichEditLog);
-        FFSYGlobals.ShowOnLog('  ' + Trim(OverbyteIcsFtpSrv.CopyRight),RichEditLog);
-        FFSYGlobals.ShowOnLog('  Informações sobre o Winsock...',RichEditLog);
-        FFSYGlobals.ShowOnLog('    Versão .....: ' + Format('%d.%d', [WSI.wHighVersion shr 8,WSI.wHighVersion and 15]),RichEditLog);
-        FFSYGlobals.ShowOnLog('    Descrição ..: ' + StrPas(WSI.szDescription),RichEditLog);
-        FFSYGlobals.ShowOnLog('    Status .....: ' + StrPas(WSI.szSystemStatus),RichEditLog);
+  begin
+    FFSYGlobals.ShowOnLog('Usando:',RichEditLog);
+    FFSYGlobals.ShowOnLog('  ' + Trim(OverbyteIcsWSocket.CopyRight),RichEditLog);
+    FFSYGlobals.ShowOnLog('  ' + Trim(OverbyteIcsFtpSrv.CopyRight),RichEditLog);
+    FFSYGlobals.ShowOnLog('  Informações sobre o Winsock...',RichEditLog);
+    FFSYGlobals.ShowOnLog('    Versão .....: ' + Format('%d.%d', [WSI.wHighVersion shr 8,WSI.wHighVersion and 15]),RichEditLog);
+    FFSYGlobals.ShowOnLog('    Descrição ..: ' + String(StrPas(WSI.szDescription)),RichEditLog);
+    FFSYGlobals.ShowOnLog('    Status .....: ' + String(StrPas(WSI.szSystemStatus)),RichEditLog);
 
-        if Assigned(WSI.lpVendorInfo) then
-            FFSYGlobals.ShowOnLog('    ' + StrPas(WSI.lpVendorInfo),RichEditLog);
+    if Assigned(WSI.lpVendorInfo) then
+      FFSYGlobals.ShowOnLog('    ' + String(StrPas(WSI.lpVendorInfo)),RichEditLog);
 
-        Self.Tag := 1;
-    end;
-
-    FTPServer.Port := IntToStr(FFSYGlobals.Configurations.FT_PortNumb);
-    FTPServer.Addr := '0.0.0.0';
-    FTPServer.ClientClass := TConnectedClient;
-    FTPServer.Start;
+    Self.Tag := 1;
+  end;
+  FTPServer.Port            := IntToStr(FFSYGlobals.Configurations.FT_PortNumb);
+  FTPServer.TimeoutSecsIdle := FFSYGlobals.Configurations.FT_TimeOut;
+  FTPServer.Addr := '0.0.0.0';
+  FTPServer.ClientClass := TConnectedClient;
+  FTPServer.Start;
 end;
 
-{Este procedure desativo o servidor fazendo exatamente o contrário que o
+{Este procedure desativa o servidor fazendo exatamente o contrário que o
 procedure §[link Ativar]}
 function TFSSForm_Main.Desativar;
 begin
@@ -191,16 +191,16 @@ end;
 procedure TFSSForm_Main.ActionLigarServidorExecute(Sender: TObject);
 begin
 	Ativar;
-    ActionDesligarServidor.Enabled := True;
-    ActionLigarServidor.Enabled := not ActionDesligarServidor.Enabled;
+  ActionDesligarServidor.Enabled := True;
+  ActionLigarServidor.Enabled := not ActionDesligarServidor.Enabled;
 end;
 
 procedure TFSSForm_Main.ActionDesligarServidorExecute(Sender: TObject);
 begin
 	Desativar;
-    ActionLigarServidor.Enabled := True;
+  ActionLigarServidor.Enabled := True;
 	ActionDesligarServidor.Enabled := not ActionLigarServidor.Enabled;
-    { TODO : só permita desativação se não houver ninguem conectado }
+  { TODO : só permita desativação se não houver ninguem conectado }
 end;
 
 {Este procedure atualiza um label que contém a quantidade de clientes conectados
