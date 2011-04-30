@@ -34,21 +34,21 @@ uses
 	Classes, Contnrs, USyncStructures;
 
 type
-	TString150 = String[150];
-    TString128 = String[128];
-    TString64 = String[64];
-    TString40 = String[40];
-    TString32 = String[32];
-    TString16 = String[16];
-    TString8 = String[8];
-    TString6 = String[6];
-    TString4 = String[4];
-    TString3 = String[3];
-    TString2 = String[2];
+	TString150 = String{$IFNDEF UNICODE}[150]{$ENDIF};
+  TString128 = String{$IFNDEF UNICODE}[128]{$ENDIF};
+  TString64 = String{$IFNDEF UNICODE}[64]{$ENDIF};
+  TString40 = String{$IFNDEF UNICODE}[40]{$ENDIF};
+  TString32 = String{$IFNDEF UNICODE}[32]{$ENDIF};
+  TString16 = String{$IFNDEF UNICODE}[16]{$ENDIF};
+  TString8 = String{$IFNDEF UNICODE}[8]{$ENDIF};
+  TString6 = String{$IFNDEF UNICODE}[6]{$ENDIF};
+  TString4 = String{$IFNDEF UNICODE}[4]{$ENDIF};
+  TString3 = String{$IFNDEF UNICODE}[3]{$ENDIF};
+  TString2 = String{$IFNDEF UNICODE}[2]{$ENDIF};
 
     TID = class(TSyncKey)
     public
-    	function ReferencedValue(aTableName: ShortString): ShortString; override;
+    	function ReferencedValue(aTableName: String): String; override;
     end;
 
     TEntidadeDoSistema = class(TSyncRecord)
@@ -154,8 +154,8 @@ type
   		FTI_REGIOES_ID: Byte;
   		FVA_REGIAO: TString8;
   		FCH_PREFIXODAPROPOSTA: TString4;
-  		FVA_PRIMEIRORODAPE: ShortString;
-  		FVA_SEGUNDORODAPE: ShortString;
+  		FVA_PRIMEIRORODAPE: String;
+  		FVA_SEGUNDORODAPE: String;
     public
         function PrimaryKeyValue: Int64; override;
         function InsertClause(const aValues, aUsePrimaryKeyValue: Boolean): String; override;
@@ -164,8 +164,8 @@ type
   		property TI_REGIOES_ID: Byte read FTI_REGIOES_ID write FTI_REGIOES_ID;
   		property VA_REGIAO: TString8 read FVA_REGIAO write FVA_REGIAO;
   		property CH_PREFIXODAPROPOSTA: TString4 read FCH_PREFIXODAPROPOSTA write FCH_PREFIXODAPROPOSTA;
-  		property VA_PRIMEIRORODAPE: ShortString read FVA_PRIMEIRORODAPE write FVA_PRIMEIRORODAPE;
-  		property VA_SEGUNDORODAPE: ShortString read FVA_SEGUNDORODAPE write FVA_SEGUNDORODAPE;
+  		property VA_PRIMEIRORODAPE: String read FVA_PRIMEIRORODAPE write FVA_PRIMEIRORODAPE;
+  		property VA_SEGUNDORODAPE: String read FVA_SEGUNDORODAPE write FVA_SEGUNDORODAPE;
     end;
 
     TRegioes = class(TSyncTable)
@@ -315,7 +315,7 @@ type
   		FSM_USUARIOS_ID: Word;
   		FVA_NOME: TString64;
   		FVA_LOGIN: TString16;
-  		FTB_SENHA: ShortString;
+  		FTB_SENHA: String;
         FVA_EMAIL: TString64;
     public
 		function PrimaryKeyValue: Int64; override;
@@ -325,7 +325,7 @@ type
   		property SM_USUARIOS_ID: Word read FSM_USUARIOS_ID write FSM_USUARIOS_ID;
   		property VA_NOME: TString64 read FVA_NOME write FVA_NOME;
         property VA_LOGIN: TString16 read FVA_LOGIN write FVA_LOGIN;
-        property TB_SENHA: ShortString read FTB_SENHA write FTB_SENHA;
+        property TB_SENHA: String read FTB_SENHA write FTB_SENHA;
         property VA_EMAIL: TString64 read FVA_EMAIL write FVA_EMAIL;
     end;
 
@@ -2418,7 +2418,7 @@ end;
 
 { TID }
 
-function TID.ReferencedValue(aTableName: ShortString): ShortString;
+function TID.ReferencedValue(aTableName: String): String;
 var
     ParentSyncTable: TSyncTable;
     ParentSyncRecord: TSyncRecord;

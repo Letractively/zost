@@ -75,7 +75,7 @@ type
 		function ReadConfigurations(const aConfigFile: TFileName = ''): Boolean;
 
         class procedure SetLabelDescriptionValue(const aLabelDescription, aLabelValue: TLabel; const aValue: String; const aSpacing: Byte = 2);
-		class function Hex(aAscii: AnsiString): AnsiString;
+		class function Hex(aAscii: String): String;
         class function MySQLFormat(const aFormat: String; const aArgs: array of const): String;
         function CmdLineParamValue(const aParamName: String; out aParamValue: String; const aParamStarter: Char = '/'): Boolean;
 
@@ -205,7 +205,7 @@ type
     	procedure ConfigureDataSet(aZConnection: TZConnection; var aDataSet: TZQuery; aSQLCommand: String); overload;
         procedure ShowOnLog(const aText: String; aRichEdit: TRichEdit);
         procedure SaveTextFile(aText: String; const aFileName: TFileName);
-        function LoadTextFile(const aFileName: TFileName): AnsiString;
+        function LoadTextFile(const aFileName: TFileName): String;
         procedure WaitFor(const aSeconds: Byte; const aUseProcessMessages: Boolean = True);
         {$IFDEF FTPSYNCCLI}
     	procedure AddAllUniqueIndexes(aRichEdit: TRichEdit);
@@ -215,7 +215,7 @@ type
 
 
         { TODO : Abaixo algumas coisas podem ser colocadas como private }
-        procedure ConnectToServer(aFTPClient: TFtpClient; aHostName: String; aPortNumb: Word; aRichEdit: TRichEdit);
+        procedure ConnectToServer(aFTPClient: TFtpClient; aHostName: String; aPortNumb, aTimeOut: Word; aRichEdit: TRichEdit);
         procedure CheckVersion(aFTPClient: TFtpClient; aRichEdit: TRichEdit);
 		procedure Authenticate(aFTPClient: TFtpClient; var aZConnection: TZConnection; aUserName, aPassWord: String; aAutomatic: Boolean; aUseDataBaseName: Boolean; var aBusy: Boolean; aRichEdit: TRichEdit);
         function ExecuteCmd(aFTPClient: TFtpClient; aSyncCmd: TSyncCmd; aRichEdit: TRichEdit; aDescription: String = ''; aProgressBar: TProgressBar = nil; aLabelPercentDone: TLabel = nil): Boolean;
@@ -261,13 +261,13 @@ uses
 
 { TFSYGlobals }
 
-class function TFSYGlobals.Hex(aASCII: AnsiString): AnsiString;
+class function TFSYGlobals.Hex(aASCII: String): String;
 begin
 	Result := TXXXDataModule.Hex(aASCII);
-    if Result <> '' then
-    	Result := 'x' + QuotedStr(Result)
-    else
-      Result := 'NULL';
+  if Result <> '' then
+  	Result := 'x' + QuotedStr(Result)
+  else
+    Result := 'NULL';
 end;
 
 function TFSYGlobals.CmdLineParamValue(const aParamName: String; out aParamValue: String; const aParamStarter: Char = '/'): Boolean;
@@ -933,61 +933,61 @@ end;
 procedure TFSYGlobals.ConfigureConnection(var aZConnection: TZConnection; theProtocol, theHostName, theUserName, thePassword, theDatabase: String; thePortNumber: Word; UseDatabase: Boolean);
 begin
 	try
-  		try
-      		if Assigned(aZConnection) then
-        		aZConnection.Free;
+    try
+      if Assigned(aZConnection) then
+        aZConnection.Free;
 
-      		aZConnection := nil;
-      		aZConnection := TZConnection.Create(nil);
+      aZConnection := nil;
+      aZConnection := TZConnection.Create(nil);
 
-            if Assigned(aZConnection) then
-                with aZConnection do
-                begin
-                    Protocol := theProtocol;
-                    HostName := theHostName;
-                    Port := thePortNumber;
+      if Assigned(aZConnection) then
+        with aZConnection do
+        begin
+          Protocol := theProtocol;
+          HostName := theHostName;
+          Port := thePortNumber;
 
-                    if UseDataBase then
-                    	Database := theDatabase;
-                        
-	                User := theUserName;
-                    Password := thePassword;
+          if UseDataBase then
+            Database := theDatabase;
 
-                    TransactIsolationLevel := tiRepeatableRead; // Padrão InnoDB
-                    { Para usar transações AutoCommit tem de ser true de forma a
-                    nos obrigar a usar transações }
-                    AutoCommit := True;
-                    Connect;
-                end;
-    	except
-            on EAV: EAccessViolation do
-            begin
-                EAV.Message := Format(rs_eav,['ConfigureConnection.',PutLineBreaks(EAV.Message,80)]);
-                raise;
-            end;
-            on EZDE: EZDatabaseError do
-            begin
-                EZDE.Message := Format(rs_ezde,['ConfigureConnection',PutLineBreaks(EZDE.Message,80)]);
-                raise;
-            end;
-            on EZSE: EZSQLException do
-            begin
-                EZSE.Message := Format(rs_ezse,['ConfigureConnection',PutLineBreaks(EZSE.Message,80)]);
-                raise;
-            end;
-            on E: Exception do
-            begin
-                E.Message := Format(rs_exc,['ConfigureConnection',PutLineBreaks(E.Message,80)]);
-                raise;
-            end;
-    	end;
-    finally
-    	if Assigned(aZConnection) and not aZConnection.Connected then
-    	begin
-      		aZConnection.Free;
-      		aZConnection := nil;
-    	end;
-  	end;
+	        User := theUserName;
+          Password := thePassword;
+
+          TransactIsolationLevel := tiRepeatableRead; // Padrão InnoDB
+          { Para usar transações AutoCommit tem de ser true de forma a
+          nos obrigar a usar transações }
+          AutoCommit := True;
+          Connect;
+        end;
+    except
+      on EAV: EAccessViolation do
+      begin
+        EAV.Message := Format(rs_eav,['ConfigureConnection.',PutLineBreaks(EAV.Message,80)]);
+        raise;
+      end;
+      on EZDE: EZDatabaseError do
+      begin
+        EZDE.Message := Format(rs_ezde,['ConfigureConnection',PutLineBreaks(EZDE.Message,80)]);
+        raise;
+      end;
+      on EZSE: EZSQLException do
+      begin
+        EZSE.Message := Format(rs_ezse,['ConfigureConnection',PutLineBreaks(EZSE.Message,80)]);
+        raise;
+      end;
+      on E: Exception do
+      begin
+        E.Message := Format(rs_exc,['ConfigureConnection',PutLineBreaks(E.Message,80)]);
+        raise;
+      end;
+    end;
+  finally
+    if Assigned(aZConnection) and not aZConnection.Connected then
+    begin
+      aZConnection.Free;
+      aZConnection := nil;
+    end;
+  end;
 end;
 
 {$IFDEF FTPSYNCCLI}
@@ -1137,7 +1137,7 @@ end;{$ENDIF}
 procedure TFSYGlobals.ConfigureConnection(var aZConnection: TZConnection; UseDatabase: Boolean = True);
 begin
 	with FConfigurations do
-  		ConfigureConnection(aZConnection,DB_Protocol,DB_HostAddr,DB_UserName,DB_Password,DB_Database,DB_PortNumb,UseDatabase);
+  		ConfigureConnection(aZConnection,String(DB_Protocol),String(DB_HostAddr),String(DB_UserName),String(DB_Password),String(DB_Database),DB_PortNumb,UseDatabase);
 end;
 
 procedure TFSYGlobals.ConfigureDataSet(aZConnection: TZConnection; var aDataSet: TZQuery; aSQLCommand: String);
@@ -1205,10 +1205,11 @@ begin
 end;{$ENDIF}
 
 {$IFDEF FTPSYNCCLI}
-procedure TFSYGlobals.ConnectToServer(aFTPClient: TFtpClient; aHostName: String; aPortNumb: Word; aRichEdit: TRichEdit);
+procedure TFSYGlobals.ConnectToServer(aFTPClient: TFtpClient; aHostName: String; aPortNumb, aTimeOut: Word; aRichEdit: TRichEdit);
 begin
     aFtpClient.HostName := aHostName;
     aFtpClient.Port := IntToStr(aPortNumb);
+    aFtpClient.Timeout := aTimeOut;
 
     if not ExecuteCmd(aFTPClient,aFtpClient.Open,aRichEdit,'OPEN') then
 	    raise Exception.Create('Não foi possível conectar-se ao servidor.');
@@ -2010,13 +2011,14 @@ begin
 	Result := False;
 
 	(* Colocando valores padrão (caso de nao haver arquivo de configuração) *)
-    FConfigurations.DB_Password := DB_PASSWORD;
-    FConfigurations.DB_UserName := DB_USERNAME;
-    FConfigurations.DB_Protocol := DB_PROTOCOL;
-    FConfigurations.DB_DataBase := DB_DATABASE;
-    FConfigurations.DB_HostAddr := DB_HOSTADDR;
+    FConfigurations.DB_Password := ShortString(DB_PASSWORD);
+    FConfigurations.DB_UserName := ShortString(DB_USERNAME);
+    FConfigurations.DB_Protocol := ShortString(DB_PROTOCOL);
+    FConfigurations.DB_DataBase := ShortString(DB_DATABASE);
+    FConfigurations.DB_HostAddr := ShortString(DB_HOSTADDR);
     FConfigurations.DB_PortNumb := DB_PORTNUMB;
     FConfigurations.FT_PortNumb := FTP_PORTNUMB;
+    FConfigurations.FT_TimeOut  := FTP_TIMEOUT;
     {$IFDEF FTPSYNCSER}
     FConfigurations.SalvarLogACada := SALVAR_LOG;
     {$ENDIF}
@@ -3714,7 +3716,7 @@ begin
     TXXXDataModule.SaveTextFile(aText,aFileName);
 end;
 
-function TFSYGlobals.LoadTextFile(const aFileName: TFileName): AnsiString;
+function TFSYGlobals.LoadTextFile(const aFileName: TFileName): String;
 begin
 	Result := '';
 
@@ -3836,7 +3838,7 @@ function TFSYGlobals.DatabaseCheckSum(const aZConnection: TZConnection;
                                             aOnGetChecksum: TOnGetChecksum): String;
 begin
     Result := TXXXDataModule.MySQLDatabaseCheckSum(aZConnection
-                                                  ,FConfigurations.DB_Database
+                                                  ,String(FConfigurations.DB_Database)
                                                   ,['DELTA' { ambos}
                                                    ,'SEQUENCIAS' { servidor }
                                                    ,'SINCRONIZACOES' { cliente }
@@ -4263,10 +4265,10 @@ begin
 
             { ============================================================ }
             { Conectando-se... =========================================== }
-            ConnectToServer(aFTPClient,Configurations.FT_HostName,Configurations.FT_PortNumb,aRichEdit);
+            ConnectToServer(aFTPClient,String(Configurations.FT_HostName),Configurations.FT_PortNumb,Configurations.FT_TimeOut,aRichEdit);
             { ============================================================ }
             { Autenticando-se... ========================================= }
-            Authenticate(aFTPClient,aZConnection,'RobotNoDB' + Configurations.FT_UserName,'My Name Is DO, BDO!' + Configurations.FT_PassWord,True,True,aBusy,aRichEdit);
+            Authenticate(aFTPClient,aZConnection,'RobotNoDB' + String(Configurations.FT_UserName),'My Name Is DO, BDO!' + String(Configurations.FT_PassWord),True,True,aBusy,aRichEdit);
             { ============================================================ }
             { Obtendo a lista de arquivos temporários... ================= }
             ShowOnLog('§ Obtendo lista de arquivos temporários...',aRichEdit);
@@ -4382,8 +4384,8 @@ var
     RetrSessionParameters: TRetrSessionParameters;
 begin
     aFTPClient.Passive := FConfigurations.FT_PassiveMode;
-    ConnectToServer(aFTPClient,FConfigurations.FT_HostName,FConfigurations.FT_PortNumb,aRichEdit);
-    Authenticate(aFTPClient,aZConnection,FConfigurations.FT_UserName,FConfigurations.FT_Password,False,True,aBusy,aRichEdit);
+    ConnectToServer(aFTPClient,String(FConfigurations.FT_HostName),FConfigurations.FT_PortNumb,FConfigurations.FT_TimeOut,aRichEdit);
+    Authenticate(aFTPClient,aZConnection,String(FConfigurations.FT_UserName),String(FConfigurations.FT_Password),False,True,aBusy,aRichEdit);
 
     ZeroMemory(@RetrSessionParameters,SizeOf(TRetrSessionParameters));
     RetrSessionParameters.VerboseMode := FConfigurations.VerboseMode;
@@ -4719,7 +4721,7 @@ var
 begin
 	AdjustConnection := nil;
 	try
-       	ConfigureConnection(AdjustConnection,FConfigurations.DB_Protocol,FConfigurations.DB_HostAddr,FConfigurations.DB_UserName,FConfigurations.DB_Password,FConfigurations.DB_Database,FConfigurations.DB_PortNumb);
+       	ConfigureConnection(AdjustConnection,String(FConfigurations.DB_Protocol),String(FConfigurations.DB_HostAddr),String(FConfigurations.DB_UserName),String(FConfigurations.DB_Password),String(FConfigurations.DB_Database),FConfigurations.DB_PortNumb);
         ShowOnLog('§ Removendo chaves únicas...',aRichEdit);
         DropUniqueIndex(AdjustConnection,'EQUIPAMENTOS','EQP_VA_MODELO_UI',aRichEdit);
         DropUniqueIndex(AdjustConnection,'SITUACOES','SIT_VA_DESCRICAO_UI',aRichEdit);
@@ -4779,7 +4781,7 @@ var
 begin
 	AdjustConnection := nil;
 	try
-       	ConfigureConnection(AdjustConnection,FConfigurations.DB_Protocol,FConfigurations.DB_HostAddr,FConfigurations.DB_UserName,FConfigurations.DB_Password,FConfigurations.DB_Database,FConfigurations.DB_PortNumb);
+       	ConfigureConnection(AdjustConnection,String(FConfigurations.DB_Protocol),String(FConfigurations.DB_HostAddr),String(FConfigurations.DB_UserName),String(FConfigurations.DB_Password),String(FConfigurations.DB_Database),FConfigurations.DB_PortNumb);
         ShowOnLog('§ Adicionando chaves únicas...',aRichEdit);
         AddUniqueIndex(AdjustConnection,'EQUIPAMENTOS','EQP_VA_MODELO_UI','VA_MODELO',aRichEdit);
         AddUniqueIndex(AdjustConnection,'SITUACOES','SIT_VA_DESCRICAO_UI','VA_DESCRICAO',aRichEdit);
@@ -4950,8 +4952,8 @@ var
 begin
     aFTPClient.Passive := FConfigurations.FT_PassiveMode;
 
-	ConnectToServer(aFTPClient,FConfigurations.FT_HostName,FConfigurations.FT_PortNumb,aRichEdit);
-	Authenticate(aFTPClient,aZConnection,FConfigurations.FT_UserName,FConfigurations.FT_Password,False,False,aBusy,aRichEdit);
+	ConnectToServer(aFTPClient,String(FConfigurations.FT_HostName),FConfigurations.FT_PortNumb,FConfigurations.FT_TimeOut,aRichEdit);
+	Authenticate(aFTPClient,aZConnection,String(FConfigurations.FT_UserName),String(FConfigurations.FT_Password),False,False,aBusy,aRichEdit);
 
     ZeroMemory(@RetrSessionParameters,SizeOf(TRetrSessionParameters));
     RetrSessionParameters.VerboseMode := FConfigurations.VerboseMode;
@@ -4972,7 +4974,7 @@ begin
                                        ,aOnZLibNotification);
 
                 { Substituindo o nome do banco de dados }
-                ReplaceIntoFile(FFTPDirectory + '\' + FTPFIL_SERVER_DATABASE,'<%>DATABASENAME<%>',UpperCase(FConfigurations.DB_DataBase));
+                ReplaceIntoFile(FFTPDirectory + '\' + FTPFIL_SERVER_DATABASE,'<%>DATABASENAME<%>',UpperCase(String(FConfigurations.DB_DataBase)));
 
                 try
                     TPanel(aProgressBarCurrent.Parent).Show;
@@ -5042,8 +5044,8 @@ begin
 
             aFTPClient.Passive := FConfigurations.FT_PassiveMode;
             
-            ConnectToServer(aFTPClient,FConfigurations.FT_HostName,FConfigurations.FT_PortNumb,aRichEdit);
-            Authenticate(aFTPClient,aZConnection,FConfigurations.FT_UserName,FConfigurations.FT_Password,False,True,aBusy,aRichEdit);
+            ConnectToServer(aFTPClient,String(FConfigurations.FT_HostName),FConfigurations.FT_PortNumb,FConfigurations.FT_TimeOut,aRichEdit);
+            Authenticate(aFTPClient,aZConnection,String(FConfigurations.FT_UserName),String(FConfigurations.FT_Password),False,True,aBusy,aRichEdit);
 
             ZeroMemory(@RetrSessionParameters,SizeOf(TRetrSessionParameters));
             RetrSessionParameters.VerboseMode := FConfigurations.VerboseMode;

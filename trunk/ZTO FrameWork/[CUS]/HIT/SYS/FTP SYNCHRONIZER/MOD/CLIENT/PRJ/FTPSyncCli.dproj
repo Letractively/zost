@@ -102,7 +102,7 @@
 						<VersionInfo Name="MajorVer">4</VersionInfo>
 						<VersionInfo Name="MinorVer">0</VersionInfo>
 						<VersionInfo Name="Release">0</VersionInfo>
-						<VersionInfo Name="Build">15</VersionInfo>
+						<VersionInfo Name="Build">49</VersionInfo>
 						<VersionInfo Name="Debug">False</VersionInfo>
 						<VersionInfo Name="PreRelease">False</VersionInfo>
 						<VersionInfo Name="Special">False</VersionInfo>
@@ -114,7 +114,7 @@
 					<VersionInfoKeys>
 						<VersionInfoKeys Name="CompanyName">Hitachi Ar Condicionado do Brasil Ltda.</VersionInfoKeys>
 						<VersionInfoKeys Name="FileDescription">Cliente de sincronização via FTP</VersionInfoKeys>
-						<VersionInfoKeys Name="FileVersion">4.0.0.15</VersionInfoKeys>
+						<VersionInfoKeys Name="FileVersion">4.0.0.49</VersionInfoKeys>
 						<VersionInfoKeys Name="InternalName">FTPSYNC-CLI</VersionInfoKeys>
 						<VersionInfoKeys Name="LegalCopyright">Copyright 2011 Carlos Barreto Feitoza Filho. Todos os direitos reservados.</VersionInfoKeys>
 						<VersionInfoKeys Name="LegalTrademarks">Windows, Windows XP e Tecnologia NT são marcas registradas da Microsft Corporation. Todos os direitos reservados. Qualquer outra marca citada, quando não informado o contrário, pertecen ao seu respectivo dono.</VersionInfoKeys>

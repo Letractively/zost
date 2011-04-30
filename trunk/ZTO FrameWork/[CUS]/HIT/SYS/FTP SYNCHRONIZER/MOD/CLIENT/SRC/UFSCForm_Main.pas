@@ -135,7 +135,7 @@ end;
 
 procedure TFSCForm_Main.FTPClientCommand(Sender: TObject; var Cmd: string);
 var
-	Comando: ShortString;
+	Comando: String;
 begin
 	Comando := Cmd;
   	if Pos('PASS',Comando) = 1 then
@@ -332,7 +332,7 @@ end;
 
 procedure TFSCForm_Main.FTPClientRequestDone(Sender: TObject; RqType: TFtpRequest; ErrCode: Word);
 var
-    Comando, Texto: ShortString;
+    Comando, Texto: String;
 begin
     case RqType of
         ftpOpenAsync: Comando := 'OPEN';
