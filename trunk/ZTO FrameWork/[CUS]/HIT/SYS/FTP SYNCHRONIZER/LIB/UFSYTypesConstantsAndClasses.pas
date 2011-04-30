@@ -156,7 +156,7 @@ type
         property MinimumClientVersion: TVersion read FMinimumClientVersion write FMinimumClientVersion;
     end;
 
-	TConfigurations = packed record
+  TConfigurations = packed record
 		{ Bando de dados }
 		DB_Password: String[255];
 		DB_UserName: String[255];
@@ -164,28 +164,27 @@ type
 		DB_DataBase: String[255];
 		DB_HostAddr: String[255];
 		DB_PortNumb: Word;
-    	{ FTP }
-        
-        {$IFDEF FTPSYNCCLI}
-        FT_UserName: String[255];
-        FT_PassWord: String[255];
-        FT_HostName: String[255];
-        FT_PassiveMode: Boolean;
-        FT_CommandDelay: Byte;
-        {$ENDIF}
-    	FT_PortNumb: Word;
+  	{ FTP }
+    {$IFDEF FTPSYNCCLI}
+    FT_UserName: String[255];
+    FT_PassWord: String[255];
+    FT_HostName: String[255];
+    FT_PassiveMode: Boolean;
+    FT_CommandDelay: Byte;
+    {$ENDIF}
+    FT_PortNumb: Word;
+    FT_TimeOut: Word;
 
-    	{ LOGs }
-        {$IFDEF FTPSYNCSER}
-    	SalvarLogACada: Word;
-        {$ENDIF}
-
-        {$IFDEF FTPSYNCCLI}
-        VerboseMode: Boolean;
-        CheckMD5: Boolean;
-        UseCompression: Boolean;
-        {$ENDIF}
-	end;
+  	{ LOGs }
+    {$IFDEF FTPSYNCSER}
+    SalvarLogACada: Word;
+    {$ENDIF}
+    {$IFDEF FTPSYNCCLI}
+    VerboseMode: Boolean;
+    CheckMD5: Boolean;
+    UseCompression: Boolean;
+    {$ENDIF}
+  end;
 
 const
     MINIMUM_CLIENT_MAJORVERSION = 3;
@@ -205,18 +204,19 @@ const
     {$IFDEF FTPSYNCCLI}
     FTP_USERNAME = '';
     FTP_PASSWORD = '';
-    FTP_HOSTNAME = '';
+    FTP_HOSTNAME = '10.0.2.2';
     FTP_PASSIVEMODE = TRUE;
     FTP_COMMANDDELAY = 0;
     {$ENDIF}
-  	FTP_PORTNUMB = 3303;
+  	FTP_PORTNUMB = 3304;
+    FTP_TIMEOUT  = 1200;
   	(* LOG *)
     {$IFDEF FTPSYNCSER}
   	SALVAR_LOG = 0;
     {$ENDIF}
     {$IFDEF FTPSYNCCLI}
     VERBOSEMODE = TRUE;
-    CHECKMD5 = TRUE;
+    CHECKMD5 = FALSE;
     USE_COMPRESSION = TRUE;
     {$ENDIF}
 

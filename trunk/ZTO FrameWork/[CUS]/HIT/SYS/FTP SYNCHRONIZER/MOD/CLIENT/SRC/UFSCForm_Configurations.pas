@@ -35,11 +35,12 @@ type
     CheckBox_VerboseMode: TCheckBox;
     CheckBox_ChecarMD5: TCheckBox;
     CheckBox_Compressao: TCheckBox;
+    LabeledEdit_TimeOut: TLabeledEdit;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormShow(Sender: TObject);
     procedure FormCreate(Sender: TObject);
   private
-    DirAtual: ShortString;
+    DirAtual: String;
     procedure ExibirConfiguracoes;
     procedure GuardarConfiguracoes;
     { Private declarations }
@@ -90,29 +91,30 @@ end;
 
 procedure TFSCForm_Configurations.FormShow(Sender: TObject);
 begin
-    ExibirConfiguracoes;
+  ExibirConfiguracoes;
 end;
 
 procedure TFSCForm_Configurations.GuardarConfiguracoes;
 begin
 	with FSCForm_Main.FSYGlobals.Configurations do
 	begin
-		DB_Protocol	:= ComboBoxProtocolo.Items[ComboBoxProtocolo.ItemIndex];
-		DB_Database	:= EditNomeDoBanco.Text;
+		DB_Protocol	:= ShortString(ComboBoxProtocolo.Items[ComboBoxProtocolo.ItemIndex]);
+		DB_Database	:= ShortString(EditNomeDoBanco.Text);
 		DB_PortNumb	:= StrToInt(EditPortaMySQL.Text);
-		DB_UserName	:= EditNomeDeUsuarioMySQL.Text;
-		DB_Password	:= EditSenhaMySQL.Text;
+		DB_UserName	:= ShortString(EditNomeDeUsuarioMySQL.Text);
+		DB_Password	:= ShortString(EditSenhaMySQL.Text);
 
-        FT_HostName := EditEnderecoDoServidor.Text;
-        FT_PortNumb := StrToInt(EditPortaFTP.Text);
-        FT_UserName := EditNomeDeUsuarioFTP.Text;
-        FT_PassWord := EditSenhaFTP.Text;
-        FT_PassiveMode := CheckBox_ModoPassivo.Checked;
-        FT_CommandDelay := StrToIntDef(LabeledEdit_DelayDeComandos.Text,0);
+    FT_HostName := ShortString(EditEnderecoDoServidor.Text);
+    FT_PortNumb := StrToInt(EditPortaFTP.Text);
+    FT_UserName := ShortString(EditNomeDeUsuarioFTP.Text);
+    FT_PassWord := ShortString(EditSenhaFTP.Text);
+    FT_PassiveMode := CheckBox_ModoPassivo.Checked;
+    FT_CommandDelay := StrToIntDef(LabeledEdit_DelayDeComandos.Text,0);
+    FT_TimeOut := StrToIntDef(LabeledEdit_TimeOut.Text,1200);
 
-        VerboseMode := CheckBox_VerboseMode.Checked;
-        CheckMD5 := CheckBox_ChecarMD5.Checked;
-        UseCompression := CheckBox_Compressao.Checked;
+    VerboseMode := CheckBox_VerboseMode.Checked;
+    CheckMD5 := CheckBox_ChecarMD5.Checked;
+    UseCompression := CheckBox_Compressao.Checked;
 	end;
 end;
 
@@ -120,29 +122,30 @@ procedure TFSCForm_Configurations.ExibirConfiguracoes;
 begin
 	with FSCForm_Main.FSYGlobals.Configurations do
 	begin
-		ComboBoxProtocolo.ItemIndex := ComboBoxProtocolo.Items.IndexOf(DB_Protocol);
-		EditNomeDoBanco.Text := DB_Database;
+		ComboBoxProtocolo.ItemIndex := ComboBoxProtocolo.Items.IndexOf(String(DB_Protocol));
+		EditNomeDoBanco.Text := String(DB_Database);
 		EditPortaMySQL.Text := IntToStr(DB_PortNumb);
-		EditNomeDeUsuarioMySQL.Text := DB_UserName;
-		EditSenhaMySQL.Text := DB_Password;
+		EditNomeDeUsuarioMySQL.Text := String(DB_UserName);
+		EditSenhaMySQL.Text := String(DB_Password);
 
-		EditEnderecoDoServidor.Text := FT_HostName;
+		EditEnderecoDoServidor.Text := String(FT_HostName);
 		EditPortaFTP.Text := IntToStr(FT_PortNumb);
-		EditNomeDeUsuarioFTP.Text := FT_UserName;
-		EditSenhaFTP.Text := FT_Password;
-        CheckBox_ModoPassivo.Checked := FT_PassiveMode;
-        LabeledEdit_DelayDeComandos.Text := IntToStr(FT_CommandDelay);
+		EditNomeDeUsuarioFTP.Text := String(FT_UserName);
+		EditSenhaFTP.Text := String(FT_Password);
+    CheckBox_ModoPassivo.Checked := FT_PassiveMode;
+    LabeledEdit_DelayDeComandos.Text := IntToStr(FT_CommandDelay);
+    LabeledEdit_TimeOut.Text := IntToStr(FT_TimeOut);
 
-        CheckBox_VerboseMode.Checked := VerboseMode;
-        CheckBox_ChecarMD5.Checked := CheckMD5;
-        CheckBox_Compressao.Checked := UseCompression;
-    end;
+    CheckBox_VerboseMode.Checked := VerboseMode;
+    CheckBox_ChecarMD5.Checked := CheckMD5;
+    CheckBox_Compressao.Checked := UseCompression;
+  end;
 end;
 
 procedure TFSCForm_Configurations.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
 	Action := caFree;
-  	FSCForm_Configurations := nil;
+	FSCForm_Configurations := nil;
 	GuardarConfiguracoes;
 end;
 

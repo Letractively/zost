@@ -3,8 +3,8 @@ object FSSForm_Configurations: TFSSForm_Configurations
   Top = 0
   BorderStyle = bsDialog
   Caption = 'Dados para acesso'
-  ClientHeight = 225
-  ClientWidth = 451
+  ClientHeight = 269
+  ClientWidth = 522
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -19,12 +19,18 @@ object FSSForm_Configurations: TFSSForm_Configurations
   PixelsPerInch = 96
   TextHeight = 13
   object GroupBox1: TGroupBox
+    AlignWithMargins = True
     Left = 6
     Top = 3
-    Width = 440
+    Width = 510
     Height = 97
+    Margins.Left = 6
+    Margins.Right = 6
+    Margins.Bottom = 18
+    Align = alTop
     Caption = ' MySQL Local (mysql@localhost) '
     TabOrder = 0
+    ExplicitWidth = 440
     object LabelProtocolo: TLabel
       Left = 6
       Top = 14
@@ -97,21 +103,21 @@ object FSSForm_Configurations: TFSSForm_Configurations
     object EditNomeDoBanco: TEdit
       Left = 151
       Top = 28
-      Width = 226
+      Width = 297
       Height = 21
       TabOrder = 1
     end
     object EditPortaMySQL: TEdit
-      Left = 383
+      Left = 454
       Top = 28
       Width = 50
       Height = 21
       TabOrder = 2
     end
     object EditSenhaMySQL: TEdit
-      Left = 223
+      Left = 258
       Top = 69
-      Width = 210
+      Width = 246
       Height = 21
       PasswordChar = #248
       TabOrder = 3
@@ -119,18 +125,26 @@ object FSSForm_Configurations: TFSSForm_Configurations
     object EditNomeDeUsuarioMySQL: TEdit
       Left = 6
       Top = 69
-      Width = 209
+      Width = 246
       Height = 21
       TabOrder = 4
     end
   end
   object GroupBox2: TGroupBox
+    AlignWithMargins = True
     Left = 6
-    Top = 103
-    Width = 440
-    Height = 57
+    Top = 118
+    Width = 510
+    Height = 69
+    Margins.Left = 6
+    Margins.Top = 0
+    Margins.Right = 6
+    Margins.Bottom = 18
+    Align = alTop
     Caption = ' Servidor de FTP '
     TabOrder = 1
+    ExplicitLeft = 1
+    ExplicitTop = 106
     object LabePortaFTP: TLabel
       Left = 6
       Top = 14
@@ -139,15 +153,18 @@ object FSSForm_Configurations: TFSSForm_Configurations
       Caption = 'Porta'
     end
     object Label1: TLabel
-      Left = 108
-      Top = 17
-      Width = 300
-      Height = 31
+      Left = 6
+      Top = 50
+      Width = 297
+      Height = 13
       Alignment = taCenter
-      AutoSize = False
-      Caption = 
-        'Para que a altera'#231#227'o da porta tenha efeito, reinicie o servidor ' +
-        '(menu Servidor/Desativar e depois menu Servidor/Ativar)'
+      Caption = 'Para que estas altera'#231#245'es entrem em vigor, reinicie o servidor'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ParentFont = False
       WordWrap = True
     end
     object EditPortaFTP: TEdit
@@ -157,14 +174,33 @@ object FSSForm_Configurations: TFSSForm_Configurations
       Height = 21
       TabOrder = 0
     end
+    object LabeledEdit_TimeOut: TLabeledEdit
+      Left = 62
+      Top = 28
+      Width = 88
+      Height = 21
+      EditLabel.Width = 88
+      EditLabel.Height = 13
+      EditLabel.Caption = 'Espera m'#225'xima (s)'
+      LabelSpacing = 1
+      TabOrder = 1
+    end
   end
   object GroupBox3: TGroupBox
+    AlignWithMargins = True
     Left = 6
-    Top = 163
-    Width = 440
+    Top = 205
+    Width = 510
     Height = 57
+    Margins.Left = 6
+    Margins.Top = 0
+    Margins.Right = 6
+    Align = alTop
     Caption = ' Arquivos de log '
     TabOrder = 2
+    ExplicitLeft = 8
+    ExplicitTop = 204
+    ExplicitWidth = 440
     object Label2: TLabel
       Left = 102
       Top = 14
@@ -177,10 +213,10 @@ object FSSForm_Configurations: TFSSForm_Configurations
       Top = 28
       Width = 50
       Height = 21
+      Alignment = taCenter
       MaxLength = 4
       TabOrder = 0
       OnKeyPress = Edit1KeyPress
-      Alignment = taCenter
     end
   end
 end
