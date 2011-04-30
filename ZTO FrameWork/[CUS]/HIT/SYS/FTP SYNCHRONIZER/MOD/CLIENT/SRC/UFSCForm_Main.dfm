@@ -120,10 +120,6 @@ object FSCForm_Main: TFSCForm_Main
     object TabSheet2: TTabSheet
       Caption = 'Sincroniza'#231#227'o completa'
       ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Label1: TLabel
         Left = 6
         Top = 6
@@ -210,10 +206,6 @@ object FSCForm_Main: TFSCForm_Main
     object TabSheet3: TTabSheet
       Caption = 'Gerador de snapshots'
       ImageIndex = 2
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Label4: TLabel
         Left = 6
         Top = 6
@@ -428,7 +420,7 @@ object FSCForm_Main: TFSCForm_Main
     end
   end
   object FTPClient: TFtpClient
-    Timeout = 600
+    Timeout = 1200
     MultiThreaded = False
     Port = 'ftp'
     CodePage = 0
