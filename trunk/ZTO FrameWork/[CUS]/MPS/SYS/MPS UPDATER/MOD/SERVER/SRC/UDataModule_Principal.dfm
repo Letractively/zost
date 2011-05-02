@@ -1149,4 +1149,11 @@ object DataModule_Principal: TDataModule_Principal
         ParamType = ptUnknown
       end>
   end
+  object SaveDialog_Log: TSaveDialog
+    DefaultExt = '.log'
+    Filter = 'Arquivo de log (*.log)|*.log'
+    Title = 'Salvar arquivo de log'
+    Left = 355
+    Top = 210
+  end
 end

@@ -199,6 +199,7 @@ object Form_Principal: TForm_Principal
           Margins.Top = 6
           Margins.Right = 6
           Margins.Bottom = 6
+          Action = Action_SalvarELimparLog
           Align = alRight
           Caption = 'Salvar e limpar log'
           TabOrder = 0
@@ -212,6 +213,7 @@ object Form_Principal: TForm_Principal
           Margins.Left = 6
           Margins.Top = 6
           Margins.Bottom = 6
+          Action = Action_SalvarLogComo
           Align = alRight
           Caption = 'Salvar log como...'
           TabOrder = 1
@@ -1374,6 +1376,7 @@ object Form_Principal: TForm_Principal
     StyleName = 'XP Style'
     object Action_SalvarLogComo: TAction
       Caption = 'Salvar log como...'
+      OnExecute = Action_SalvarLogComoExecute
     end
     object Action_SalvarELimparLog: TAction
       Caption = 'Salvar e limpar log'
