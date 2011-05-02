@@ -118,7 +118,7 @@ type
     property InstallationKey: String read FInstallationKey write FInstallationKey;
   end;
 
-procedure ShowOnLog(const aText: String; aRichEdit: TRichEdit);
+procedure ShowOnLog(const aText: String; aRichEdit: TRichEdit; aMaxLines: Word = 0; aAutoSaveFile: TFileName = '');
 
 function PutLineBreaks(const aText: String; aCharsPerLine: Byte): String;
 
@@ -355,7 +355,7 @@ begin
     Result := aText;
 end;
 
-procedure ShowOnLog(const aText: String; aRichEdit: TRichEdit);
+procedure ShowOnLog(const aText: String; aRichEdit: TRichEdit; aMaxLines: Word = 0; aAutoSaveFile: TFileName = '');
 var
   Linhas: TStringList;
   i: Word;
@@ -385,6 +385,23 @@ var
     aRichEdit.SelAttributes.Size  := aFontSize;
     aRichEdit.SelAttributes.Style := aFontStyle;
     aRichEdit.SelText             := aLine;
+  end;
+
+  procedure AutoSaveLine(aLine: String);
+  var
+    FileName: TFileName;
+  begin
+    FileName := ExtractFilePath(Application.ExeName) + aAutoSaveFile;
+    with TStringList.Create do
+      try
+        if FileExists(FileName) then
+          LoadFromFile(FileName);
+
+        Add(aLine);
+      finally
+        SaveToFile(FileName);
+        Free;
+      end;
   end;
 
 begin
@@ -512,6 +529,21 @@ begin
       end;
   finally
     Linhas.Free;
+
+    if aMaxLines > 0 then
+    begin
+      if aRichEdit.Lines.Count > aMaxLines then
+        for i := 1 to aRichEdit.Lines.Count - aMaxLines do
+        begin
+          if aAutoSaveFile <> '' then
+            AutoSaveLine(aRichEdit.Lines[0]);
+
+          // se for pra salvar, salva aqui.
+          aRichEdit.Lines.Delete(0);
+        end;
+    end;
+
+
     SendMessage(aRichEdit.Handle,WM_VSCROLL,SB_BOTTOM,0);
   end;
 end;

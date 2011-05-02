@@ -90,6 +90,7 @@ type
     procedure ZTODBGrid_SistemasDosUsuariosAfterMultiselect(aSender: TObject; aMultiSelectEventTrigger: TMultiSelectEventTrigger);
     procedure TabSet_LogChange(Sender: TObject; NewTab: Integer; var AllowChange: Boolean);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
+    procedure Action_SalvarLogComoExecute(Sender: TObject);
   private
     { Private declarations }
     procedure DelayedAction;
@@ -104,9 +105,44 @@ var
 implementation
 
 uses
-  Windows, UDataModule_Principal;
+  Windows, UDataModule_Principal, SysUtils;
 
 {$R *.dfm}
+
+procedure TForm_Principal.Action_SalvarLogComoExecute(Sender: TObject);
+var
+  i: Cardinal;
+  FileName: TFileName;
+  RichEdit: TRichEdit;
+begin
+  if DataModule_Principal.SaveDialog_Log.Execute then
+    with TStringList.Create do
+      try
+        RichEdit := nil;
+        case TabSet_Log.TabIndex of
+          0: begin
+            FileName := ExtractFilePath(Application.ExeName) + 'AutoSaveMon.log';
+            RichEdit := RichEdit_LogMonitoramento;
+          end;
+          1: begin
+            FileName := ExtractFilePath(Application.ExeName) + 'AutoSaveFTP.log';
+            RichEdit := RichEdit_LogFTP;
+          end;
+        end;
+
+        { Carrega o log automático caso ele exista }
+        if FileExists(FileName) then
+          LoadFromFile(FileName);
+
+        { Adiciona as linhas atuais do log }
+        for i := 0 to Pred(RichEdit.Lines.Count) do
+          Add(RichEdit.Lines[i]);
+
+        SaveToFile(DataModule_Principal.SaveDialog_Log.FileName);
+      finally
+        Free;
+      end;
+end;
 
 procedure TForm_Principal.Button_1Click(Sender: TObject);
 begin

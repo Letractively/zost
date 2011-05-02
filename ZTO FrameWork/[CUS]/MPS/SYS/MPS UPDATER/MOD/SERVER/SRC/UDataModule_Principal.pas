@@ -8,7 +8,7 @@ uses
   Controls, CFDBValidationChecks, Windows, SysUtils, UBalloonToolTip, Forms, ImgList,
   ZAbstractRODataset, ZAbstractDataset, UCFSHChangeNotify, ZSqlUpdate,
   OverbyteIcsWndControl, OverbyteIcsFtpSrv, OverbyteIcsWSocket, UGlobalFunctions,
-  Menus, ActnPopup;
+  Menus, ActnPopup, Dialogs;
 
 type
   TFileInfo = class (TCollectionItem)
@@ -131,6 +131,7 @@ type
     ZUpdateSQL_EXC: TZUpdateSQL;
     SISTEMASVA_CHAVEDEINSTALACAO: TStringField;
     ZUpdateSQL_ARQ: TZUpdateSQL;
+    SaveDialog_Log: TSaveDialog;
     procedure DataModuleCreate(Sender: TObject);
     procedure ZConnection_PrincipalAfterConnect(Sender: TObject);
     procedure Action_DiretorioDeMonitoramentoExecute(Sender: TObject);
@@ -472,15 +473,15 @@ begin
 
   if Self.Tag = 0 then
   begin
-    ShowOnLog('Usando:',Form_Principal.RichEdit_LogFTP);
-    ShowOnLog('  ' + Trim(OverbyteIcsWSocket.CopyRight),Form_Principal.RichEdit_LogFTP);
-    ShowOnLog('  Informações sobre o Winsock...',Form_Principal.RichEdit_LogFTP);
-    ShowOnLog('    Versão .....: ' + Format('%d.%d', [WSI.wHighVersion shr 8,WSI.wHighVersion and 15]),Form_Principal.RichEdit_LogFTP);
-    ShowOnLog('    Descrição ..: ' + StrPas(@WSI.szDescription),Form_Principal.RichEdit_LogFTP);
-    ShowOnLog('    Status .....: ' + StrPas(@WSI.szSystemStatus),Form_Principal.RichEdit_LogFTP);
+    ShowOnLog('Usando:',Form_Principal.RichEdit_LogFTP,500,'AutoSaveFTP.log');
+    ShowOnLog('  ' + Trim(OverbyteIcsWSocket.CopyRight),Form_Principal.RichEdit_LogFTP,500,'AutoSaveFTP.log');
+    ShowOnLog('  Informações sobre o Winsock...',Form_Principal.RichEdit_LogFTP,500,'AutoSaveFTP.log');
+    ShowOnLog('    Versão .....: ' + Format('%d.%d', [WSI.wHighVersion shr 8,WSI.wHighVersion and 15]),Form_Principal.RichEdit_LogFTP,500,'AutoSaveFTP.log');
+    ShowOnLog('    Descrição ..: ' + StrPas(@WSI.szDescription),Form_Principal.RichEdit_LogFTP,500,'AutoSaveFTP.log');
+    ShowOnLog('    Status .....: ' + StrPas(@WSI.szSystemStatus),Form_Principal.RichEdit_LogFTP,500,'AutoSaveFTP.log');
 
     if Assigned(WSI.lpVendorInfo) then
-      ShowOnLog('    ' + StrPas(@WSI.lpVendorInfo),Form_Principal.RichEdit_LogFTP);
+      ShowOnLog('    ' + StrPas(@WSI.lpVendorInfo),Form_Principal.RichEdit_LogFTP,500,'AutoSaveFTP.log');
 
     Self.Tag := 1;
   end;
@@ -687,15 +688,15 @@ begin
   Application.OnException := HandleException;
 
   // Verifica se o banco de dados existe e se todas as tabela existem
-  ShowOnLog('Verificando integridade do banco de dados...',Form_Principal.RichEdit_LogMonitoramento);
+  ShowOnLog('Verificando integridade do banco de dados...',Form_Principal.RichEdit_LogMonitoramento,100,'AutoSaveMon.log');
   Form_Principal.RichEdit_LogMonitoramento.Lines[Pred(Form_Principal.RichEdit_LogMonitoramento.Lines.Count)] := Form_Principal.RichEdit_LogMonitoramento.Lines[Pred(Form_Principal.RichEdit_LogMonitoramento.Lines.Count)] + ' Concluído!';
 
-  ShowOnLog('Conectando-se ao banco de dados...',Form_Principal.RichEdit_LogMonitoramento);
+  ShowOnLog('Conectando-se ao banco de dados...',Form_Principal.RichEdit_LogMonitoramento,100,'AutoSaveMon.log');
 
   ZConnection_Principal.Connect; // o restante está sendo feito no after connect
 
-  ShowOnLog('Aplicação pronta para utilização!',Form_Principal.RichEdit_LogMonitoramento);
-  ShowOnLog('-------------------------------------------------------------------------------------',Form_Principal.RichEdit_LogMonitoramento);
+  ShowOnLog('Aplicação pronta para utilização!',Form_Principal.RichEdit_LogMonitoramento,100,'AutoSaveMon.log');
+  ShowOnLog('-------------------------------------------------------------------------------------',Form_Principal.RichEdit_LogMonitoramento,100,'AutoSaveMon.log');
 
   Form_Principal.TabSheet_Sistemas.TabVisible := True;
   Form_Principal.TabSheet_Arquivos.TabVisible := True;
@@ -729,7 +730,7 @@ end;
 
 procedure TDataModule_Principal.FtpServer_MainAnswerToClient(Sender: TObject; Client: TFtpCtrlSocket; var Answer: TFtpString);
 begin
-	ShowOnLog(PutLineBreaks('RETORNO:> ' + Answer + ' ' + IPToHostName(Client.GetPeerAddr) + ' (' + Client.GetPeerAddr + ':' + Client.GetPeerPort + ')',85),Form_Principal.RichEdit_LogFTP);
+	ShowOnLog(PutLineBreaks('RETORNO:> ' + Answer + ' ' + IPToHostName(Client.GetPeerAddr) + ' (' + Client.GetPeerAddr + ':' + Client.GetPeerPort + ')',85),Form_Principal.RichEdit_LogFTP,500,'AutoSaveFTP.log');
 end;
 
 procedure TDataModule_Principal.FtpServer_MainAuthenticate(Sender: TObject; Client: TFtpCtrlSocket; UserName, Password: TFtpString; var Authenticated: Boolean);
@@ -753,7 +754,7 @@ begin
       StrTemp := 'Boa noite';
 
     Authenticated := True;
-    ShowOnLog('§ O usuário "' + UserName + '@' + (Client as TConnectedClient).IP + '" foi autenticado',Form_Principal.RichEdit_LogFTP);
+    ShowOnLog('§ O usuário "' + UserName + '@' + (Client as TConnectedClient).IP + '" foi autenticado',Form_Principal.RichEdit_LogFTP,500,'AutoSaveFTP.log');
     Client.SendAnswer(Format(_CLIENT_AUTHENTICATED,[StrTemp,(Client as TConnectedClient).RealName]));
   end;
 end;
@@ -791,7 +792,7 @@ begin
   if UpperCase(Keyword) = 'PASS' then
     Parametros := '<SENHA OCULTADA>';
 
-	ShowOnLog('COMANDO:> ' + Keyword + ' ' + Parametros + ' ' + IPToHostName(Client.GetPeerAddr) + ' (' + Client.GetPeerAddr + ':' + Client.GetPeerPort + ')',Form_Principal.RichEdit_LogFTP);
+	ShowOnLog('COMANDO:> ' + Keyword + ' ' + Parametros + ' ' + IPToHostName(Client.GetPeerAddr) + ' (' + Client.GetPeerAddr + ':' + Client.GetPeerPort + ')',Form_Principal.RichEdit_LogFTP,500,'AutoSaveFTP.log');
 end;
 
 procedure TDataModule_Principal.UpdateClientCount;
@@ -881,7 +882,7 @@ begin
   end
   else
   begin
-    ShowOnLog('§ Cliente ' + IPToHostName(Client.GetPeerAddr) + ' (' + Client.GetPeerAddr + ':' + Client.GetPeerPort + ') conectado',Form_Principal.RichEdit_LogFTP);
+    ShowOnLog('§ Cliente ' + IPToHostName(Client.GetPeerAddr) + ' (' + Client.GetPeerAddr + ':' + Client.GetPeerPort + ') conectado',Form_Principal.RichEdit_LogFTP,500,'AutoSaveFTP.log');
 
 //    UpdateClientCount;
 
@@ -892,7 +893,7 @@ end;
 
 procedure TDataModule_Principal.FtpServer_MainClientDisconnect(Sender: TObject; Client: TFtpCtrlSocket; AError: Word);
 begin
-  ShowOnLog('§ Cliente ' + IPToHostName(Client.GetPeerAddr) + ' (' + Client.GetPeerAddr + ':' + Client.GetPeerPort + ') desconectado',Form_Principal.RichEdit_LogFTP);
+  ShowOnLog('§ Cliente ' + IPToHostName(Client.GetPeerAddr) + ' (' + Client.GetPeerAddr + ':' + Client.GetPeerPort + ') desconectado',Form_Principal.RichEdit_LogFTP,500,'AutoSaveFTP.log');
 //  UpdateClientCount;
 end;
 
@@ -907,7 +908,7 @@ end;
 procedure TDataModule_Principal.FtpServer_MainRetrDataSent(Sender: TObject; Client: TFtpCtrlSocket; Data: TWSocket; AError: Word);
 begin
   if AError <> 0 then
-    ShowOnLog('! ' + IPToHostName(Client.GetPeerAddr) + ' (' + Client.GetPeerAddr + ':' + Client.GetPeerPort + ') Dados não enviados. Erro #' + IntToStr(AError),Form_Principal.RichEdit_LogFTP);
+    ShowOnLog('! ' + IPToHostName(Client.GetPeerAddr) + ' (' + Client.GetPeerAddr + ':' + Client.GetPeerPort + ') Dados não enviados. Erro #' + IntToStr(AError),Form_Principal.RichEdit_LogFTP,500,'AutoSaveFTP.log');
   { TODO : No futuro coloque uma barra de progresso multipropósito. Aqui ela
   cresce de acordo com a quantidade de dados enviados ao cliente. }
 end;
@@ -915,9 +916,9 @@ end;
 procedure TDataModule_Principal.FtpServer_MainRetrSessionClosed(Sender: TObject; Client: TFtpCtrlSocket; Data: TWSocket; AError: Word);
 begin
   if AError <> 0 then
-    ShowOnLog('! ' + IPToHostName(Client.GetPeerAddr) + ' (' + Client.GetPeerAddr + ':' + Client.GetPeerPort + ') Sessão de dados finalizada. Erro #' + IntToStr(AError),Form_Principal.RichEdit_LogFTP)
+    ShowOnLog('! ' + IPToHostName(Client.GetPeerAddr) + ' (' + Client.GetPeerAddr + ':' + Client.GetPeerPort + ') Sessão de dados finalizada. Erro #' + IntToStr(AError),Form_Principal.RichEdit_LogFTP,500,'AutoSaveFTP.log')
   else
-    ShowOnLog('§ ' + IPToHostName(Client.GetPeerAddr) + ' (' + Client.GetPeerAddr + ':' + Client.GetPeerPort + ') Sessão de dados finalizada sem erros!',Form_Principal.RichEdit_LogFTP);
+    ShowOnLog('§ ' + IPToHostName(Client.GetPeerAddr) + ' (' + Client.GetPeerAddr + ':' + Client.GetPeerPort + ') Sessão de dados finalizada sem erros!',Form_Principal.RichEdit_LogFTP,500,'AutoSaveFTP.log');
 
   if AError = 0 then
     if Client.UserData = 1 then
@@ -1103,7 +1104,7 @@ begin
   { -------------------------------------------------------------------------- }
   if MatchesMask(Arquivo,CMD_MONITOREDFILESLIST) then
   begin
-    ShowOnLog('@ Executando comando ' + Arquivo,Form_Principal.RichEdit_LogFTP);
+    ShowOnLog('@ Executando comando ' + Arquivo,Form_Principal.RichEdit_LogFTP,500,'AutoSaveFTP.log');
 
     { Gerando o arquivo }
     SendStatus(aClient,'== MONITOREDFILESLIST: Iniciando geração de conteúdo... =======================');
@@ -1128,7 +1129,7 @@ begin
   { -------------------------------------------------------------------------- }
   if MatchesMask(Arquivo,CMD_EXCLUDEDFILESLIST) then
   begin
-    ShowOnLog('@ Executando comando ' + Arquivo,Form_Principal.RichEdit_LogFTP);
+    ShowOnLog('@ Executando comando ' + Arquivo,Form_Principal.RichEdit_LogFTP,500,'AutoSaveFTP.log');
 
     { Gerando o arquivo }
     SendStatus(aClient,'== EXCLUDEDFILESLIST: Iniciando geração de conteúdo... ========================');
@@ -1156,39 +1157,39 @@ end;
 procedure TDataModule_Principal.FtpServer_MainRetrSessionConnected(Sender: TObject; Client: TFtpCtrlSocket; Data: TWSocket; AError: Word);
 begin
   if AError <> 0 then
-    ShowOnLog('! ' + IPToHostName(Client.GetPeerAddr) + ' (' + Client.GetPeerAddr + ':' + Client.GetPeerPort + ') Sessão de dados iniciada. Erro #' + IntToStr(AError),Form_Principal.RichEdit_LogFTP)
+    ShowOnLog('! ' + IPToHostName(Client.GetPeerAddr) + ' (' + Client.GetPeerAddr + ':' + Client.GetPeerPort + ') Sessão de dados iniciada. Erro #' + IntToStr(AError),Form_Principal.RichEdit_LogFTP,500,'AutoSaveFTP.log')
   else
-    ShowOnLog('§ ' + IPToHostName(Client.GetPeerAddr) + ' (' + Client.GetPeerAddr + ':' + Client.GetPeerPort + ') Sessão de dados iniciada sem erros!',Form_Principal.RichEdit_LogFTP);
+    ShowOnLog('§ ' + IPToHostName(Client.GetPeerAddr) + ' (' + Client.GetPeerAddr + ':' + Client.GetPeerPort + ') Sessão de dados iniciada sem erros!',Form_Principal.RichEdit_LogFTP,500,'AutoSaveFTP.log');
 end;
 
 procedure TDataModule_Principal.FtpServer_MainStart(Sender: TObject);
 begin
-  ShowOnLog('§ Servidor ativado na porta ' + FtpServer_Main.Port,Form_Principal.RichEdit_LogFTP);
-  ShowOnLog('-------------------------------------------------------------------------------------',Form_Principal.RichEdit_LogFTP);
+  ShowOnLog('§ Servidor ativado na porta ' + FtpServer_Main.Port,Form_Principal.RichEdit_LogFTP,500,'AutoSaveFTP.log');
+  ShowOnLog('-------------------------------------------------------------------------------------',Form_Principal.RichEdit_LogFTP,500,'AutoSaveFTP.log');
 //  UpdateClientCount;
 end;
 
 procedure TDataModule_Principal.FtpServer_MainStop(Sender: TObject);
 begin
-  ShowOnLog('§ Servidor desativado',Form_Principal.RichEdit_LogFTP);
-  ShowOnLog('-------------------------------------------------------------------------------------',Form_Principal.RichEdit_LogFTP);
+  ShowOnLog('§ Servidor desativado',Form_Principal.RichEdit_LogFTP,500,'AutoSaveFTP.log');
+  ShowOnLog('-------------------------------------------------------------------------------------',Form_Principal.RichEdit_LogFTP,500,'AutoSaveFTP.log');
 //  UpdateClientCount;
 end;
 
 procedure TDataModule_Principal.FtpServer_MainStorSessionClosed(Sender: TObject; Client: TFtpCtrlSocket; Data: TWSocket; AError: Word);
 begin
   if AError <> 0 then
-	  ShowOnLog('! ' + IPToHostName(Client.GetPeerAddr) + ' (' + Client.GetPeerAddr + ':' + Client.GetPeerPort + ') Sessão de dados finalizada de forma incorreta. Erro #' + IntToStr(AError),Form_Principal.RichEdit_LogFTP)
+	  ShowOnLog('! ' + IPToHostName(Client.GetPeerAddr) + ' (' + Client.GetPeerAddr + ':' + Client.GetPeerPort + ') Sessão de dados finalizada de forma incorreta. Erro #' + IntToStr(AError),Form_Principal.RichEdit_LogFTP,500,'AutoSaveFTP.log')
   else
-    ShowOnLog('§ ' + IPToHostName(Client.GetPeerAddr) + ' (' + Client.GetPeerAddr + ':' + Client.GetPeerPort + ') Sessão de dados finalizada sem erros!',Form_Principal.RichEdit_LogFTP);
+    ShowOnLog('§ ' + IPToHostName(Client.GetPeerAddr) + ' (' + Client.GetPeerAddr + ':' + Client.GetPeerPort + ') Sessão de dados finalizada sem erros!',Form_Principal.RichEdit_LogFTP,500,'AutoSaveFTP.log');
 end;
 
 procedure TDataModule_Principal.FtpServer_MainStorSessionConnected(Sender: TObject; Client: TFtpCtrlSocket; Data: TWSocket; AError: Word);
 begin
   if AError <> 0 then
-    ShowOnLog('! ' + IPToHostName(Client.GetPeerAddr) + ' (' + Client.GetPeerAddr + ':' + Client.GetPeerPort + ') Não foi possível iniciar a sessão de dados. Erro #' + IntToStr(AError),Form_Principal.RichEdit_LogFTP)
+    ShowOnLog('! ' + IPToHostName(Client.GetPeerAddr) + ' (' + Client.GetPeerAddr + ':' + Client.GetPeerPort + ') Não foi possível iniciar a sessão de dados. Erro #' + IntToStr(AError),Form_Principal.RichEdit_LogFTP,500,'AutoSaveFTP.log')
   else
-    ShowOnLog('§ ' + IPToHostName(Client.GetPeerAddr) + ' (' + Client.GetPeerAddr + ':' + Client.GetPeerPort + ') A sessão de dados foi iniciada sem erros!',Form_Principal.RichEdit_LogFTP);
+    ShowOnLog('§ ' + IPToHostName(Client.GetPeerAddr) + ' (' + Client.GetPeerAddr + ':' + Client.GetPeerPort + ') A sessão de dados foi iniciada sem erros!',Form_Principal.RichEdit_LogFTP,500,'AutoSaveFTP.log');
 end;
 
 procedure TDataModule_Principal.FtpServer_MainValidateDele(Sender: TObject; Client: TFtpCtrlSocket; var FilePath: TFtpString; var Allowed: Boolean);
@@ -1650,29 +1651,29 @@ var
 begin
   Form_Principal.RichEdit_LogMonitoramento.Lines[Pred(Form_Principal.RichEdit_LogMonitoramento.Lines.Count)] := Form_Principal.RichEdit_LogMonitoramento.Lines[Pred(Form_Principal.RichEdit_LogMonitoramento.Lines.Count)] + ' Concluído!';
 
-  ShowOnLog('Abrindo tabelas...',Form_Principal.RichEdit_LogMonitoramento);
-  ShowOnLog('> SISTEMAS...',Form_Principal.RichEdit_LogMonitoramento);
+  ShowOnLog('Abrindo tabelas...',Form_Principal.RichEdit_LogMonitoramento,100,'AutoSaveMon.log');
+  ShowOnLog('> SISTEMAS...',Form_Principal.RichEdit_LogMonitoramento,100,'AutoSaveMon.log');
   SISTEMAS.Open;
   Form_Principal.RichEdit_LogMonitoramento.Lines[Pred(Form_Principal.RichEdit_LogMonitoramento.Lines.Count)] := Form_Principal.RichEdit_LogMonitoramento.Lines[Pred(Form_Principal.RichEdit_LogMonitoramento.Lines.Count)] + ' Concluído!';
 
-  ShowOnLog('> ARQUIVOS...',Form_Principal.RichEdit_LogMonitoramento);
+  ShowOnLog('> ARQUIVOS...',Form_Principal.RichEdit_LogMonitoramento,100,'AutoSaveMon.log');
   ARQUIVOS.Open;
   Form_Principal.RichEdit_LogMonitoramento.Lines[Pred(Form_Principal.RichEdit_LogMonitoramento.Lines.Count)] := Form_Principal.RichEdit_LogMonitoramento.Lines[Pred(Form_Principal.RichEdit_LogMonitoramento.Lines.Count)] + ' Concluído!';
 
-  ShowOnLog('> USUARIOS...',Form_Principal.RichEdit_LogMonitoramento);
+  ShowOnLog('> USUARIOS...',Form_Principal.RichEdit_LogMonitoramento,100,'AutoSaveMon.log');
   USUARIOS.Open;
   Form_Principal.RichEdit_LogMonitoramento.Lines[Pred(Form_Principal.RichEdit_LogMonitoramento.Lines.Count)] := Form_Principal.RichEdit_LogMonitoramento.Lines[Pred(Form_Principal.RichEdit_LogMonitoramento.Lines.Count)] + ' Concluído!';
 
-  ShowOnLog('> SISTEMASDOSUSUARIOS...',Form_Principal.RichEdit_LogMonitoramento);
+  ShowOnLog('> SISTEMASDOSUSUARIOS...',Form_Principal.RichEdit_LogMonitoramento,100,'AutoSaveMon.log');
   SISTEMASDOSUSUARIOS.Open;
   Form_Principal.RichEdit_LogMonitoramento.Lines[Pred(Form_Principal.RichEdit_LogMonitoramento.Lines.Count)] := Form_Principal.RichEdit_LogMonitoramento.Lines[Pred(Form_Principal.RichEdit_LogMonitoramento.Lines.Count)] + ' Concluído!';
 
-  ShowOnLog('> EXCLUSOES...',Form_Principal.RichEdit_LogMonitoramento);
+  ShowOnLog('> EXCLUSOES...',Form_Principal.RichEdit_LogMonitoramento,100,'AutoSaveMon.log');
   EXCLUSOES.Open;
   Form_Principal.RichEdit_LogMonitoramento.Lines[Pred(Form_Principal.RichEdit_LogMonitoramento.Lines.Count)] := Form_Principal.RichEdit_LogMonitoramento.Lines[Pred(Form_Principal.RichEdit_LogMonitoramento.Lines.Count)] + ' Concluído!';
 
   // Criando a coleção de monitoramentos...
-  ShowOnLog('Carregando coleção de monitoradores de sistemas...',Form_Principal.RichEdit_LogMonitoramento);
+  ShowOnLog('Carregando coleção de monitoradores de sistemas...',Form_Principal.RichEdit_LogMonitoramento,100,'AutoSaveMon.log');
   FMonitoredSystems := TMonitoredSystems.Create(TMonitoredSystem,ZConnection_Principal);
 
   SISTEMAS.First;
@@ -1684,7 +1685,7 @@ begin
       CFSHChangeNotifier.Root := SISTEMASVA_DIRETORIO.AsString;
       SystemName := SISTEMASVA_NOME.AsString;
     end;
-    ShowOnLog('> ID#' + SISTEMASBI_SISTEMAS_ID.AsString + ': '+ SISTEMASVA_NOME.AsString + ' (' + SISTEMASVA_DIRETORIO.AsString + ')',Form_Principal.RichEdit_LogMonitoramento);
+    ShowOnLog('> ID#' + SISTEMASBI_SISTEMAS_ID.AsString + ': '+ SISTEMASVA_NOME.AsString + ' (' + SISTEMASVA_DIRETORIO.AsString + ')',Form_Principal.RichEdit_LogMonitoramento,100,'AutoSaveMon.log');
     SISTEMAS.Next
   end;
 
@@ -1693,11 +1694,11 @@ begin
       ShowNotificationMessage := False;
 
       { Para cada sistema monitorado devemos atualizar as tabelas de monitoramento }
-      ShowOnLog('Atualizando tabelas de monitoramento...',Form_Principal.RichEdit_LogMonitoramento);
+      ShowOnLog('Atualizando tabelas de monitoramento...',Form_Principal.RichEdit_LogMonitoramento,100,'AutoSaveMon.log');
       Form_Principal.RichEdit_LogMonitoramento.Update;
       for i := 0 to Pred(FMonitoredSystems.Count) do
       begin
-        ShowOnLog('> ID#' + IntToStr(FMonitoredSystems[i].ID) + ': ' + FMonitoredSystems[i].SystemName + '...',Form_Principal.RichEdit_LogMonitoramento);
+        ShowOnLog('> ID#' + IntToStr(FMonitoredSystems[i].ID) + ': ' + FMonitoredSystems[i].SystemName + '...',Form_Principal.RichEdit_LogMonitoramento,100,'AutoSaveMon.log');
         FMonitoredSystems[i].DoNotification;
         Form_Principal.RichEdit_LogMonitoramento.Lines[Pred(Form_Principal.RichEdit_LogMonitoramento.Lines.Count)] := Form_Principal.RichEdit_LogMonitoramento.Lines[Pred(Form_Principal.RichEdit_LogMonitoramento.Lines.Count)] + ' Concluído!';
       end;
@@ -1706,14 +1707,14 @@ begin
       ShowNotificationMessage := True;
     end
   else
-    ShowOnLog('> Não há nenhum sistema sendo monitorado!',Form_Principal.RichEdit_LogMonitoramento);
+    ShowOnLog('> Não há nenhum sistema sendo monitorado!',Form_Principal.RichEdit_LogMonitoramento,100,'AutoSaveMon.log');
 
-  ShowOnLog('-------------------------------------------------------------------------------------',Form_Principal.RichEdit_LogMonitoramento);
+  ShowOnLog('-------------------------------------------------------------------------------------',Form_Principal.RichEdit_LogMonitoramento,100,'AutoSaveMon.log');
 	FtpServer_Main.Banner := Format(_WELCOME,[FormatDateTime('yyyy',Now)]);
-  ShowOnLog('MPS Updater - v' + TFileInformation.GetInfo(ParamStr(0),'FULLVERSION').AsString,Form_Principal.RichEdit_LogMonitoramento);
+  ShowOnLog('MPS Updater - v' + TFileInformation.GetInfo(ParamStr(0),'FULLVERSION').AsString,Form_Principal.RichEdit_LogMonitoramento,100,'AutoSaveMon.log');
 
-  ShowOnLog(Format(_COPYRIGHT,[FormatDateTime('yyyy',Now)]),Form_Principal.RichEdit_LogMonitoramento);
-  ShowOnLog('-------------------------------------------------------------------------------------',Form_Principal.RichEdit_LogMonitoramento);
+  ShowOnLog(Format(_COPYRIGHT,[FormatDateTime('yyyy',Now)]),Form_Principal.RichEdit_LogMonitoramento,100,'AutoSaveMon.log');
+  ShowOnLog('-------------------------------------------------------------------------------------',Form_Principal.RichEdit_LogMonitoramento,100,'AutoSaveMon.log');
 	Form_Principal.Caption := 'MPS Updater (Server)';
 
  	FTPPublic := ExtractFilePath(Application.ExeName) + 'FTPPUBLIC';
@@ -1866,7 +1867,7 @@ end;
 procedure TMonitoredSystem.DoNotification;
 begin
   if ShowNotificationMessage then
-    ShowOnLog('§ Alteração detectada em "' + FSystemName + '". Atualizando tabela de arquivos...',Form_Principal.RichEdit_LogMonitoramento);
+    ShowOnLog('§ Alteração detectada em "' + FSystemName + '". Atualizando tabela de arquivos...',Form_Principal.RichEdit_LogMonitoramento,100,'AutoSaveMon.log');
 
   { (Re)Preenche a coleção de arquivos deste sistema }
   GetRelativePaths;
