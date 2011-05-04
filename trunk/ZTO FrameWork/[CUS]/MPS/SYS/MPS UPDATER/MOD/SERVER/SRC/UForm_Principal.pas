@@ -17,7 +17,6 @@ type
     TabSheet_Log: TTabSheet;
     Panel_Log: TPanel;
     BitBtn_SalvarELimparLog: TBitBtn;
-    BitBtn_SalvarLogComo: TBitBtn;
     TabSheet_Sistemas: TTabSheet;
     Panel_Projetos: TPanel;
     Label_ProjetosInfo: TLabel;
@@ -79,7 +78,6 @@ type
     Label_SIS_VA_CHAVEDEINSTALACAO: TLabel;
     DBNavigator_EXC_Exclusoes: TDBNavigator;
     StatusBar_Exclusoes: TStatusBar;
-    Action_SalvarLogComo: TAction;
     Action_SalvarELimparLog: TAction;
     procedure FormShow(Sender: TObject);
     procedure DBNavigator_SistemasClick(Sender: TObject; Button: TNavigateBtn);
@@ -90,7 +88,7 @@ type
     procedure ZTODBGrid_SistemasDosUsuariosAfterMultiselect(aSender: TObject; aMultiSelectEventTrigger: TMultiSelectEventTrigger);
     procedure TabSet_LogChange(Sender: TObject; NewTab: Integer; var AllowChange: Boolean);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
-    procedure Action_SalvarLogComoExecute(Sender: TObject);
+    procedure Action_SalvarELimparLogExecute(Sender: TObject);
   private
     { Private declarations }
     procedure DelayedAction;
@@ -109,7 +107,7 @@ uses
 
 {$R *.dfm}
 
-procedure TForm_Principal.Action_SalvarLogComoExecute(Sender: TObject);
+procedure TForm_Principal.Action_SalvarELimparLogExecute(Sender: TObject);
 var
   i: Cardinal;
   FileName: TFileName;
@@ -139,6 +137,7 @@ begin
           Add(RichEdit.Lines[i]);
 
         SaveToFile(DataModule_Principal.SaveDialog_Log.FileName);
+        RichEdit.Clear;
       finally
         Free;
       end;

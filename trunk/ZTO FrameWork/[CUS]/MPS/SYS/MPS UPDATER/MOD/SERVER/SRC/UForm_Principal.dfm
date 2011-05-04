@@ -192,31 +192,17 @@ object Form_Principal: TForm_Principal
         end
         object BitBtn_SalvarELimparLog: TBitBtn
           AlignWithMargins = True
-          Left = 660
+          Left = 636
           Top = 8
-          Width = 106
+          Width = 130
           Height = 25
           Margins.Top = 6
           Margins.Right = 6
           Margins.Bottom = 6
           Action = Action_SalvarELimparLog
           Align = alRight
-          Caption = 'Salvar e limpar log'
+          Caption = 'Salvar e limpar este log'
           TabOrder = 0
-        end
-        object BitBtn_SalvarLogComo: TBitBtn
-          AlignWithMargins = True
-          Left = 548
-          Top = 8
-          Width = 106
-          Height = 25
-          Margins.Left = 6
-          Margins.Top = 6
-          Margins.Bottom = 6
-          Action = Action_SalvarLogComo
-          Align = alRight
-          Caption = 'Salvar log como...'
-          TabOrder = 1
         end
       end
       object TabSet_Log: TTabSet
@@ -1374,12 +1360,9 @@ object Form_Principal: TForm_Principal
       end>
     Left = 738
     StyleName = 'XP Style'
-    object Action_SalvarLogComo: TAction
-      Caption = 'Salvar log como...'
-      OnExecute = Action_SalvarLogComoExecute
-    end
     object Action_SalvarELimparLog: TAction
-      Caption = 'Salvar e limpar log'
+      Caption = 'Salvar e limpar este log'
+      OnExecute = Action_SalvarELimparLogExecute
     end
   end
   object BalloonToolTip_Principal: TBalloonToolTip
