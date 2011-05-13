@@ -59,14 +59,14 @@ type
         FUpdating: Boolean;
         FFileName: TFileName;
         FFileOfTexts: TFileOfTexts;
-        FSelectedText: String;
+        FSelectedText: AnsiString;
         procedure LoadTextFile(const aFileName: TFileName = '');
         procedure SaveTextFile(const aFileName: TFileName);
         procedure UpdateCursorPosIndicator;
         function SelectedTextAttributes: TTextAttributes;
     public
         { Public declarations }
-        property SelectedText: String read FSelectedText;
+        property SelectedText: AnsiString read FSelectedText;
         property FileName: TFileName write FFileName;
     end;
 
@@ -152,7 +152,7 @@ begin
 	inherited;
     if ListBox_SavedTexts.ItemIndex > -1 then
     begin
-        ItemToRemove := FFileOfTexts.SavedTexts.IndexOfTitle(ListBox_SavedTexts.Items[ListBox_SavedTexts.ItemIndex]);
+        ItemToRemove := FFileOfTexts.SavedTexts.IndexOfTitle(AnsiString(ListBox_SavedTexts.Items[ListBox_SavedTexts.ItemIndex]));
         if ItemToRemove > -1 then
         begin
             FFileOfTexts.SavedTexts.Delete(ItemToRemove);
@@ -183,18 +183,18 @@ var
 begin
     inherited;
        
-    TextIndex := FFileOfTexts.SavedTexts.IndexOfTitle(Trim(LabeledEdit_TextTitle.Text));
+    TextIndex := FFileOfTexts.SavedTexts.IndexOfTitle(AnsiString(Trim(LabeledEdit_TextTitle.Text)));
 
     { Adiciona um novo }
     if TextIndex = -1 then
         with FFileOfTexts.SavedTexts.Add do
         begin
-            TextTitle := LabeledEdit_TextTitle.Text;
-            Text := FRtf2Html.GetRtfCode(RichEdit_TextBody);
+            TextTitle := AnsiString(LabeledEdit_TextTitle.Text);
+            Text := AnsiString(FRtf2Html.GetRtfCode(RichEdit_TextBody));
         end
     { Substitui }
     else
-        FFileOfTexts.SavedTexts[TextIndex].Text := FRtf2Html.GetRtfCode(RichEdit_TextBody);
+        FFileOfTexts.SavedTexts[TextIndex].Text := AnsiString(FRtf2Html.GetRtfCode(RichEdit_TextBody));
 
     LoadTextFile; { Apenas recarrega a lista com os itens já existentes no objeto }
 
@@ -328,7 +328,7 @@ begin
     ListBox_SavedTexts.Clear;
     if FFileOfTexts.SavedTexts.Count > 0 then
     	for i := 0 to Pred(FFileOfTexts.SavedTexts.Count) do
-            ListBox_SavedTexts.AddItem(FFileOfTexts.SavedTexts[i].TextTitle,TObject(FFileOfTexts.SavedTexts[i].Text));
+            ListBox_SavedTexts.AddItem(String(FFileOfTexts.SavedTexts[i].TextTitle),TObject(FFileOfTexts.SavedTexts[i].Text));
 end;
 
 procedure TXXXForm_TextsManager.DoSelectionChange(Sender: TObject);

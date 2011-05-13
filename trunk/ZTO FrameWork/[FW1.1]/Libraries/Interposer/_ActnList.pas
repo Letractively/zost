@@ -66,7 +66,7 @@ begin
 	        case aEnabledMode of
     	        emEnable: TAction(Actions[i]).Enabled := True;
         	    emDisable: TAction(Actions[i]).Enabled := False;
-            	emSelective: TAction(Actions[i]).SetPermission(TXXXDataModule(Owner).HasPermission(TXXXDataModule(Owner).DataModuleMain.ZConnections[0].Connection,UpperCase(Owner.Name + '.' + Actions[i].Name)));
+            	emSelective: TAction(Actions[i]).SetPermission(TXXXDataModule(Owner).HasPermission(TXXXDataModule(Owner).DataModuleMain.ZConnections[0].Connection,AnsiString(UpperCase(Owner.Name + '.' + Actions[i].Name))));
 	        end;
         finally
             if Assigned(aProgressBar) then

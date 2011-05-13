@@ -18,10 +18,10 @@ type
     nmBeforeExtractRecords,nmBeginExtractRecord, nmEndExtractRecord, nmAfterExtractRecords,
     nmFinish);
 
-    TMySQLBackupDataBaseNotification = procedure(aMoment: TMySQLBackupDataBaseNotificationMoment; StrParam0, StrParam1: String; IntParam0, IntParam1: Cardinal) of object;
+    TMySQLBackupDataBaseNotification = procedure(aMoment: TMySQLBackupDataBaseNotificationMoment; StrParam0, StrParam1: AnsiString; IntParam0, IntParam1: Cardinal) of object;
 
     TMySQLBackupDataBaseParameters = record
-        DataBaseName: String;
+        DataBaseName: AnsiString;
 //        aProgressBar: TProgressBar;
 //        aLabelPercentDone: TLabel;
         OnNotification: TMySQLBackupDataBaseNotification;
@@ -30,7 +30,7 @@ type
 
     TComparisonOperator = (coNone,coEqual,coLessThan,coLessOrEqualThan,coMoreOrEqualThan,coMoreThan,coLike);
 
-    TOnGetChecksum = procedure (aTableName: String; aTableNo, aTableCount: Word; aTableChecksum: String; const aIgnored: Boolean) of object;
+    TOnGetChecksum = procedure (aTableName: AnsiString; aTableNo, aTableCount: Word; aTableChecksum: AnsiString; const aIgnored: Boolean) of object;
 
     TZlibNotificationType = (zlntBeforeProcess,zlntAfterProcess,zlntInsideProcess);
     TZLibOperation = (zloCompress,zloDecompress);
@@ -41,11 +41,11 @@ type
 
     TSavedText = class(TCollectionItem)
     private
-        FTextTitle: String;
-        FText: String;
+        FTextTitle: AnsiString;
+        FText: AnsiString;
     published
-    	property TextTitle: String read FTextTitle write FTextTitle;
-		property Text: String read FText write FText;
+    	property TextTitle: AnsiString read FTextTitle write FTextTitle;
+		property Text: AnsiString read FText write FText;
     end;
 
     TSavedTexts = class(TCollection)
@@ -53,7 +53,7 @@ type
 	    function GetSavedText(i: Word): TSavedText;
     public
         function Add: TSavedText;
-        function IndexOfTitle(aTextTile: String): SmallInt;
+        function IndexOfTitle(aTextTile: AnsiString): SmallInt;
 		property SavedText[i: Word]: TSavedText read GetSavedText; default;
     end;
 
@@ -68,16 +68,16 @@ type
         property SavedTexts: TSavedTexts read FSavedTexts write FSavedTexts;
     end;
 
-    TAllowedChars = set of Char;
+    TAllowedChars = set of AnsiChar;
     
     TRecordInformation = record
     	CreatorId: Cardinal;
-        CreatorFullName: String;
+        CreatorFullName: AnsiString;
         CreationDateAndTime: TDateTime;
         LastModifierId: Cardinal;
-        LastModifierFullName: String;
+        LastModifierFullName: AnsiString;
         LastModificationDateAndTime: TDateTime;
-        RecordStatus: String;
+        RecordStatus: AnsiString;
     end;
 
 	TMultiTypedResult = record
@@ -90,8 +90,8 @@ type
         AsSmallInt: SmallInt;
         AsInteger: Integer;
         AsInt64: Int64;
-        AsChar: Char;
-        AsString: String;
+        AsAnsiChar: AnsiChar;
+        AsAnsiString: AnsiString;
         AsSingle: Single;
         AsDouble: Double;
         AsCurrency: Currency;
@@ -150,8 +150,8 @@ type
 //    private
 //    	FFieldError: TField;
 //    public
-//        constructor CreateFmt(const aFieldError: TField; const aMsg: String; const aArgs: array of const);
-//        constructor Create(const aFieldError: TField; const aMsg: String);
+//        constructor CreateFmt(const aFieldError: TField; const aMsg: AnsiString; const aArgs: array of const);
+//        constructor Create(const aFieldError: TField; const aMsg: AnsiString);
 //    	property FieldError: TField read FFieldError;
 //    end;
 
@@ -177,16 +177,16 @@ type
 	TDBActionError = class(TCollectionItem)
     private
     	FActionDateTime: TDateTime;
-        FActionUserName: String;
+        FActionUserName: AnsiString;
         FActionUserId: Word;
         FActionTried: TActionTried;
-        FDataBaseError: String;
+        FDataBaseError: AnsiString;
     published
     	property ActionDateTime: TDateTime read FActionDateTime write FActionDateTime;
-		property ActionUserName: String read FActionUserName write FActionUserName;
+		property ActionUserName: AnsiString read FActionUserName write FActionUserName;
         property ActionUserId: Word read FActionUserId write FActionUserId;
         property ActionTried: TActionTried read FActionTried write FActionTried; 
-        property DataBaseError: String read FDataBaseError write FDataBaseError;
+        property DataBaseError: AnsiString read FDataBaseError write FDataBaseError;
     end;
 
 	TDBActionErrorClass = class of TDBActionError;
@@ -215,9 +215,9 @@ type
 	///<author>Carlos Feitoza Filho</author>
 	TAuthenticatedUser = record
         Id: Cardinal;
-		RealName: String;
-        Login: String;
-        Password: String;
+		RealName: AnsiString;
+        Login: AnsiString;
+        Password: AnsiString;
     end;
 
 	TSetOfByte = set of Byte;
@@ -238,12 +238,12 @@ type
     TZConnections = class(TCollection)
 	private
 	    function GetZConnectionByIndex(i: Byte): TConnection;
-        function GetZConnectionByName(s: String): TConnection;
+        function GetZConnectionByName(s: AnsiString): TConnection;
     public
         constructor Create(ItemClass: TZConnectionClass);
         function Add: TConnection;
 		property ByIndex[i: Byte]: TConnection read GetZConnectionByIndex; default;
-        property ByName[s: String]: TConnection read GetZConnectionByName;
+        property ByName[s: AnsiString]: TConnection read GetZConnectionByName;
     end;
 
     TFileInformation = class
@@ -251,12 +251,12 @@ type
     	FFileInfo: TVSFixedFileInfo;
     	FFileName: TFileName;
 	    procedure SetFileName(const Value: TFileName);
-      function GetFileInfo(const aInfo: String): TMultiTypedResult;
+      function GetFileInfo(const aInfo: AnsiString): TMultiTypedResult;
     public
-    	class function GetInfo(const aFileName: TFileName; const aInfo: String): TMultiTypedResult;
+    	class function GetInfo(const aFileName: TFileName; const aInfo: AnsiString): TMultiTypedResult;
       class procedure SetVersion(const aFileName: TFileName; const aMajor, aMinor, aRelease, aBuild: Word);
     	property FileName: TFileName read FFileName write SetFileName;
-      property FileInfo[const Info: String]: TMultiTypedResult read GetFileInfo;
+      property FileInfo[const Info: AnsiString]: TMultiTypedResult read GetFileInfo;
     end;
 
 	TXXXConfigurations = class(TObjectFile)
@@ -268,17 +268,17 @@ type
 
 		{ Usada para encriptação interna. Deve ser setada/modificada em uma
         classe filha desta e NÃO deve ser published de forma nenhuma }
-		FMasterPassword: String;
+		FMasterPassword: AnsiString;
         
-		FCurrentDir: String;
+		FCurrentDir: AnsiString;
 		{ Usados pelo form de configuração de banco }
 		FNeedsGeneralConfiguration: Boolean;
-		FDBProtocol: String;
-		FDBHostAddr: String;
+		FDBProtocol: AnsiString;
+		FDBHostAddr: AnsiString;
 		FDBPortNumb: Word;
-		FDBDataBase: String;
-		FDBUserName: String;
-		FDBPassword: String;
+		FDBDataBase: AnsiString;
+		FDBUserName: AnsiString;
+		FDBPassword: AnsiString;
         FDBIsoLevel: Byte;
 
     	{ Usado pelo form de login para preselecionar o último usuário  que  fez
@@ -289,56 +289,56 @@ type
 
     	{ Usados pelo form de login.  Devem ser  setadas em uma classe filha que
         indicará seus valores de acordo com a aplicação }
-        FUserTableTableName: String; { USUARIOS }
-        FUserTableKeyFieldName: String;
-        FUserTableRealNameFieldName: String;
-        FUserTableUserNameFieldName: String;
-        FUserTablePasswordFieldName: String;
-        FUserTableEmailFieldName: String;
+        FUserTableTableName: AnsiString; { USUARIOS }
+        FUserTableKeyFieldName: AnsiString;
+        FUserTableRealNameFieldName: AnsiString;
+        FUserTableUserNameFieldName: AnsiString;
+        FUserTablePasswordFieldName: AnsiString;
+        FUserTableEmailFieldName: AnsiString;
         FExpandedLoginDialog: Boolean;
         FPasswordCipherAlgorithm: THashAlgorithm;
 
         { Tabelas do módulo de administração do sistema }
-        FEntitiesTableTableName: String; { ENTIDADESDOSISTEMA }
-        FEntitiesTableKeyFieldName: String;
-        FEntitiesTableNameFieldName: String;
-        FEntitiesTableTypeFieldName: String;
+        FEntitiesTableTableName: AnsiString; { ENTIDADESDOSISTEMA }
+        FEntitiesTableKeyFieldName: AnsiString;
+        FEntitiesTableNameFieldName: AnsiString;
+        FEntitiesTableTypeFieldName: AnsiString;
 
-        FGroupTableTableName: String; { GRUPOS }
-        FGroupTableKeyFieldName: String;
-        FGroupTableNameFieldName: String;
-        FGroupTableDescriptionFieldName: String;
+        FGroupTableTableName: AnsiString; { GRUPOS }
+        FGroupTableKeyFieldName: AnsiString;
+        FGroupTableNameFieldName: AnsiString;
+        FGroupTableDescriptionFieldName: AnsiString;
 
         { COMPARTILHADO ENTRE AS TABELAS DE PERMISSÃO }
-        FPermissionTableReadFieldName: String;
-        FPermissionTableInsertFieldName: String;
-        FPermissionTableUpdateFieldName: String;
-        FPermissionTableDeleteFieldName: String;
+        FPermissionTableReadFieldName: AnsiString;
+        FPermissionTableInsertFieldName: AnsiString;
+        FPermissionTableUpdateFieldName: AnsiString;
+        FPermissionTableDeleteFieldName: AnsiString;
 
-    	FUserPermissionTableTableName: String; { PERMISSOESDOSUSUARIOS }
-        FUserPermissionTableKeyFieldName: String;
-        FUserPermissionTableEntityFieldName: String;
-        FUserPermissionTableUserFieldName: String;
+    	FUserPermissionTableTableName: AnsiString; { PERMISSOESDOSUSUARIOS }
+        FUserPermissionTableKeyFieldName: AnsiString;
+        FUserPermissionTableEntityFieldName: AnsiString;
+        FUserPermissionTableUserFieldName: AnsiString;
 
-    	FGroupPermissionTableTableName: String;  { PERMISSOESDOSGRUPOS }
-        FGroupPermissionTableKeyFieldName: String;
-        FGroupPermissionTableEntityFieldName: String;
-        FGroupPermissionTableGroupFieldName: String;
+    	FGroupPermissionTableTableName: AnsiString;  { PERMISSOESDOSGRUPOS }
+        FGroupPermissionTableKeyFieldName: AnsiString;
+        FGroupPermissionTableEntityFieldName: AnsiString;
+        FGroupPermissionTableGroupFieldName: AnsiString;
 
-        FUserGroupsTableTableName: String; { GRUPOSDOSUSUARIOS }
-        FUserGroupsTableKeyFieldName: String;
-        FUserGroupsTableUserFieldName: String;
-        FUserGroupsTableGroupFieldName: String;
+        FUserGroupsTableTableName: AnsiString; { GRUPOSDOSUSUARIOS }
+        FUserGroupsTableKeyFieldName: AnsiString;
+        FUserGroupsTableUserFieldName: AnsiString;
+        FUserGroupsTableGroupFieldName: AnsiString;
 
-        FAdministrativeActionName: String;
-        FAddEntityActionName: String;
-        FAddEntityToUserOrGroupActionName: String;
+        FAdministrativeActionName: AnsiString;
+        FAddEntityActionName: AnsiString;
+        FAddEntityToUserOrGroupActionName: AnsiString;
 
-        FUserCreatorFieldName: String;
-        FCreationDateAndTimeFieldName: String;
-        FUserModifierFieldName: String;
-        FModificationDateAndTimeFieldName: String;
-        FRecordStatusFieldName: String;
+        FUserCreatorFieldName: AnsiString;
+        FCreationDateAndTimeFieldName: AnsiString;
+        FUserModifierFieldName: AnsiString;
+        FModificationDateAndTimeFieldName: AnsiString;
+        FRecordStatusFieldName: AnsiString;
 
         { Outras Opções }
         FUseBalloonsOnValidationErrors: Boolean;
@@ -347,75 +347,75 @@ type
 
         { Opções de e-mail SMTP }
 
-    	function GetConvertEnterToTabFor(ControlClassName: String): Boolean;
+    	function GetConvertEnterToTabFor(ControlClassName: AnsiString): Boolean;
 	protected
     	procedure Clear; override;
 	public
         constructor Create(AOwner: TComponent); override;
         destructor Destroy; override;
 
-        property CurrentDir: String read FCurrentDir;
-		property MasterPassword: String read FMasterPassword write FMasterPassword;
+        property CurrentDir: AnsiString read FCurrentDir;
+		property MasterPassword: AnsiString read FMasterPassword write FMasterPassword;
 		property AuthenticatedUser: TAuthenticatedUser read FAuthenticatedUser write FAuthenticatedUser;
-        property ConvertEnterToTabFor[ControlClassName: String]: Boolean read GetConvertEnterToTabFor;
+        property ConvertEnterToTabFor[ControlClassName: AnsiString]: Boolean read GetConvertEnterToTabFor;
 	published
 		property BackGroundImage: TFileName read FBackGroundImage write FBackGroundImage;
 		property BackgroundImagePosition: TBackgroundImagePosition read FBackgroundImagePosition write FBackgroundImagePosition;
 		property BackgroundImageModifier: TBackgroundImageModifier read FBackgroundImageModifier write FBackgroundImageModifier;
-		property DBPassword: String read FDBPassword write FDBPassword;
-		property DBUserName: String read FDBUserName write FDBUserName;
-		property DBProtocol: String read FDBProtocol write FDBProtocol;
-		property DBDataBase: String read FDBDataBase write FDBDataBase;
-		property DBHostAddr: String read FDBHostAddr write FDBHostAddr;
+		property DBPassword: AnsiString read FDBPassword write FDBPassword;
+		property DBUserName: AnsiString read FDBUserName write FDBUserName;
+		property DBProtocol: AnsiString read FDBProtocol write FDBProtocol;
+		property DBDataBase: AnsiString read FDBDataBase write FDBDataBase;
+		property DBHostAddr: AnsiString read FDBHostAddr write FDBHostAddr;
 		property DBPortNumb: Word read FDBPortNumb write FDBPortNumb;
 		property DBIsoLevel: Byte read FDBIsoLevel write FDBIsoLevel;
 
-        property UserTableTableName: String read FUserTableTableName write FUserTableTableName;
-		property UserTableKeyFieldName: String read FUserTableKeyFieldName write FUserTableKeyFieldName;
-		property UserTableRealNameFieldName: String read FUserTableRealNameFieldName write FUserTableRealNameFieldName;
-		property UserTableUserNameFieldName: String read FUserTableUserNameFieldName write FUserTableUserNameFieldName;
-		property UserTablePasswordFieldName: String read FUserTablePasswordFieldName write FUserTablePasswordFieldName;
-        property UserTableEmailFieldName: String read FUserTableEmailFieldName write FUserTableEmailFieldName;
+        property UserTableTableName: AnsiString read FUserTableTableName write FUserTableTableName;
+		property UserTableKeyFieldName: AnsiString read FUserTableKeyFieldName write FUserTableKeyFieldName;
+		property UserTableRealNameFieldName: AnsiString read FUserTableRealNameFieldName write FUserTableRealNameFieldName;
+		property UserTableUserNameFieldName: AnsiString read FUserTableUserNameFieldName write FUserTableUserNameFieldName;
+		property UserTablePasswordFieldName: AnsiString read FUserTablePasswordFieldName write FUserTablePasswordFieldName;
+        property UserTableEmailFieldName: AnsiString read FUserTableEmailFieldName write FUserTableEmailFieldName;
 
-        property GroupTableTableName: String read FGroupTableTableName write FGroupTableTableName; { GRUPOS }
-        property GroupTableKeyFieldName: String read FGroupTableKeyFieldName write FGroupTableKeyFieldName;
-        property GroupTableNameFieldName: String read FGroupTableNameFieldName write FGroupTableNameFieldName;
-        property GroupTableDescriptionFieldName: String read FGroupTableDescriptionFieldName write FGroupTableDescriptionFieldName;
+        property GroupTableTableName: AnsiString read FGroupTableTableName write FGroupTableTableName; { GRUPOS }
+        property GroupTableKeyFieldName: AnsiString read FGroupTableKeyFieldName write FGroupTableKeyFieldName;
+        property GroupTableNameFieldName: AnsiString read FGroupTableNameFieldName write FGroupTableNameFieldName;
+        property GroupTableDescriptionFieldName: AnsiString read FGroupTableDescriptionFieldName write FGroupTableDescriptionFieldName;
 
-        property EntitiesTableTableName: String read FEntitiesTableTableName write FEntitiesTableTableName; { ENTIDADESDOSISTEMA }
-        property EntitiesTableKeyFieldName: String read FEntitiesTableKeyFieldName write FEntitiesTableKeyFieldName;
-        property EntitiesTableNameFieldName: String read FEntitiesTableNameFieldName write FEntitiesTableNameFieldName;
-        property EntitiesTableTypeFieldName: String read FEntitiesTableTypeFieldName write FEntitiesTableTypeFieldName;
+        property EntitiesTableTableName: AnsiString read FEntitiesTableTableName write FEntitiesTableTableName; { ENTIDADESDOSISTEMA }
+        property EntitiesTableKeyFieldName: AnsiString read FEntitiesTableKeyFieldName write FEntitiesTableKeyFieldName;
+        property EntitiesTableNameFieldName: AnsiString read FEntitiesTableNameFieldName write FEntitiesTableNameFieldName;
+        property EntitiesTableTypeFieldName: AnsiString read FEntitiesTableTypeFieldName write FEntitiesTableTypeFieldName;
 
-        property PermissionTableReadFieldName: String read FPermissionTableReadFieldName write FPermissionTableReadFieldName;
-        property PermissionTableInsertFieldName: String read FPermissionTableInsertFieldName write FPermissionTableInsertFieldName;
-        property PermissionTableUpdateFieldName: String read FPermissionTableUpdateFieldName write FPermissionTableUpdateFieldName;
-        property PermissionTableDeleteFieldName: String read FPermissionTableDeleteFieldName write FPermissionTableDeleteFieldName;
+        property PermissionTableReadFieldName: AnsiString read FPermissionTableReadFieldName write FPermissionTableReadFieldName;
+        property PermissionTableInsertFieldName: AnsiString read FPermissionTableInsertFieldName write FPermissionTableInsertFieldName;
+        property PermissionTableUpdateFieldName: AnsiString read FPermissionTableUpdateFieldName write FPermissionTableUpdateFieldName;
+        property PermissionTableDeleteFieldName: AnsiString read FPermissionTableDeleteFieldName write FPermissionTableDeleteFieldName;
 
-     	property UserPermissionTableTableName: String read FUserPermissionTableTableName write FUserPermissionTableTableName; { PERMISSOESDOSUSUARIOS }
-        property UserPermissionTableKeyFieldName: String read FUserPermissionTableKeyFieldName write FUserPermissionTableKeyFieldName;
-        property UserPermissionTableEntityFieldName: String read FUserPermissionTableEntityFieldName write FUserPermissionTableEntityFieldName;
-        property UserPermissionTableUserFieldName: String read FUserPermissionTableUserFieldName write FUserPermissionTableUserFieldName;
+     	property UserPermissionTableTableName: AnsiString read FUserPermissionTableTableName write FUserPermissionTableTableName; { PERMISSOESDOSUSUARIOS }
+        property UserPermissionTableKeyFieldName: AnsiString read FUserPermissionTableKeyFieldName write FUserPermissionTableKeyFieldName;
+        property UserPermissionTableEntityFieldName: AnsiString read FUserPermissionTableEntityFieldName write FUserPermissionTableEntityFieldName;
+        property UserPermissionTableUserFieldName: AnsiString read FUserPermissionTableUserFieldName write FUserPermissionTableUserFieldName;
 
-    	property GroupPermissionTableTableName: String read FGroupPermissionTableTableName write FGroupPermissionTableTableName;  { PERMISSOESDOSGRUPOS }
-        property GroupPermissionTableKeyFieldName: String read FGroupPermissionTableKeyFieldName write FGroupPermissionTableKeyFieldName;
-        property GroupPermissionTableEntityFieldName: String read FGroupPermissionTableEntityFieldName write FGroupPermissionTableEntityFieldName;
-        property GroupPermissionTableGroupFieldName: String read FGroupPermissionTableGroupFieldName write FGroupPermissionTableGroupFieldName;
+    	property GroupPermissionTableTableName: AnsiString read FGroupPermissionTableTableName write FGroupPermissionTableTableName;  { PERMISSOESDOSGRUPOS }
+        property GroupPermissionTableKeyFieldName: AnsiString read FGroupPermissionTableKeyFieldName write FGroupPermissionTableKeyFieldName;
+        property GroupPermissionTableEntityFieldName: AnsiString read FGroupPermissionTableEntityFieldName write FGroupPermissionTableEntityFieldName;
+        property GroupPermissionTableGroupFieldName: AnsiString read FGroupPermissionTableGroupFieldName write FGroupPermissionTableGroupFieldName;
 
-        property UserGroupsTableTableName: String read FUserGroupsTableTableName write FUserGroupsTableTableName; { GRUPOSDOSUSUARIOS }
-        property UserGroupsTableKeyFieldName: String read FUserGroupsTableKeyFieldName write FUserGroupsTableKeyFieldName;
-        property UserGroupsTableUserFieldName: String read FUserGroupsTableUserFieldName write FUserGroupsTableUserFieldName;
-        property UserGroupsTableGroupFieldName: String read FUserGroupsTableGroupFieldName write FUserGroupsTableGroupFieldName;
+        property UserGroupsTableTableName: AnsiString read FUserGroupsTableTableName write FUserGroupsTableTableName; { GRUPOSDOSUSUARIOS }
+        property UserGroupsTableKeyFieldName: AnsiString read FUserGroupsTableKeyFieldName write FUserGroupsTableKeyFieldName;
+        property UserGroupsTableUserFieldName: AnsiString read FUserGroupsTableUserFieldName write FUserGroupsTableUserFieldName;
+        property UserGroupsTableGroupFieldName: AnsiString read FUserGroupsTableGroupFieldName write FUserGroupsTableGroupFieldName;
 
-        property AdministrativeActionName: String read FAdministrativeActionName write FAdministrativeActionName;
-        property AddEntityActionName: String read FAddEntityActionName write FAddEntityActionName;
-        property AddEntityToUserOrGroupActionName: String read FAddEntityToUserOrGroupActionName write FAddEntityToUserOrGroupActionName;
+        property AdministrativeActionName: AnsiString read FAdministrativeActionName write FAdministrativeActionName;
+        property AddEntityActionName: AnsiString read FAddEntityActionName write FAddEntityActionName;
+        property AddEntityToUserOrGroupActionName: AnsiString read FAddEntityToUserOrGroupActionName write FAddEntityToUserOrGroupActionName;
 
-        property UserCreatorFieldName: String read FUserCreatorFieldName write FUserCreatorFieldName;
-        property CreationDateAndTimeFieldName: String read FCreationDateAndTimeFieldName write FCreationDateAndTimeFieldName;
-        property UserModifierFieldName: String read FUserModifierFieldName write FUserModifierFieldName;
-        property ModificationDateAndTimeFieldName: String read FModificationDateAndTimeFieldName write FModificationDateAndTimeFieldName;
-        property RecordStatusFieldName: String read FRecordStatusFieldName write FRecordStatusFieldName;
+        property UserCreatorFieldName: AnsiString read FUserCreatorFieldName write FUserCreatorFieldName;
+        property CreationDateAndTimeFieldName: AnsiString read FCreationDateAndTimeFieldName write FCreationDateAndTimeFieldName;
+        property UserModifierFieldName: AnsiString read FUserModifierFieldName write FUserModifierFieldName;
+        property ModificationDateAndTimeFieldName: AnsiString read FModificationDateAndTimeFieldName write FModificationDateAndTimeFieldName;
+        property RecordStatusFieldName: AnsiString read FRecordStatusFieldName write FRecordStatusFieldName;
 
         property ExpandedLoginDialog: Boolean read FExpandedLoginDialog write FExpandedLoginDialog;
         property PasswordCipherAlgorithm: THashAlgorithm read FPasswordCipherAlgorithm write FPasswordCipherAlgorithm;
@@ -439,12 +439,12 @@ type
 
     TScriptPart = class (TCollectionItem)
     private
-    	FDelimiter: String;
-        FScript: String;
+    	FDelimiter: AnsiString;
+        FScript: AnsiString;
     public
     	constructor Create(Collection: TCollection); override;
-    	property Delimiter: String read FDelimiter write FDelimiter;
-        property Script: String read FScript write FScript;
+    	property Delimiter: AnsiString read FDelimiter write FDelimiter;
+        property Script: AnsiString read FScript write FScript;
     end;
 
     TScriptParts = class (TCollection)
@@ -467,9 +467,9 @@ type
 //	TDefragDatabaseCallBack = procedure (const aDefragDatabaseEvent: TDefragDatabaseEvent; const aDataSet: TDataSet);
 
 const
-	HASH_ALGORITHMS: array [Low(THashAlgorithm)..High(THashAlgorithm)] of String = ('NENHUM','SHA-512','SHA-384','SHA-256','SHA-1','RIPMED-160','RIPMED-128','MD5','MD4','HAVAL','TIGER');
-    CURRENCY_STRINGS: array [1..5] of String = ('US$','€','R$','£','¥');
-    MONTH_NAMES: array [1..12] of String = ('Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro');
+	HASH_ALGORITHMS: array [Low(THashAlgorithm)..High(THashAlgorithm)] of AnsiString = ('NENHUM','SHA-512','SHA-384','SHA-256','SHA-1','RIPMED-160','RIPMED-128','MD5','MD4','HAVAL','TIGER');
+    CURRENCY_STRINGS: array [1..5] of AnsiString = ('US$','€','R$','£','¥');
+    MONTH_NAMES: array [1..12] of AnsiString = ('Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro');
     CR_LF = #$0D#$0A;
 
     { ATENÇÃO: NÃO MUDE OS VALORES DAS CONSTANTES ABAIXO. }
@@ -603,13 +603,13 @@ begin
 end;
 
 { EInvalidRecordValue }
-//constructor EInvalidRecordValue.CreateFmt(const aFieldError: TField; const aMsg: String; const aArgs: array of const);
+//constructor EInvalidRecordValue.CreateFmt(const aFieldError: TField; const aMsg: AnsiString; const aArgs: array of const);
 //begin
 //	inherited CreateFmt(aMsg,aArgs);
 //    FFieldError := aFieldError;
 //end;
 //
-//constructor EInvalidRecordValue.Create(const aFieldError: TField; const aMsg: String);
+//constructor EInvalidRecordValue.Create(const aFieldError: TField; const aMsg: AnsiString);
 //begin
 //	inherited Create(aMsg);
 //    FFieldError := aFieldError;
@@ -632,25 +632,25 @@ begin
 	Result := TConnection(inherited Items[i]);
 end;
 
-function TZConnections.GetZConnectionByName(s: String): TConnection;
+function TZConnections.GetZConnectionByName(s: AnsiString): TConnection;
 var
 	i: Byte;
 begin
 	Result := nil;
-    if Count > 0 then
-        for i := 0 to Pred(Count) do
-            if TConnection(inherited Items[i]).Connection.Name = s then
-            begin
-                Result := TConnection(inherited Items[i]);
-                Break;
-            end;
+  if Count > 0 then
+    for i := 0 to Pred(Count) do
+      if AnsiString((TConnection(inherited Items[i]).Connection.Name)) = s then
+      begin
+        Result := TConnection(inherited Items[i]);
+        Break;
+      end;
 end;
 
 { TFileInformation }
 
 { TODO -oCarlos Feitoza : Esta função está incompleta. Ela só está retornando as
 informações de versão. Por favor complete-a! }
-function TFileInformation.GetFileInfo(const aInfo: String): TMultiTypedResult;
+function TFileInformation.GetFileInfo(const aInfo: AnsiString): TMultiTypedResult;
 begin
     ZeroMemory(@Result,SizeOf(TMultiTypedResult));
     with Result do
@@ -658,32 +658,32 @@ begin
         if aInfo = 'MAJORVERSION' then
         begin
     	    AsWord := HiWord(FFileInfo.dwFileVersionMS);
-	        AsString := IntToStr(AsWord);
+	        AsAnsiString := AnsiString(IntToStr(AsWord));
         end
         else if aInfo = 'MINORVERSION' then
         begin
     	    AsWord := LoWord(FFileInfo.dwFileVersionMS);
-	        AsString := IntToStr(AsWord);
+	        AsAnsiString := AnsiString(IntToStr(AsWord));
         end
         else if aInfo = 'RELEASE' then
         begin
     	    AsWord := HiWord(FFileInfo.dwFileVersionLS);
-	        AsString := IntToStr(AsWord);
+	        AsAnsiString := AnsiString(IntToStr(AsWord));
         end
         else if aInfo = 'BUILD' then
         begin
     	    AsWord := LoWord(FFileInfo.dwFileVersionLS);
-	        AsString := IntToStr(AsWord);
+	        AsAnsiString := AnsiString(IntToStr(AsWord));
         end
         else if aInfo = 'FULLVERSION' then
         begin
-	        AsString := GetFileInfo('MAJORVERSION').AsString + '.' + GetFileInfo('MINORVERSION').AsString + '.' + GetFileInfo('RELEASE').AsString + '.' + GetFileInfo('BUILD').AsString;
-            AsInt64 := StrToInt64(GetFileInfo('MAJORVERSION').AsString + GetFileInfo('MINORVERSION').AsString + GetFileInfo('RELEASE').AsString + GetFileInfo('BUILD').AsString);
+	        AsAnsiString := GetFileInfo('MAJORVERSION').AsAnsiString + '.' + GetFileInfo('MINORVERSION').AsAnsiString + '.' + GetFileInfo('RELEASE').AsAnsiString + '.' + GetFileInfo('BUILD').AsAnsiString;
+          AsInt64 := StrToInt64(String(GetFileInfo('MAJORVERSION').AsAnsiString) + String(GetFileInfo('MINORVERSION').AsAnsiString) + String(GetFileInfo('RELEASE').AsAnsiString) + String(GetFileInfo('BUILD').AsAnsiString));
         end
     end;
 end;
 
-class function TFileInformation.GetInfo(const aFileName: TFileName; const aInfo: String): TMultiTypedResult;
+class function TFileInformation.GetInfo(const aFileName: TFileName; const aInfo: AnsiString): TMultiTypedResult;
 begin
   with TFileInformation.Create do
     try
@@ -861,17 +861,17 @@ end;
 // end;
 //
 // TVersionDescription = record
-//   CompanyName : string;
-//   FileDescription : string;
-//   InternalName : string;
-//   LegalCopyright : string;
-//   LegalTrademarks : string;
-//   OriginalFileName : string;
-//   ProductVersion : string;
-//   Comments : string;
+//   CompanyName : AnsiString;
+//   FileDescription : AnsiString;
+//   InternalName : AnsiString;
+//   LegalCopyright : AnsiString;
+//   LegalTrademarks : AnsiString;
+//   OriginalFileName : AnsiString;
+//   ProductVersion : AnsiString;
+//   Comments : AnsiString;
 // end; 
 //
-//procedure FileVersionDigits(filename:string; var VersionNr:TVersionNumber);
+//procedure FileVersionDigits(filename:AnsiString; var VersionNr:TVersionNumber);
 //var sz,len:dword;
 //    l:dword;
 //    buf:pointer;
@@ -896,7 +896,7 @@ end;
 //  FreeMem(buf,sz);
 //end;
 //
-//procedure FileVersionDescription(filename:string; var
+//procedure FileVersionDescription(filename:AnsiString; var
 //VersionD:TVersionDescription);
 //function SwapLong(L : longint): longint;
 //assembler;
@@ -906,7 +906,7 @@ end;
 //var sz,l,len:dword;
 //    buf,p:pointer;
 //    zKeyPath : array[0..255] of Char;
-//    language:string;
+//    language:AnsiString;
 //begin
 //  sz:=GetFileVersionInfoSize(pchar(filename),l);
 //  getmem(buf,sz);
@@ -971,7 +971,7 @@ begin
 	inherited;
     FMasterPassword := DEFAULT_MASTER_PASSWORD;
 
-    FCurrentDir := GetCurrentDir;
+    FCurrentDir := AnsiString(GetCurrentDir);
 
     FNeedsGeneralConfiguration := DEFAULT_SHOW_DB_CONFIGFORM;
     FLastAuthenticatedUser := DEFAULT_LAST_AUTHENTICATED_USER;
@@ -1047,9 +1047,9 @@ begin
 	inherited;
 end;
 
-function TXXXConfigurations.GetConvertEnterToTabFor(ControlClassName: String): Boolean;
+function TXXXConfigurations.GetConvertEnterToTabFor(ControlClassName: AnsiString): Boolean;
 begin
-	Result := FConvertEnterToTabList.IndexOf(ControlClassName) > -1;
+	Result := FConvertEnterToTabList.IndexOf(String(ControlClassName)) > -1;
 end;
 
 { TProcessorEvents }
@@ -1076,7 +1076,7 @@ begin
     begin
 	    TXXXDataModule.SetLabelDescriptionValue(FLabelCurrentDescription
                                                ,FLabelCurrentValue
-                                               ,IntToStr(Succ(StatementIndex)) + ' / ' + IntToStr(Processor.StatementCount));
+                                               ,AnsiString(IntToStr(Succ(StatementIndex)) + ' / ' + IntToStr(Processor.StatementCount)));
     	Application.ProcessMessages;
     end;
 end;
@@ -1142,7 +1142,7 @@ begin
 	Result := TSavedText(inherited Items[i]);
 end;
 
-function TSavedTexts.IndexOfTitle(aTextTile: String): SmallInt;
+function TSavedTexts.IndexOfTitle(aTextTile: AnsiString): SmallInt;
 var
 	i: Word;
 begin

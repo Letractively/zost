@@ -10,15 +10,15 @@ type
 	{ Cada subclasse na estrutura de arquivo deve ser derivada de }
 	{ TPersistent. TCollection e TCollectionItem, p.e., são       }
 	TObjectFile = class(TComponent)
-    protected
-        procedure Clear; virtual; abstract;
-    public
-        procedure LoadFromBinaryFile(const aFileName: TFileName);
-        procedure LoadFromTextualRepresentation(const aTextualRepresentation: String);
-        procedure SaveToBinaryFile(const aFileName: TFileName);
-        function ToString: String;
-        function ToXML: String;
-    end;
+  protected
+    procedure Clear; virtual; abstract;
+  public
+    procedure LoadFromBinaryFile(const aFileName: TFileName);
+    procedure LoadFromTextualRepresentation(const aTextualRepresentation: String);
+    procedure SaveToBinaryFile(const aFileName: TFileName);
+    function ToString: String; override;
+    function ToXML: String;
+  end;
 
 
 implementation
@@ -292,37 +292,38 @@ var
     StrStream: TStringStream;
     s: string;
 begin
-    BinStream := TMemoryStream.Create;
-    try
-	    StrStream := TStringStream.Create(s);
-        try
-            BinStream.WriteComponent(Self);
-            BinStream.Seek(0, soFromBeginning);
-            ObjectBinaryToText(BinStream, StrStream);
-            StrStream.Seek(0, soFromBeginning);
-            Result:= StrStream.DataString;
-        finally
-            StrStream.Free;
-        end;
-    finally
-	    BinStream.Free
-    end;
+  inherited;
+  BinStream := TMemoryStream.Create;
+  try
+    StrStream := TStringStream.Create(s);
+      try
+        BinStream.WriteComponent(Self);
+        BinStream.Seek(0, soFromBeginning);
+        ObjectBinaryToText(BinStream, StrStream);
+        StrStream.Seek(0, soFromBeginning);
+        Result:= StrStream.DataString;
+      finally
+        StrStream.Free;
+      end;
+  finally
+	  BinStream.Free
+  end;
 end;
 
 function TObjectFile.ToXML: String;
 var
-    BinStream: TMemoryStream;
-    XML: IXMLDocument;
+  BinStream: TMemoryStream;
+  XML: IXMLDocument;
 begin
-    BinStream := TMemoryStream.Create;
-    try
-        BinStream.WriteComponent(Self);
-        BinStream.Seek(0, soFromBeginning);
-        XML := ObjectBinaryToXML(BinStream);
-        Result:= XML.XML.Text;
-    finally
-	    BinStream.Free
-    end;
+  BinStream := TMemoryStream.Create;
+  try
+    BinStream.WriteComponent(Self);
+    BinStream.Seek(0, soFromBeginning);
+    XML := ObjectBinaryToXML(BinStream);
+    Result:= XML.XML.Text;
+  finally
+	  BinStream.Free
+  end;
 end;
 
 end.

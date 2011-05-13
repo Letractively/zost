@@ -20,7 +20,7 @@ type
     TDataModuleCreateParameters = record
         Configurations: TXXXConfigurations;
         DataModuleMain: TXXXDataModule_Main; { nil }
-        Description: String; { '' }
+        Description: AnsiString; { '' }
         ProgressBarModuleLoad: TProgressBar;
     end;
 
@@ -31,7 +31,7 @@ type
     	procedure DataModuleDestroy(Sender: TObject);
 	private
     	{ Private declarations }
-        FDescription: String;
+        FDescription: AnsiString;
         FProgressBarModuleLoad: TProgressBar;
         FConfigurations: TXXXConfigurations;
         FZConnections: TZConnections;
@@ -43,7 +43,7 @@ type
         Form_Processing: TForm_Processing;
 
 //    	FTotalOfActions: Cardinal;
-	    function GetEntityID(aZConnection: TZConnection; aEntityName: String; aEntityType: TEntityType): Cardinal;
+	    function GetEntityID(aZConnection: TZConnection; aEntityName: AnsiString; aEntityType: TEntityType): Cardinal;
         procedure DoBeforeCancel(aDataSet: TDataSet);
 	    procedure DoUnhandleException(Sender: TObject; E: Exception);
 	    procedure SetApplicationActionsEnabled(const aEnabled: Boolean);
@@ -64,7 +64,7 @@ type
 		procedure SplitSQLScript(const aZConnection: TZConnection;
                                    var aScriptParts: TScriptParts;
                                  const aSQLScriptFile: TFileName;
-                                 const aSQLScriptText: String;
+                                 const aSQLScriptText: AnsiString;
 //                                 const aForeignKeysCheck: Boolean = True;
                                  const aSplitSQLScriptCallBack: TSplitSQLScriptCallBack = nil);
 
@@ -91,38 +91,38 @@ type
 
         { = AUDITORIA ======================================================== }
         procedure LogDBActionError(const aZConnection: TZConnection; aDataSet: TDataSet; aEDatabaseError: EDatabaseError);
-        function IsSystemTable(const aTableName: String): Boolean; virtual;
-		function ReplaceSystemObjectNames(const aText: String): String; overload; virtual;
+        function IsSystemTable(const aTableName: AnsiString): Boolean; virtual;
+		function ReplaceSystemObjectNames(const aText: AnsiString): AnsiString; overload; virtual;
         procedure ReplaceSystemObjectNames(const aZQuery: TZQuery); overload; virtual;
-        function GetUserEmail(aUserID: Word = 0): String;
+        function GetUserEmail(aUserID: Word = 0): AnsiString;
 
 
         { = BANCO DE DADOS =================================================== }
         procedure LocateFirstRecord(const aDataSetToLocateIn: TDataSet;
                                     const aEdit: TEdit;
-                                    const aFieldName: String);
+                                    const aFieldName: AnsiString);
         function LocateFirstMatchedRecord(const aZConnection: TZConnection;
-                                          const aTableNames: array of String;
-                                          const aLinkFields: array of String;
-                                          const aSearchFieldNames: array of String;
+                                          const aTableNames: array of AnsiString;
+                                          const aLinkFields: array of AnsiString;
+                                          const aSearchFieldNames: array of AnsiString;
                                           const aSearchFieldValues: array of const;
                                           const aComparisonOperators: array of TComparisonOperator;
-                                          const aOrderByFields: array of String;
-                                          const aResultField: String): TMultiTypedResult;
-        procedure GetPageAndRecordMetrics(const aCFDBGrid: TCFDBGrid; const aOffset: Byte; out aRecordsByPage, aPageCount: Word; var aPageNo: Word; var aRecordCount: Cardinal; const aCountSQL: String = '');
+                                          const aOrderByFields: array of AnsiString;
+                                          const aResultField: AnsiString): TMultiTypedResult;
+        procedure GetPageAndRecordMetrics(const aCFDBGrid: TCFDBGrid; const aOffset: Byte; out aRecordsByPage, aPageCount: Word; var aPageNo: Word; var aRecordCount: Cardinal; const aCountSQL: AnsiString = '');
         function GetRowOffsetByPageNo(const aPageNo, aRecordsByPage: Word): Cardinal;
         function GetRecordNoInSet(const aPageNo, aRecordsByPage, aCurrentRecNo: Word): Cardinal;
-        function GetRecordInformation(const aZConnection: TZConnection; aTableName, aRecordIdColumnName: String; aRecordIdColumnValue: Cardinal): TRecordInformation;
+        function GetRecordInformation(const aZConnection: TZConnection; aTableName, aRecordIdColumnName: AnsiString; aRecordIdColumnValue: Cardinal): TRecordInformation;
         function GetMultiTypedResult(const aField: TField): TMultiTypedResult;
-    	function ExecuteDbFunction(const aZConnection: TZConnection; const aCallString: String): TMultiTypedResult;
-        procedure ExecuteDbProcedure(const aZConnection: TZConnection; const aCallString: String);
+    	function ExecuteDbFunction(const aZConnection: TZConnection; const aCallString: AnsiString): TMultiTypedResult;
+        procedure ExecuteDbProcedure(const aZConnection: TZConnection; const aCallString: AnsiString);
 
 		procedure DBButtonClick(aDataSet: TDataSet; aDBButton: TDBButton; aComponentToFocusOnInsertAndEdit: TWinControl = nil);
         procedure DBButtonsToggle(const aDataSet: TDataSet; out aButtonFirstEnabled, aButtonPreviousEnabled, aButtonNextEnabled, aButtonLastEnabled, aButtonInsertEnabled, aButtonDeleteEnabled, aButtonEditEnabled, aButtonPostEnabled, aButtonCancelEnabled, aButtonRefreshEnabled: Boolean);
         procedure DBPButtonsToggle(const aDataSet: TDataSet; const aPageNo, aPageCount: Word; out aButtonFirstEnabled, aButtonPreviousEnabled, aButtonNextEnabled, aButtonLastEnabled: Boolean);
-	    function ThisRecordExists(const aDBConnection: TZConnection; TableName, KeyName: String; KeyValue: Cardinal): Boolean; virtual;
+	    function ThisRecordExists(const aDBConnection: TZConnection; TableName, KeyName: AnsiString; KeyValue: Cardinal): Boolean; virtual;
 
-        procedure SetRefreshSQL(const aZQuery: TZQuery; const aDBAction: TDBAction; out aRefreshSQL: String); virtual;
+        procedure SetRefreshSQL(const aZQuery: TZQuery; const aDBAction: TDBAction; out aRefreshSQL: AnsiString); virtual;
         procedure DoDataChange(aSender: TObject; aField: TField); virtual;
         procedure DoBeforePost(aDataSet: TDataSet); virtual;
         procedure DoAfterPost(aDataSet: TDataSet); virtual;
@@ -147,38 +147,38 @@ type
         procedure MySQLSetForeignKeyCheck(const aDBConnection: TZConnection; const aForeignKeyCheck: Boolean);
         procedure MySQLSetSQLQuoteShowCreate(const aDBConnection: TZConnection; const aSQLQuoteShowCreate: Boolean);
 //        procedure MySQLDefragDataBase(const aZConnection: TZConnection; const aDefragDatabaseCallBack: TDefragDatabaseCallBack = nil);
-        function MySQLReplaceSearchWildcards(const aSQL: String): String;
+        function MySQLReplaceSearchWildcards(const aSQL: AnsiString): AnsiString;
 		procedure SetAutoCommit(const aZConnection: TZConnection; const aAutoCommit: Boolean);
 	    procedure CommitWork(const aZConnection: TZConnection);
     	procedure RollbackWork(const aZConnection: TZConnection);
 	    procedure StartTransaction(const aZConnection: TZConnection);
-		procedure SetMySQLUserVariable(const aZConnection: TZConnection; aVariableName: String; aVariableValue: Int64); overload;
-		procedure SetMySQLUserVariable(const aZConnection: TZConnection; aVariableName, aVariableValue: String); overload;
-		procedure SetMySQLUserVariable(const aZConnection: TZConnection; aVariableName: String; aVariableValue: Boolean); overload;
-//        function GetMySQLUserVariableAsInteger(const aZConnection: TZConnection; aVariableName: String): Int64;
+		procedure SetMySQLUserVariable(const aZConnection: TZConnection; aVariableName: AnsiString; aVariableValue: Int64); overload;
+		procedure SetMySQLUserVariable(const aZConnection: TZConnection; aVariableName, aVariableValue: AnsiString); overload;
+		procedure SetMySQLUserVariable(const aZConnection: TZConnection; aVariableName: AnsiString; aVariableValue: Boolean); overload;
+//        function GetMySQLUserVariableAsInteger(const aZConnection: TZConnection; aVariableName: AnsiString): Int64;
 
-    	procedure MySQLAddIndex(aZConnection: TZConnection; aTableName, aIndexName, aFieldNames: String; aIndexKind: TMySQLIndexKind = mikIndex);
-        procedure MySQLDropIndex(aZConnection: TZConnection; aTableName, aIndexName: String);
+    	procedure MySQLAddIndex(aZConnection: TZConnection; aTableName, aIndexName, aFieldNames: AnsiString; aIndexKind: TMySQLIndexKind = mikIndex);
+        procedure MySQLDropIndex(aZConnection: TZConnection; aTableName, aIndexName: AnsiString);
 
 
         { = EXCEÇÕES ========================================================= }
         procedure ShowBalloonToolTipValidationFor(aCurrentForm: TForm; aDataSet: TDataSet; aFieldError: TField);
 
         { = SISTEMA ========================================================== }
-        procedure ShowProcessingForm(aDescription: String = ''; aShowProgressBar: Boolean = False);
+        procedure ShowProcessingForm(aDescription: AnsiString = ''; aShowProgressBar: Boolean = False);
         procedure HideProcessingForm;
 
         { = MANIPULAÇÃO DE STRINGS =========================================== }
-        class function PutLineBreaks(const aText: String; aLineChars: Byte): String;
-        function GetUniqueFileName(aFullPathAndFileName: String): String;
-        function ValidateStringForFileName(aFileName: String; aReplaceInvalidCharsWith: Char = '_'; aMaximumFileNameLength: Byte = 0): String;
-        function MakeStr(const aArgs: array of const; aSeparator: Char = ','): string;
-        function GetElementByIndex(aIndex: Byte; aElements: array of String): String;
-//        function GetIndexOfElement(aElement: String; aElements: array of String): String;
-		function GetPartFromDelimitedString(const aString: String; const aPart: Cardinal; const aDelimiter: Char = '|'; aTempStringList: TStringList = nil): String;
+        class function PutLineBreaks(const aText: AnsiString; aLineChars: Byte): AnsiString;
+        function GetUniqueFileName(aFullPathAndFileName: AnsiString): AnsiString;
+        function ValidateStringForFileName(aFileName: AnsiString; aReplaceInvalidCharsWith: AnsiChar = '_'; aMaximumFileNameLength: Byte = 0): AnsiString;
+        function MakeStr(const aArgs: array of const; aSeparator: AnsiChar = ','): AnsiString;
+        function GetElementByIndex(aIndex: Byte; aElements: array of AnsiString): AnsiString;
+//        function GetIndexOfElement(aElement: AnsiString; aElements: array of AnsiString): AnsiString;
+		function GetPartFromDelimitedString(const aString: AnsiString; const aPart: Cardinal; const aDelimiter: AnsiChar = '|'; aTempStringList: TStringList = nil): AnsiString;
 
         { = MANIPULAÇÕES DE ARQUIVOS ========================================= }
-        function LoadTextFile(const aFileName: TFileName): String;
+        function LoadTextFile(const aFileName: TFileName): AnsiString;
         function FileSize(aFileName: TFileName; aFileSizeIn: TFileSizeUnit = fsuBytes): Double;
         { -------------------------------------------------------------------- }
         property Configurations: TXXXConfigurations read FConfigurations;
@@ -196,40 +196,40 @@ type
         { TODO -oCarlos Feitoza : Removi a opção de checar chaves estrangeiras. Agora ela sempre será ativada }
         procedure MySQLExecuteSQLScript(const aZConnection: TZConnection;
                                         const aSQLScriptFile: TFileName;
-                                        const aSQLScriptText: String;
+                                        const aSQLScriptText: AnsiString;
 //                                        const aForeignKeysCheck: Boolean = True;
                                         const aExecuteSQLScriptCallBack: TExecuteSQLScriptCallBack = nil;
                                         const aSplitSQLScriptCallBack: TSplitSQLScriptCallBack = nil);
         class procedure MySQLChangeDatabase(const aZConnection: TZConnection;
-                                                           const aDataBaseName: String);
+                                                           const aDataBaseName: AnsiString);
 
         class function MySQLBackupDataBase(const aZConnection: TZConnection;
-                                           const aParameters: TMySQLBackupDataBaseParameters): String;
-        class procedure InitializeZConnection(const aZConnection: TZConnection; aProtocol, aHostName, aDatabase, aUser, aPassword: String; aPortNumb: Word; aTransactIsolationLevel: TZTransactIsolationLevel);
-	    class function GetStringCheckSum(const aInputString: String; aHashAlgorithms: THashAlgorithms; aFinalHashAlgorithm: THashAlgorithm = haIgnore): String; static;
+                                           const aParameters: TMySQLBackupDataBaseParameters): AnsiString;
+        class procedure InitializeZConnection(const aZConnection: TZConnection; aProtocol, aHostName, aDatabase, aUser, aPassword: AnsiString; aPortNumb: Word; aTransactIsolationLevel: TZTransactIsolationLevel);
+	    class function GetStringCheckSum(const aInputString: AnsiString; aHashAlgorithms: THashAlgorithms; aFinalHashAlgorithm: THashAlgorithm = haIgnore): AnsiString; static;
     	class function Hex(aASCII: AnsiString): AnsiString;
-        class function MySQLFormat(const aFormat: String; const aArgs: array of const): String;
-        class procedure SetLabelDescriptionValue(const aLabelDescription, aLabelValue: TLabel; const aValue: String; const aSpacing: Byte = 2); overload; static;
+        class function MySQLFormat(const aFormat: AnsiString; const aArgs: array of const): AnsiString;
+        class procedure SetLabelDescriptionValue(const aLabelDescription, aLabelValue: TLabel; const aValue: AnsiString; const aSpacing: Byte = 2); overload; static;
         class procedure SetLabelDescriptionValue(const aLabelDescription: TLabel; const aLabelValue: TDBText; const aSpacing: Byte = 2); overload; static;
-        class procedure ConfigureDataSet(const aDBConnection: TZConnection; var aDataSet: TZReadOnlyQuery; const aSQLCommand: String; const aAutoCreateDataSet: Boolean = True);
-		//function MySQLDatabaseCheckSum(const aZConnection: TZConnection; const aTablesToIgnore, aFieldsToIgnore: array of String): String;
-        class function MySQLDatabaseCheckSum(const aZConnection: TZConnection; const aDatabaseName: String; const aTablesToIgnore, aFieldsToIgnore: array of String; aTempDir: TFileName; aOnGetChecksum: TOnGetChecksum): String;
-        class procedure SaveTextFile(aText: String; const aFileName: TFileName);
-    	class function GetMySQLUserVariable(const aZConnection: TZConnection; aVariableName: String): TMultiTypedResult;
+        class procedure ConfigureDataSet(const aDBConnection: TZConnection; var aDataSet: TZReadOnlyQuery; const aSQLCommand: AnsiString; const aAutoCreateDataSet: Boolean = True);
+		//function MySQLDatabaseCheckSum(const aZConnection: TZConnection; const aTablesToIgnore, aFieldsToIgnore: array of AnsiString): AnsiString;
+        class function MySQLDatabaseCheckSum(const aZConnection: TZConnection; const aDatabaseName: AnsiString; const aTablesToIgnore, aFieldsToIgnore: array of AnsiString; aTempDir: TFileName; aOnGetChecksum: TOnGetChecksum): AnsiString;
+        class procedure SaveTextFile(aText: AnsiString; const aFileName: TFileName);
+    	class function GetMySQLUserVariable(const aZConnection: TZConnection; aVariableName: AnsiString): TMultiTypedResult;
    	    class procedure WaitFor(const aSeconds: Byte; const aUseProcessMessages: Boolean = True);
-        class function CmdLineParamValue(const aParamName: String; out aParamValue: String; const aParamStarter: Char = '/'): Boolean;
+        class function CmdLineParamValue(const aParamName: AnsiString; out aParamValue: AnsiString; const aParamStarter: AnsiChar = '/'): Boolean;
 
         {$IFDEF CURRENCY_CONVERT_MANAGER}
-        function ShowCurrencyConvertManager(const aCurrenciesTaxs: String; const aDestinationCurrency: Byte): String;
+        function ShowCurrencyConvertManager(const aCurrenciesTaxs: AnsiString; const aDestinationCurrency: Byte): AnsiString;
         {$ENDIF}
-        function ShowTextsManager(const aFileName: TFileName): String;
-        function AllowedChars(const aTypedChar: Char; aAllowedChars: TAllowedChars): Char;
+        function ShowTextsManager(const aFileName: TFileName): AnsiString;
+        function AllowedChars(const aTypedChar: AnsiChar; aAllowedChars: TAllowedChars): AnsiChar;
         procedure SaveComboBoxItems(const aComboBox: TCustomComboBox; const aFileName: TFileName);
         procedure LoadComboBoxItems(const aComboBox: TCustomComboBox; const aFileName: TFileName);
 		procedure SafeSetActionEnabled(aAction: ActnList.TAction; aEnabled: Boolean);
 		procedure ApplySecurityPolicies(aZConnection: TZConnection; aActionList: _ActnList.TActionList = nil);
 	    procedure ShowAddEntityForm;
-        procedure ShowRecordInformationForm(const aZConnection: TZConnection; const aTableName, aRecordIdColumnName: String; const aRecordIdColumnValue: Cardinal);
+        procedure ShowRecordInformationForm(const aZConnection: TZConnection; const aTableName, aRecordIdColumnName: AnsiString; const aRecordIdColumnValue: Cardinal);
 
     	{ Public declarations }
         procedure ValidateThisAction(aZConnection: TZConnection; Action: ActnList.TAction);
@@ -240,10 +240,10 @@ type
 		function GetUserGroups(UserID: Word = 0): TBytesArray;
 
         { = BANCO DE DADOS =================================================== }
-        function ComparisonOperator(aComparisonOperator: TComparisonOperator): String;
+        function ComparisonOperator(aComparisonOperator: TComparisonOperator): AnsiString;
 		procedure DoDataChangeForAllDataSources;
-        function HasPermission(aZConnection: TZConnection; aEntityName: String; aUserId: SmallInt = 0; aEntityType: TEntityType = etAction; aPermission: TPermission = pRead): Boolean;
-        procedure ExecuteQuery(const aDBConnection: TZConnection; const aSQLCommand: String);
+        function HasPermission(aZConnection: TZConnection; aEntityName: AnsiString; aUserId: SmallInt = 0; aEntityType: TEntityType = etAction; aPermission: TPermission = pRead): Boolean;
+        procedure ExecuteQuery(const aDBConnection: TZConnection; const aSQLCommand: AnsiString);
         { TODO -oCarlos Feitoza -cDESAFIO : Ao invés de usar TFormClass, deveria
         ser usada a classe do form de configurações, mas isso gerou referência
         circular das units. O uso de TFormClass e TForm faz necessário o uso de
@@ -262,21 +262,21 @@ type
 
         { = MISC ============================================================= }
 //        procedure MakeSameWidthsAndAdjust(aControls: array of TControl; aLabels: array of TLabel; aSpacing: Byte = 6);
-        procedure ClearDirectoryFrom(aDirectory: String; aRemoveEmptySubDirs: Boolean = False; aMask: String = '*.*');
+        procedure ClearDirectoryFrom(aDirectory: AnsiString; aRemoveEmptySubDirs: Boolean = False; aMask: AnsiString = '*.*');
 
         { = INTERFACE GRÁFICA ================================================ }
-//        function ShowForm(aForm: TComponentClass; var aReference; aModal: Boolean = True; aFormTitle: String = ''): TModalResult;
+//        function ShowForm(aForm: TComponentClass; var aReference; aModal: Boolean = True; aFormTitle: AnsiString = ''): TModalResult;
 		procedure ToggleAnimatedVisibility(aWinControl: TWinControl; aShow: Boolean);
 		procedure EqualizeWidthsAndAdjust(const aControls: array of TControl; const aLabels: array of TLabel; const	aSeparation: Byte = 6);
 
         { = MANIPULAÇÕES DE ARRAYS =========================================== }
-        function ArrayOfByteToString(aArrayOfByte: array of Byte; aSeparator: Char = ','): String;
+        function ArrayOfByteToString(aArrayOfByte: array of Byte; aSeparator: AnsiChar = ','): AnsiString;
         ///<author>Carlos Feitoza Filho</author>
 		function ArrayOfByteToSet(aArrayOfByte: array of Byte): TSetOfByte;
         { -------------------------------------------------------------------- }
 //        property MainZConnections: TZConnections read FMainZConnections write FMainZConnections;
     	property AddEntitiesForm: TForm read GetAddEntitiesForm;
-    	property Description: String read FDescription;
+    	property Description: AnsiString read FDescription;
         property DataModuleMain: TXXXDataModule_Main read FDataModuleMain;
         property DataSetCount: Byte read GetDataSetCount;
         property DataSourceCount: Byte read GetDataSourceCount;
@@ -311,8 +311,8 @@ const
 
 resourcestring
 	RS_VALIDATE_ERROR_BALLOON_TITLE = 'Erro de validação';
-    RS_NO_UPDATE_PERMISSION = 'Sinto muito, mas você não tem permissão para editar registros da tabela %s';
-    RS_NO_ACTION_PERMISSION = 'Sinto muito, mas você não tem permissão para realizar esta ação';
+  RS_NO_UPDATE_PERMISSION = 'Sinto muito, mas você não tem permissão para editar registros da tabela %s';
+  RS_NO_ACTION_PERMISSION = 'Sinto muito, mas você não tem permissão para realizar esta ação';
 
 implementation
 
@@ -377,7 +377,7 @@ begin
     Result := Form_AddEntity;
 end;
 
-function TXXXDataModule.GetUserEmail(aUserID: Word = 0): String;
+function TXXXDataModule.GetUserEmail(aUserID: Word = 0): AnsiString;
 const
     SQL =
     'SELECT X[USU.VA_EMAIL]X'#13#10 +
@@ -399,7 +399,7 @@ begin
                                     ,[aUserID]));
 
         if Assigned(RODataSet) then
-            Result := RODataSet.Fields[0].AsString;
+            Result := RODataSet.Fields[0].AsAnsiString;
     finally
         if Assigned(RODataSet) then
             RODataSet.Free;
@@ -424,7 +424,7 @@ begin
 //        else
 //        	ZConnection := ZConnections.ByName['ZConnection_BDO'].Connection;
 
-		ConfigureDataSet(ZConnection,UserGroups,'SELECT TI_GRUPOS_ID FROM GRUPOSDOSUSUARIOS WHERE SM_USUARIOS_ID = ' + IntToStr(UserID));
+		ConfigureDataSet(ZConnection,UserGroups,AnsiString('SELECT TI_GRUPOS_ID FROM GRUPOSDOSUSUARIOS WHERE SM_USUARIOS_ID = ' + IntToStr(UserID)));
 
       	with UserGroups do
         	if RecordCount > 0 then
@@ -446,14 +446,14 @@ begin
 	end;
 end;
 
-function TXXXDataModule.GetElementByIndex(aIndex: Byte; aElements: array of String): String;
+function TXXXDataModule.GetElementByIndex(aIndex: Byte; aElements: array of AnsiString): AnsiString;
 begin
 	Result := '';
     if aIndex <= High(aElements) then
     	Result := aElements[aIndex];
 end;
 
-function TXXXDataModule.GetEntityID(aZConnection: TZConnection; aEntityName: String; aEntityType: TEntityType): Cardinal;
+function TXXXDataModule.GetEntityID(aZConnection: TZConnection; aEntityName: AnsiString; aEntityType: TEntityType): Cardinal;
 var
 	SearchDataSet: TZReadOnlyQuery;
 //    ZConnection: TZConnection;
@@ -464,7 +464,7 @@ begin
     	// Se isso der pau, detecte se temos um datamodule main primeiro
 //       	ZConnection := FDataModuleAlpha.ZConnections.ByName['ZConnection_BDO'].Connection;
 
-			ConfigureDataSet(aZConnection,SearchDataSet,'SELECT IN_ENTIDADESDOSISTEMA_ID FROM ENTIDADESDOSISTEMA WHERE UPPER(VA_NOME) LIKE ' + QuotedStr(UpperCase(aEntityName)) + ' AND TI_TIPO = ' + IntToStr(Byte(aEntityType)));
+			ConfigureDataSet(aZConnection,SearchDataSet,AnsiString('SELECT IN_ENTIDADESDOSISTEMA_ID FROM ENTIDADESDOSISTEMA WHERE UPPER(VA_NOME) LIKE ' + QuotedStr(UpperCase(String(aEntityName))) + ' AND TI_TIPO = ' + IntToStr(Byte(aEntityType))));
         if not SearchDataSet.Eof then
         	Result := SearchDataSet.Fields[0].AsInteger;
 	finally
@@ -473,20 +473,20 @@ begin
 	end;
 end;
 
-class function TXXXDataModule.CmdLineParamValue(const aParamName: String; out aParamValue: String; const aParamStarter: Char = '/'): Boolean;
+class function TXXXDataModule.CmdLineParamValue(const aParamName: AnsiString; out aParamValue: AnsiString; const aParamStarter: AnsiChar = '/'): Boolean;
 
     function CmdLineParamFound(out aParamIndex: SmallInt): Boolean;
     var
         i: Word;
-        sTemp: string;
+        sTemp: AnsiString;
     begin
         Result := False;
         aParamIndex := -1;
         for i := 1 to ParamCount do
         begin
-            sTemp := ParamStr(i);
+            sTemp := AnsiString(ParamStr(i));
             if aParamStarter = sTemp[1] then
-                if (aParamStarter + UpperCase(aParamName)) = UpperCase(sTemp) then
+                if (aParamStarter + AnsiString(UpperCase(String(aParamName)))) = AnsiString(UpperCase(String(sTemp))) then
                 begin
                     aParamIndex := i;
                     Result := True;
@@ -502,10 +502,10 @@ begin
     Result := CmdLineParamFound(ParamIndex);
     if Result then
         if ParamIndex < ParamCount then
-            aParamValue := ParamStr(Succ(ParamIndex));
+            aParamValue := AnsiString(ParamStr(Succ(ParamIndex)));
 end;
 
-class function TXXXDataModule.GetMySQLUserVariable(const aZConnection: TZConnection; aVariableName: String): TMultiTypedResult;
+class function TXXXDataModule.GetMySQLUserVariable(const aZConnection: TZConnection; aVariableName: AnsiString): TMultiTypedResult;
 var
 	RODataSet: TZReadOnlyQuery;
 begin
@@ -516,7 +516,7 @@ begin
 		ConfigureDataSet(aZConnection,RODataSet,'SELECT @' + aVariableName);
 
         if RODataSet.Fields[0].IsNull then
-            raise Exception.Create('A variável "' + aVariableName + '" não existe!');
+            raise Exception.Create('A variável "' + String(aVariableName) + '" não existe!');
 
             { TODO -oCarlos Feitoza -cCONSERTE : Melhore isso! está errado! }
         with Result do
@@ -529,8 +529,8 @@ begin
             AsInteger :=  RODataSet.Fields[0].AsInteger;
             AsInt64 := RODataSet.Fields[0].AsInteger;
 
-            AsChar := RODataSet.Fields[0].AsString[1];
-            AsString := RODataSet.Fields[0].AsString;
+            AsAnsiChar := RODataSet.Fields[0].AsAnsiString[1];
+            AsAnsiString := RODataSet.Fields[0].AsAnsiString;
 
             AsSingle := RODataSet.Fields[0].AsFloat;
             AsDouble := RODataSet.Fields[0].AsFloat;
@@ -543,7 +543,7 @@ begin
     end;
 end;
 
-//function TDataModule_Basic.GetMySQLUserVariableAsInteger(const aZConnection: TZConnection; aVariableName: String): Int64;
+//function TDataModule_Basic.GetMySQLUserVariableAsInteger(const aZConnection: TZConnection; aVariableName: AnsiString): Int64;
 //var
 //	RODataSet: TZReadOnlyQuery;
 //begin
@@ -561,7 +561,7 @@ end;
 //    end;
 //end;
 
-function TXXXDataModule.GetPartFromDelimitedString(const aString: String; const aPart: Cardinal; const aDelimiter: Char = '|'; aTempStringList: TStringList = nil): String;
+function TXXXDataModule.GetPartFromDelimitedString(const aString: AnsiString; const aPart: Cardinal; const aDelimiter: AnsiChar = '|'; aTempStringList: TStringList = nil): AnsiString;
 var
     NeedsDestroy: Boolean;
 begin
@@ -579,18 +579,18 @@ begin
     	aTempStringList.Clear;
 //        aTempStringList.Delimiter := aDelimiter;
 //        aTempStringList.DelimitedText := aString;
-		aTempStringList.Text := StringReplace(aString,';',#13#10,[rfReplaceAll]);
+		aTempStringList.Text := StringReplace(String(aString),';',#13#10,[rfReplaceAll]);
         if aTempStringList.Count > 0 then
-	        Result := aTempStringList[aPart];
+	        Result := AnsiString(aTempStringList[aPart]);
     finally
     	if NeedsDestroy and Assigned(aTempStringList) then
         	aTempStringList.Free;
     end;
 end;
 
-function TXXXDataModule.GetRecordInformation(const aZConnection: TZConnection; aTableName, aRecordIdColumnName: String; aRecordIdColumnValue: Cardinal): TRecordInformation;
+function TXXXDataModule.GetRecordInformation(const aZConnection: TZConnection; aTableName, aRecordIdColumnName: AnsiString; aRecordIdColumnValue: Cardinal): TRecordInformation;
 const
-    SQL_RECORD_INFORMATION =
+    SQL_RECORD_INFORMATION: AnsiString =
     'SELECT TABELA.X[SM_USUARIOCRIADOR_ID]X'#13#10 +
     '     , TABELA.X[DT_DATAEHORADACRIACAO]X'#13#10 +
     '     , CRIADOR.X[USU.VA_NOME]X AS USUARIOCRIADOR'#13#10 +
@@ -606,36 +606,36 @@ var
 	RODataSet: TZReadOnlyQuery;
 begin
 	RODataSet := nil;
-    ZeroMemory(@Result,SizeOf(TRecordInformation));
-    try
-    	ConfigureDataSet(aZConnection,RODataSet,Format(ReplaceSystemObjectNames(SQL_RECORD_INFORMATION),[aTableName,aRecordIdColumnName,aRecordIdColumnValue]),True);
-        with Result do
-        begin
-        	CreatorId := RODataSet.FieldByName(FConfigurations.UserCreatorFieldName).AsInteger;
-            CreatorFullName := RODataSet.FieldByName('USUARIOCRIADOR').AsString;
-            CreationDateAndTime := RODataSet.FieldByName(FConfigurations.CreationDateAndTimeFieldName).AsDateTime;
-            LastModifierId := RODataSet.FieldByName(FConfigurations.UserModifierFieldName).AsInteger;
-            LastModifierFullName := RODataSet.FieldByName('USUARIOMODIFICADOR').AsString;
-            LastModificationDateAndTime := RODataSet.FieldByName(FConfigurations.ModificationDateAndTimeFieldName).AsDateTime;
-            RecordStatus := RODataSet.FieldByName(FConfigurations.RecordStatusFieldName).AsString;
-        end;
-    finally
-    	if Assigned(RODataSet) then
-        	RODataSet.Free;
-    end;
+  ZeroMemory(@Result,SizeOf(TRecordInformation));
+  try
+    ConfigureDataSet(aZConnection,RODataSet,AnsiString(Format(String(ReplaceSystemObjectNames(SQL_RECORD_INFORMATION)),[aTableName,aRecordIdColumnName,aRecordIdColumnValue])),True);
+      with Result do
+      begin
+        CreatorId := RODataSet.FieldByName(String(FConfigurations.UserCreatorFieldName)).AsInteger;
+        CreatorFullName := RODataSet.FieldByName('USUARIOCRIADOR').AsAnsiString;
+        CreationDateAndTime := RODataSet.FieldByName(String(FConfigurations.CreationDateAndTimeFieldName)).AsDateTime;
+        LastModifierId := RODataSet.FieldByName(String(FConfigurations.UserModifierFieldName)).AsInteger;
+        LastModifierFullName := RODataSet.FieldByName('USUARIOMODIFICADOR').AsAnsiString;
+        LastModificationDateAndTime := RODataSet.FieldByName(String(FConfigurations.ModificationDateAndTimeFieldName)).AsDateTime;
+        RecordStatus := RODataSet.FieldByName(String(FConfigurations.RecordStatusFieldName)).AsAnsiString;
+      end;
+  finally
+    if Assigned(RODataSet) then
+      RODataSet.Free;
+  end;
 end;
 
-function TXXXDataModule.HasPermission(aZConnection: TZConnection; aEntityName: String; aUserId: SmallInt = 0; aEntityType: TEntityType = etAction; aPermission: TPermission = pRead): Boolean;
+function TXXXDataModule.HasPermission(aZConnection: TZConnection; aEntityName: AnsiString; aUserId: SmallInt = 0; aEntityType: TEntityType = etAction; aPermission: TPermission = pRead): Boolean;
 var
 	UserPermission, GroupPermission: Boolean;
 	EntityID: Integer;
 
-	procedure LoadPermissions(aFiedPermission: String);
+	procedure LoadPermissions(aFiedPermission: AnsiString);
 	var
 		GroupsArray: TBytesArray;
 		SearchDataSet: TZReadOnlyQuery;
 		GroupID: Word;
-		SQL: String;
+		SQL: AnsiString;
 //        ZConnection: TZConnection;
 	begin
 //            ZConnection := FDataModuleAlpha.ZConnections.ByName['ZConnection_BDO'].Connection;
@@ -646,7 +646,7 @@ var
 
 		SearchDataSet := nil;
 		try
-			ConfigureDataSet(aZConnection,SearchDataSet,'SELECT ' + aFiedPermission + ' FROM PERMISSOESDOSUSUARIOS WHERE SM_USUARIOS_ID = ' + IntToStr(aUserId) + ' AND IN_ENTIDADESDOSISTEMA_ID = ' + IntToStr(EntityID));
+			ConfigureDataSet(aZConnection,SearchDataSet,'SELECT ' + aFiedPermission + ' FROM PERMISSOESDOSUSUARIOS WHERE SM_USUARIOS_ID = ' + AnsiString(IntToStr(aUserId)) + ' AND IN_ENTIDADESDOSISTEMA_ID = ' + AnsiString(IntToStr(EntityID)));
 
 			if (SearchDataSet.RecordCount = 1) and (not SearchDataSet.Fields[0].isNull) then
             	UserPermission := SearchDataSet.Fields[0].AsInteger = 1;
@@ -676,12 +676,12 @@ var
 					' WHERE TI_GRUPOS_ID IN (';
 
 					for GroupID in GroupsArray do
-						SQL := SQL + IntToStr(GroupID) + ', ';
+						SQL := SQL + AnsiString(IntToStr(GroupID)) + ', ';
 
                     Delete(SQL,Length(SQL) - 1,2); { Deleta a vírgula final }
 
 					SQL := SQL + ')'#13#10 +
-					'   AND IN_ENTIDADESDOSISTEMA_ID = ' + IntToStr(EntityID);
+					'   AND IN_ENTIDADESDOSISTEMA_ID = ' + AnsiString(IntToStr(EntityID));
 
           			(* Obtendo todas as permissões especificadas por "campo" de
                     todos os grupos disponíveis para a entidade cuja chave é
@@ -733,9 +733,9 @@ end;
 
 procedure TXXXDataModule.ValidateThisAction(aZConnection: TZConnection; Action: ActnList.TAction);
 var
-	EntityName: string;
+	EntityName: AnsiString;
 begin
-	EntityName := UpperCase(Action.ActionList.Owner.Name + '.' + Action.Name);
+	EntityName := AnsiString(UpperCase(Action.ActionList.Owner.Name + '.' + Action.Name));
 
 	if GetAddEntitiesForm <> nil then
 	begin
@@ -762,13 +762,13 @@ begin
         end;
 
 		if GetEntityID(aZConnection,EntityName,etAction) > 0 then //A entidade já está cadastrada
-        	MessageBox(Application.Handle,PChar('A entidade "' + EntityName + '" já foi registrada. Não é preciso registrá-la novamente'), 'Entidade já registrada', MB_ICONWARNING or MB_OK)
+        	MessageBox(Application.Handle,PWideChar('A entidade "' + String(EntityName) + '" já foi registrada. Não é preciso registrá-la novamente'), 'Entidade já registrada', MB_ICONWARNING or MB_OK)
         else
         begin
-			if Form_AddEntity.ListBox_EntidadesSelecionadas.Items.IndexOf(EntityName) <> -1 then
-				Form_AddEntity.ListBox_EntidadesSelecionadas.ItemIndex := Form_AddEntity.ListBox_EntidadesSelecionadas.Items.IndexOf(EntityName)
+			if Form_AddEntity.ListBox_EntidadesSelecionadas.Items.IndexOf(String(EntityName)) <> -1 then
+				Form_AddEntity.ListBox_EntidadesSelecionadas.ItemIndex := Form_AddEntity.ListBox_EntidadesSelecionadas.Items.IndexOf(String(EntityName))
             else
-				Form_AddEntity.ListBox_EntidadesSelecionadas.Items.Add(EntityName);
+				Form_AddEntity.ListBox_EntidadesSelecionadas.Items.Add(String(EntityName));
     	end;
 
 		Abort;
@@ -776,7 +776,7 @@ begin
 	else
 		if not HasPermission(aZConnection,EntityName) then
         begin
-			MessageBox(TForm(Owner).Handle,PChar(RS_NO_ACTION_PERMISSION),'Permissão negada',MB_ICONWARNING);
+			MessageBox(TForm(Owner).Handle,PWideChar(RS_NO_ACTION_PERMISSION),'Permissão negada',MB_ICONWARNING);
 			Abort;
 		end;
 			(* A verificação com "AcabouDeCriar" é necessária pois alguns  componentes
@@ -809,14 +809,14 @@ begin
             	ZReadOnlyQuery := nil;
                 ConfigureDataSet(aZConnection
                                 ,ZReadOnlyQuery
-                                ,Format(SQL_SELECT_LOGIN
+                                ,AnsiString(Format(SQL_SELECT_LOGIN
                                        ,[UserTableKeyFieldName
                                         ,UserTableRealNameFieldName
                                         ,UserTableUserNameFieldName
                                         ,UserTablePasswordFieldName
                                         ,UserTableTableName
                                         ]
-                                       )
+                                       ))
                                 );
 
                 Form_Login := TXXXForm_Login.Create(Self,Form_Login,FConfigurations);
@@ -872,18 +872,18 @@ begin
                 if (ptsAll in aPagesToShow) or ((ptsDatabase in aPagesToShow) and (ptsLogin in aPagesToShow)) then
                 begin
                 	LoginOk := False;
-                    if (Trim(UserTableKeyFieldName) <> '')
-                    and (Trim(UserTableRealNameFieldName) <> '')
-                    and (Trim(UserTableUserNameFieldName) <> '')
-                    and (Trim(UserTablePasswordFieldName) <> '')
-                    and (Trim(UserTableTableName) <> '') then
+                    if (Trim(String(UserTableKeyFieldName)) <> '')
+                    and (Trim(String(UserTableRealNameFieldName)) <> '')
+                    and (Trim(String(UserTableUserNameFieldName)) <> '')
+                    and (Trim(String(UserTablePasswordFieldName)) <> '')
+                    and (Trim(String(UserTableTableName)) <> '') then
                     begin
                     	try
 	                        try
     	                        ZReadOnlyQuery := nil;
         	                    ConfigureDataSet(aZConnection
             	                                ,ZReadOnlyQuery
-                	                            ,Format(SQL_SELECT_LOGIN + ' LIMIT 1'
+                	                            ,AnsiString(Format(SQL_SELECT_LOGIN + ' LIMIT 1'
                     	                               ,[UserTableKeyFieldName
                         	                            ,UserTableRealNameFieldName
                             	                        ,UserTableUserNameFieldName
@@ -891,7 +891,7 @@ begin
                                     	                ,UserTableTableName
                                         	            ]
                                             	       )
-	                                            );
+	                                            ));
     	                        LoginOk := True;
         	                except
             	                on EZSE: EZSQLException do
@@ -935,7 +935,7 @@ begin
         raise Exception.Create(RS_CONFIGURATIONS_CANCELLED);
 end;
 
-class procedure TXXXDataModule.InitializeZConnection(const aZConnection: TZConnection; aProtocol, aHostName, aDatabase, aUser, aPassword: String; aPortNumb: Word; aTransactIsolationLevel: TZTransactIsolationLevel);
+class procedure TXXXDataModule.InitializeZConnection(const aZConnection: TZConnection; aProtocol, aHostName, aDatabase, aUser, aPassword: AnsiString; aPortNumb: Word; aTransactIsolationLevel: TZTransactIsolationLevel);
 begin
 	{ TODO 5 -oCarlos Feitoza -cINFORMAÇÃO : Ao se colocar um componente
     ZConnection em um Form ou DataModule, o mesmo inicializa sua propriedade
@@ -947,14 +947,14 @@ begin
     transações as funções InTransaction, StartTransaction, Commit e Rollback
     deverão ser usadas obrigatoriamente }
 
-    if (Trim(aHostName) <> '') and (Trim(aProtocol) <> '') and (Trim(aDatabase) <> '') then
+    if (Trim(String(aHostName)) <> '') and (Trim(String(aProtocol)) <> '') and (Trim(String(aDatabase)) <> '') then
     begin
-        aZConnection.Protocol := aProtocol;
-        aZConnection.HostName := aHostName;
+        aZConnection.Protocol :=String(aProtocol);
+        aZConnection.HostName := String(aHostName);
         aZConnection.Port     := aPortNumb;
-        aZConnection.Database := aDatabase;
-        aZConnection.User     := aUser;
-        aZConnection.Password := aPassword;
+        aZConnection.Database := String(aDatabase);
+        aZConnection.User     := String(aUser);
+        aZConnection.Password := String(aPassword);
         aZConnection.TransactIsolationLevel := aTransactIsolationLevel;
 
         try
@@ -1000,8 +1000,8 @@ begin
 //            end;
     end;
 
-    if Trim(FDescription) = '' then
-		FDescription := Name;
+    if Trim(String(FDescription)) = '' then
+		FDescription := AnsiString(Name);
 
     { TODO -oCarlos Feitoza -cEXPLICAÇÃO : Todo o bloco TRY só será executado se
     houver ao menos um componente de conexão. Caso haja coisas dentro deste
@@ -1058,7 +1058,7 @@ var
     TotalAppActions: Cardinal;
 	DataModule_Form: TXXXDataModule;
     ActionList: _ActnList.TActionList;
-    DataSetName: String;
+    DataSetName: AnsiString;
 begin
 	(* Aplicar diretivas de segurança em todos os formularios abertos *)
 	if not Assigned(aActionList) then
@@ -1083,7 +1083,7 @@ begin
           		(* No datamodule principal: Ações *)
                 if FDataModuleMain.ActionCount > 0 then
                 begin
-	                Form_ApplyingSecurityPolicies.Label_Total.Caption := FDataModuleMain.Description;
+	                Form_ApplyingSecurityPolicies.Label_Total.Caption := String(FDataModuleMain.Description);
     	            Form_ApplyingSecurityPolicies.Label_Current.Caption := '';
 					Form_ApplyingSecurityPolicies.Update;
     	      		Form_ApplyingSecurityPolicies.ProgressBar_CurrentProgress.Position := 0;
@@ -1100,7 +1100,7 @@ begin
                                     Form_ApplyingSecurityPolicies.Update;
                                     Form_ApplyingSecurityPolicies.ProgressBar_CurrentProgress.StepIt;
                                     Form_ApplyingSecurityPolicies.ProgressBar_TotalProgress.StepIt;
-                                    _ActnList.TAction(ActionList.Actions[j]).SetPermission(HasPermission(aZConnection,Form_ApplyingSecurityPolicies.Label_Current.Caption));
+                                    _ActnList.TAction(ActionList.Actions[j]).SetPermission(HasPermission(aZConnection,AnsiString(Form_ApplyingSecurityPolicies.Label_Current.Caption)));
                                 end;
                     	end;
 
@@ -1129,14 +1129,14 @@ begin
                             Form_ApplyingSecurityPolicies.Label_Current.Caption := TDataset(FDataModuleMain.Components[i]).Name;
                             Form_ApplyingSecurityPolicies.Update;
 
-                            DataSetName := TDataset(FDataModuleMain.Components[i]).Name;
+                            DataSetName := AnsiString(TDataset(FDataModuleMain.Components[i]).Name);
                             { TODO -oCarlos Feitoza -cEXPLICAÇÃO : Antes aqui
                             removia apenas os identificadores "_LOOKUP" E
                             "_SEARCH", o último parâmetro era "7", mas como
                             quero usar coisas do tipo "_LOOKUP_xxx" ou
                             "_SEARCHZZZ", coloquei o length }
-                            Delete(DataSetName,Pos('_LOOKUP',DataSetName),Length(DataSetName));
-                            Delete(DataSetName,Pos('_SEARCH',DataSetName),Length(DataSetName));
+                            Delete(DataSetName,Pos('_LOOKUP',String(DataSetName)),Length(DataSetName));
+                            Delete(DataSetName,Pos('_SEARCH',String(DataSetName)),Length(DataSetName));
 
                             TDataset(FDataModuleMain.Components[i]).Active := HasPermission(aZConnection,DataSetName,0,etTable);
 
@@ -1157,7 +1157,7 @@ begin
                         (* Ações *)
 						if DataModule_Form.ActionCount > 0 then
                         begin
-			                Form_ApplyingSecurityPolicies.Label_Total.Caption := DataModule_Form.Description;
+			                Form_ApplyingSecurityPolicies.Label_Total.Caption := String(DataModule_Form.Description);
     	    		        Form_ApplyingSecurityPolicies.Label_Current.Caption := '';
         	            	Form_ApplyingSecurityPolicies.Update;
 		    	      		Form_ApplyingSecurityPolicies.ProgressBar_CurrentProgress.Position := 0;
@@ -1174,7 +1174,7 @@ begin
                                             Form_ApplyingSecurityPolicies.Update;
                                             Form_ApplyingSecurityPolicies.ProgressBar_CurrentProgress.StepIt;
                                             Form_ApplyingSecurityPolicies.ProgressBar_TotalProgress.StepIt;
-                                            _ActnList.TAction(ActionList.Actions[k]).SetPermission(HasPermission(aZConnection,Form_ApplyingSecurityPolicies.Label_Current.Caption));
+                                            _ActnList.TAction(ActionList.Actions[k]).SetPermission(HasPermission(aZConnection,AnsiString(Form_ApplyingSecurityPolicies.Label_Current.Caption)));
                                         end;
                                 end;
 //							for j := 0 to Pred(DataModule_Basic.ActionCount) do
@@ -1203,14 +1203,14 @@ begin
                                     Form_ApplyingSecurityPolicies.Label_Current.Caption := TDataset(DataModule_Form.Components[j]).Name;
                                     Form_ApplyingSecurityPolicies.Update;
 
-                                    DataSetName := TDataset(DataModule_Form.Components[j]).Name;
+                                    DataSetName := AnsiString(TDataset(DataModule_Form.Components[j]).Name);
                                     { TODO -oCarlos Feitoza -cEXPLICAÇÃO : Antes aqui
                                     removia apenas os identificadores "_LOOKUP" E
                                     "_SEARCH", o último parâmetro era "7", mas como
                                     quero usar coisas do tipo "_LOOKUP_xxx" ou
                                     "_SEARCHZZZ", coloquei o length }
-                                    Delete(DataSetName,Pos('_LOOKUP',DataSetName),Length(DataSetName));
-                                    Delete(DataSetName,Pos('_SEARCH',DataSetName),Length(DataSetName));
+                                    Delete(DataSetName,Pos('_LOOKUP',String(DataSetName)),Length(DataSetName));
+                                    Delete(DataSetName,Pos('_SEARCH',String(DataSetName)),Length(DataSetName));
 
                                     TDataset(DataModule_Form.Components[j]).Active := HasPermission(aZConnection,DataSetName,0,etTable);
                                     Form_ApplyingSecurityPolicies.ProgressBar_CurrentProgress.StepIt;
@@ -1418,7 +1418,7 @@ begin
                 dsInsert: ActionTried := atInsert;
             end;
 
-            DatabaseError := aEDatabaseError.Message;
+            DatabaseError := AnsiString(aEDatabaseError.Message);
         end;
 
     finally
@@ -1456,38 +1456,38 @@ end;
 
 
 class function TXXXDataModule.MySQLDatabaseCheckSum(const aZConnection: TZConnection;
-                                                    const aDatabaseName: String;
+                                                    const aDatabaseName: AnsiString;
                                                     const aTablesToIgnore
-                                                        , aFieldsToIgnore: array of String;
+                                                        , aFieldsToIgnore: array of AnsiString;
                                                           aTempDir: TFileName;
-                                                          aOnGetChecksum: TOnGetChecksum): String;
+                                                          aOnGetChecksum: TOnGetChecksum): AnsiString;
 var
 	TablesList, TableData: TZReadOnlyQuery;
     i: Byte;
-	TableRow, TableDataStr: String;
-    TableCheckSum: String;
+	TableRow, TableDataStr: AnsiString;
+    TableCheckSum: AnsiString;
 	TF: TextFile;
 
-function IsIgnoredTable(aTableName: String): Boolean;
+function IsIgnoredTable(aTableName: AnsiString): Boolean;
 var
 	i: Byte;
 begin
 	Result := False;
 	for i := 0 to High(aTablesToIgnore) do
-    	if UpperCase(aTablesToIgnore[i]) = UpperCase(aTableName) then
+    	if UpperCase(String(aTablesToIgnore[i])) = UpperCase(String(aTableName)) then
         begin
         	Result := True;
             Break;
         end;
 end;
 
-function IsIgnoredField(aFieldName: String): Boolean;
+function IsIgnoredField(aFieldName: AnsiString): Boolean;
 var
 	i: Byte;
 begin
 	Result := False;
 	for i := 0 to High(aFieldsToIgnore) do
-    	if UpperCase(aFieldsToIgnore[i]) = UpperCase(aFieldName) then
+    	if UpperCase(String(aFieldsToIgnore[i])) = UpperCase(String(aFieldName)) then
         begin
         	Result := True;
             Break;
@@ -1509,9 +1509,9 @@ begin
             TablesList.First;
             while not TablesList.Eof do
             begin
-                if not IsIgnoredTable(TablesList.Fields[0].AsString) then
+                if not IsIgnoredTable(TablesList.Fields[0].AsAnsiString) then
                 begin
-                    ConfigureDataSet(aZConnection,TableData,'SELECT * FROM ' + aDatabaseName + '.' + TablesList.Fields[0].AsString);
+                    ConfigureDataSet(aZConnection,TableData,'SELECT * FROM ' + aDatabaseName + '.' + TablesList.Fields[0].AsAnsiString);
 
                     TableDataStr := '';
                     TableData.First;
@@ -1519,25 +1519,25 @@ begin
                     begin
                         TableRow := '';
                         for i := 0 to Pred(TableData.FieldCount) do
-                            if not IsIgnoredField(TableData.Fields[i].FieldName) then
+                            if not IsIgnoredField(AnsiString(TableData.Fields[i].FieldName)) then
                             	case TableData.Fields[i].DataType of
-                                	ftDate, ftTime, ftDateTime: TableRow := TableRow + FloatToStr(TableData.Fields[i].AsFloat);
+                                	ftDate, ftTime, ftDateTime: TableRow := TableRow + AnsiString(FloatToStr(TableData.Fields[i].AsFloat));
                                 	else
-                                    	TableRow := TableRow + TableData.Fields[i].AsString;
+                                    	TableRow := TableRow + TableData.Fields[i].AsAnsiString;
                                 end;
 
                         TableDataStr := TableDataStr + TableRow;
 
                         TableData.Next;
                     end;
-                    TableCheckSum := GetStringCheckSum(Trim(TableDataStr),[haMd5]);
+                    TableCheckSum := GetStringCheckSum(AnsiString(Trim(String(TableDataStr))),[haMd5]);
                     WriteLn(TF,TableCheckSum);
                     if Assigned(aOnGetChecksum) then
-                        aOnGetChecksum(TablesList.Fields[0].AsString,TablesList.RecNo,TablesList.RecordCount,TableCheckSum,False);
+                        aOnGetChecksum(TablesList.Fields[0].AsAnsiString,TablesList.RecNo,TablesList.RecordCount,TableCheckSum,False);
                 end
                 else
                     if Assigned(aOnGetChecksum) then
-                        aOnGetChecksum(TablesList.Fields[0].AsString,TablesList.RecNo,TablesList.RecordCount,'',True);
+                        aOnGetChecksum(TablesList.Fields[0].AsAnsiString,TablesList.RecNo,TablesList.RecordCount,'',True);
 
                 TablesList.Next;
             end;
@@ -1548,7 +1548,7 @@ begin
         with TStringList.Create do
             try
             	LoadFromFile(aTempDir + 'TMPDBCRC.DAT');
-                Result := GetStringCheckSum(Trim(Text),[haMd5]);
+                Result := GetStringCheckSum(AnsiString(Trim(Text)),[haMd5]);
             	DeleteFile(PChar(aTempDir + 'TMPDBCRC.DAT'));
             finally
                 Free;
@@ -1562,14 +1562,14 @@ begin
 end;
 
 
-//function TXXXDataModule.MySQLDatabaseCheckSum(const aZConnection: TZConnection; const aTablesToIgnore, aFieldsToIgnore: array of String): String;
+//function TXXXDataModule.MySQLDatabaseCheckSum(const aZConnection: TZConnection; const aTablesToIgnore, aFieldsToIgnore: array of AnsiString): AnsiString;
 //var
 //	TablesList, TableData: TZReadOnlyQuery;
 //    i: Byte;
-//	TableRow: String;
+//	TableRow: AnsiString;
 //	TF: TextFile;
 //
-//function IsIgnoredTable(aTableName: String): Boolean;
+//function IsIgnoredTable(aTableName: AnsiString): Boolean;
 //var
 //	i: Byte;
 //begin
@@ -1582,7 +1582,7 @@ end;
 //        end;
 //end;
 //
-//function IsIgnoredField(aFieldName: String): Boolean;
+//function IsIgnoredField(aFieldName: AnsiString): Boolean;
 //var
 //	i: Byte;
 //begin
@@ -1614,9 +1614,9 @@ end;
 //            TablesList.First;
 //            while not TablesList.Eof do
 //            begin
-//                if not IsIgnoredTable(TablesList.Fields[0].AsString) then
+//                if not IsIgnoredTable(TablesList.Fields[0].AsAnsiString) then
 //                begin
-//                    ConfigureDataSet(aZConnection,TableData,'SELECT * FROM ' + FConfigurations.DBDataBase + '.' + TablesList.Fields[0].AsString);
+//                    ConfigureDataSet(aZConnection,TableData,'SELECT * FROM ' + FConfigurations.DBDataBase + '.' + TablesList.Fields[0].AsAnsiString);
 //
 //                    TableData.First;
 //                    while not TableData.Eof do
@@ -1627,7 +1627,7 @@ end;
 //                            	case TableData.Fields[i].DataType of
 //                                	ftDate, ftTime, ftDateTime: TableRow := TableRow + FloatToStr(TableData.Fields[i].AsFloat);
 //                                	else
-//                                    	TableRow := TableRow + TableData.Fields[i].AsString;
+//                                    	TableRow := TableRow + TableData.Fields[i].AsAnsiString;
 //                                end;
 //
 //                        WriteLn(TF,TableRow);
@@ -1734,8 +1734,8 @@ begin
                 AsSmallInt := SmallInt(aField.AsInteger);
                 AsInteger :=  aField.AsInteger;
                 AsInt64 := aField.AsInteger;
-                AsChar := aField.AsString[1];
-                AsString := aField.AsString;
+                AsAnsiChar := aField.AsAnsiString[1];
+                AsAnsiString := aField.AsAnsiString;
                 AsSingle := aField.AsInteger;
                 AsDouble := aField.AsInteger;
                 AsCurrency := aField.AsInteger; // Float = Currency = Extended
@@ -1751,8 +1751,8 @@ begin
                 AsSmallInt := SmallInt(aField.AsInteger);
                 AsInteger :=  aField.AsInteger;
                 AsInt64 := aField.AsInteger;
-                AsChar := aField.AsString[1];
-                AsString := aField.AsString;
+                AsAnsiChar := aField.AsAnsiString[1];
+                AsAnsiString := aField.AsAnsiString;
                 AsSingle := aField.AsFloat;
                 AsDouble := aField.AsFloat;
                 AsCurrency := aField.AsFloat; // Float = Currency = Extended
@@ -1768,15 +1768,15 @@ begin
                 AsSmallInt := SmallInt(aField.AsInteger);
                 AsInteger :=  aField.AsInteger;
                 AsInt64 := aField.AsInteger;
-                AsChar := aField.AsString[1];
-                AsString := aField.AsString;
+                AsAnsiChar := aField.AsAnsiString[1];
+                AsAnsiString := aField.AsAnsiString;
                 AsSingle := aField.AsFloat;
                 AsDouble := aField.AsFloat;
                 AsCurrency := aField.AsFloat;
                 AsDateTime := aField.AsDateTime;
             end
-            // Binário, String ou qualquer outra coisa?
-            // Interpreta como string
+            // Binário, AnsiString ou qualquer outra coisa?
+            // Interpreta como AnsiString
             else
             begin
                 AsByte := 0;
@@ -1786,8 +1786,8 @@ begin
                 AsSmallInt := 0;
                 AsInteger :=  0;
                 AsInt64 := 0;
-                AsChar := aField.AsString[1];
-                AsString := aField.AsString;
+                AsAnsiChar := aField.AsAnsiString[1];
+                AsAnsiString := aField.AsAnsiString;
                 AsSingle := 0;
                 AsDouble := 0;
                 AsCurrency := 0;
@@ -1798,7 +1798,7 @@ begin
 end;
 
 function TXXXDataModule.ExecuteDbFunction(const aZConnection: TZConnection;
-                                          const aCallString: String): TMultiTypedResult;
+                                          const aCallString: AnsiString): TMultiTypedResult;
 var
 	RODataSet: TZReadOnlyQuery;
 begin
@@ -1812,7 +1812,7 @@ begin
     end;
 end;
 
-procedure TXXXDataModule.ExecuteDbProcedure(const aZConnection: TZConnection; const aCallString: String);
+procedure TXXXDataModule.ExecuteDbProcedure(const aZConnection: TZConnection; const aCallString: AnsiString);
 var
 	RODataSet: TZReadOnlyQuery;
 begin
@@ -1825,17 +1825,17 @@ begin
     end;
 end;
 
-procedure TXXXDataModule.ExecuteQuery(const aDBConnection: TZConnection; const aSQLCommand: String);
+procedure TXXXDataModule.ExecuteQuery(const aDBConnection: TZConnection; const aSQLCommand: AnsiString);
 var
 	WODataSet: TZQuery;
-  	ComandoSQLLocal: String;
+  	ComandoSQLLocal: AnsiString;
 begin
-	ComandoSQLLocal := Trim(UpperCase(aSQLCommand));
+	ComandoSQLLocal := AnsiString(Trim(UpperCase(String(aSQLCommand))));
     WODataSet := nil;
     if Assigned(aDBConnection) then
 	    try
     		try
-                if Pos('SELECT',ComandoSQLLocal) = 1 then
+                if Pos('SELECT',String(ComandoSQLLocal)) = 1 then
                     raise EInvalidArgumentData.CreateFmt(RS_INVALID_ARGUMENT_DATA,['aSQLCommand',RS_SELECT_NOT_ALLOWED]);
 
 			    WODataSet := TZQuery.Create(Self);
@@ -1844,7 +1844,7 @@ begin
                     begin
                         Connection := aDBConnection;
                         ReadOnly := False;
-                        SQL.Text := ComandoSQLLocal;
+                        SQL.Text := String(ComandoSQLLocal);
                         ExecSQL;
                     end;
 		    except
@@ -1973,7 +1973,7 @@ end;
 
 procedure TXXXDataModule.ShowRecordInformationForm(const aZConnection: TZConnection;
                                                    const aTableName
-                                                       , aRecordIdColumnName: String;
+                                                       , aRecordIdColumnName: AnsiString;
                                                    const aRecordIdColumnValue: Cardinal);
 var
     RI: TRecordInformation;
@@ -2009,19 +2009,19 @@ end;
 procedure TXXXDataModule.SaveComboBoxItems(const aComboBox: TCustomComboBox; const aFileName: TFileName);
 var
 	Exists: Boolean;
-    Text: String;
+    Text: AnsiString;
 begin
     if aComboBox is TDBComboBox then
-        Text := TDBComboBox(aComboBox).Text
+        Text := AnsiString(TDBComboBox(aComboBox).Text)
     else if aComboBox is TComboBox then
-    	Text := TComboBox(aComboBox).Text;
+    	Text := AnsiString(TComboBox(aComboBox).Text);
 
-	if Trim(Text) <> '' then
+	if Trim(String(Text)) <> '' then
     begin
-	  	Exists := aComboBox.Items.IndexOf(Text) > -1;
+	  	Exists := aComboBox.Items.IndexOf(String(Text)) > -1;
 
     	if not Exists then
-    		aComboBox.Items.Add(Text);
+    		aComboBox.Items.Add(String(Text));
 
 		aComboBox.Items.SaveToFile(aFileName);
     end;
@@ -2049,24 +2049,24 @@ begin
         { Opções de banco de dados }
         if (ptsAll in aPagesToShow) or (ptsDatabase in aPagesToShow) then
         begin
-            DBProtocol := ComboBoxProtocolo.Items[ComboBoxProtocolo.ItemIndex];
-            DBHostAddr := EditEnderecoDoHost.Text;
+            DBProtocol := AnsiString(ComboBoxProtocolo.Items[ComboBoxProtocolo.ItemIndex]);
+            DBHostAddr := AnsiString(EditEnderecoDoHost.Text);
             DBPortNumb := StrToInt(EditPorta.Text);
-            DBDataBase := EditBancoDeDados.Text;
-            DBUserName := EditNomeDeUsuario.Text;
-            DBPassword := EditSenha.Text;
+            DBDataBase := AnsiString(EditBancoDeDados.Text);
+            DBUserName := AnsiString(EditNomeDeUsuario.Text);
+            DBPassword := AnsiString(EditSenha.Text);
             DBIsoLevel := Integer(ComboBoxIsolationLevel.Items.Objects[ComboBoxIsolationLevel.ItemIndex]);
         end;
 
         { Opções de Login }
         if (ptsAll in aPagesToShow) or (ptsLogin in aPagesToShow) then
         begin
-            UserTableTableName := CFEdit_UserTableName.Text;
-            UserTableKeyFieldName := CFEdit_KeyFieldName.Text;
-            UserTableRealNameFieldName := CFEdit_RealNameFieldName.Text;
-            UserTableUserNameFieldName := CFEdit_UserNameFieldName.Text;
-            UserTablePasswordFieldName := CFEdit_PasswordFieldName.Text;
-            UserTableEmailFieldName := CFEdit_EmailFieldName.Text;
+            UserTableTableName := AnsiString(CFEdit_UserTableName.Text);
+            UserTableKeyFieldName := AnsiString(CFEdit_KeyFieldName.Text);
+            UserTableRealNameFieldName := AnsiString(CFEdit_RealNameFieldName.Text);
+            UserTableUserNameFieldName := AnsiString(CFEdit_UserNameFieldName.Text);
+            UserTablePasswordFieldName := AnsiString(CFEdit_PasswordFieldName.Text);
+            UserTableEmailFieldName := AnsiString(CFEdit_EmailFieldName.Text);
             ExpandedLoginDialog := CheckBox_ExpandedLoginDialog.Checked;
             PasswordCipherAlgorithm := THashAlgorithm(ComboBox_PasswordCipherAlgorithm.ItemIndex);
         end;
@@ -2094,7 +2094,7 @@ begin
     Result := 0;
     RODataSet := nil;
     try
-	    ConfigureDataSet(TZAbstractRODataset(aDataSet).Connection,RODataSet,Format(SQL_LASTINSERTEDDATEANDTIME,[aDataSet.Name]));
+	    ConfigureDataSet(TZAbstractRODataset(aDataSet).Connection,RODataSet,AnsiString(Format(SQL_LASTINSERTEDDATEANDTIME,[aDataSet.Name])));
         if Assigned(RODataSet) then
 	        Result := RODataSet.Fields[0].AsDateTime;
     finally
@@ -2114,7 +2114,7 @@ begin
         begin
             TabSheet_DataBaseOptions.TabVisible := True;
             aZConnection.GetProtocolNames(ComboBoxProtocolo.Items);
-            ComboBoxProtocolo.ItemIndex := ComboBoxProtocolo.Items.IndexOf(DBProtocol);
+            ComboBoxProtocolo.ItemIndex := ComboBoxProtocolo.Items.IndexOf(String(DBProtocol));
 
             { TODO 5 -oCARLOS -cMELHORIA : Aqui, baseado no protocolo
             devemos implementar uma interface com funções específicas de
@@ -2129,11 +2129,11 @@ begin
             ComboBoxIsolationLevel.Items.AddObject('tiSerializable',TObject(tiSerializable));
             ComboBoxIsolationLevel.ItemIndex := ComboBoxIsolationLevel.Items.IndexOfObject(TObject(DBIsoLevel));
 
-            EditEnderecoDoHost.Text := DBHostAddr;
+            EditEnderecoDoHost.Text := String(DBHostAddr);
             EditPorta.Text := IntToStr(DBPortNumb);
-            EditBancoDeDados.Text := DBDataBase;
-            EditNomeDeUsuario.Text := DBUserName;
-            EditSenha.Text := DBPassword;
+            EditBancoDeDados.Text := String(DBDataBase);
+            EditNomeDeUsuario.Text := String(DBUserName);
+            EditSenha.Text := String(DBPassword);
         end
         else
             TabSheet_DataBaseOptions.TabVisible := False;
@@ -2142,12 +2142,12 @@ begin
         if (ptsAll in aPagesToShow) or (ptsLogin in aPagesToShow) then
         begin
             TabSheet_LoginOptions.TabVisible := True;
-            CFEdit_UserTableName.Text := UserTableTableName;
-            CFEdit_KeyFieldName.Text := UserTableKeyFieldName;
-            CFEdit_RealNameFieldName.Text := UserTableRealNameFieldName;
-            CFEdit_UserNameFieldName.Text := UserTableUserNameFieldName;
-            CFEdit_PasswordFieldName.Text := UserTablePasswordFieldName;
-            CFEdit_EmailFieldName.Text := UserTableEmailFieldName;
+            CFEdit_UserTableName.Text := String(UserTableTableName);
+            CFEdit_KeyFieldName.Text := String(UserTableKeyFieldName);
+            CFEdit_RealNameFieldName.Text := String(UserTableRealNameFieldName);
+            CFEdit_UserNameFieldName.Text := String(UserTableUserNameFieldName);
+            CFEdit_PasswordFieldName.Text := String(UserTablePasswordFieldName);
+            CFEdit_EmailFieldName.Text := String(UserTableEmailFieldName);
             ComboBox_PasswordCipherAlgorithm.ItemIndex := Byte(PasswordCipherAlgorithm);
             CheckBox_ExpandedLoginDialog.Checked := ExpandedLoginDialog;
         end
@@ -2230,7 +2230,7 @@ end;
 //    end;
 //end;
 
-procedure TXXXDataModule.ShowProcessingForm(aDescription: String = ''; aShowProgressBar: Boolean = False);
+procedure TXXXDataModule.ShowProcessingForm(aDescription: AnsiString = ''; aShowProgressBar: Boolean = False);
 var
 	CreateParameters: UForm_Processing.TCreateParameters;
 begin
@@ -2246,7 +2246,7 @@ begin
 	TForm_Processing.CreateDialog(Owner,Form_Processing,TForm_Processing,CreateParameters);
 end;
 
-function TXXXDataModule.ShowTextsManager(const aFileName: TFileName): String;
+function TXXXDataModule.ShowTextsManager(const aFileName: TFileName): AnsiString;
 var
     XXXForm_TextsManager: TXXXForm_TextsManager;
 	CreateParameters: TDialogCreateParameters;
@@ -2260,14 +2260,14 @@ begin
         XXXForm_TextsManager.FileName := aFileName;
 
         if XXXForm_TextsManager.ShowModal = mrOk then
-            Result := XXXForm_TextsManager.SelectedText;
+            Result := AnsiString(XXXForm_TextsManager.SelectedText);
     finally
         if Assigned(XXXForm_TextsManager) then
             XXXForm_TextsManager.Free;
     end;
 end;
 {$IFDEF CURRENCY_CONVERT_MANAGER}
-function TXXXDataModule.ShowCurrencyConvertManager(const aCurrenciesTaxs: String; const aDestinationCurrency: Byte): String;
+function TXXXDataModule.ShowCurrencyConvertManager(const aCurrenciesTaxs: AnsiString; const aDestinationCurrency: Byte): AnsiString;
 var
     XXXForm_CurrencyConvertManager: TXXXForm_CurrencyConvertManager;
 	CreateParameters: TDialogCreateParameters;
@@ -2290,14 +2290,14 @@ begin
     end;
 end;{$ENDIF}
 
-procedure TXXXDataModule.ClearDirectoryFrom(aDirectory: String; aRemoveEmptySubDirs: Boolean = False; aMask: String = '*.*');
+procedure TXXXDataModule.ClearDirectoryFrom(aDirectory: AnsiString; aRemoveEmptySubDirs: Boolean = False; aMask: AnsiString = '*.*');
 { ---------------------------------------------------------------------------- }
 procedure SearchTree;
 var
     SearchRec: TSearchRec;
     DosError: integer;
 begin
-    DosError := FindFirst(aMask, 0, SearchRec);
+    DosError := FindFirst(String(aMask), 0, SearchRec);
     while DosError = 0 do
     begin
         try
@@ -2328,24 +2328,24 @@ begin
 end;
 { ---------------------------------------------------------------------------- }
 begin
-	ChDir(aDirectory);
+	ChDir(String(aDirectory));
 	SearchTree;
 end;
 
-class procedure TXXXDataModule.ConfigureDataSet(const aDBConnection: TZConnection; var aDataSet: TZReadOnlyQuery; const aSQLCommand: String; const aAutoCreateDataSet: Boolean = True);
+class procedure TXXXDataModule.ConfigureDataSet(const aDBConnection: TZConnection; var aDataSet: TZReadOnlyQuery; const aSQLCommand: AnsiString; const aAutoCreateDataSet: Boolean = True);
 var
-	ComandoSQLLocal: String;
+	ComandoSQLLocal: AnsiString;
 begin
-	ComandoSQLLocal := Trim(UpperCase(aSQLCommand));
+	ComandoSQLLocal := AnsiString(Trim(UpperCase(String(aSQLCommand))));
 
     { Colocando em minúsculo aquilo que tem de ser minúsculo }
-    ComandoSQLLocal := StringReplace(ComandoSQLLocal,'\R','\r',[rfReplaceAll]);
-    ComandoSQLLocal := StringReplace(ComandoSQLLocal,'\N','\n',[rfReplaceAll]);
+    ComandoSQLLocal := AnsiString(StringReplace(String(ComandoSQLLocal),'\R','\r',[rfReplaceAll]));
+    ComandoSQLLocal := AnsiString(StringReplace(String(ComandoSQLLocal),'\N','\n',[rfReplaceAll]));
 
     try
         try
-            if (Pos('SELECT',ComandoSQLLocal) <> 1)
-               and (Pos('SHOW',ComandoSQLLocal) <> 1) then
+            if (Pos('SELECT',String(ComandoSQLLocal)) <> 1)
+               and (Pos('SHOW',String(ComandoSQLLocal)) <> 1) then
             	raise EInvalidArgumentData.CreateFmt(RS_INVALID_ARGUMENT_DATA,['aSQLCommand',RS_ONLY_SELECT_ALLOWED]);
 
             if aAutoCreateDataSet then
@@ -2362,7 +2362,7 @@ begin
                 begin
                 	Close;
                     Connection := aDBConnection;
-                    SQL.Text := aSQLCommand;
+                    SQL.Text := String(aSQLCommand);
                     Open;
                 end;
 
@@ -2399,14 +2399,14 @@ begin
     end;
 end;
 
-function TXXXDataModule.ThisRecordExists(const aDBConnection: TZConnection; TableName, KeyName: String; KeyValue: Cardinal): Boolean;
+function TXXXDataModule.ThisRecordExists(const aDBConnection: TZConnection; TableName, KeyName: AnsiString; KeyValue: Cardinal): Boolean;
 var
     RODataSet: TZReadOnlyQuery;
 begin
     RODataSet := nil;
     Result := False;
     try
-        ConfigureDataSet(aDBConnection,RODataSet,'SELECT COUNT(*) FROM ' + TableName + ' WHERE ' + KeyName + ' = ' + IntToStr(KeyValue));
+        ConfigureDataSet(aDBConnection,RODataSet,'SELECT COUNT(*) FROM ' + TableName + ' WHERE ' + KeyName + ' = ' + AnsiString(IntToStr(KeyValue)));
         if RODataSet.Fields[0].AsInteger > 1 then
         	raise EUnexpectedInformation.CreateFmt(RS_UNEXPECTED_INFORMATION,[RS_MULTIPLE_RECORD_MATCHES]);
 
@@ -2560,13 +2560,13 @@ end;
 procedure TXXXDataModule.SplitSQLScript(const aZConnection: TZConnection;
                                         var aScriptParts: TScriptParts;
                                         const aSQLScriptFile: TFileName;
-                                        const aSQLScriptText: String;
+                                        const aSQLScriptText: AnsiString;
 //                                        const aForeignKeysCheck: Boolean = True;
                                         const aSplitSQLScriptCallBack: TSplitSQLScriptCallBack = nil);
 var
     i: Cardinal;
     Processor: TZSQLProcessor;
-    Statement: String;
+    Statement: AnsiString;
     SpacePostion, ReturnPosition: Byte;
 begin
     if Assigned(aScriptParts) then
@@ -2577,7 +2577,7 @@ begin
 		if not FileExists(aSQLScriptFile) then
     		raise Exception.Create('O arquivo especificado não existe fisicamente');
     end
-    else if Trim(aSQLScriptText) = '' then
+    else if Trim(String(aSQLScriptText)) = '' then
         raise Exception.Create('Nenhum arquivo ou texto de script foi informado');
 
 
@@ -2601,7 +2601,7 @@ begin
             if Trim(aSQLScriptFile) <> '' then
 	            LoadFromFile(aSQLScriptFile)
             else
-            	Script.Text := aSQLScriptText;
+            	Script.Text := String(aSQLScriptText);
 
 //            if not aForeignKeysCheck then
 //            	Script.Text := 'DELIMITER ;'#13#10' SET FOREIGN_KEY_CHECKS = 0;'#13#10 + Processor.Script.Text + #13#10'DELIMITER ;'#13#10'SET FOREIGN_KEY_CHECKS = 1;'
@@ -2629,8 +2629,8 @@ begin
 					aSplitSQLScriptCallBack(ssseBeforeSplit,aScriptParts,Processor);
 
                 Statement := Statements[i];
-                SpacePostion := Pos(#32,Statement);
-                ReturnPosition := Pos(#13,Statement);
+                SpacePostion := Pos(#32,String(Statement));
+                ReturnPosition := Pos(#13,String(Statement));
 
                 if (SpacePostion <> 0) or (ReturnPosition <> 0) then
                     with aScriptParts.Add do
@@ -2646,7 +2646,7 @@ begin
                             Delete(Statement,1,SpacePostion);
                         end;
 
-                        Script := Trim(Statement);
+                        Script := AnsiString(Trim(String(Statement)));
                     end;
 
     	    	if Assigned(aSplitSQLScriptCallBack) then
@@ -2668,7 +2668,7 @@ end;
 
 { TODO 5 -oCarlos Feitoza -cMELHORIA : O procedure abaixo está defasado use a
 versão do FTP Synchronizer }
-//procedure TXXXDataModule.MySQLExecuteSQLScript(const aDBConnection: TZConnection; const aFileName: TFileName; const aSQLScript: String = ''; const aParamCheck: Boolean = True; const aForeigKeyCheck: Boolean = True);
+//procedure TXXXDataModule.MySQLExecuteSQLScript(const aDBConnection: TZConnection; const aFileName: TFileName; const aSQLScript: AnsiString = ''; const aParamCheck: Boolean = True; const aForeigKeyCheck: Boolean = True);
 //var
 //	Processor: TZSQLProcessor;
 //begin
@@ -2726,7 +2726,7 @@ versão do FTP Synchronizer }
 
 procedure TXXXDataModule.MySQLExecuteSQLScript(const aZConnection: TZConnection;
                                                const aSQLScriptFile: TFileName;
-                                               const aSQLScriptText: String;
+                                               const aSQLScriptText: AnsiString;
 //                                               const aForeignKeysCheck: Boolean = True;
                                                const aExecuteSQLScriptCallBack: TExecuteSQLScriptCallBack = nil;
                                                const aSplitSQLScriptCallBack: TSplitSQLScriptCallBack = nil);
@@ -2740,7 +2740,7 @@ begin
 		if not FileExists(aSQLScriptFile) then
     		raise Exception.Create('O arquivo especificado não existe fisicamente');
     end
-    else if Trim(aSQLScriptText) = '' then
+    else if Trim(String(aSQLScriptText)) = '' then
     	raise Exception.Create('Nenhum arquivo ou texto de script foi informado');
 
     try
@@ -2773,8 +2773,8 @@ begin
                     for i := 0 to Pred(ScriptParts.Count) do
                     begin
                         Processor.Clear;
-                        Processor.Delimiter := ScriptParts[i].Delimiter;
-                        Processor.Script.Text := ScriptParts[i].Script;
+                        Processor.Delimiter := String(ScriptParts[i].Delimiter);
+                        Processor.Script.Text := String(ScriptParts[i].Script);
 
 			        	if Assigned(aExecuteSQLScriptCallBack) then
   		            		aExecuteSQLScriptCallBack(esseBeforeExecuteScriptPart,ScriptParts,Processor);
@@ -2822,7 +2822,7 @@ end;
 //
 //        while not RODataSet.Eof do
 //        begin
-//            MySQLExecuteSQLScript(aDBConnection,'','ALTER TABLE ' + RODataSet.Fields[0].AsString + ' ENGINE = InnoDB;');
+//            MySQLExecuteSQLScript(aDBConnection,'','ALTER TABLE ' + RODataSet.Fields[0].AsAnsiString + ' ENGINE = InnoDB;');
 //
 //            if Assigned(aProgressBar) then
 //            begin
@@ -2844,12 +2844,12 @@ end;
 // 	end;
 //end;
 
-function TXXXDataModule.MySQLReplaceSearchWildcards(const aSQL: String): String;
+function TXXXDataModule.MySQLReplaceSearchWildcards(const aSQL: AnsiString): AnsiString;
 begin
-    Result := StringReplace(aSQL,'_','\_',[rfReplaceAll]);
-    Result := StringReplace(Result,'%','\%',[rfReplaceAll]);
-    Result := StringReplace(Result,'*','%',[rfReplaceAll]);
-    Result := StringReplace(Result,'?','_',[rfReplaceAll]);
+    Result := AnsiString(StringReplace(String(aSQL),'_','\_',[rfReplaceAll]));
+    Result := AnsiString(StringReplace(String(Result),'%','\%',[rfReplaceAll]));
+    Result := AnsiString(StringReplace(String(Result),'*','%',[rfReplaceAll]));
+    Result := AnsiString(StringReplace(String(Result),'?','_',[rfReplaceAll]));
 end;
 
 { FOI REMOVIDA POR QUE NÃO ESTAVA SENDO USADA E PORQUE GERAVA ERROS DE SINCRONIZAÇÃO
@@ -2882,7 +2882,7 @@ CONSIDERANDO DADOS ANTIGOS, DO CONTRÁRIO PROVOCA PROBLEMAS }
 //	    	if Assigned(aDefragDatabaseCallBack) then
 //    	    	aDefragDatabaseCallBack(ddeBeforeDefrag,RODataSet);
 //
-//            MySQLExecuteSQLScript(aZConnection,'','ALTER TABLE ' + RODataSet.Fields[0].AsString + ' ENGINE = InnoDB;');
+//            MySQLExecuteSQLScript(aZConnection,'','ALTER TABLE ' + RODataSet.Fields[0].AsAnsiString + ' ENGINE = InnoDB;');
 //
 //	    	if Assigned(aDefragDatabaseCallBack) then
 //				aDefragDatabaseCallBack(ddeAfterDefrag,RODataSet);
@@ -3012,21 +3012,17 @@ begin
             end;
 end;
 
-class procedure TXXXDataModule.SetLabelDescriptionValue(const aLabelDescription, aLabelValue: TLabel; const aValue: String; const aSpacing: Byte = 2);
+class procedure TXXXDataModule.SetLabelDescriptionValue(const aLabelDescription, aLabelValue: TLabel; const aValue: AnsiString; const aSpacing: Byte = 2);
 begin
 	aLabelValue.Alignment := taRightJustify;
-    aLabelValue.Caption := aValue;
-//	aLabelValue.Top := aLabelDescription.Top;
-//	aLabelValue.Left := aLabelDescription.Left + aLabelDescription.Width - aLabelValue.Width;
-    aLabelDescription.Width := aLabelValue.Left - aLabelDescription.Left - aSpacing;
+  aLabelValue.Caption := String(aValue);
+  aLabelDescription.Width := aLabelValue.Left - aLabelDescription.Left - aSpacing;
 end;
 
 class procedure TXXXDataModule.SetLabelDescriptionValue(const aLabelDescription: TLabel; const aLabelValue: TDBText; const aSpacing: Byte = 2);
 begin
 	aLabelValue.Alignment := taRightJustify;
-//	aLabelValue.Top := aLabelDescription.Top;
-//	aLabelValue.Left := aLabelDescription.Left + aLabelDescription.Width - aLabelValue.Width;
-    aLabelDescription.Width := aLabelValue.Left - aLabelDescription.Left - aSpacing;
+  aLabelDescription.Width := aLabelValue.Left - aLabelDescription.Left - aSpacing;
 end;
 
 
@@ -3060,7 +3056,7 @@ procedure TXXXDataModule.GetPageAndRecordMetrics(const aCFDBGrid: TCFDBGrid;
                                                      , aPageCount: Word;
                                                    var aPageNo: Word;
                                                    var aRecordCount: Cardinal;
-                                                 const aCountSQL: String = '');
+                                                 const aCountSQL: AnsiString = '');
 var
     RODataSet: TZReadOnlyQuery;
     Remainder: Word;
@@ -3071,12 +3067,12 @@ begin
     	Dec(aRecordsByPage,TDrawGrid(aCFDBGrid).RowHeights[0] div TDrawGrid(aCFDBGrid).DefaultRowHeight);
 
     { Ajusta aRecordCount apenas se um SQL de contagem tiver sido informado }
-    if Trim(aCountSQL) <> '' then
+    if Trim(String(aCountSQL)) <> '' then
     begin
         RODataSet := nil;
         Screen.Cursor := crSQLWait;
         try
-            ConfigureDataSet(DataModuleMain.ZConnections[0].Connection,RODataSet,UpperCase(Trim(aCountSQL)));
+            ConfigureDataSet(DataModuleMain.ZConnections[0].Connection,RODataSet,AnsiString(UpperCase(Trim(String(aCountSQL)))));
             aRecordCount := RODataSet.Fields[0].AsInteger;
         finally
             Screen.Cursor := crDefault;
@@ -3115,7 +3111,7 @@ procedure TXXXDataModule.DoBeforeDelete(aDataSet: TDataSet);
 begin
 	{ TZAbstractRODataset está acima de todos os TZQuery, TZReadOnlyQuery e
     TZTable }
-	if not HasPermission(TZAbstractRODataset(aDataSet).Connection,aDataSet.Name,0,etTable,pDelete) then
+	if not HasPermission(TZAbstractRODataset(aDataSet).Connection,AnsiString(aDataSet.Name),0,etTable,pDelete) then
     	raise EPermissionException.Create(Format(RS_NO_DELETE_PERMISSION,[aDataSet.Name]));
 
 	try
@@ -3135,19 +3131,19 @@ end;
 
 procedure TXXXDataModule.DoBeforeEdit(aDataSet: TDataSet);
 var
-    RefreshSQL: String;
+    RefreshSQL: AnsiString;
 begin
     if (aDataSet is TZQuery) and Assigned(TZQuery(aDataSet).UpdateObject) then
     begin
         SetRefreshSQL(TZQuery(aDataSet),dbaBeforeEdit,RefreshSQL);
-        TZQuery(aDataSet).UpdateObject.RefreshSQL.Text := RefreshSQL;
+        TZQuery(aDataSet).UpdateObject.RefreshSQL.Text := String(RefreshSQL);
     end;
 
-	if not HasPermission(TZAbstractRODataset(aDataSet).Connection,aDataSet.Name,0,etTable,pModify) then
+	if not HasPermission(TZAbstractRODataset(aDataSet).Connection,AnsiString(aDataSet.Name),0,etTable,pModify) then
 		raise EPermissionException.Create(Format(RS_NO_UPDATE_PERMISSION,[aDataSet.Name]));
 end;
 
-procedure TXXXDataModule.SetRefreshSQL(const aZQuery: TZQuery; const aDBAction: TDBAction; out aRefreshSQL: String);
+procedure TXXXDataModule.SetRefreshSQL(const aZQuery: TZQuery; const aDBAction: TDBAction; out aRefreshSQL: AnsiString);
 begin
     { Quando necessário, em datamodules herdados, configure o refreshsql aqui,
     baseado no dataset. Devemos informar SQLs que retornem todos os campos que
@@ -3163,18 +3159,18 @@ end;
 procedure TXXXDataModule.DoBeforeInsert(aDataSet: TDataSet);
 var
 	LastModifiedDateTime, ActualDateTime: TDateTime;
-    RefreshSQL: String;
+    RefreshSQL: AnsiString;
 begin
     if (aDataSet is TZQuery) and Assigned(TZQuery(aDataSet).UpdateObject) then
     begin
         SetRefreshSQL(TZQuery(aDataSet),dbaBeforeInsert,RefreshSQL);
-        TZQuery(aDataSet).UpdateObject.RefreshSQL.Text := RefreshSQL;
+        TZQuery(aDataSet).UpdateObject.RefreshSQL.Text := String(RefreshSQL);
     end;
 
     LastModifiedDateTime := LastModifiedOn(aDataSet);
     ActualDateTime := Now;
     
-	if not HasPermission(TZAbstractRODataset(aDataSet).Connection,aDataSet.Name,0,etTable,pInsert) then
+	if not HasPermission(TZAbstractRODataset(aDataSet).Connection,AnsiString(aDataSet.Name),0,etTable,pInsert) then
     	raise EPermissionException.CreateFmt(RS_NO_INSERT_PERMISSION,[aDataSet.Name])
     else if Assigned(aDataSet.DataSource) and (aDataSet.DataSource.DataSet.RecordCount = 0) then
     	raise Exception.CreateFmt(RS_NO_MASTER_RECORDS,[aDataSet.Name,aDataSet.DataSource.DataSet.Name])
@@ -3188,7 +3184,7 @@ begin
     DataSource quando o evento OnDataChange for executado }
 end;
 
-function TXXXDataModule.ComparisonOperator(aComparisonOperator: TComparisonOperator): String;
+function TXXXDataModule.ComparisonOperator(aComparisonOperator: TComparisonOperator): AnsiString;
 begin
     case aComparisonOperator of
         coNone: Result := '';
@@ -3203,11 +3199,11 @@ end;
 
 procedure TXXXDataModule.LocateFirstRecord(const aDataSetToLocateIn: TDataSet;
                                            const aEdit: TEdit;
-                                           const aFieldName: String);
+                                           const aFieldName: AnsiString);
 var
     Achou: Boolean;
 begin
-    Achou := aDataSetToLocateIn.Locate(aFieldName,aEdit.Text,[loPartialKey,loCaseInsensitive]);
+    Achou := aDataSetToLocateIn.Locate(String(aFieldName),aEdit.Text,[loPartialKey,loCaseInsensitive]);
 
     if not Achou then
     begin
@@ -3223,15 +3219,15 @@ begin
 end;
 
 function TXXXDataModule.LocateFirstMatchedRecord(const aZConnection: TZConnection;
-                                                 const aTableNames: array of String;
-                                                 const aLinkFields: array of String;
-                                                 const aSearchFieldNames: array of String;
+                                                 const aTableNames: array of AnsiString;
+                                                 const aLinkFields: array of AnsiString;
+                                                 const aSearchFieldNames: array of AnsiString;
                                                  const aSearchFieldValues: array of const;
                                                  const aComparisonOperators: array of TComparisonOperator;
-                                                 const aOrderByFields: array of String;
-                                                 const aResultField: String): TMultiTypedResult;
+                                                 const aOrderByFields: array of AnsiString;
+                                                 const aResultField: AnsiString): TMultiTypedResult;
 const
-	BOOLEAN_STRINGS: array[Boolean] of String = ('False', 'True');
+	BOOLEAN_STRINGS: array[Boolean] of AnsiString = ('False', 'True');
     SQL_FIND =
     '  SELECT %s'#13#10 +
     '    FROM %s' +
@@ -3241,8 +3237,8 @@ const
     '   LIMIT 1';
 var
     RODataSet: TZReadOnlyQuery;
-    ClausulaWhere: String;
-    ClausulaOrderBy, ClausulaFrom: String;
+    ClausulaWhere: AnsiString;
+    ClausulaOrderBy, ClausulaFrom: AnsiString;
     i: Byte;
 begin
     if Length(aTableNames) = 0 then
@@ -3281,18 +3277,18 @@ begin
         begin
             with aSearchFieldValues[i] do
                 case VType of
-                    vtInteger   : ClausulaWhere := ClausulaWhere + '     AND ' + aSearchFieldNames[i] + ' ' + ComparisonOperator(aComparisonOperators[i]) + ' ' + IntToStr(VInteger);
+                    vtInteger   : ClausulaWhere := ClausulaWhere + '     AND ' + aSearchFieldNames[i] + ' ' + ComparisonOperator(aComparisonOperators[i]) + ' ' + AnsiString(IntToStr(VInteger));
                     vtBoolean   : ClausulaWhere := ClausulaWhere + '     AND ' + aSearchFieldNames[i] + ' ' + ComparisonOperator(aComparisonOperators[i]) + ' ' + BOOLEAN_STRINGS[VBoolean];
-                    vtChar      : ClausulaWhere := ClausulaWhere + '     AND ' + aSearchFieldNames[i] + ' ' + ComparisonOperator(aComparisonOperators[i]) + ' ' + QuotedStr(MySQLReplaceSearchWildcards(VChar));
+                    vtChar      : ClausulaWhere := ClausulaWhere + '     AND ' + aSearchFieldNames[i] + ' ' + ComparisonOperator(aComparisonOperators[i]) + ' ' + AnsiString(QuotedStr(String(MySQLReplaceSearchWildcards(VChar))));
                     vtExtended  : ClausulaWhere := ClausulaWhere + '     AND ' + aSearchFieldNames[i] + ' ' + ComparisonOperator(aComparisonOperators[i]) + ' ' + MySQLFormat('%g',[VExtended^]);
-                    vtString    : ClausulaWhere := ClausulaWhere + '     AND ' + aSearchFieldNames[i] + ' ' + ComparisonOperator(aComparisonOperators[i]) + ' ' + QuotedStr(MySQLReplaceSearchWildcards(VString^));
-                    vtPChar     : ClausulaWhere := ClausulaWhere + '     AND ' + aSearchFieldNames[i] + ' ' + ComparisonOperator(aComparisonOperators[i]) + ' ' + QuotedStr(MySQLReplaceSearchWildcards(VPChar));
-                    vtObject    : ClausulaWhere := ClausulaWhere + '     AND ' + aSearchFieldNames[i] + ' ' + ComparisonOperator(aComparisonOperators[i]) + ' ' + QuotedStr(MySQLReplaceSearchWildcards(VObject.ClassName));
-                    vtClass     : ClausulaWhere := ClausulaWhere + '     AND ' + aSearchFieldNames[i] + ' ' + ComparisonOperator(aComparisonOperators[i]) + ' ' + QuotedStr(MySQLReplaceSearchWildcards(VClass.ClassName));
-                    vtAnsiString: ClausulaWhere := ClausulaWhere + '     AND ' + aSearchFieldNames[i] + ' ' + ComparisonOperator(aComparisonOperators[i]) + ' ' + QuotedStr(MySQLReplaceSearchWildcards(String(VAnsiString)));
+                    vtString    : ClausulaWhere := ClausulaWhere + '     AND ' + aSearchFieldNames[i] + ' ' + ComparisonOperator(aComparisonOperators[i]) + ' ' + AnsiString(QuotedStr(String(MySQLReplaceSearchWildcards(AnsiString(VString^)))));
+                    vtPChar     : ClausulaWhere := ClausulaWhere + '     AND ' + aSearchFieldNames[i] + ' ' + ComparisonOperator(aComparisonOperators[i]) + ' ' + AnsiString(QuotedStr(String(MySQLReplaceSearchWildcards(AnsiString(VPChar)))));
+                    vtObject    : ClausulaWhere := ClausulaWhere + '     AND ' + aSearchFieldNames[i] + ' ' + ComparisonOperator(aComparisonOperators[i]) + ' ' + AnsiString(QuotedStr(String(MySQLReplaceSearchWildcards(AnsiString(VObject.ClassName)))));
+                    vtClass     : ClausulaWhere := ClausulaWhere + '     AND ' + aSearchFieldNames[i] + ' ' + ComparisonOperator(aComparisonOperators[i]) + ' ' + AnsiString(QuotedStr(String(MySQLReplaceSearchWildcards(AnsiString(VClass.ClassName)))));
+                    vtAnsiString: ClausulaWhere := ClausulaWhere + '     AND ' + aSearchFieldNames[i] + ' ' + ComparisonOperator(aComparisonOperators[i]) + ' ' + AnsiString(QuotedStr(String(MySQLReplaceSearchWildcards(AnsiString(VAnsiString)))));
                     vtCurrency  : ClausulaWhere := ClausulaWhere + '     AND ' + aSearchFieldNames[i] + ' ' + ComparisonOperator(aComparisonOperators[i]) + ' ' + MySQLFormat('%g',[VCurrency^]);
-                    vtVariant   : ClausulaWhere := ClausulaWhere + '     AND ' + aSearchFieldNames[i] + ' ' + ComparisonOperator(aComparisonOperators[i]) + ' ' + String(VVariant^); { problemático! }
-                    vtInt64     : ClausulaWhere := ClausulaWhere + '     AND ' + aSearchFieldNames[i] + ' ' + ComparisonOperator(aComparisonOperators[i]) + ' ' + IntToStr(VInt64^);
+                    vtVariant   : ClausulaWhere := ClausulaWhere + '     AND ' + aSearchFieldNames[i] + ' ' + ComparisonOperator(aComparisonOperators[i]) + ' ' + AnsiString(VVariant^); { problemático! }
+                    vtInt64     : ClausulaWhere := ClausulaWhere + '     AND ' + aSearchFieldNames[i] + ' ' + ComparisonOperator(aComparisonOperators[i]) + ' ' + AnsiString(IntToStr(VInt64^));
                 end;
 
             ClausulaWhere := ClausulaWhere + #13#10;
@@ -3307,7 +3303,7 @@ begin
                     ClausulaOrderBy := ClausulaOrderBy + ',';
             end;
 
-        ConfigureDataSet(aZConnection,RODataSet,Format(SQL_FIND,[aResultField,ClausulaFrom,ClausulaWhere,ClausulaOrderBy]));
+        ConfigureDataSet(aZConnection,RODataSet,AnsiString(Format(SQL_FIND,[aResultField,ClausulaFrom,ClausulaWhere,ClausulaOrderBy])));
         if not RODataSet.IsEmpty then
             { TODO -oCarlos Feitoza -cCONSERTE : Melhore isso! está errado! }
             with Result do
@@ -3320,8 +3316,8 @@ begin
                 AsInteger :=  RODataSet.Fields[0].AsInteger;
                 AsInt64 := RODataSet.Fields[0].AsInteger;
 
-                AsChar := RODataSet.Fields[0].AsString[1];
-                AsString := RODataSet.Fields[0].AsString;
+                AsAnsiChar := RODataSet.Fields[0].AsAnsiString[1];
+                AsAnsiString := RODataSet.Fields[0].AsAnsiString;
 
                 AsSingle := RODataSet.Fields[0].AsFloat;
                 AsDouble := RODataSet.Fields[0].AsFloat;
@@ -3377,16 +3373,16 @@ precisem usar ZConnections customizados do contrário o componente ZConnection
 utilizado será o ZConnection principal de DataModule_Alpha }
 procedure TXXXDataModule.DoBeforeOpen(aDataSet: TDataSet);
 var
-	SQL: String;
-    DataSetName: String;
+	SQL: AnsiString;
+    DataSetName: AnsiString;
 begin
 	TZAbstractRODataset(aDataSet).Connection := FDataModuleMain.ZConnections[0].Connection;
 
     { Verificando a existência de um SQL }
     if aDataSet is TZReadOnlyQuery then
-	    SQL := Trim(TZReadOnlyQuery(aDataSet).SQL.Text)
+	    SQL := AnsiString(Trim(TZReadOnlyQuery(aDataSet).SQL.Text))
     else if aDataSet is TZQuery then
-    	SQL := Trim(TZQuery(aDataSet).SQL.Text);
+    	SQL := AnsiString(Trim(TZQuery(aDataSet).SQL.Text));
 
     if SQL = '' then
     	raise Exception.CreateFmt(RS_NO_SQL_ASSIGNED,[aDataSet.Name]);
@@ -3395,18 +3391,18 @@ begin
     { TODO -oCarlos Feitoza : Os validadores não estão sendo alterados aqui.
     Isso pode causar problemas }
     if aDataSet is TZReadOnlyQuery then
-    	TZReadOnlyQuery(aDataSet).SQL.Text := ReplaceSystemObjectNames(SQL)
+    	TZReadOnlyQuery(aDataSet).SQL.Text := String(ReplaceSystemObjectNames(SQL))
     else if aDataSet is TZQuery then
     begin
-    	TZQuery(aDataSet).SQL.Text := ReplaceSystemObjectNames(SQL);
+    	TZQuery(aDataSet).SQL.Text := String(ReplaceSystemObjectNames(SQL));
         ReplaceSystemObjectNames(TZQuery(aDataSet));
         if Assigned(TZQuery(aDataSet).UpdateObject) then
         	with TZQuery(aDataSet).UpdateObject do
             begin
-        		InsertSQL.Text := ReplaceSystemObjectNames(InsertSQL.Text);
-        		ModifySQL.Text := ReplaceSystemObjectNames(ModifySQL.Text);
-        		DeleteSQL.Text := ReplaceSystemObjectNames(DeleteSQL.Text);
-                RefreshSQL.Text := ReplaceSystemObjectNames(RefreshSQL.Text);
+        		InsertSQL.Text  := String(ReplaceSystemObjectNames(AnsiString(InsertSQL.Text)));
+        		ModifySQL.Text  := String(ReplaceSystemObjectNames(AnsiString(ModifySQL.Text)));
+        		DeleteSQL.Text  := String(ReplaceSystemObjectNames(AnsiString(DeleteSQL.Text)));
+            RefreshSQL.Text := String(ReplaceSystemObjectNames(AnsiString(RefreshSQL.Text)));
         	end;
     end;
     
@@ -3417,12 +3413,12 @@ begin
     ser o nome de uma tabela física para qual as permissões foram atribuídas.
     Deve-se portanto remover do nome do datasert a referência a estes tipos
     especiais, sobrando apenas o nome real do dataset para ser comparado }
-    DataSetName := aDataSet.Name;
+    DataSetName := AnsiString(aDataSet.Name);
     { TODO -oCarlos Feitoza -cEXPLICAÇÃO : Antes aqui removia apenas os
     identificadores "_LOOKUP" E "_SEARCH", o último parâmetro era "7", mas como
     quero usar coisas do tipo "_LOOKUP_xxx" ou "_SEARCHZZZ", coloquei o length }
-    Delete(DataSetName,Pos('_LOOKUP',DataSetName),Length(DataSetName));
-    Delete(DataSetName,Pos('_SEARCH',DataSetName),Length(DataSetName));
+    Delete(DataSetName,Pos('_LOOKUP',String(DataSetName)),Length(String(DataSetName)));
+    Delete(DataSetName,Pos('_SEARCH',String(DataSetName)),Length(String(DataSetName)));
 
     { A verificação de permissão tem de ficar aqui pois, mesmo que não se tenha
     permissão para visualizar os dados de uma tabela suas propriedades tem de
@@ -3436,12 +3432,12 @@ end;
 
 procedure TXXXDataModule.DoBeforePost(aDataSet: TDataSet);
 begin
-    case aDataSet.State of
-    	dsInsert: if not HasPermission(TZAbstractRODataset(aDataSet).Connection,aDataSet.Name,0,etTable,pInsert) then
-        	raise EPermissionException.Create(Format(RS_NO_INSERT_PERMISSION,[aDataSet.Name]));
-        dsEdit  : if not HasPermission(TZAbstractRODataset(aDataSet).Connection,aDataSet.Name,0,etTable,pModify) then
-			raise EPermissionException.Create(Format(RS_NO_UPDATE_PERMISSION,[aDataSet.Name]));
-    end;
+  case aDataSet.State of
+    dsInsert: if not HasPermission(TZAbstractRODataset(aDataSet).Connection,AnsiString(aDataSet.Name),0,etTable,pInsert) then
+      raise EPermissionException.Create(Format(RS_NO_INSERT_PERMISSION,[aDataSet.Name]));
+    dsEdit  : if not HasPermission(TZAbstractRODataset(aDataSet).Connection,AnsiString(aDataSet.Name),0,etTable,pModify) then
+      raise EPermissionException.Create(Format(RS_NO_UPDATE_PERMISSION,[aDataSet.Name]));
+  end;
 end;
 
 procedure TXXXDataModule.DoAfterPost(aDataSet: TDataSet);
@@ -3454,11 +3450,12 @@ procedure TXXXDataModule.DoCustomValidate(const aSender: TObject; const aValidat
 var
 	i: Byte;
 begin
-    TCFDBValidationChecks(aSender).TableName := ReplaceSystemObjectNames(TCFDBValidationChecks(aSender).TableName);
-    TCFDBValidationChecks(aSender).KeyField := ReplaceSystemObjectNames(TCFDBValidationChecks(aSender).KeyField);
-	TCFDBValidationChecks(aSender).DependentTables.Text := ReplaceSystemObjectNames(TCFDBValidationChecks(aSender).DependentTables.Text);
-    for i := 0 to Pred(TCFDBValidationChecks(aSender).CheckableFields.Count) do
-    	TCFDBValidationChecks(aSender).CheckableFields[i].FieldName := ReplaceSystemObjectNames(TCFDBValidationChecks(aSender).CheckableFields[i].FieldName);
+  TCFDBValidationChecks(aSender).TableName := String(ReplaceSystemObjectNames(AnsiString(TCFDBValidationChecks(aSender).TableName)));
+  TCFDBValidationChecks(aSender).KeyField := String(ReplaceSystemObjectNames(AnsiString(TCFDBValidationChecks(aSender).KeyField)));
+  TCFDBValidationChecks(aSender).DependentTables.Text := String(ReplaceSystemObjectNames(AnsiString(TCFDBValidationChecks(aSender).DependentTables.Text)));
+
+  for i := 0 to Pred(TCFDBValidationChecks(aSender).CheckableFields.Count) do
+    TCFDBValidationChecks(aSender).CheckableFields[i].FieldName := String(ReplaceSystemObjectNames(AnsiString(TCFDBValidationChecks(aSender).CheckableFields[i].FieldName)));
 end;
 
 function TXXXDataModule.IsValidDataWareComponent(aComponent: TComponent; out aDataSet: TDataSet; out aDataField: TField): Boolean;
@@ -3690,7 +3687,7 @@ begin
 end;
 
 function TXXXDataModule.ArrayOfByteToString(aArrayOfByte: array of Byte;
-                                              aSeparator: Char = ','): String;
+                                              aSeparator: AnsiChar = ','): AnsiString;
 var
 	i, UltimoElemento: Word;
 begin
@@ -3700,9 +3697,9 @@ begin
         UltimoElemento := High(aArrayOfByte);
         for i := 0 to UltimoElemento do
             if i <> UltimoElemento then
-                Result := Result + IntToStr(aArrayOfByte[i]) + aSeparator
+                Result := Result + AnsiString(IntToStr(aArrayOfByte[i])) + aSeparator
             else
-                Result := Result + IntToStr(aArrayOfByte[i]);
+                Result := Result + AnsiString(IntToStr(aArrayOfByte[i]));
     end;
 end;
 
@@ -3774,10 +3771,10 @@ begin
     	Application.ShowException(E);
 end;
 
-class function TXXXDataModule.GetStringCheckSum(const aInputString: String; aHashAlgorithms: THashAlgorithms; aFinalHashAlgorithm: THashAlgorithm = haIgnore): String;
+class function TXXXDataModule.GetStringCheckSum(const aInputString: AnsiString; aHashAlgorithms: THashAlgorithms; aFinalHashAlgorithm: THashAlgorithm = haIgnore): AnsiString;
 var
     HashDigest: array of Byte;
-    TempString: String;
+    TempString: AnsiString;
     i: Word;
 begin
 	TempString := aInputString;
@@ -3795,8 +3792,8 @@ begin
                 Final(HashDigest[0]);
 
       			Result := '';
-      			for i := 0 to Pred(Length(HashDigest)) do  // convert it into a hex string
-        			Result := Result + IntToHex(HashDigest[i],2);
+      			for i := 0 to Pred(Length(HashDigest)) do  // convert it into a hex AnsiString
+        			Result := Result + AnsiString(IntToHex(HashDigest[i],2));
 
                 TempString := Result;
             finally
@@ -3813,8 +3810,8 @@ begin
                 Final(HashDigest[0]);
 
       			Result := '';
-      			for i := 0 to Pred(Length(HashDigest)) do  // convert it into a hex string
-        			Result := Result + IntToHex(HashDigest[i],2);
+      			for i := 0 to Pred(Length(HashDigest)) do  // convert it into a hex AnsiString
+        			Result := Result + AnsiString(IntToHex(HashDigest[i],2));
 
                 TempString := Result;
             finally
@@ -3831,8 +3828,8 @@ begin
                 Final(HashDigest[0]);
 
       			Result := '';
-      			for i := 0 to Pred(Length(HashDigest)) do  // convert it into a hex string
-        			Result := Result + IntToHex(HashDigest[i],2);
+      			for i := 0 to Pred(Length(HashDigest)) do  // convert it into a hex AnsiString
+        			Result := Result + AnsiString(IntToHex(HashDigest[i],2));
 
                 TempString := Result;
             finally
@@ -3849,8 +3846,8 @@ begin
                 Final(HashDigest[0]);
 
       			Result := '';
-      			for i := 0 to Pred(Length(HashDigest)) do  // convert it into a hex string
-        			Result := Result + IntToHex(HashDigest[i],2);
+      			for i := 0 to Pred(Length(HashDigest)) do  // convert it into a hex AnsiString
+        			Result := Result + AnsiString(IntToHex(HashDigest[i],2));
 
                 TempString := Result;
             finally
@@ -3867,8 +3864,8 @@ begin
                 Final(HashDigest[0]);
 
       			Result := '';
-      			for i := 0 to Pred(Length(HashDigest)) do  // convert it into a hex string
-        			Result := Result + IntToHex(HashDigest[i],2);
+      			for i := 0 to Pred(Length(HashDigest)) do  // convert it into a hex AnsiString
+        			Result := Result + AnsiString(IntToHex(HashDigest[i],2));
 
                 TempString := Result;
             finally
@@ -3885,8 +3882,8 @@ begin
                 Final(HashDigest[0]);
 
       			Result := '';
-      			for i := 0 to Pred(Length(HashDigest)) do  // convert it into a hex string
-        			Result := Result + IntToHex(HashDigest[i],2);
+      			for i := 0 to Pred(Length(HashDigest)) do  // convert it into a hex AnsiString
+        			Result := Result + AnsiString(IntToHex(HashDigest[i],2));
 
                 TempString := Result;
             finally
@@ -3903,8 +3900,8 @@ begin
                 Final(HashDigest[0]);
 
       			Result := '';
-      			for i := 0 to Pred(Length(HashDigest)) do  // convert it into a hex string
-        			Result := Result + IntToHex(HashDigest[i],2);
+      			for i := 0 to Pred(Length(HashDigest)) do  // convert it into a hex AnsiString
+        			Result := Result + AnsiString(IntToHex(HashDigest[i],2));
 
                 TempString := Result;
             finally
@@ -3921,8 +3918,8 @@ begin
                 Final(HashDigest[0]);
 
       			Result := '';
-      			for i := 0 to Pred(Length(HashDigest)) do  // convert it into a hex string
-        			Result := Result + IntToHex(HashDigest[i],2);
+      			for i := 0 to Pred(Length(HashDigest)) do  // convert it into a hex AnsiString
+        			Result := Result + AnsiString(IntToHex(HashDigest[i],2));
 
                 TempString := Result;
             finally
@@ -3939,8 +3936,8 @@ begin
                 Final(HashDigest[0]);
 
       			Result := '';
-      			for i := 0 to Pred(Length(HashDigest)) do  // convert it into a hex string
-        			Result := Result + IntToHex(HashDigest[i],2);
+      			for i := 0 to Pred(Length(HashDigest)) do  // convert it into a hex AnsiString
+        			Result := Result + AnsiString(IntToHex(HashDigest[i],2));
 
                 TempString := Result;
             finally
@@ -3957,8 +3954,8 @@ begin
                 Final(HashDigest[0]);
 
       			Result := '';
-      			for i := 0 to Pred(Length(HashDigest)) do  // convert it into a hex string
-        			Result := Result + IntToHex(HashDigest[i],2);
+      			for i := 0 to Pred(Length(HashDigest)) do  // convert it into a hex AnsiString
+        			Result := Result + AnsiString(IntToHex(HashDigest[i],2));
 
                 TempString := Result;
             finally
@@ -3969,30 +3966,30 @@ begin
     	Result := GetStringCheckSum(Result,[aFinalHashAlgorithm]);
 end;
 
-function TXXXDataModule.GetUniqueFileName(aFullPathAndFileName: String): String;
+function TXXXDataModule.GetUniqueFileName(aFullPathAndFileName: AnsiString): AnsiString;
 var
 	Count: Word;
-	FilePath: String;
-    FileName: String;
-    Extension: String;
+	FilePath: AnsiString;
+    FileName: AnsiString;
+    Extension: AnsiString;
 begin
    	Result := aFullPathAndFileName;
     Count := 1;
-  	while FileExists(Result) do
+  	while FileExists(String(Result)) do
     begin
 	   	inc(Count);
-        FilePath := ExtractFilePath(aFullPathAndFileName);
-        FileName := ExtractFileName(aFullPathAndFileName);
-        Extension := ExtractFileExt(FileName);
-        FileName := Copy(FileName,1,Length(FileName) - Length(Extension));
-      	Result := FilePath + FileName + InttoStr(count) + Extension;
+        FilePath := AnsiString(ExtractFilePath(String(aFullPathAndFileName)));
+        FileName := AnsiString(ExtractFileName(String(aFullPathAndFileName)));
+        Extension := AnsiString(ExtractFileExt(String(FileName)));
+        FileName := AnsiString(Copy(String(FileName),1,Length(String(FileName)) - Length(String(Extension))));
+      	Result := FilePath + FileName + AnsiString(InttoStr(count)) + Extension;
     end;
 end;
 
 class function TXXXDataModule.Hex(aAscii: AnsiString): AnsiString;
 var
 	i, StrLength: Cardinal;
-  ConvertedStr: String;
+  ConvertedStr: AnsiString;
 begin
 	Result := '';
   ConvertedStr := '';
@@ -4001,14 +3998,14 @@ begin
   if StrLength > 0 then
   begin
     for i := 1 to StrLength do
-   		ConvertedStr := ConvertedStr + UpperCase(IntToHex(Ord(aAscii[i]),2));
+   		ConvertedStr := ConvertedStr + AnsiString(UpperCase(IntToHex(Ord(String(aAscii[i])),2)));
     Result := ConvertedStr;
   end;
 end;
 
-function TXXXDataModule.MakeStr(const aArgs: array of const; aSeparator: Char = ','): string;
+function TXXXDataModule.MakeStr(const aArgs: array of const; aSeparator: AnsiChar = ','): AnsiString;
 const
-	BooleanStrings: array[Boolean] of String = ('False', 'True');
+	BooleanStrings: array[Boolean] of AnsiString = ('False', 'True');
 var
   	i, UltimoElemento: Word;
 begin
@@ -4021,18 +4018,18 @@ begin
     begin
     	with aArgs[i] do
         	case VType of
-            	vtInteger:  Result := Result + IntToStr(VInteger);
+            	vtInteger:  Result := Result + AnsiString(IntToStr(VInteger));
                 vtBoolean:  Result := Result + BooleanStrings[VBoolean];
                 vtChar:   Result := Result + VChar;
-                vtExtended: Result := Result + FloatToStr(VExtended^);
-                vtString:   Result := Result + VString^;
+                vtExtended: Result := Result + AnsiString(FloatToStr(VExtended^));
+                vtString:   Result := Result + AnsiString(VString^);
                 vtPChar:  Result := Result + VPChar;
-                vtObject:   Result := Result + VObject.ClassName;
-                vtClass:  Result := Result + VClass.ClassName;
-                vtAnsiString: Result := Result + String(VAnsiString);
-                vtCurrency: Result := Result + CurrToStr(VCurrency^);
-                vtVariant:  Result := Result + String(VVariant^);
-                vtInt64:  Result := Result + IntToStr(VInt64^);
+                vtObject:   Result := Result + AnsiString(VObject.ClassName);
+                vtClass:  Result := Result + AnsiString(VClass.ClassName);
+                vtAnsiString: Result := Result + AnsiString(VAnsiString);
+                vtCurrency: Result := Result + AnsiString(CurrToStr(VCurrency^));
+                vtVariant:  Result := Result + AnsiString(VVariant^);
+                vtInt64:  Result := Result + AnsiString(IntToStr(VInt64^));
             end;
 
     	if i <> UltimoElemento then
@@ -4040,18 +4037,18 @@ begin
     end;
 end;
 { Quebra uma linha de texto em várias linhas de forma que cada linha contenha no
-máximo aLineChars caracteres. Este método quebra a string apenas dentro dos
+máximo aLineChars caracteres. Este método quebra a AnsiString apenas dentro dos
 espaços }
-class function TXXXDataModule.PutLineBreaks(const aText: String; aLineChars: Byte): String;
+class function TXXXDataModule.PutLineBreaks(const aText: AnsiString; aLineChars: Byte): AnsiString;
 var
 	BreakPos: Byte;
-    LineToAdd: String;
-    BreakableText: String;
+    LineToAdd: AnsiString;
+    BreakableText: AnsiString;
 begin
     if Length(aText) > aLineChars then
         with TStringList.Create do
         begin
-        	BreakableText := Trim(AText) + #0;
+        	BreakableText := AnsiString(Trim(String(AText))) + #0;
 
             while BreakableText <> '' do
             begin
@@ -4063,21 +4060,21 @@ begin
             	while (BreakableText[BreakPos] <> #32) and (BreakableText[BreakPos] <> #0) do
                 	Dec(BreakPos);
 
-                LineToAdd := Trim(Copy(BreakableText,1,BreakPos));
+                LineToAdd := AnsiString(Trim(Copy(String(BreakableText),1,BreakPos)));
 
-	            Add(LineToAdd);
+	            Add(String(LineToAdd));
     	        System.Delete(BreakableText,1,BreakPos);
             end;
-            Result := Text;
+            Result := AnsiString(Text);
             Free;
         end
     else
     	Result := AText;
 end;
 
-{ Escreve uma string inteira dentro de um arquivo, sobrescrevendo-o ou criando-o
+{ Escreve uma AnsiString inteira dentro de um arquivo, sobrescrevendo-o ou criando-o
 se necessário for }
-class procedure TXXXDataModule.SaveTextFile(aText: String; const aFileName: TFileName);
+class procedure TXXXDataModule.SaveTextFile(aText: AnsiString; const aFileName: TFileName);
 {$IFDEF UNICODE}
 var
   TempStr: AnsiString;
@@ -4096,7 +4093,7 @@ begin
   end;
 end;
 
-function TXXXDataModule.LoadTextFile(const aFileName: TFileName): String;
+function TXXXDataModule.LoadTextFile(const aFileName: TFileName): AnsiString;
 begin
 	Result := '';
 
@@ -4114,7 +4111,7 @@ begin
         end;
 end;
 
-//function TXXXDataModule.ShowForm(aForm: TComponentClass; var aReference; aModal: Boolean = True; aFormTitle: String = ''): TModalResult;
+//function TXXXDataModule.ShowForm(aForm: TComponentClass; var aReference; aModal: Boolean = True; aFormTitle: AnsiString = ''): TModalResult;
 //begin
 //    Result := -1;
 //    if not Assigned(TForm(aReference)) then
@@ -4156,30 +4153,30 @@ begin
 end;
 
 { Aqui nós devemos passar APENAS o nome do arquivo pretendido sem extensão! }
-function TXXXDataModule.ValidateStringForFileName(aFileName: String; aReplaceInvalidCharsWith: Char = '_'; aMaximumFileNameLength: Byte = 0): String;
+function TXXXDataModule.ValidateStringForFileName(aFileName: AnsiString; aReplaceInvalidCharsWith: AnsiChar = '_'; aMaximumFileNameLength: Byte = 0): AnsiString;
 begin
     { Passo 1: Deixando o nome do arquivo do tamanho especificado }
     if (aMaximumFileNameLength > 0) and (Length(aFileName) > aMaximumFileNameLength) then
     	aFileName := Copy(aFileName,1,aMaximumFileNameLength);
 
 	{ Passo 2: Retirando caracteres especiais }
-    aFileName := StringReplace(aFileName,'\',aReplaceInvalidCharsWith,[rfReplaceAll]);
-    aFileName := StringReplace(aFileName,'/',aReplaceInvalidCharsWith,[rfReplaceAll]);
-    aFileName := StringReplace(aFileName,':',aReplaceInvalidCharsWith,[rfReplaceAll]);
-    aFileName := StringReplace(aFileName,'*',aReplaceInvalidCharsWith,[rfReplaceAll]);
-    aFileName := StringReplace(aFileName,'?',aReplaceInvalidCharsWith,[rfReplaceAll]);
-    aFileName := StringReplace(aFileName,'"',aReplaceInvalidCharsWith,[rfReplaceAll]);
-    aFileName := StringReplace(aFileName,'<',aReplaceInvalidCharsWith,[rfReplaceAll]);
-    aFileName := StringReplace(aFileName,'>',aReplaceInvalidCharsWith,[rfReplaceAll]);
-    aFileName := StringReplace(aFileName,'|',aReplaceInvalidCharsWith,[rfReplaceAll]);
+    aFileName := AnsiString(StringReplace(String(aFileName),'\',String(aReplaceInvalidCharsWith),[rfReplaceAll]));
+    aFileName := AnsiString(StringReplace(String(aFileName),'/',String(aReplaceInvalidCharsWith),[rfReplaceAll]));
+    aFileName := AnsiString(StringReplace(String(aFileName),':',String(aReplaceInvalidCharsWith),[rfReplaceAll]));
+    aFileName := AnsiString(StringReplace(String(aFileName),'*',String(aReplaceInvalidCharsWith),[rfReplaceAll]));
+    aFileName := AnsiString(StringReplace(String(aFileName),'?',String(aReplaceInvalidCharsWith),[rfReplaceAll]));
+    aFileName := AnsiString(StringReplace(String(aFileName),'"',String(aReplaceInvalidCharsWith),[rfReplaceAll]));
+    aFileName := AnsiString(StringReplace(String(aFileName),'<',String(aReplaceInvalidCharsWith),[rfReplaceAll]));
+    aFileName := AnsiString(StringReplace(String(aFileName),'>',String(aReplaceInvalidCharsWith),[rfReplaceAll]));
+    aFileName := AnsiString(StringReplace(String(aFileName),'|',String(aReplaceInvalidCharsWith),[rfReplaceAll]));
 
     Result := aFileName;
 //   	Result := GetUniqueFileName(FilePath + '\' + FileName + FileExtension);
 end;
 
-function TXXXDataModule.AllowedChars(const aTypedChar: Char; aAllowedChars: TAllowedChars): Char;
+function TXXXDataModule.AllowedChars(const aTypedChar: AnsiChar; aAllowedChars: TAllowedChars): AnsiChar;
 var
-	AcceptedChars: set of Char;
+	AcceptedChars: set of AnsiChar;
 begin
     Result := aTypedChar;
 	AcceptedChars := aAllowedChars + [#8,#127]; //Backspace & Delete
@@ -4256,56 +4253,55 @@ end;
 //	end;
 //end;
 
-procedure TXXXDataModule.SetMySQLUserVariable(const aZConnection: TZConnection; aVariableName: String; aVariableValue: Int64);
+procedure TXXXDataModule.SetMySQLUserVariable(const aZConnection: TZConnection; aVariableName: AnsiString; aVariableValue: Int64);
 const
-    VARIABLE_SET = 'SET @%s := %d;';
+  VARIABLE_SET = 'SET @%s := %d;';
 begin
-   	ExecuteQuery(aZConnection,Format(VARIABLE_SET,[aVariableName,aVariableValue]));
+  ExecuteQuery(aZConnection,AnsiString(Format(VARIABLE_SET,[aVariableName,aVariableValue])));
 end;
 
-procedure TXXXDataModule.SetMySQLUserVariable(const aZConnection: TZConnection; aVariableName, aVariableValue: String);
+procedure TXXXDataModule.SetMySQLUserVariable(const aZConnection: TZConnection; aVariableName, aVariableValue: AnsiString);
 const
-    VARIABLE_SET = 'SET @%s := ''%s'';';
+  VARIABLE_SET = 'SET @%s := ''%s'';';
 begin
-   	ExecuteQuery(aZConnection,Format(VARIABLE_SET,[aVariableName,aVariableValue]));
+  ExecuteQuery(aZConnection,AnsiString(Format(VARIABLE_SET,[aVariableName,aVariableValue])));
 end;
 
-procedure TXXXDataModule.SetMySQLUserVariable(const aZConnection: TZConnection; aVariableName: String; aVariableValue: Boolean);
+procedure TXXXDataModule.SetMySQLUserVariable(const aZConnection: TZConnection; aVariableName: AnsiString; aVariableValue: Boolean);
 const
-    VARIABLE_SET = 'SET @%s := %s;';
+  VARIABLE_SET = 'SET @%s := %s;';
 begin
-   	ExecuteQuery(aZConnection,Format(VARIABLE_SET,[aVariableName,BoolToStr(aVariableValue,True)]));
+  ExecuteQuery(aZConnection,AnsiString(Format(VARIABLE_SET,[aVariableName,BoolToStr(aVariableValue,True)])));
 end;
 
-procedure TXXXDataModule.MySQLAddIndex(aZConnection: TZConnection; aTableName, aIndexName, aFieldNames: String; aIndexKind: TMySQLIndexKind = mikIndex);
+procedure TXXXDataModule.MySQLAddIndex(aZConnection: TZConnection; aTableName, aIndexName, aFieldNames: AnsiString; aIndexKind: TMySQLIndexKind = mikIndex);
 var
-	IndexDef: String;
+	IndexDef: AnsiString;
 begin
 	case aIndexKind of
-	    mikIndex: IndexDef := 'KEY ' + UpperCase(aIndexName);
-        mikPrimary: IndexDef := 'PRIMARY KEY';
-        mikUnique: IndexDef := 'UNIQUE KEY ' + UpperCase(aIndexName);
-        mikFullText: IndexDef := 'FULLTEXT KEY ' + UpperCase(aIndexName);
-        mikSpatial: IndexDef := 'SPATIAL KEY ' + UpperCase(aIndexName);
-
-    end;
-    ExecuteQuery(aZConnection,'ALTER TABLE ' + UpperCase(aTableName) + ' ADD ' + IndexDef + ' (' + aFieldNames + ')');
+    mikIndex: IndexDef := 'KEY ' + AnsiString(UpperCase(String(aIndexName)));
+    mikPrimary: IndexDef := 'PRIMARY KEY';
+    mikUnique: IndexDef := 'UNIQUE KEY ' + AnsiString(UpperCase(String(aIndexName)));
+    mikFullText: IndexDef := 'FULLTEXT KEY ' + AnsiString(UpperCase(String(aIndexName)));
+    mikSpatial: IndexDef := 'SPATIAL KEY ' + AnsiString(UpperCase(String(aIndexName)));
+  end;
+  ExecuteQuery(aZConnection,AnsiString('ALTER TABLE ' + UpperCase(String(aTableName)) + ' ADD ' + String(IndexDef) + ' (' + String(aFieldNames) + ')'));
 end;
 
-procedure TXXXDataModule.MySQLDropIndex(aZConnection: TZConnection; aTableName, aIndexName: String);
+procedure TXXXDataModule.MySQLDropIndex(aZConnection: TZConnection; aTableName, aIndexName: AnsiString);
 begin
-	ExecuteQuery(aZConnection,'ALTER TABLE ' + UpperCase(aTableName) + ' DROP KEY ' + UpperCase(aIndexName));
+	ExecuteQuery(aZConnection,AnsiString('ALTER TABLE ' + UpperCase(String(aTableName)) + ' DROP KEY ' + UpperCase(String(aIndexName))));
 end;
 
-class function TXXXDataModule.MySQLFormat(const aFormat: String; const aArgs: array of const): String;
+class function TXXXDataModule.MySQLFormat(const aFormat: AnsiString; const aArgs: array of const): AnsiString;
 var
 	FS: TFormatSettings;
 begin
-    ZeroMemory(@FS,SizeOf(TFormatSettings));
+  ZeroMemory(@FS,SizeOf(TFormatSettings));
 	GetLocaleFormatSettings(1033,FS); { formato de pontuação de numeros no padrão americano }
-	Result := Format(aFormat,aArgs,FS);
+	Result := AnsiString(Format(String(aFormat),aArgs,FS));
 
-{ TODO -oCarlos Feitoza -cDESAFIO : Futuramente tente fazer conversões substituindo tipos de delphi como TDateTime por tipos do MySQL que fazem sentido em uma string como "00000000000000". Talvez seja impossível detectar os tipos corretamente! }
+{ TODO -oCarlos Feitoza -cDESAFIO : Futuramente tente fazer conversões substituindo tipos de delphi como TDateTime por tipos do MySQL que fazem sentido em uma AnsiString como "00000000000000". Talvez seja impossível detectar os tipos corretamente! }
 //    for i := 0 to UltimoElemento do
 //    begin
 //    	with aArgs[i] do
@@ -4318,9 +4314,9 @@ begin
 //                vtPChar:  Result := Result + VPChar;
 //                vtObject:   Result := Result + VObject.ClassName;
 //                vtClass:  Result := Result + VClass.ClassName;
-//                vtAnsiString: Result := Result + String(VAnsiString);
+//                vtAnsiString: Result := Result + AnsiString(VAnsiString);
 //                vtCurrency: Result := Result + CurrToStr(VCurrency^);
-//                vtVariant:  Result := Result + String(VVariant^);
+//                vtVariant:  Result := Result + AnsiString(VVariant^);
 //                vtInt64:  Result := Result + IntToStr(VInt64^);
 //            end;
 //
@@ -4330,7 +4326,7 @@ begin
 
 end;
 
-function TXXXDataModule.IsSystemTable(const aTableName: String): Boolean;
+function TXXXDataModule.IsSystemTable(const aTableName: AnsiString): Boolean;
 begin
 	Result := (aTableName = FConfigurations.UserTableTableName)
            or (aTableName = FConfigurations.GroupTableTableName)
@@ -4341,53 +4337,53 @@ begin
 end;
 
 { Nesta função e em suas herdeiras use sempre as constantes! }
-function TXXXDataModule.ReplaceSystemObjectNames(const aText: String): String;
+function TXXXDataModule.ReplaceSystemObjectNames(const aText: AnsiString): AnsiString;
 begin
 	Result := aText;
-    { Os parâmetros com "X" representam aqueles que são configuráveis e
-    substituídos por variáveis de configuração }
-    Result := StringReplace(Result,'X[USU.' + DEFAULT_USERTABLE_TABLENAME + ']X',FConfigurations.UserTableTableName,[rfReplaceAll,rfIgnoreCase]);
-    Result := StringReplace(Result,'X[USU.' + DEFAULT_USERTABLE_KEYFIELDNAME + ']X',FConfigurations.UserTableKeyFieldName,[rfReplaceAll,rfIgnoreCase]);
-    Result := StringReplace(Result,'X[USU.' + DEFAULT_USERTABLE_REALNAMEFIELDNAME + ']X',FConfigurations.UserTableRealNameFieldName,[rfReplaceAll,rfIgnoreCase]);
-    Result := StringReplace(Result,'X[USU.' + DEFAULT_USERTABLE_USERNAMEFIELDNAME + ']X',FConfigurations.UserTableUserNameFieldName,[rfReplaceAll,rfIgnoreCase]);
-    Result := StringReplace(Result,'X[USU.' + DEFAULT_USERTABLE_PASSWORDFIELDNAME + ']X',FConfigurations.UserTablePasswordFieldName,[rfReplaceAll,rfIgnoreCase]);
-    Result := StringReplace(Result,'X[USU.' + DEFAULT_USERTABLE_EMAILFIELDNAME + ']X',FConfigurations.UserTableEmailFieldName,[rfReplaceAll,rfIgnoreCase]);
+  { Os parâmetros com "X" representam aqueles que são configuráveis e
+  substituídos por variáveis de configuração }
+  Result := AnsiString(StringReplace(String(Result),'X[USU.' + DEFAULT_USERTABLE_TABLENAME + ']X',String(FConfigurations.UserTableTableName),[rfReplaceAll,rfIgnoreCase]));
+  Result := AnsiString(StringReplace(String(Result),'X[USU.' + DEFAULT_USERTABLE_KEYFIELDNAME + ']X',String(FConfigurations.UserTableKeyFieldName),[rfReplaceAll,rfIgnoreCase]));
+  Result := AnsiString(StringReplace(String(Result),'X[USU.' + DEFAULT_USERTABLE_REALNAMEFIELDNAME + ']X',String(FConfigurations.UserTableRealNameFieldName),[rfReplaceAll,rfIgnoreCase]));
+  Result := AnsiString(StringReplace(String(Result),'X[USU.' + DEFAULT_USERTABLE_USERNAMEFIELDNAME + ']X',String(FConfigurations.UserTableUserNameFieldName),[rfReplaceAll,rfIgnoreCase]));
+  Result := AnsiString(StringReplace(String(Result),'X[USU.' + DEFAULT_USERTABLE_PASSWORDFIELDNAME + ']X',String(FConfigurations.UserTablePasswordFieldName),[rfReplaceAll,rfIgnoreCase]));
+  Result := AnsiString(StringReplace(String(Result),'X[USU.' + DEFAULT_USERTABLE_EMAILFIELDNAME + ']X',String(FConfigurations.UserTableEmailFieldName),[rfReplaceAll,rfIgnoreCase]));
 
-    Result := StringReplace(Result,'X[GRU.' + DEFAULT_GROUPTABLE_TABLENAME + ']X',FConfigurations.GroupTableTableName,[rfReplaceAll,rfIgnoreCase]);
-    Result := StringReplace(Result,'X[GRU.' + DEFAULT_GROUPTABLE_KEYFIELDNAME + ']X',FConfigurations.GroupTableKeyFieldName,[rfReplaceAll,rfIgnoreCase]);
-    Result := StringReplace(Result,'X[GRU.' + DEFAULT_GROUPTABLE_NAMEFIELDNAME + ']X',FConfigurations.GroupTableNameFieldName,[rfReplaceAll,rfIgnoreCase]);
-    Result := StringReplace(Result,'X[GRU.' + DEFAULT_GROUPTABLE_DESCRIPTIONFIELDNAME + ']X',FConfigurations.GroupTableDescriptionFieldName,[rfReplaceAll,rfIgnoreCase]);
+  Result := AnsiString(StringReplace(String(Result),'X[GRU.' + DEFAULT_GROUPTABLE_TABLENAME + ']X',String(FConfigurations.GroupTableTableName),[rfReplaceAll,rfIgnoreCase]));
+  Result := AnsiString(StringReplace(String(Result),'X[GRU.' + DEFAULT_GROUPTABLE_KEYFIELDNAME + ']X',String(FConfigurations.GroupTableKeyFieldName),[rfReplaceAll,rfIgnoreCase]));
+  Result := AnsiString(StringReplace(String(Result),'X[GRU.' + DEFAULT_GROUPTABLE_NAMEFIELDNAME + ']X',String(FConfigurations.GroupTableNameFieldName),[rfReplaceAll,rfIgnoreCase]));
+  Result := AnsiString(StringReplace(String(Result),'X[GRU.' + DEFAULT_GROUPTABLE_DESCRIPTIONFIELDNAME + ']X',String(FConfigurations.GroupTableDescriptionFieldName),[rfReplaceAll,rfIgnoreCase]));
 
-    Result := StringReplace(Result,'X[' + DEFAULT_PERMISSIONTABLE_READFIELDNAME + ']X',FConfigurations.PermissionTableReadFieldName,[rfReplaceAll,rfIgnoreCase]);
-    Result := StringReplace(Result,'X[' + DEFAULT_PERMISSIONTABLE_INSERTFIELDNAME + ']X',FConfigurations.PermissionTableInsertFieldName,[rfReplaceAll,rfIgnoreCase]);
-    Result := StringReplace(Result,'X[' + DEFAULT_PERMISSIONTABLE_UPDATEFIELDNAME + ']X',FConfigurations.PermissionTableUpdateFieldName,[rfReplaceAll,rfIgnoreCase]);
-    Result := StringReplace(Result,'X[' + DEFAULT_PERMISSIONTABLE_DELETEFIELDNAME + ']X',FConfigurations.PermissionTableDeleteFieldName,[rfReplaceAll,rfIgnoreCase]);
+  Result := AnsiString(StringReplace(String(Result),'X[' + DEFAULT_PERMISSIONTABLE_READFIELDNAME + ']X',String(FConfigurations.PermissionTableReadFieldName),[rfReplaceAll,rfIgnoreCase]));
+  Result := AnsiString(StringReplace(String(Result),'X[' + DEFAULT_PERMISSIONTABLE_INSERTFIELDNAME + ']X',String(FConfigurations.PermissionTableInsertFieldName),[rfReplaceAll,rfIgnoreCase]));
+  Result := AnsiString(StringReplace(String(Result),'X[' + DEFAULT_PERMISSIONTABLE_UPDATEFIELDNAME + ']X',String(FConfigurations.PermissionTableUpdateFieldName),[rfReplaceAll,rfIgnoreCase]));
+  Result := AnsiString(StringReplace(String(Result),'X[' + DEFAULT_PERMISSIONTABLE_DELETEFIELDNAME + ']X',String(FConfigurations.PermissionTableDeleteFieldName),[rfReplaceAll,rfIgnoreCase]));
 
-    Result := StringReplace(Result,'X[PDU.' + DEFAULT_USERPERMISSIONTABLE_TABLENAME + ']X',FConfigurations.UserPermissionTableTableName,[rfReplaceAll,rfIgnoreCase]);
-    Result := StringReplace(Result,'X[PDU.' + DEFAULT_USERPERMISSIONTABLE_KEYFIELDNAME + ']X',FConfigurations.UserPermissionTableKeyFieldName,[rfReplaceAll,rfIgnoreCase]);
-    Result := StringReplace(Result,'X[PDU.' + DEFAULT_USERPERMISSIONTABLE_ENTITYFIELDNAME + ']X',FConfigurations.UserPermissionTableEntityFieldName,[rfReplaceAll,rfIgnoreCase]);
-    Result := StringReplace(Result,'X[PDU.' + DEFAULT_USERPERMISSIONTABLE_USERFIELDNAME + ']X',FConfigurations.UserPermissionTableUserFieldName,[rfReplaceAll,rfIgnoreCase]);
+  Result := AnsiString(StringReplace(String(Result),'X[PDU.' + DEFAULT_USERPERMISSIONTABLE_TABLENAME + ']X',String(FConfigurations.UserPermissionTableTableName),[rfReplaceAll,rfIgnoreCase]));
+  Result := AnsiString(StringReplace(String(Result),'X[PDU.' + DEFAULT_USERPERMISSIONTABLE_KEYFIELDNAME + ']X',String(FConfigurations.UserPermissionTableKeyFieldName),[rfReplaceAll,rfIgnoreCase]));
+  Result := AnsiString(StringReplace(String(Result),'X[PDU.' + DEFAULT_USERPERMISSIONTABLE_ENTITYFIELDNAME + ']X',String(FConfigurations.UserPermissionTableEntityFieldName),[rfReplaceAll,rfIgnoreCase]));
+  Result := AnsiString(StringReplace(String(Result),'X[PDU.' + DEFAULT_USERPERMISSIONTABLE_USERFIELDNAME + ']X',String(FConfigurations.UserPermissionTableUserFieldName),[rfReplaceAll,rfIgnoreCase]));
 
-    Result := StringReplace(Result,'X[PDG.' + DEFAULT_GROUPPERMISSIONTABLE_TABLENAME + ']X',FConfigurations.GroupPermissionTableTableName,[rfReplaceAll,rfIgnoreCase]);
-    Result := StringReplace(Result,'X[PDG.' + DEFAULT_GROUPPERMISSIONTABLE_KEYFIELDNAME + ']X',FConfigurations.GroupPermissionTableKeyFieldName,[rfReplaceAll,rfIgnoreCase]);
-    Result := StringReplace(Result,'X[PDG.' + DEFAULT_GROUPPERMISSIONTABLE_ENTITYFIELDNAME + ']X',FConfigurations.GroupPermissionTableEntityFieldName,[rfReplaceAll,rfIgnoreCase]);
-    Result := StringReplace(Result,'X[PDG.' + DEFAULT_GROUPPERMISSIONTABLE_GROUPFIELDNAME + ']X',FConfigurations.GroupPermissionTableGroupFieldName,[rfReplaceAll,rfIgnoreCase]);
+  Result := AnsiString(StringReplace(String(Result),'X[PDG.' + DEFAULT_GROUPPERMISSIONTABLE_TABLENAME + ']X',String(FConfigurations.GroupPermissionTableTableName),[rfReplaceAll,rfIgnoreCase]));
+  Result := AnsiString(StringReplace(String(Result),'X[PDG.' + DEFAULT_GROUPPERMISSIONTABLE_KEYFIELDNAME + ']X',String(FConfigurations.GroupPermissionTableKeyFieldName),[rfReplaceAll,rfIgnoreCase]));
+  Result := AnsiString(StringReplace(String(Result),'X[PDG.' + DEFAULT_GROUPPERMISSIONTABLE_ENTITYFIELDNAME + ']X',String(FConfigurations.GroupPermissionTableEntityFieldName),[rfReplaceAll,rfIgnoreCase]));
+  Result := AnsiString(StringReplace(String(Result),'X[PDG.' + DEFAULT_GROUPPERMISSIONTABLE_GROUPFIELDNAME + ']X',String(FConfigurations.GroupPermissionTableGroupFieldName),[rfReplaceAll,rfIgnoreCase]));
 
-    Result := StringReplace(Result,'X[EDS.' + DEFAULT_ENTITIESTABLE_TABLENAME + ']X',FConfigurations.EntitiesTableTableName,[rfReplaceAll,rfIgnoreCase]);
-    Result := StringReplace(Result,'X[EDS.' + DEFAULT_ENTITIESTABLE_KEYFIELDNAME + ']X',FConfigurations.EntitiesTableKeyFieldName,[rfReplaceAll,rfIgnoreCase]);
-    Result := StringReplace(Result,'X[EDS.' + DEFAULT_ENTITIESTABLE_NAMEFIELDNAME + ']X',FConfigurations.EntitiesTableNameFieldName,[rfReplaceAll,rfIgnoreCase]);
-    Result := StringReplace(Result,'X[EDS.' + DEFAULT_ENTITIESTABLE_TYPEFIELDNAME + ']X',FConfigurations.EntitiesTableTypeFieldName,[rfReplaceAll,rfIgnoreCase]);
+  Result := AnsiString(StringReplace(String(Result),'X[EDS.' + DEFAULT_ENTITIESTABLE_TABLENAME + ']X',String(FConfigurations.EntitiesTableTableName),[rfReplaceAll,rfIgnoreCase]));
+  Result := AnsiString(StringReplace(String(Result),'X[EDS.' + DEFAULT_ENTITIESTABLE_KEYFIELDNAME + ']X',String(FConfigurations.EntitiesTableKeyFieldName),[rfReplaceAll,rfIgnoreCase]));
+  Result := AnsiString(StringReplace(String(Result),'X[EDS.' + DEFAULT_ENTITIESTABLE_NAMEFIELDNAME + ']X',String(FConfigurations.EntitiesTableNameFieldName),[rfReplaceAll,rfIgnoreCase]));
+  Result := AnsiString(StringReplace(String(Result),'X[EDS.' + DEFAULT_ENTITIESTABLE_TYPEFIELDNAME + ']X',String(FConfigurations.EntitiesTableTypeFieldName),[rfReplaceAll,rfIgnoreCase]));
 
-    Result := StringReplace(Result,'X[GDU.' + DEFAULT_USERGROUPSTABLE_TABLENAME + ']X',FConfigurations.UserGroupsTableTableName,[rfReplaceAll,rfIgnoreCase]);
-    Result := StringReplace(Result,'X[GDU.' + DEFAULT_USERGROUPSTABLE_KEYFIELDNAME + ']X',FConfigurations.UserGroupsTableKeyFieldName,[rfReplaceAll,rfIgnoreCase]);
-    Result := StringReplace(Result,'X[GDU.' + DEFAULT_USERGROUPSTABLE_USERFIELDNAME + ']X',FConfigurations.UserGroupsTableUserFieldName,[rfReplaceAll,rfIgnoreCase]);
-    Result := StringReplace(Result,'X[GDU.' + DEFAULT_USERGROUPSTABLE_GROUPFIELDNAME + ']X',FConfigurations.UserGroupsTableGroupFieldName,[rfReplaceAll,rfIgnoreCase]);
+  Result := AnsiString(StringReplace(String(Result),'X[GDU.' + DEFAULT_USERGROUPSTABLE_TABLENAME + ']X',String(FConfigurations.UserGroupsTableTableName),[rfReplaceAll,rfIgnoreCase]));
+  Result := AnsiString(StringReplace(String(Result),'X[GDU.' + DEFAULT_USERGROUPSTABLE_KEYFIELDNAME + ']X',String(FConfigurations.UserGroupsTableKeyFieldName),[rfReplaceAll,rfIgnoreCase]));
+  Result := AnsiString(StringReplace(String(Result),'X[GDU.' + DEFAULT_USERGROUPSTABLE_USERFIELDNAME + ']X',String(FConfigurations.UserGroupsTableUserFieldName),[rfReplaceAll,rfIgnoreCase]));
+  Result := AnsiString(StringReplace(String(Result),'X[GDU.' + DEFAULT_USERGROUPSTABLE_GROUPFIELDNAME + ']X',String(FConfigurations.UserGroupsTableGroupFieldName),[rfReplaceAll,rfIgnoreCase]));
 
-    Result := StringReplace(Result,'X[' + DEFAULT_USERCREATORFIELDNAME + ']X',FConfigurations.UserCreatorFieldName,[rfReplaceAll,rfIgnoreCase]);
-    Result := StringReplace(Result,'X[' + DEFAULT_CREATIONDATEANDTIMEFIELDNAME + ']X',FConfigurations.CreationDateAndTimeFieldName,[rfReplaceAll,rfIgnoreCase]);
-    Result := StringReplace(Result,'X[' + DEFAULT_USERMODIFIERFIELDNAME + ']X',FConfigurations.UserModifierFieldName,[rfReplaceAll,rfIgnoreCase]);
-    Result := StringReplace(Result,'X[' + DEFAULT_MODIFICATIONDATEANDTIMEFIELDNAME + ']X',FConfigurations.ModificationDateAndTimeFieldName,[rfReplaceAll,rfIgnoreCase]);
-    Result := StringReplace(Result,'X[' + DEFAULT_RECORDSTATUSFIELDNAME + ']X',FConfigurations.RecordStatusFieldName,[rfReplaceAll,rfIgnoreCase]);
+  Result := AnsiString(StringReplace(String(Result),'X[' + DEFAULT_USERCREATORFIELDNAME + ']X',String(FConfigurations.UserCreatorFieldName),[rfReplaceAll,rfIgnoreCase]));
+  Result := AnsiString(StringReplace(String(Result),'X[' + DEFAULT_CREATIONDATEANDTIMEFIELDNAME + ']X',String(FConfigurations.CreationDateAndTimeFieldName),[rfReplaceAll,rfIgnoreCase]));
+  Result := AnsiString(StringReplace(String(Result),'X[' + DEFAULT_USERMODIFIERFIELDNAME + ']X',String(FConfigurations.UserModifierFieldName),[rfReplaceAll,rfIgnoreCase]));
+  Result := AnsiString(StringReplace(String(Result),'X[' + DEFAULT_MODIFICATIONDATEANDTIMEFIELDNAME + ']X',String(FConfigurations.ModificationDateAndTimeFieldName),[rfReplaceAll,rfIgnoreCase]));
+  Result := AnsiString(StringReplace(String(Result),'X[' + DEFAULT_RECORDSTATUSFIELDNAME + ']X',String(FConfigurations.RecordStatusFieldName),[rfReplaceAll,rfIgnoreCase]));
 end;
 
 procedure TXXXDataModule.ReplaceSystemObjectNames(const aZQuery: TZQuery);
@@ -4395,58 +4391,58 @@ var
 	i: Byte;
 begin
 	for i := 0 to Pred(aZQuery.FieldCount) do
-    begin
-        aZQuery.Fields[i].FieldName := StringReplace(aZQuery.Fields[i].FieldName,'X[USU.' + DEFAULT_USERTABLE_TABLENAME + ']X',FConfigurations.UserTableTableName,[rfReplaceAll,rfIgnoreCase]);
-        aZQuery.Fields[i].FieldName := StringReplace(aZQuery.Fields[i].FieldName,'X[USU.' + DEFAULT_USERTABLE_KEYFIELDNAME + ']X',FConfigurations.UserTableKeyFieldName,[rfReplaceAll,rfIgnoreCase]);
-        aZQuery.Fields[i].FieldName := StringReplace(aZQuery.Fields[i].FieldName,'X[USU.' + DEFAULT_USERTABLE_REALNAMEFIELDNAME + ']X',FConfigurations.UserTableRealNameFieldName,[rfReplaceAll,rfIgnoreCase]);
-        aZQuery.Fields[i].FieldName := StringReplace(aZQuery.Fields[i].FieldName,'X[USU.' + DEFAULT_USERTABLE_USERNAMEFIELDNAME + ']X',FConfigurations.UserTableUserNameFieldName,[rfReplaceAll,rfIgnoreCase]);
-        aZQuery.Fields[i].FieldName := StringReplace(aZQuery.Fields[i].FieldName,'X[USU.' + DEFAULT_USERTABLE_PASSWORDFIELDNAME + ']X',FConfigurations.UserTablePasswordFieldName,[rfReplaceAll,rfIgnoreCase]);
-        aZQuery.Fields[i].FieldName := StringReplace(aZQuery.Fields[i].FieldName,'X[USU.' + DEFAULT_USERTABLE_EMAILFIELDNAME + ']X',FConfigurations.UserTableEmailFieldName,[rfReplaceAll,rfIgnoreCase]);
+  begin
+    aZQuery.Fields[i].FieldName := StringReplace(aZQuery.Fields[i].FieldName,'X[USU.' + DEFAULT_USERTABLE_TABLENAME + ']X',String(FConfigurations.UserTableTableName),[rfReplaceAll,rfIgnoreCase]);
+    aZQuery.Fields[i].FieldName := StringReplace(aZQuery.Fields[i].FieldName,'X[USU.' + DEFAULT_USERTABLE_KEYFIELDNAME + ']X',String(FConfigurations.UserTableKeyFieldName),[rfReplaceAll,rfIgnoreCase]);
+    aZQuery.Fields[i].FieldName := StringReplace(aZQuery.Fields[i].FieldName,'X[USU.' + DEFAULT_USERTABLE_REALNAMEFIELDNAME + ']X',String(FConfigurations.UserTableRealNameFieldName),[rfReplaceAll,rfIgnoreCase]);
+    aZQuery.Fields[i].FieldName := StringReplace(aZQuery.Fields[i].FieldName,'X[USU.' + DEFAULT_USERTABLE_USERNAMEFIELDNAME + ']X',String(FConfigurations.UserTableUserNameFieldName),[rfReplaceAll,rfIgnoreCase]);
+    aZQuery.Fields[i].FieldName := StringReplace(aZQuery.Fields[i].FieldName,'X[USU.' + DEFAULT_USERTABLE_PASSWORDFIELDNAME + ']X',String(FConfigurations.UserTablePasswordFieldName),[rfReplaceAll,rfIgnoreCase]);
+    aZQuery.Fields[i].FieldName := StringReplace(aZQuery.Fields[i].FieldName,'X[USU.' + DEFAULT_USERTABLE_EMAILFIELDNAME + ']X',String(FConfigurations.UserTableEmailFieldName),[rfReplaceAll,rfIgnoreCase]);
 
-        aZQuery.Fields[i].FieldName := StringReplace(aZQuery.Fields[i].FieldName,'X[GRU.' + DEFAULT_GROUPTABLE_TABLENAME + ']X',FConfigurations.GroupTableTableName,[rfReplaceAll,rfIgnoreCase]);
-        aZQuery.Fields[i].FieldName := StringReplace(aZQuery.Fields[i].FieldName,'X[GRU.' + DEFAULT_GROUPTABLE_KEYFIELDNAME + ']X',FConfigurations.GroupTableKeyFieldName,[rfReplaceAll,rfIgnoreCase]);
-        aZQuery.Fields[i].FieldName := StringReplace(aZQuery.Fields[i].FieldName,'X[GRU.' + DEFAULT_GROUPTABLE_NAMEFIELDNAME + ']X',FConfigurations.GroupTableNameFieldName,[rfReplaceAll,rfIgnoreCase]);
-        aZQuery.Fields[i].FieldName := StringReplace(aZQuery.Fields[i].FieldName,'X[GRU.' + DEFAULT_GROUPTABLE_DESCRIPTIONFIELDNAME + ']X',FConfigurations.GroupTableDescriptionFieldName,[rfReplaceAll,rfIgnoreCase]);
+    aZQuery.Fields[i].FieldName := StringReplace(aZQuery.Fields[i].FieldName,'X[GRU.' + DEFAULT_GROUPTABLE_TABLENAME + ']X',String(FConfigurations.GroupTableTableName),[rfReplaceAll,rfIgnoreCase]);
+    aZQuery.Fields[i].FieldName := StringReplace(aZQuery.Fields[i].FieldName,'X[GRU.' + DEFAULT_GROUPTABLE_KEYFIELDNAME + ']X',String(FConfigurations.GroupTableKeyFieldName),[rfReplaceAll,rfIgnoreCase]);
+    aZQuery.Fields[i].FieldName := StringReplace(aZQuery.Fields[i].FieldName,'X[GRU.' + DEFAULT_GROUPTABLE_NAMEFIELDNAME + ']X',String(FConfigurations.GroupTableNameFieldName),[rfReplaceAll,rfIgnoreCase]);
+    aZQuery.Fields[i].FieldName := StringReplace(aZQuery.Fields[i].FieldName,'X[GRU.' + DEFAULT_GROUPTABLE_DESCRIPTIONFIELDNAME + ']X',String(FConfigurations.GroupTableDescriptionFieldName),[rfReplaceAll,rfIgnoreCase]);
 
-        aZQuery.Fields[i].FieldName := StringReplace(aZQuery.Fields[i].FieldName,'X[' + DEFAULT_PERMISSIONTABLE_READFIELDNAME + ']X',FConfigurations.PermissionTableReadFieldName,[rfReplaceAll,rfIgnoreCase]);
-        aZQuery.Fields[i].FieldName := StringReplace(aZQuery.Fields[i].FieldName,'X[' + DEFAULT_PERMISSIONTABLE_INSERTFIELDNAME + ']X',FConfigurations.PermissionTableInsertFieldName,[rfReplaceAll,rfIgnoreCase]);
-        aZQuery.Fields[i].FieldName := StringReplace(aZQuery.Fields[i].FieldName,'X[' + DEFAULT_PERMISSIONTABLE_UPDATEFIELDNAME + ']X',FConfigurations.PermissionTableUpdateFieldName,[rfReplaceAll,rfIgnoreCase]);
-        aZQuery.Fields[i].FieldName := StringReplace(aZQuery.Fields[i].FieldName,'X[' + DEFAULT_PERMISSIONTABLE_DELETEFIELDNAME + ']X',FConfigurations.PermissionTableDeleteFieldName,[rfReplaceAll,rfIgnoreCase]);
+    aZQuery.Fields[i].FieldName := StringReplace(aZQuery.Fields[i].FieldName,'X[' + DEFAULT_PERMISSIONTABLE_READFIELDNAME + ']X',String(FConfigurations.PermissionTableReadFieldName),[rfReplaceAll,rfIgnoreCase]);
+    aZQuery.Fields[i].FieldName := StringReplace(aZQuery.Fields[i].FieldName,'X[' + DEFAULT_PERMISSIONTABLE_INSERTFIELDNAME + ']X',String(FConfigurations.PermissionTableInsertFieldName),[rfReplaceAll,rfIgnoreCase]);
+    aZQuery.Fields[i].FieldName := StringReplace(aZQuery.Fields[i].FieldName,'X[' + DEFAULT_PERMISSIONTABLE_UPDATEFIELDNAME + ']X',String(FConfigurations.PermissionTableUpdateFieldName),[rfReplaceAll,rfIgnoreCase]);
+    aZQuery.Fields[i].FieldName := StringReplace(aZQuery.Fields[i].FieldName,'X[' + DEFAULT_PERMISSIONTABLE_DELETEFIELDNAME + ']X',String(FConfigurations.PermissionTableDeleteFieldName),[rfReplaceAll,rfIgnoreCase]);
 
-        aZQuery.Fields[i].FieldName := StringReplace(aZQuery.Fields[i].FieldName,'X[PDU.' + DEFAULT_USERPERMISSIONTABLE_TABLENAME + ']X',FConfigurations.UserPermissionTableTableName,[rfReplaceAll,rfIgnoreCase]);
-        aZQuery.Fields[i].FieldName := StringReplace(aZQuery.Fields[i].FieldName,'X[PDU.' + DEFAULT_USERPERMISSIONTABLE_KEYFIELDNAME + ']X',FConfigurations.UserPermissionTableKeyFieldName,[rfReplaceAll,rfIgnoreCase]);
-        aZQuery.Fields[i].FieldName := StringReplace(aZQuery.Fields[i].FieldName,'X[PDU.' + DEFAULT_USERPERMISSIONTABLE_ENTITYFIELDNAME + ']X',FConfigurations.UserPermissionTableEntityFieldName,[rfReplaceAll,rfIgnoreCase]);
-        aZQuery.Fields[i].FieldName := StringReplace(aZQuery.Fields[i].FieldName,'X[PDU.' + DEFAULT_USERPERMISSIONTABLE_USERFIELDNAME + ']X',FConfigurations.UserPermissionTableUserFieldName,[rfReplaceAll,rfIgnoreCase]);
+    aZQuery.Fields[i].FieldName := StringReplace(aZQuery.Fields[i].FieldName,'X[PDU.' + DEFAULT_USERPERMISSIONTABLE_TABLENAME + ']X',String(FConfigurations.UserPermissionTableTableName),[rfReplaceAll,rfIgnoreCase]);
+    aZQuery.Fields[i].FieldName := StringReplace(aZQuery.Fields[i].FieldName,'X[PDU.' + DEFAULT_USERPERMISSIONTABLE_KEYFIELDNAME + ']X',String(FConfigurations.UserPermissionTableKeyFieldName),[rfReplaceAll,rfIgnoreCase]);
+    aZQuery.Fields[i].FieldName := StringReplace(aZQuery.Fields[i].FieldName,'X[PDU.' + DEFAULT_USERPERMISSIONTABLE_ENTITYFIELDNAME + ']X',String(FConfigurations.UserPermissionTableEntityFieldName),[rfReplaceAll,rfIgnoreCase]);
+    aZQuery.Fields[i].FieldName := StringReplace(aZQuery.Fields[i].FieldName,'X[PDU.' + DEFAULT_USERPERMISSIONTABLE_USERFIELDNAME + ']X',String(FConfigurations.UserPermissionTableUserFieldName),[rfReplaceAll,rfIgnoreCase]);
 
-        aZQuery.Fields[i].FieldName := StringReplace(aZQuery.Fields[i].FieldName,'X[PDG.' + DEFAULT_GROUPPERMISSIONTABLE_TABLENAME + ']X',FConfigurations.GroupPermissionTableTableName,[rfReplaceAll,rfIgnoreCase]);
-        aZQuery.Fields[i].FieldName := StringReplace(aZQuery.Fields[i].FieldName,'X[PDG.' + DEFAULT_GROUPPERMISSIONTABLE_KEYFIELDNAME + ']X',FConfigurations.GroupPermissionTableKeyFieldName,[rfReplaceAll,rfIgnoreCase]);
-        aZQuery.Fields[i].FieldName := StringReplace(aZQuery.Fields[i].FieldName,'X[PDG.' + DEFAULT_GROUPPERMISSIONTABLE_ENTITYFIELDNAME + ']X',FConfigurations.GroupPermissionTableEntityFieldName,[rfReplaceAll,rfIgnoreCase]);
-        aZQuery.Fields[i].FieldName := StringReplace(aZQuery.Fields[i].FieldName,'X[PDG.' + DEFAULT_GROUPPERMISSIONTABLE_GROUPFIELDNAME + ']X',FConfigurations.GroupPermissionTableGroupFieldName,[rfReplaceAll,rfIgnoreCase]);
+    aZQuery.Fields[i].FieldName := StringReplace(aZQuery.Fields[i].FieldName,'X[PDG.' + DEFAULT_GROUPPERMISSIONTABLE_TABLENAME + ']X',String(FConfigurations.GroupPermissionTableTableName),[rfReplaceAll,rfIgnoreCase]);
+    aZQuery.Fields[i].FieldName := StringReplace(aZQuery.Fields[i].FieldName,'X[PDG.' + DEFAULT_GROUPPERMISSIONTABLE_KEYFIELDNAME + ']X',String(FConfigurations.GroupPermissionTableKeyFieldName),[rfReplaceAll,rfIgnoreCase]);
+    aZQuery.Fields[i].FieldName := StringReplace(aZQuery.Fields[i].FieldName,'X[PDG.' + DEFAULT_GROUPPERMISSIONTABLE_ENTITYFIELDNAME + ']X',String(FConfigurations.GroupPermissionTableEntityFieldName),[rfReplaceAll,rfIgnoreCase]);
+    aZQuery.Fields[i].FieldName := StringReplace(aZQuery.Fields[i].FieldName,'X[PDG.' + DEFAULT_GROUPPERMISSIONTABLE_GROUPFIELDNAME + ']X',String(FConfigurations.GroupPermissionTableGroupFieldName),[rfReplaceAll,rfIgnoreCase]);
 
-        aZQuery.Fields[i].FieldName := StringReplace(aZQuery.Fields[i].FieldName,'X[EDS.' + DEFAULT_ENTITIESTABLE_TABLENAME + ']X',FConfigurations.EntitiesTableTableName,[rfReplaceAll,rfIgnoreCase]);
-        aZQuery.Fields[i].FieldName := StringReplace(aZQuery.Fields[i].FieldName,'X[EDS.' + DEFAULT_ENTITIESTABLE_KEYFIELDNAME + ']X',FConfigurations.EntitiesTableKeyFieldName,[rfReplaceAll,rfIgnoreCase]);
-        aZQuery.Fields[i].FieldName := StringReplace(aZQuery.Fields[i].FieldName,'X[EDS.' + DEFAULT_ENTITIESTABLE_NAMEFIELDNAME + ']X',FConfigurations.EntitiesTableNameFieldName,[rfReplaceAll,rfIgnoreCase]);
-        aZQuery.Fields[i].FieldName := StringReplace(aZQuery.Fields[i].FieldName,'X[EDS.' + DEFAULT_ENTITIESTABLE_TYPEFIELDNAME + ']X',FConfigurations.EntitiesTableTypeFieldName,[rfReplaceAll,rfIgnoreCase]);
+    aZQuery.Fields[i].FieldName := StringReplace(aZQuery.Fields[i].FieldName,'X[EDS.' + DEFAULT_ENTITIESTABLE_TABLENAME + ']X',String(FConfigurations.EntitiesTableTableName),[rfReplaceAll,rfIgnoreCase]);
+    aZQuery.Fields[i].FieldName := StringReplace(aZQuery.Fields[i].FieldName,'X[EDS.' + DEFAULT_ENTITIESTABLE_KEYFIELDNAME + ']X',String(FConfigurations.EntitiesTableKeyFieldName),[rfReplaceAll,rfIgnoreCase]);
+    aZQuery.Fields[i].FieldName := StringReplace(aZQuery.Fields[i].FieldName,'X[EDS.' + DEFAULT_ENTITIESTABLE_NAMEFIELDNAME + ']X',String(FConfigurations.EntitiesTableNameFieldName),[rfReplaceAll,rfIgnoreCase]);
+    aZQuery.Fields[i].FieldName := StringReplace(aZQuery.Fields[i].FieldName,'X[EDS.' + DEFAULT_ENTITIESTABLE_TYPEFIELDNAME + ']X',String(FConfigurations.EntitiesTableTypeFieldName),[rfReplaceAll,rfIgnoreCase]);
 
-        aZQuery.Fields[i].FieldName := StringReplace(aZQuery.Fields[i].FieldName,'X[GDU.' + DEFAULT_USERGROUPSTABLE_TABLENAME + ']X',FConfigurations.UserGroupsTableTableName,[rfReplaceAll,rfIgnoreCase]);
-        aZQuery.Fields[i].FieldName := StringReplace(aZQuery.Fields[i].FieldName,'X[GDU.' + DEFAULT_USERGROUPSTABLE_KEYFIELDNAME + ']X',FConfigurations.UserGroupsTableKeyFieldName,[rfReplaceAll,rfIgnoreCase]);
-        aZQuery.Fields[i].FieldName := StringReplace(aZQuery.Fields[i].FieldName,'X[GDU.' + DEFAULT_USERGROUPSTABLE_USERFIELDNAME + ']X',FConfigurations.UserGroupsTableUserFieldName,[rfReplaceAll,rfIgnoreCase]);
-        aZQuery.Fields[i].FieldName := StringReplace(aZQuery.Fields[i].FieldName,'X[GDU.' + DEFAULT_USERGROUPSTABLE_GROUPFIELDNAME + ']X',FConfigurations.UserGroupsTableGroupFieldName,[rfReplaceAll,rfIgnoreCase]);
+    aZQuery.Fields[i].FieldName := StringReplace(aZQuery.Fields[i].FieldName,'X[GDU.' + DEFAULT_USERGROUPSTABLE_TABLENAME + ']X',String(FConfigurations.UserGroupsTableTableName),[rfReplaceAll,rfIgnoreCase]);
+    aZQuery.Fields[i].FieldName := StringReplace(aZQuery.Fields[i].FieldName,'X[GDU.' + DEFAULT_USERGROUPSTABLE_KEYFIELDNAME + ']X',String(FConfigurations.UserGroupsTableKeyFieldName),[rfReplaceAll,rfIgnoreCase]);
+    aZQuery.Fields[i].FieldName := StringReplace(aZQuery.Fields[i].FieldName,'X[GDU.' + DEFAULT_USERGROUPSTABLE_USERFIELDNAME + ']X',String(FConfigurations.UserGroupsTableUserFieldName),[rfReplaceAll,rfIgnoreCase]);
+    aZQuery.Fields[i].FieldName := StringReplace(aZQuery.Fields[i].FieldName,'X[GDU.' + DEFAULT_USERGROUPSTABLE_GROUPFIELDNAME + ']X',String(FConfigurations.UserGroupsTableGroupFieldName),[rfReplaceAll,rfIgnoreCase]);
 
-        aZQuery.Fields[i].FieldName := StringReplace(aZQuery.Fields[i].FieldName,'X[' + DEFAULT_USERCREATORFIELDNAME + ']X',FConfigurations.UserCreatorFieldName,[rfReplaceAll,rfIgnoreCase]);
-        aZQuery.Fields[i].FieldName := StringReplace(aZQuery.Fields[i].FieldName,'X[' + DEFAULT_CREATIONDATEANDTIMEFIELDNAME + ']X',FConfigurations.CreationDateAndTimeFieldName,[rfReplaceAll,rfIgnoreCase]);
-        aZQuery.Fields[i].FieldName := StringReplace(aZQuery.Fields[i].FieldName,'X[' + DEFAULT_USERMODIFIERFIELDNAME + ']X',FConfigurations.UserModifierFieldName,[rfReplaceAll,rfIgnoreCase]);
-        aZQuery.Fields[i].FieldName := StringReplace(aZQuery.Fields[i].FieldName,'X[' + DEFAULT_MODIFICATIONDATEANDTIMEFIELDNAME + ']X',FConfigurations.ModificationDateAndTimeFieldName,[rfReplaceAll,rfIgnoreCase]);
-        aZQuery.Fields[i].FieldName := StringReplace(aZQuery.Fields[i].FieldName,'X[' + DEFAULT_RECORDSTATUSFIELDNAME + ']X',FConfigurations.RecordStatusFieldName,[rfReplaceAll,rfIgnoreCase]);
-    end;
+    aZQuery.Fields[i].FieldName := StringReplace(aZQuery.Fields[i].FieldName,'X[' + DEFAULT_USERCREATORFIELDNAME + ']X',String(FConfigurations.UserCreatorFieldName),[rfReplaceAll,rfIgnoreCase]);
+    aZQuery.Fields[i].FieldName := StringReplace(aZQuery.Fields[i].FieldName,'X[' + DEFAULT_CREATIONDATEANDTIMEFIELDNAME + ']X',String(FConfigurations.CreationDateAndTimeFieldName),[rfReplaceAll,rfIgnoreCase]);
+    aZQuery.Fields[i].FieldName := StringReplace(aZQuery.Fields[i].FieldName,'X[' + DEFAULT_USERMODIFIERFIELDNAME + ']X',String(FConfigurations.UserModifierFieldName),[rfReplaceAll,rfIgnoreCase]);
+    aZQuery.Fields[i].FieldName := StringReplace(aZQuery.Fields[i].FieldName,'X[' + DEFAULT_MODIFICATIONDATEANDTIMEFIELDNAME + ']X',String(FConfigurations.ModificationDateAndTimeFieldName),[rfReplaceAll,rfIgnoreCase]);
+    aZQuery.Fields[i].FieldName := StringReplace(aZQuery.Fields[i].FieldName,'X[' + DEFAULT_RECORDSTATUSFIELDNAME + ']X',String(FConfigurations.RecordStatusFieldName),[rfReplaceAll,rfIgnoreCase]);
+  end;
 end;
 
 class procedure TXXXDataModule.MySQLChangeDatabase(const aZConnection: TZConnection;
-                                                   const aDataBaseName: String);
+                                                   const aDataBaseName: AnsiString);
 var
     Processor: TZSQLProcessor;
 begin
-    if Trim(aDataBaseName) = '' then
+    if Trim(String(aDataBaseName)) = '' then
         raise Exception.Create('O nome do banco de dados não foi especificado!');
 
     if aZConnection.Connected then
@@ -4459,7 +4455,7 @@ begin
             Processor.Connection := aZConnection;
             Processor.DelimiterType := dtSetTerm;
             Processor.Delimiter := ';';
-            Processor.Script.Text := 'USE ' + aDataBaseName + ';';
+            Processor.Script.Text := String('USE ' + aDataBaseName + ';');
             Processor.Execute;
         finally
             if Assigned(Processor) then
@@ -4469,7 +4465,7 @@ begin
 end;
 
 class function TXXXDataModule.MySQLBackupDataBase(const aZConnection: TZConnection;
-                                                  const aParameters: TMySQLBackupDataBaseParameters): String;
+                                                  const aParameters: TMySQLBackupDataBaseParameters): AnsiString;
 const
 	{ FUTURAMENTE DETECTE PONTOS DESTE PROCEDURE ONDE PODEMOS COLOCAR EVENTOS E
     TORNE ESTA FUNÇÃO GENERICA. CUIDADO COM OS PROCESSMESSAGES CASO PRETENDA
@@ -4542,13 +4538,13 @@ const
     ROUTINE_TEMPLATE =
     '%s; ' + DELIMITER;
 
-function MySQLHexStr(aASCII: String): String;
+function MySQLHexStr(aASCII: AnsiString): AnsiString;
 begin
 	Result := Hex(aASCII);
-    if Result <> '' then
-    	Result := 'x' + QuotedStr(Result)
-    else
-        Result := 'NULL';
+  if Result <> '' then
+   	Result := 'x' + AnsiString(QuotedStr(String(Result)))
+  else
+    Result := 'NULL';
 end;
 
 { TODO -oCarlos Feitoza -cOTIMIZAÇÃO : Existem algumas partes dessa rotina que
@@ -4559,19 +4555,19 @@ var
 	DatabasePart, CurrentPart, AvailableTables, CurrentTableDefinition,
     TableInsertions: TZReadOnlyQuery;
     DBRoutines, DBViews, DBTriggers,
-  	TableDefinitions, CurrentDefinition, TableConstraints, CurrentConstraint, ValuesPart, CurrentQuery: String;
+  	TableDefinitions, CurrentDefinition, TableConstraints, CurrentConstraint, ValuesPart, CurrentQuery: AnsiString;
   	i, QuerySize: Word;
   	CurrentRow: Cardinal;
 begin
-    Result := StringReplace(SQLScript,'[%]CURRENTDATEANDTIME[%]',FormatDateTime('dd/mm/yyyy "às" hh:nn:ss',Now) + '  ',[]);
-    Result := StringReplace(Result,'[%]DATABASENAME[%]',aParameters.DataBaseName,[rfReplaceAll]);
+  Result := AnsiString(StringReplace(SQLScript,'[%]CURRENTDATEANDTIME[%]',FormatDateTime('dd/mm/yyyy "às" hh:nn:ss',Now) + '  ',[]));
+  Result := AnsiString(StringReplace(String(Result),'[%]DATABASENAME[%]',String(aParameters.DataBaseName),[rfReplaceAll]));
 
-    if Assigned(aParameters.OnNotification) then
-        aParameters.OnNotification(nmStart
-                                  ,aParameters.DataBaseName
-                                  ,''
-                                  ,0
-                                  ,0);
+  if Assigned(aParameters.OnNotification) then
+    aParameters.OnNotification(nmStart
+                              ,aParameters.DataBaseName
+                              ,''
+                              ,0
+                              ,0);
 
     try
         DatabasePart := TZReadOnlyQuery.Create(nil);
@@ -4586,7 +4582,7 @@ begin
         DBRoutines := '';
         ConfigureDataSet(aZConnection
                         ,DatabasePart
-                        ,'SELECT SPECIFIC_NAME, ROUTINE_TYPE FROM information_schema.ROUTINES WHERE UPPER(ROUTINE_SCHEMA) = UPPER(' + QuotedStr(aParameters.DataBaseName) + ')'
+                        ,'SELECT SPECIFIC_NAME, ROUTINE_TYPE FROM information_schema.ROUTINES WHERE UPPER(ROUTINE_SCHEMA) = UPPER(' + AnsiString(QuotedStr(String(aParameters.DataBaseName))) + ')'
                          ,False);
 
         if Assigned(aParameters.OnNotification) then
@@ -4601,18 +4597,18 @@ begin
             while not DatabasePart.Eof do
             begin
                 if UpperCase(DatabasePart.Fields[1].AsString) = 'FUNCTION' then
-                    ConfigureDataSet(aZConnection,CurrentPart,'SHOW CREATE FUNCTION ' + UpperCase(aParameters.DataBaseName) + '.' + DatabasePart.Fields[0].AsString,False)
+                    ConfigureDataSet(aZConnection,CurrentPart,'SHOW CREATE FUNCTION ' + AnsiString(UpperCase(String(aParameters.DataBaseName))) + '.' + DatabasePart.Fields[0].AsAnsiString,False)
                 else if UpperCase(DatabasePart.Fields[1].AsString) = 'PROCEDURE' then
-                    ConfigureDataSet(aZConnection,CurrentPart,'SHOW CREATE PROCEDURE ' + UpperCase(aParameters.DataBaseName) + '.' + DatabasePart.Fields[0].AsString,False);
+                    ConfigureDataSet(aZConnection,CurrentPart,'SHOW CREATE PROCEDURE ' + AnsiString(UpperCase(String(aParameters.DataBaseName))) + '.' + DatabasePart.Fields[0].AsAnsiString,False);
 
                 if Assigned(aParameters.OnNotification) then
                     aParameters.OnNotification(nmBeginExtractStoredRoutine
-                                              ,DatabasePart.Fields[0].AsString  // NOME DA STORED ROUTINE
-                                              ,UpperCase(DatabasePart.Fields[1].AsString) // TIPO DA STORED ROUTINE
+                                              ,DatabasePart.Fields[0].AsAnsiString  // NOME DA STORED ROUTINE
+                                              ,AnsiString(UpperCase(DatabasePart.Fields[1].AsString)) // TIPO DA STORED ROUTINE
                                               ,DatabasePart.RecordCount // QTD DE STORED ROUTINES
                                               ,DatabasePart.RecNo); // NUMERO DA STORED ROUTINE ATUAL
 
-                DBRoutines := DBRoutines + Format(ROUTINE_TEMPLATE,[CurrentPart.Fields[2].AsString]);
+                DBRoutines := DBRoutines + AnsiString(Format(ROUTINE_TEMPLATE,[CurrentPart.Fields[2].AsAnsiString]));
 
                 if DatabasePart.RecNo < DatabasePart.RecordCount then
 	                DBRoutines := DBRoutines + #13#10#13#10
@@ -4621,8 +4617,8 @@ begin
 
                 if Assigned(aParameters.OnNotification) then
                     aParameters.OnNotification(nmEndExtractStoredRoutine
-                                              ,DatabasePart.Fields[0].AsString  // NOME DA STORED ROUTINE
-                                              ,UpperCase(DatabasePart.Fields[1].AsString) // TIPO DA STORED ROUTINE
+                                              ,DatabasePart.Fields[0].AsAnsiString  // NOME DA STORED ROUTINE
+                                              ,AnsiString(UpperCase(DatabasePart.Fields[1].AsString)) // TIPO DA STORED ROUTINE
                                               ,DatabasePart.RecordCount // QTD DE STORED ROUTINES
                                               ,DatabasePart.RecNo); // NUMERO DA STORED ROUTINE ATUAL
 
@@ -4631,7 +4627,7 @@ begin
             DBRoutines := 'DELIMITER ' + DELIMITER + #13#10#13#10 + DBRoutines + #13#10'DELIMITER ;'#13#10;
         end
         else
-            DBRoutines := #13#10'# A base de dados ' + UpperCase(aParameters.DataBaseName) + ' não possui stored routines!'#13#10#13#10;
+            DBRoutines := #13#10'# A base de dados ' + AnsiString(UpperCase(String(aParameters.DataBaseName))) + ' não possui stored routines!'#13#10#13#10;
 
         if Assigned(aParameters.OnNotification) then
             aParameters.OnNotification(nmAfterExtractStoredRoutines
@@ -4645,7 +4641,7 @@ begin
         DBViews := '';
         ConfigureDataSet(aZConnection
                         ,DatabasePart
-                        ,'SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE UPPER(TABLE_SCHEMA) = UPPER(' + QuotedStr(aParameters.DataBaseName) + ') AND TABLE_TYPE = ''VIEW'''
+                        ,'SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE UPPER(TABLE_SCHEMA) = UPPER(' + AnsiString(QuotedStr(String(aParameters.DataBaseName))) + ') AND TABLE_TYPE = ''VIEW'''
                         ,False);
 
         if Assigned(aParameters.OnNotification) then
@@ -4660,17 +4656,17 @@ begin
             begin
                 if Assigned(aParameters.OnNotification) then
                     aParameters.OnNotification(nmBeginExtractView
-                                              ,DatabasePart.Fields[0].AsString  // NOME DA VIEW
+                                              ,DatabasePart.Fields[0].AsAnsiString  // NOME DA VIEW
                                               ,''
                                               ,DatabasePart.RecordCount // QTD DE VIEWS
                                               ,DatabasePart.RecNo); // NUMERO DA VIEW ATUAL;
 
                 ConfigureDataSet(aZConnection
                                 ,CurrentPart
-                                ,'SHOW CREATE VIEW ' + UpperCase(aParameters.DataBaseName) + '.' + DatabasePart.Fields[0].AsString
+                                ,'SHOW CREATE VIEW ' + AnsiString(UpperCase(String(aParameters.DataBaseName))) + '.' + DatabasePart.Fields[0].AsAnsiString
                                 ,False);
 
-                DBViews := DBViews + CurrentPart.Fields[1].AsString + ';';
+                DBViews := DBViews + CurrentPart.Fields[1].AsAnsiString + ';';
 
                 if DatabasePart.RecNo < DatabasePart.RecordCount then
 	                DBViews := DBViews + #13#10#13#10
@@ -4679,7 +4675,7 @@ begin
 
                 if Assigned(aParameters.OnNotification) then
                     aParameters.OnNotification(nmEndExtractView
-                                              ,DatabasePart.Fields[0].AsString  // NOME DA VIEW
+                                              ,DatabasePart.Fields[0].AsAnsiString  // NOME DA VIEW
                                               ,''
                                               ,DatabasePart.RecordCount // QTD DE VIEWS
                                               ,DatabasePart.RecNo); // NUMERO DA VIEW ATUAL;
@@ -4687,7 +4683,7 @@ begin
                 DatabasePart.Next;
             end
         else
-            DBViews := #13#10'# A base de dados ' + UpperCase(aParameters.DataBaseName) + ' não possui views!'#13#10#13#10;
+            DBViews := #13#10'# A base de dados ' + AnsiString(UpperCase(String(aParameters.DataBaseName))) + ' não possui views!'#13#10#13#10;
 
         if Assigned(aParameters.OnNotification) then
             aParameters.OnNotification(nmAfterExtractViews
@@ -4701,7 +4697,7 @@ begin
         DBTriggers := '';
 	    ConfigureDataSet(aZConnection
                         ,DatabasePart
-                        ,'SELECT TRIGGER_NAME, EVENT_MANIPULATION, EVENT_OBJECT_TABLE, ACTION_STATEMENT, ACTION_TIMING FROM INFORMATION_SCHEMA.TRIGGERS WHERE UPPER(TRIGGER_SCHEMA) = UPPER(' + QuotedStr(aParameters.DataBaseName) + ')'
+                        ,'SELECT TRIGGER_NAME, EVENT_MANIPULATION, EVENT_OBJECT_TABLE, ACTION_STATEMENT, ACTION_TIMING FROM INFORMATION_SCHEMA.TRIGGERS WHERE UPPER(TRIGGER_SCHEMA) = UPPER(' + AnsiString(QuotedStr(String(aParameters.DataBaseName))) + ')'
                         ,False);
 
         if Assigned(aParameters.OnNotification) then
@@ -4717,16 +4713,16 @@ begin
             begin
                 if Assigned(aParameters.OnNotification) then
                     aParameters.OnNotification(nmBeginExtractTrigger
-                                              ,UpperCase(DatabasePart.Fields[0].AsString)  // NOME DO TRIGGER
-                                              ,UpperCase(DatabasePart.Fields[2].AsString)  // TABELA RELACIONADA
+                                              ,AnsiString(UpperCase(DatabasePart.Fields[0].AsString))  // NOME DO TRIGGER
+                                              ,AnsiString(UpperCase(DatabasePart.Fields[2].AsString))  // TABELA RELACIONADA
                                               ,DatabasePart.RecordCount // QTD DE TRIGGERS
                                               ,DatabasePart.RecNo);
 
-                DBTriggers := DBTriggers + Format(TRIGGER_TEMPLATE,[DatabasePart.Fields[0].AsString
-                                                                   ,DatabasePart.Fields[4].AsString
-                                                                   ,DatabasePart.Fields[1].AsString
-                                                                   ,DatabasePart.Fields[2].AsString
-                                                                   ,DatabasePart.Fields[3].AsString]);
+                DBTriggers := DBTriggers + AnsiString(Format(TRIGGER_TEMPLATE,[DatabasePart.Fields[0].AsAnsiString
+                                                                              ,DatabasePart.Fields[4].AsAnsiString
+                                                                              ,DatabasePart.Fields[1].AsAnsiString
+                                                                              ,DatabasePart.Fields[2].AsAnsiString
+                                                                              ,DatabasePart.Fields[3].AsAnsiString]));
 
                 if DatabasePart.RecNo < DatabasePart.RecordCount then
 	                DBTriggers := DBTriggers + #13#10#13#10
@@ -4735,8 +4731,8 @@ begin
 
                 if Assigned(aParameters.OnNotification) then
                     aParameters.OnNotification(nmEndExtractTrigger
-                                              ,UpperCase(DatabasePart.Fields[0].AsString)  // NOME DO TRIGGER
-                                              ,UpperCase(DatabasePart.Fields[2].AsString)  // TABELA RELACIONADA
+                                              ,AnsiString(UpperCase(DatabasePart.Fields[0].AsString))  // NOME DO TRIGGER
+                                              ,AnsiString(UpperCase(DatabasePart.Fields[2].AsString))  // TABELA RELACIONADA
                                               ,DatabasePart.RecordCount // QTD DE TRIGGERS
                                               ,DatabasePart.RecNo);
 
@@ -4745,7 +4741,7 @@ begin
             DBTriggers := 'DELIMITER ' + DELIMITER + #13#10#13#10 + DBTriggers + #13#10'DELIMITER ;'#13#10;
         end
     	else
-        	DBTriggers := #13#10'# A base de dados ' + UpperCase(aParameters.DataBaseName) + ' não possui triggers!'#13#10#13#10;
+        	DBTriggers := #13#10'# A base de dados ' + AnsiString(UpperCase(String(aParameters.DataBaseName))) + ' não possui triggers!'#13#10#13#10;
 
         if Assigned(aParameters.OnNotification) then
             aParameters.OnNotification(nmAfterExtractTriggers
@@ -4769,7 +4765,7 @@ begin
 
         ConfigureDataSet(aZConnection
                         ,AvailableTables
-                        ,'SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE UPPER(TABLE_SCHEMA) = UPPER(' + QuotedStr(aParameters.DataBaseName) + ') AND TABLE_TYPE = ''BASE TABLE''');
+                        ,'SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE UPPER(TABLE_SCHEMA) = UPPER(' + AnsiString(QuotedStr(String(aParameters.DataBaseName))) + ') AND TABLE_TYPE = ''BASE TABLE''');
 
         if Assigned(aParameters.OnNotification) then
             aParameters.OnNotification(nmBeforeExtractTables
@@ -4789,28 +4785,28 @@ begin
             begin
                 if Assigned(aParameters.OnNotification) then
                     aParameters.OnNotification(nmBeginExtractTable
-                                              ,UpperCase(Fields[0].AsString)  // NOME DA TABELA
+                                              ,AnsiString(UpperCase(Fields[0].AsString))  // NOME DA TABELA
                                               ,''
                                               ,RecordCount // QTD DE TABELAS
                                               ,RecNo); // NUMERO DA TABELA DA VEZ
 
                 ConfigureDataSet(aZConnection
                                 ,CurrentTableDefinition
-                                ,'SHOW CREATE TABLE ' + UpperCase(aParameters.DataBaseName) + '.' + UpperCase(Fields[0].AsString)
+                                ,'SHOW CREATE TABLE ' + AnsiString(UpperCase(String(aParameters.DataBaseName))) + '.' + AnsiString(UpperCase(Fields[0].AsString))
                                 ,False);
 
-                CurrentDefinition := UpperCase(StringReplace(CurrentTableDefinition.Fields[1].AsString,#$0A,#$0D#$0A,[rfReplaceAll]));
+                CurrentDefinition := AnsiString(UpperCase(StringReplace(CurrentTableDefinition.Fields[1].AsString,#$0A,#$0D#$0A,[rfReplaceAll])));
 
-                if Pos('  CONSTRAINT',CurrentDefinition) > 0 then
+                if Pos('  CONSTRAINT',String(CurrentDefinition)) > 0 then
                 begin
-                    CurrentConstraint := 'ALTER TABLE ' + UpperCase(Fields[0].AsString) + #13#10;
+                    CurrentConstraint := 'ALTER TABLE ' + AnsiString(UpperCase(Fields[0].AsString)) + #13#10;
 
                     repeat
-                        i := Pos('  CONSTRAINT',CurrentDefinition);
+                        i := Pos('  CONSTRAINT',String(CurrentDefinition));
                         if i > 0 then
                         begin
-                            CurrentConstraint := CurrentConstraint + StringReplace(Copy(CurrentDefinition,i,PosEx(#13#10,CurrentDefinition,i) - i + 2),'  CONSTRAINT','  ADD CONSTRAINT',[]);
-                            System.Delete(CurrentDefinition,i,PosEx(#13#10,CurrentDefinition,i) - i + 2);
+                            CurrentConstraint := CurrentConstraint + AnsiString(StringReplace(Copy(String(CurrentDefinition),i,PosEx(#13#10,String(CurrentDefinition),i) - i + 2),'  CONSTRAINT','  ADD CONSTRAINT',[]));
+                            System.Delete(CurrentDefinition,i,PosEx(#13#10,String(CurrentDefinition),i) - i + 2);
                         end;
                     until i = 0;
 
@@ -4822,23 +4818,23 @@ begin
                 System.Insert(';',CurrentDefinition,Length(CurrentDefinition) + 1);
 
                 // Retira os comentários
-                i := Pos(' COMMENT=''',CurrentDefinition);
+                i := Pos(' COMMENT=''',String(CurrentDefinition));
                 if i > 0 then
-                    System.Delete(CurrentDefinition,i,PosEx(';',CurrentDefinition,i) - i);
+                    System.Delete(CurrentDefinition,i,PosEx(';',String(CurrentDefinition),i) - i);
 
-                TableDefinitions := TableDefinitions + StringReplace(CurrentDefinition,','#13#10')',#13#10')',[]) + #13#10#13#10;
+                TableDefinitions := TableDefinitions + AnsiString(StringReplace(String(CurrentDefinition),','#13#10')',#13#10')',[])) + #13#10#13#10;
 
-                TableDefinitions := TableDefinitions + Format(INSHEADER,[UpperCase(Fields[0].AsString)]);
+                TableDefinitions := TableDefinitions + AnsiString(Format(INSHEADER,[UpperCase(Fields[0].AsString)]));
 
                 ConfigureDataSet(aZConnection
                                 ,TableInsertions
-                                ,'SELECT * FROM ' + UpperCase(aParameters.DataBaseName) + '.' + Fields[0].AsString
+                                ,'SELECT * FROM ' + AnsiString(UpperCase(String(aParameters.DataBaseName))) + '.' + Fields[0].AsAnsiString
                                 ,False);
 
                 if Assigned(aParameters.OnNotification) then
                     aParameters.OnNotification(nmBeforeExtractRecords
                                               ,'EXTRACT RECORD STARTED'
-                                              ,UpperCase(Fields[0].AsString) // NOME DA TABELA
+                                              ,AnsiString(UpperCase(Fields[0].AsString)) // NOME DA TABELA
                                               ,TableInsertions.RecordCount // QTD DE REGISTROS
                                               ,0);
 
@@ -4855,7 +4851,7 @@ begin
                     begin
                         if Assigned(aParameters.OnNotification) then
                             aParameters.OnNotification(nmBeginExtractRecord
-                                                      ,UpperCase(Fields[0].AsString) // NOME DA TABELA
+                                                      ,AnsiString(UpperCase(Fields[0].AsString)) // NOME DA TABELA
                                                       ,''
                                                       ,TableInsertions.RecordCount // QTD DE REGISTROS
                                                       ,TableInsertions.RecNo); // REGISTRO ATUAL
@@ -4870,22 +4866,22 @@ begin
                                 ValuesPart := ValuesPart + 'NULL'
                             // Inteiro?
                             else if TableInsertions.Fields[i].DataType in [ftSmallint,ftInteger,ftWord,ftLargeint] then
-                                ValuesPart := ValuesPart + TableInsertions.Fields[i].AsString
+                                ValuesPart := ValuesPart + TableInsertions.Fields[i].AsAnsiString
                             // Decimal?
                             else if TableInsertions.Fields[i].DataType in [ftFloat,ftCurrency] then
-                                ValuesPart := ValuesPart + StringReplace(TableInsertions.Fields[i].AsString,',','.',[])
+                                ValuesPart := ValuesPart + AnsiString(StringReplace(TableInsertions.Fields[i].AsString,',','.',[]))
                             // Data?
                             else if (TableInsertions.Fields[i].DataType = ftDate) then
-                                ValuesPart := ValuesPart + FormatDateTime('yyyymmdd',TableInsertions.Fields[i].AsDateTime)
+                                ValuesPart := ValuesPart + AnsiString(FormatDateTime('yyyymmdd',TableInsertions.Fields[i].AsDateTime))
                             // Tempo?
                             else if (TableInsertions.Fields[i].DataType = ftTime) then
-                                ValuesPart := ValuesPart + FormatDateTime('hhnnss',TableInsertions.Fields[i].AsDateTime)
+                                ValuesPart := ValuesPart + AnsiString(FormatDateTime('hhnnss',TableInsertions.Fields[i].AsDateTime))
                             // Data + Tempo?
                             else if (TableInsertions.Fields[i].DataType = ftDateTime) then
-                                ValuesPart := ValuesPart + FormatDateTime('yyyymmddhhnnss',TableInsertions.Fields[i].AsDateTime)
-                            // Binário, String ou qualquer outra coisa?
+                                ValuesPart := ValuesPart + AnsiString(FormatDateTime('yyyymmddhhnnss',TableInsertions.Fields[i].AsDateTime))
+                            // Binário, AnsiString ou qualquer outra coisa?
                             else
-                                ValuesPart := ValuesPart + MySQLHexStr(TableInsertions.Fields[i].AsString);
+                                ValuesPart := ValuesPart + MySQLHexStr(TableInsertions.Fields[i].AsAnsiString);
 
                             if i < Pred(TableInsertions.FieldCount) then
                                 ValuesPart := ValuesPart + ','
@@ -4894,16 +4890,16 @@ begin
                         end;
 
                         if CurrentRow = 1 then
-                            CurrentQuery := Format(INSERT_SCHEMA,[UpperCase(Fields[0].AsString)]) + ValuesPart
+                            CurrentQuery := AnsiString(Format(INSERT_SCHEMA,[UpperCase(Fields[0].AsString)])) + ValuesPart
                         else
                         begin
                             CurrentQuery := ValuesPart;
                             if (QuerySize + Length(ValuesPart)) > MAX_QUERY_SIZE then
                             begin
-                                TableDefinitions := TableDefinitions + ';'#13#10 + Format(QUERY_SIZE,[CurrentRow,QuerySize]) + #13#10;
+                                TableDefinitions := TableDefinitions + ';'#13#10 + AnsiString(Format(QUERY_SIZE,[CurrentRow,QuerySize])) + #13#10;
                                 QuerySize := 0;
                                 CurrentRow := 1;
-                                CurrentQuery := Format(INSERT_SCHEMA,[UpperCase(Fields[0].AsString)]) + ValuesPart;
+                                CurrentQuery := AnsiString(Format(INSERT_SCHEMA,[UpperCase(Fields[0].AsString)])) + ValuesPart;
                             end;
                         end;
 
@@ -4916,7 +4912,7 @@ begin
 
                         if Assigned(aParameters.OnNotification) then
                             aParameters.OnNotification(nmEndExtractRecord
-                                                      ,UpperCase(Fields[0].AsString) // NOME DA TABELA
+                                                      ,AnsiString(UpperCase(Fields[0].AsString)) // NOME DA TABELA
                                                       ,''
                                                       ,TableInsertions.RecordCount // QTD DE REGISTROS
                                                       ,TableInsertions.RecNo); // REGISTRO ATUAL
@@ -4925,15 +4921,15 @@ begin
                     end;
 
                     if CurrentRow > 0 then
-                        TableDefinitions := TableDefinitions + ';'#13#10 + Format(QUERY_SIZE,[CurrentRow,QuerySize]) + #13#10#13#10;
+                        TableDefinitions := TableDefinitions + ';'#13#10 + AnsiString(Format(QUERY_SIZE,[CurrentRow,QuerySize])) + #13#10#13#10;
                 end
                 else
-                    TableDefinitions := TableDefinitions + '# A tabela ' + UpperCase(Fields[0].AsString) + ' está vazia!'#13#10#13#10;
+                    TableDefinitions := TableDefinitions + '# A tabela ' + AnsiString(UpperCase(Fields[0].AsString)) + ' está vazia!'#13#10#13#10;
 
                 if Assigned(aParameters.OnNotification) then
                     aParameters.OnNotification(nmAfterExtractRecords
                                               ,'EXTRACT RECORD FINISHED'
-                                              ,UpperCase(Fields[0].AsString) // NOME DA TABELA
+                                              ,AnsiString(UpperCase(Fields[0].AsString)) // NOME DA TABELA
                                               ,TableInsertions.RecordCount // QTD DE REGISTROS
                                               ,0);
 
@@ -4941,7 +4937,7 @@ begin
 
                 if Assigned(aParameters.OnNotification) then
                     aParameters.OnNotification(nmEndExtractTable
-                                              ,UpperCase(Fields[0].AsString)  // NOME DA TABELA
+                                              ,AnsiString(UpperCase(Fields[0].AsString))  // NOME DA TABELA
                                               ,''
                                               ,RecordCount // QTD DE TABELAS
                                               ,RecNo); // NUMERO DA TABELA DA VEZ
@@ -4962,11 +4958,11 @@ begin
                                           ,RecordCount // QTD DE TABELAS
                                           ,0);
 
-            Result := StringReplace(Result,'[%]DBROUTINES[%]',DBRoutines,[]);
-            Result := StringReplace(Result,'[%]TABLEDEFINITIONS[%]',TableDefinitions,[]);
-            Result := StringReplace(Result,'[%]DBTRIGGERS[%]',DBTriggers,[]);
-            Result := StringReplace(Result,'[%]TABLECONSTRAINTS[%]',TableConstraints,[]);
-            Result := StringReplace(Result,'[%]DBVIEWS[%]',StringReplace(DBViews,UpperCase(aParameters.DataBaseName) + '.','',[rfReplaceAll,rfIgnoreCase]),[]);
+            Result := AnsiString(StringReplace(String(Result),'[%]DBROUTINES[%]',String(DBRoutines),[]));
+            Result := AnsiString(StringReplace(String(Result),'[%]TABLEDEFINITIONS[%]',String(TableDefinitions),[]));
+            Result := AnsiString(StringReplace(String(Result),'[%]DBTRIGGERS[%]',String(DBTriggers),[]));
+            Result := AnsiString(StringReplace(String(Result),'[%]TABLECONSTRAINTS[%]',String(TableConstraints),[]));
+            Result := AnsiString(StringReplace(String(Result),'[%]DBVIEWS[%]',StringReplace(String(DBViews),UpperCase(String(aParameters.DataBaseName)) + '.','',[rfReplaceAll,rfIgnoreCase]),[]));
         end;
 
     finally
@@ -4989,7 +4985,7 @@ begin
 end;
 
 //class function TXXXDataModule.MySQLBackupDataBase(const aZConnection: TZConnection;
-//                                                  const aParameters: TMySQLBackupDataBaseParameters): String;
+//                                                  const aParameters: TMySQLBackupDataBaseParameters): AnsiString;
 //const
 //	{ FUTURAMENTE DETECTE PONTOS DESTE PROCEDURE ONDE PODEMOS COLOCAR EVENTOS E
 //    TORNE ESTA FUNÇÃO GENERICA. CUIDADO COM OS PROCESSMESSAGES CASO PRETENDA
@@ -5066,7 +5062,7 @@ end;
 //    '%s; %0:s'#13#10 +
 //    'DELIMITER ;';
 //
-//function MySQLHexStr(aASCII: String): String;
+//function MySQLHexStr(aASCII: AnsiString): AnsiString;
 //begin
 //	Result := Hex(aASCII);
 //    if Result <> '' then
@@ -5083,7 +5079,7 @@ end;
 //	DatabasePart, CurrentPart, AvailableTables, CurrentTableDefinition,
 //    TableInsertions: TZReadOnlyQuery;
 //    DBRoutines, DBViews, DBTriggers,
-//  	TableDefinitions, CurrentDefinition, TableConstraints, CurrentConstraint, ValuesPart, CurrentQuery: String;
+//  	TableDefinitions, CurrentDefinition, TableConstraints, CurrentConstraint, ValuesPart, CurrentQuery: AnsiString;
 //  	i, QuerySize: Word;
 //  	CurrentRow: Cardinal;
 //begin
@@ -5118,19 +5114,19 @@ end;
 //        if DatabasePart.RecordCount > 0 then
 //            while not DatabasePart.Eof do
 //            begin
-//                if UpperCase(DatabasePart.Fields[1].AsString) = 'FUNCTION' then
-//                    ConfigureDataSet(aZConnection,CurrentPart,'SHOW CREATE FUNCTION ' + UpperCase(aParameters.DataBaseName) + '.' + DatabasePart.Fields[0].AsString,False)
-//                else if UpperCase(DatabasePart.Fields[1].AsString) = 'PROCEDURE' then
-//                    ConfigureDataSet(aZConnection,CurrentPart,'SHOW CREATE PROCEDURE ' + UpperCase(aParameters.DataBaseName) + '.' + DatabasePart.Fields[0].AsString,False);
+//                if UpperCase(DatabasePart.Fields[1].AsAnsiString) = 'FUNCTION' then
+//                    ConfigureDataSet(aZConnection,CurrentPart,'SHOW CREATE FUNCTION ' + UpperCase(aParameters.DataBaseName) + '.' + DatabasePart.Fields[0].AsAnsiString,False)
+//                else if UpperCase(DatabasePart.Fields[1].AsAnsiString) = 'PROCEDURE' then
+//                    ConfigureDataSet(aZConnection,CurrentPart,'SHOW CREATE PROCEDURE ' + UpperCase(aParameters.DataBaseName) + '.' + DatabasePart.Fields[0].AsAnsiString,False);
 //
 //                if Assigned(aParameters.OnNotification) then
 //                    aParameters.OnNotification(nmBeginExtractStoredRoutine
-//                                              ,DatabasePart.Fields[0].AsString  // NOME DA STORED ROUTINE
-//                                              ,UpperCase(DatabasePart.Fields[1].AsString) // TIPO DA STORED ROUTINE
+//                                              ,DatabasePart.Fields[0].AsAnsiString  // NOME DA STORED ROUTINE
+//                                              ,UpperCase(DatabasePart.Fields[1].AsAnsiString) // TIPO DA STORED ROUTINE
 //                                              ,DatabasePart.RecordCount // QTD DE STORED ROUTINES
 //                                              ,DatabasePart.RecNo); // NUMERO DA STORED ROUTINE ATUAL
 //
-//                DBRoutines := DBRoutines + Format(ROUTINE_TEMPLATE,[DELIMITER,CurrentPart.Fields[2].AsString]);
+//                DBRoutines := DBRoutines + Format(ROUTINE_TEMPLATE,[DELIMITER,CurrentPart.Fields[2].AsAnsiString]);
 //
 //                if DatabasePart.RecNo < DatabasePart.RecordCount then
 //	                DBRoutines := DBRoutines + #13#10#13#10
@@ -5139,8 +5135,8 @@ end;
 //
 //                if Assigned(aParameters.OnNotification) then
 //                    aParameters.OnNotification(nmEndExtractStoredRoutine
-//                                              ,DatabasePart.Fields[0].AsString  // NOME DA STORED ROUTINE
-//                                              ,UpperCase(DatabasePart.Fields[1].AsString) // TIPO DA STORED ROUTINE
+//                                              ,DatabasePart.Fields[0].AsAnsiString  // NOME DA STORED ROUTINE
+//                                              ,UpperCase(DatabasePart.Fields[1].AsAnsiString) // TIPO DA STORED ROUTINE
 //                                              ,DatabasePart.RecordCount // QTD DE STORED ROUTINES
 //                                              ,DatabasePart.RecNo); // NUMERO DA STORED ROUTINE ATUAL
 //
@@ -5176,17 +5172,17 @@ end;
 //            begin
 //                if Assigned(aParameters.OnNotification) then
 //                    aParameters.OnNotification(nmBeginExtractView
-//                                              ,DatabasePart.Fields[0].AsString  // NOME DA VIEW
+//                                              ,DatabasePart.Fields[0].AsAnsiString  // NOME DA VIEW
 //                                              ,''
 //                                              ,DatabasePart.RecordCount // QTD DE VIEWS
 //                                              ,DatabasePart.RecNo); // NUMERO DA VIEW ATUAL;
 //
 //                ConfigureDataSet(aZConnection
 //                                ,CurrentPart
-//                                ,'SHOW CREATE VIEW ' + UpperCase(aParameters.DataBaseName) + '.' + DatabasePart.Fields[0].AsString
+//                                ,'SHOW CREATE VIEW ' + UpperCase(aParameters.DataBaseName) + '.' + DatabasePart.Fields[0].AsAnsiString
 //                                ,False);
 //
-//                DBViews := DBViews + CurrentPart.Fields[1].AsString + ';';
+//                DBViews := DBViews + CurrentPart.Fields[1].AsAnsiString + ';';
 //
 //                if DatabasePart.RecNo < DatabasePart.RecordCount then
 //	                DBViews := DBViews + #13#10#13#10
@@ -5195,7 +5191,7 @@ end;
 //
 //                if Assigned(aParameters.OnNotification) then
 //                    aParameters.OnNotification(nmEndExtractView
-//                                              ,DatabasePart.Fields[0].AsString  // NOME DA VIEW
+//                                              ,DatabasePart.Fields[0].AsAnsiString  // NOME DA VIEW
 //                                              ,''
 //                                              ,DatabasePart.RecordCount // QTD DE VIEWS
 //                                              ,DatabasePart.RecNo); // NUMERO DA VIEW ATUAL;
@@ -5232,18 +5228,18 @@ end;
 //            begin
 //                if Assigned(aParameters.OnNotification) then
 //                    aParameters.OnNotification(nmBeginExtractTrigger
-//                                              ,UpperCase(DatabasePart.Fields[0].AsString)  // NOME DO TRIGGER
-//                                              ,UpperCase(DatabasePart.Fields[2].AsString)  // TABELA RELACIONADA
+//                                              ,UpperCase(DatabasePart.Fields[0].AsAnsiString)  // NOME DO TRIGGER
+//                                              ,UpperCase(DatabasePart.Fields[2].AsAnsiString)  // TABELA RELACIONADA
 //                                              ,DatabasePart.RecordCount // QTD DE TRIGGERS
 //                                              ,DatabasePart.RecNo);
 //
 //                DBTriggers := DBTriggers + Format(TRIGGER_TEMPLATE,[
 //                    DELIMITER,
-//                    DatabasePart.Fields[0].AsString,
-//                    DatabasePart.Fields[4].AsString,
-//                    DatabasePart.Fields[1].AsString,
-//                    DatabasePart.Fields[2].AsString,
-//                    DatabasePart.Fields[3].AsString
+//                    DatabasePart.Fields[0].AsAnsiString,
+//                    DatabasePart.Fields[4].AsAnsiString,
+//                    DatabasePart.Fields[1].AsAnsiString,
+//                    DatabasePart.Fields[2].AsAnsiString,
+//                    DatabasePart.Fields[3].AsAnsiString
 //                ]);
 //
 //                if DatabasePart.RecNo < DatabasePart.RecordCount then
@@ -5253,8 +5249,8 @@ end;
 //
 //                if Assigned(aParameters.OnNotification) then
 //                    aParameters.OnNotification(nmEndExtractTrigger
-//                                              ,UpperCase(DatabasePart.Fields[0].AsString)  // NOME DO TRIGGER
-//                                              ,UpperCase(DatabasePart.Fields[2].AsString)  // TABELA RELACIONADA
+//                                              ,UpperCase(DatabasePart.Fields[0].AsAnsiString)  // NOME DO TRIGGER
+//                                              ,UpperCase(DatabasePart.Fields[2].AsAnsiString)  // TABELA RELACIONADA
 //                                              ,DatabasePart.RecordCount // QTD DE TRIGGERS
 //                                              ,DatabasePart.RecNo);
 //
@@ -5305,21 +5301,21 @@ end;
 //            begin
 //                if Assigned(aParameters.OnNotification) then
 //                    aParameters.OnNotification(nmBeginExtractTable
-//                                              ,UpperCase(Fields[0].AsString)  // NOME DA TABELA
+//                                              ,UpperCase(Fields[0].AsAnsiString)  // NOME DA TABELA
 //                                              ,''
 //                                              ,RecordCount // QTD DE TABELAS
 //                                              ,RecNo); // NUMERO DA TABELA DA VEZ
 //
 //                ConfigureDataSet(aZConnection
 //                                ,CurrentTableDefinition
-//                                ,'SHOW CREATE TABLE ' + UpperCase(aParameters.DataBaseName) + '.' + UpperCase(Fields[0].AsString)
+//                                ,'SHOW CREATE TABLE ' + UpperCase(aParameters.DataBaseName) + '.' + UpperCase(Fields[0].AsAnsiString)
 //                                ,False);
 //
-//                CurrentDefinition := UpperCase(StringReplace(CurrentTableDefinition.Fields[1].AsString,#$0A,#$0D#$0A,[rfReplaceAll]));
+//                CurrentDefinition := UpperCase(StringReplace(CurrentTableDefinition.Fields[1].AsAnsiString,#$0A,#$0D#$0A,[rfReplaceAll]));
 //
 //                if Pos('  CONSTRAINT',CurrentDefinition) > 0 then
 //                begin
-//                    CurrentConstraint := 'ALTER TABLE ' + UpperCase(Fields[0].AsString) + #13#10;
+//                    CurrentConstraint := 'ALTER TABLE ' + UpperCase(Fields[0].AsAnsiString) + #13#10;
 //
 //                    repeat
 //                        i := Pos('  CONSTRAINT',CurrentDefinition);
@@ -5344,17 +5340,17 @@ end;
 //
 //                TableDefinitions := TableDefinitions + StringReplace(CurrentDefinition,','#13#10')',#13#10')',[]) + #13#10#13#10;
 //
-//                TableDefinitions := TableDefinitions + Format(INSHEADER,[UpperCase(Fields[0].AsString)]);
+//                TableDefinitions := TableDefinitions + Format(INSHEADER,[UpperCase(Fields[0].AsAnsiString)]);
 //
 //                ConfigureDataSet(aZConnection
 //                                ,TableInsertions
-//                                ,'SELECT * FROM ' + UpperCase(aParameters.DataBaseName) + '.' + Fields[0].AsString
+//                                ,'SELECT * FROM ' + UpperCase(aParameters.DataBaseName) + '.' + Fields[0].AsAnsiString
 //                                ,False);
 //
 //                if Assigned(aParameters.OnNotification) then
 //                    aParameters.OnNotification(nmBeforeExtractRecords
 //                                              ,'EXTRACT RECORD STARTED'
-//                                              ,UpperCase(Fields[0].AsString) // NOME DA TABELA
+//                                              ,UpperCase(Fields[0].AsAnsiString) // NOME DA TABELA
 //                                              ,TableInsertions.RecordCount // QTD DE REGISTROS
 //                                              ,0);
 //
@@ -5371,7 +5367,7 @@ end;
 //                    begin
 //                        if Assigned(aParameters.OnNotification) then
 //                            aParameters.OnNotification(nmBeginExtractRecord
-//                                                      ,UpperCase(Fields[0].AsString) // NOME DA TABELA
+//                                                      ,UpperCase(Fields[0].AsAnsiString) // NOME DA TABELA
 //                                                      ,''
 //                                                      ,TableInsertions.RecordCount // QTD DE REGISTROS
 //                                                      ,TableInsertions.RecNo); // REGISTRO ATUAL
@@ -5386,10 +5382,10 @@ end;
 //                                ValuesPart := ValuesPart + 'NULL'
 //                            // Inteiro?
 //                            else if TableInsertions.Fields[i].DataType in [ftSmallint,ftInteger,ftWord,ftLargeint] then
-//                                ValuesPart := ValuesPart + TableInsertions.Fields[i].AsString
+//                                ValuesPart := ValuesPart + TableInsertions.Fields[i].AsAnsiString
 //                            // Decimal?
 //                            else if TableInsertions.Fields[i].DataType in [ftFloat,ftCurrency] then
-//                                ValuesPart := ValuesPart + StringReplace(TableInsertions.Fields[i].AsString,',','.',[])
+//                                ValuesPart := ValuesPart + StringReplace(TableInsertions.Fields[i].AsAnsiString,',','.',[])
 //                            // Data?
 //                            else if (TableInsertions.Fields[i].DataType = ftDate) then
 //                                ValuesPart := ValuesPart + FormatDateTime('yyyymmdd',TableInsertions.Fields[i].AsDateTime)
@@ -5399,9 +5395,9 @@ end;
 //                            // Data + Tempo?
 //                            else if (TableInsertions.Fields[i].DataType = ftDateTime) then
 //                                ValuesPart := ValuesPart + FormatDateTime('yyyymmddhhnnss',TableInsertions.Fields[i].AsDateTime)
-//                            // Binário, String ou qualquer outra coisa?
+//                            // Binário, AnsiString ou qualquer outra coisa?
 //                            else
-//                                ValuesPart := ValuesPart + MySQLHexStr(TableInsertions.Fields[i].AsString);
+//                                ValuesPart := ValuesPart + MySQLHexStr(TableInsertions.Fields[i].AsAnsiString);
 //
 //                            if i < Pred(TableInsertions.FieldCount) then
 //                                ValuesPart := ValuesPart + ','
@@ -5410,7 +5406,7 @@ end;
 //                        end;
 //
 //                        if CurrentRow = 1 then
-//                            CurrentQuery := Format(INSERT_SCHEMA,[UpperCase(Fields[0].AsString)]) + ValuesPart
+//                            CurrentQuery := Format(INSERT_SCHEMA,[UpperCase(Fields[0].AsAnsiString)]) + ValuesPart
 //                        else
 //                        begin
 //                            CurrentQuery := ValuesPart;
@@ -5419,7 +5415,7 @@ end;
 //                                TableDefinitions := TableDefinitions + ';'#13#10 + Format(QUERY_SIZE,[CurrentRow,QuerySize]) + #13#10;
 //                                QuerySize := 0;
 //                                CurrentRow := 1;
-//                                CurrentQuery := Format(INSERT_SCHEMA,[UpperCase(Fields[0].AsString)]) + ValuesPart;
+//                                CurrentQuery := Format(INSERT_SCHEMA,[UpperCase(Fields[0].AsAnsiString)]) + ValuesPart;
 //                            end;
 //                        end;
 //
@@ -5432,7 +5428,7 @@ end;
 //
 //                        if Assigned(aParameters.OnNotification) then
 //                            aParameters.OnNotification(nmEndExtractRecord
-//                                                      ,UpperCase(Fields[0].AsString) // NOME DA TABELA
+//                                                      ,UpperCase(Fields[0].AsAnsiString) // NOME DA TABELA
 //                                                      ,''
 //                                                      ,TableInsertions.RecordCount // QTD DE REGISTROS
 //                                                      ,TableInsertions.RecNo); // REGISTRO ATUAL
@@ -5444,12 +5440,12 @@ end;
 //                        TableDefinitions := TableDefinitions + ';'#13#10 + Format(QUERY_SIZE,[CurrentRow,QuerySize]) + #13#10#13#10;
 //                end
 //                else
-//                    TableDefinitions := TableDefinitions + '# A tabela ' + UpperCase(Fields[0].AsString) + ' está vazia!'#13#10#13#10;
+//                    TableDefinitions := TableDefinitions + '# A tabela ' + UpperCase(Fields[0].AsAnsiString) + ' está vazia!'#13#10#13#10;
 //
 //                if Assigned(aParameters.OnNotification) then
 //                    aParameters.OnNotification(nmAfterExtractRecords
 //                                              ,'EXTRACT RECORD FINISHED'
-//                                              ,UpperCase(Fields[0].AsString) // NOME DA TABELA
+//                                              ,UpperCase(Fields[0].AsAnsiString) // NOME DA TABELA
 //                                              ,TableInsertions.RecordCount // QTD DE REGISTROS
 //                                              ,0);
 //
@@ -5457,7 +5453,7 @@ end;
 //
 //                if Assigned(aParameters.OnNotification) then
 //                    aParameters.OnNotification(nmEndExtractTable
-//                                              ,UpperCase(Fields[0].AsString)  // NOME DA TABELA
+//                                              ,UpperCase(Fields[0].AsAnsiString)  // NOME DA TABELA
 //                                              ,''
 //                                              ,RecordCount // QTD DE TABELAS
 //                                              ,RecNo); // NUMERO DA TABELA DA VEZ

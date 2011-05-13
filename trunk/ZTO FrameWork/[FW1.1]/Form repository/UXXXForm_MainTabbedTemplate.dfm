@@ -114,6 +114,7 @@ object XXXForm_MainTabbedTemplate: TXXXForm_MainTabbedTemplate
       Height = 28
       Align = alClient
       Caption = 'ActionToolBar_Main'
+      Color = clMenuBar
       ColorMap.HighlightColor = 15660791
       ColorMap.BtnSelectedColor = clBtnFace
       ColorMap.UnusedColor = 15660791
@@ -122,6 +123,12 @@ object XXXForm_MainTabbedTemplate: TXXXForm_MainTabbedTemplate
       EdgeBorders = [ebTop, ebBottom]
       EdgeInner = esNone
       EdgeOuter = esRaised
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlack
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ParentFont = False
       Spacing = 0
     end
   end
@@ -140,7 +147,9 @@ object XXXForm_MainTabbedTemplate: TXXXForm_MainTabbedTemplate
       Top = 0
       Width = 702
       Height = 24
+      UseSystemFont = False
       Caption = 'ActionMainMenuBar_Main'
+      Color = clMenuBar
       ColorMap.HighlightColor = 15660791
       ColorMap.BtnSelectedColor = clBtnFace
       ColorMap.UnusedColor = 15660791

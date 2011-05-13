@@ -58,11 +58,12 @@ type
     Action_SalvarScriptGerado: TAction;
     Action_TesteDeTimeout: TAction;
     Action_TesteDeTamanhoDeConteudo: TAction;
+    Button_ContinuarSincronizacaoCompleta: TButton;
+    TabSheet_SincronizacaoDeCache: TTabSheet;
     procedure TimerGetTemporaryDataTimer(Sender: TObject);
     procedure ActionObterDadosTemporariosEmCasoDeErroExecute(Sender: TObject);
     procedure ActionChecarChavesEstrangeirasExecute(Sender: TObject);
     procedure Action1Execute(Sender: TObject);
-    procedure ButtonStop1Click(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure PageControl1Changing(Sender: TObject; var AllowChange: Boolean);
     procedure MakeSnapshot_AClick(Sender: TObject);
@@ -84,10 +85,10 @@ type
     procedure Action_TesteDeTamanhoDeConteudoExecute(Sender: TObject);
     procedure FTPClientProgress64(Sender: TObject; Count: Int64;
       var Abort: Boolean);
+    procedure Button_ContinuarSincronizacaoCompletaClick(Sender: TObject);
   private
     { Private declarations }
     DataBaseConnection: TZConnection;
-    fStopEverything: Boolean;
     FFSYGlobals: TFSYGlobals;
     { Processing é true quando se está no meio de uma operação demorada e  false
     quando está  aguardando uma  resposta  do  usuário. Busy  é true  quando uma
@@ -103,8 +104,7 @@ type
     { Public declarations }
     property FSYGlobals: TFSYGlobals read FFSYGlobals write FFSYGlobals;
     property Busy: Boolean read FBusy write setBusy;
-	property Processing: Boolean read FProcessing write setProcessing;
-    property StopEverything: Boolean read fStopEverything write fStopEverything;
+  	property Processing: Boolean read FProcessing write setProcessing;
   end;
 
 var
@@ -123,6 +123,7 @@ begin
     {$IFDEF DEVELOPING}
     ActionManager1.ActionBars[0].Items[2].Visible := True;
     {$ENDIF}
+    TabSheet_SincronizacaoDeCache.TabVisible := False;
     
 	Randomize;
   	FFSYGlobals := TFSYGlobals.Create;
@@ -135,13 +136,13 @@ end;
 
 procedure TFSCForm_Main.FTPClientCommand(Sender: TObject; var Cmd: string);
 var
-	Comando: String;
+  Comando: String;
 begin
-	Comando := Cmd;
-  	if Pos('PASS',Comando) = 1 then
-  		Comando := 'PASS ' + DupeString(#248,Random(15));
+  Comando := Cmd;
+  if Pos('PASS',Comando) = 1 then
+    Comando := 'PASS ' + DupeString(#248,Random(15));
 
-  	FFSYGlobals.ShowOnLog('COMANDO:> ' + Comando,RichEditLog);
+  FFSYGlobals.ShowOnLog('COMANDO:> ' + AnsiString(Comando),RichEditLog);
 end;
 
 procedure TFSCForm_Main.FormDestroy(Sender: TObject);
@@ -160,56 +161,55 @@ procedure TFSCForm_Main.DoZlibNotification(aNotificatioType: TZlibNotificationTy
                                            aInputFile
                                           ,aOutputFile: TFileName);
 begin
-    if aOperation = zloDecompress then
-        case aNotificatioType of
-            zlntBeforeProcess: FFSYGlobals.ShowOnLog('§ Descomprimindo arquivo de dados ' + ExtractFileName(aInputFile) + '...',RichEditLog);
-            zlntAfterProcess: FFSYGlobals.ShowOnLog('§ Descompressão concluída!',RichEditLog);
-        end
-    else if aOperation = zloCompress then
-        case aNotificatioType of
-            zlntBeforeProcess: FFSYGlobals.ShowOnLog('§ Comprimindo arquivo de dados ' + ExtractFileName(aInputFile) + '...',RichEditLog);
-
-            zlntAfterProcess: FFSYGlobals.ShowOnLog('§ Compressão concluída!',RichEditLog);
-        end;
+  if aOperation = zloDecompress then
+    case aNotificatioType of
+      zlntBeforeProcess: FFSYGlobals.ShowOnLog('§ Descomprimindo arquivo de dados ' + AnsiString(ExtractFileName(aInputFile)) + '...',RichEditLog);
+      zlntAfterProcess: FFSYGlobals.ShowOnLog('§ Descompressão concluída!',RichEditLog);
+    end
+  else if aOperation = zloCompress then
+    case aNotificatioType of
+      zlntBeforeProcess: FFSYGlobals.ShowOnLog('§ Comprimindo arquivo de dados ' + AnsiString(ExtractFileName(aInputFile)) + '...',RichEditLog);
+      zlntAfterProcess: FFSYGlobals.ShowOnLog('§ Compressão concluída!',RichEditLog);
+    end;
 end;
 
 
 procedure TFSCForm_Main.SincronizarD_AClick(Sender: TObject);
 var
-	WillGetTempData: Boolean;
-    TempBusy: Boolean;
+  WillGetTempData: Boolean;
+  TempBusy: Boolean;
 begin
-	WillGetTempData := False;
-	try
-		Busy := True;
-        TempBusy := Busy;
-		try
-			RichEditLog.Clear;
-            FFSYGlobals.DropAllUniqueIndexes(RichEditLog);
-			FFSYGlobals.SynchronizeByDelta(FTPClient
-                                          ,DataBaseConnection
-                                          ,ProgressBar1
-                                          ,Label3
-                                          ,ActionChecarChavesEstrangeiras.Checked
-                                          ,TempBusy
-                                          ,Action_DiffSimulationMode.Checked
-                                          ,RichEditLog
-                                          ,Action_ConfirmarMesmoEmCasoDeErro.Checked
-                                          ,Action_SalvarScriptGerado.Checked
-                                          ,DoZlibNotification);
-		except
-			on E: Exception do
-            begin
-            	WillGetTempData := ActionObterDadosTemporariosEmCasoDeErro.Checked;
-   				FFSYGlobals.AbortEverything(FTPClient,E.Message,TempBusy,RichEditLog);
-            end;
-		end;
-	finally
-        Busy := TempBusy;
-    	FFSYGlobals.AddAllUniqueIndexes(RichEditLog);
-    	if not WillGetTempData then
-			Busy := False;
-	end;
+  WillGetTempData := False;
+  try
+    Busy := True;
+    TempBusy := Busy;
+    try
+      RichEditLog.Clear;
+      FFSYGlobals.DropAllUniqueIndexes(RichEditLog);
+      FFSYGlobals.SynchronizeByDelta(FTPClient
+                                    ,DataBaseConnection
+                                    ,ProgressBar1
+                                    ,Label3
+                                    ,ActionChecarChavesEstrangeiras.Checked
+                                    ,TempBusy
+                                    ,Action_DiffSimulationMode.Checked
+                                    ,RichEditLog
+                                    ,Action_ConfirmarMesmoEmCasoDeErro.Checked
+                                    ,Action_SalvarScriptGerado.Checked
+                                    ,DoZlibNotification);
+    except
+      on E: Exception do
+      begin
+        WillGetTempData := ActionObterDadosTemporariosEmCasoDeErro.Checked;
+        FFSYGlobals.AbortEverything(FTPClient,AnsiString(E.Message),TempBusy,RichEditLog);
+      end;
+    end;
+  finally
+    Busy := TempBusy;
+    FFSYGlobals.AddAllUniqueIndexes(RichEditLog);
+    if not WillGetTempData then
+      Busy := False;
+  end;
 end;
 
 procedure TFSCForm_Main.SincronizarC_AClick(Sender: TObject);
@@ -223,34 +223,35 @@ begin
     TempBusy := Busy;
 
 		try
-			if MessageBox(Handle,PWideChar('A operação que está para ser iniciada DESTRUIRÁ/SUBSTITUIRÁ o banco de dados "' + String(FFSYGlobals.Configurations.DB_DataBase) + '". Esta operação não poderá ser interrompida e nem desfeita. Tem certeza?'),'Tem certeza?',MB_ICONWARNING or MB_YESNO) = idYes then
+			if MessageBox(Handle,PWideChar('A operação que está para ser iniciada DESTRUIRÁ/SUBSTITUIRÁ o banco de dados "' + WideString(FFSYGlobals.Configurations.DB_DataBase) + '". Esta operação não poderá ser interrompida e nem desfeita. Tem certeza?'),'Tem certeza?',MB_ICONWARNING or MB_YESNO) = idYes then
 			begin
 				RichEditLog.Clear;
 				FFSYGlobals.SynchronizeFull(FTPClient
-                                           ,DataBaseConnection
-                                           ,ProgressBar1
-                                           ,Label3
-                                           ,ProgressBarInstrucoes
-                                           ,ProgressBarBlocos
-                                           ,LabelInstrucoes
-                                           ,LabelBlocos
-                                           ,LabelInstrucoesValor
-                                           ,LabelBlocosValor
-                                           ,TempBusy
-                                           ,RichEditLog
-                                           ,DoZlibNotification);
+                                   ,DataBaseConnection
+                                   ,ProgressBar1
+                                   ,Label3
+                                   ,ProgressBarInstrucoes
+                                   ,ProgressBarBlocos
+                                   ,LabelInstrucoes
+                                   ,LabelBlocos
+                                   ,LabelInstrucoesValor
+                                   ,LabelBlocosValor
+                                   ,TempBusy
+                                   ,RichEditLog
+                                   ,DoZlibNotification
+                                   ,False);
 			end;
 		except
 			on E: Exception do
-            begin
-            	WillGetTempData := ActionObterDadosTemporariosEmCasoDeErro.Checked;
-				FFSYGlobals.AbortEverything(FTPClient,E.Message,TempBusy,RichEditLog);
-            end;
+      begin
+        WillGetTempData := ActionObterDadosTemporariosEmCasoDeErro.Checked;
+        FFSYGlobals.AbortEverything(FTPClient,AnsiString(E.Message),TempBusy,RichEditLog);
+      end;
 		end;
 	finally
-        Busy := TempBusy;
-    	if not WillGetTempData then
-			Busy := False;
+    Busy := TempBusy;
+    if not WillGetTempData then
+		  Busy := False;
 	end;
 end;
 
@@ -324,7 +325,7 @@ begin
     terminada a conexão, para dar tempo de realizar o defrag no servidor }
     if NeedGetTemporaryData then
     begin
-	    FFSYGlobals.ShowOnLog('§ Erros ocorreram durante a última tentativa de sincronização. Os dados temporários remotos\nserão obtidos dentro de ' + FloatToStr((TimerGetTemporaryData.Interval / 1000)) + ' segundos para depuração e análise. Por favor aguarde...',RichEditLog);
+	    FFSYGlobals.ShowOnLog('§ Erros ocorreram durante a última tentativa de sincronização. Os dados temporários remotos\nserão obtidos dentro de ' + AnsiString(FloatToStr((TimerGetTemporaryData.Interval / 1000))) + ' segundos para depuração e análise. Por favor aguarde...',RichEditLog);
       	TimerGetTemporaryData.Enabled := True;
         Busy := True;
     end;
@@ -332,30 +333,30 @@ end;
 
 procedure TFSCForm_Main.FTPClientRequestDone(Sender: TObject; RqType: TFtpRequest; ErrCode: Word);
 var
-    Comando, Texto: String;
+  Comando, Texto: String;
 begin
-    case RqType of
-        ftpOpenAsync: Comando := 'OPEN';
-        ftpGetAsync: Comando := 'GET';
-        ftpPutAsync: Comando := 'PUT';
-        ftpMd5Async: Comando := 'MD5';
-        ftpPassAsync: Comando := 'PASS';
-        ftpUserAsync: Comando := 'USER';
-        ftpQuitAsync: Comando := 'QUIT';
-        else
-        	Comando := 'Desconhecido';
-    end;
-    Texto := '@ Comando "' + Comando + '" concluído (Código de retorno = ' + IntToStr(ErrCode) + ') ';
-    Texto := Texto + DupeString('<',95 - Length(Texto));
+  case RqType of
+    ftpOpenAsync: Comando := 'OPEN';
+    ftpGetAsync: Comando := 'GET';
+    ftpPutAsync: Comando := 'PUT';
+    ftpMd5Async: Comando := 'MD5';
+    ftpPassAsync: Comando := 'PASS';
+    ftpUserAsync: Comando := 'USER';
+    ftpQuitAsync: Comando := 'QUIT';
+  else
+    Comando := 'Desconhecido';
+  end;
+  Texto := '@ Comando "' + Comando + '" concluído (Código de retorno = ' + IntToStr(ErrCode) + ') ';
+  Texto := Texto + DupeString('<',95 - Length(Texto));
 
-    FFSYGlobals.ShowOnLog(Texto,RichEditLog);
+  FFSYGlobals.ShowOnLog(AnsiString(Texto),RichEditLog);
 
-    { Caso algum erro ocorra devemos exibir uma informação de acordo com o mesmo }
-    case ErrCode of
-        421: FFSYGlobals.ShowOnLog('! O número máximo de usuários simultâneos foi atingido. Favor tentar novamente em alguns minutos.',RichEditLog);
-        10061: FFSYGlobals.ShowOnLog('! O servidor recusou sua conexão. Favor entrar em contato com o HelpDesk.',RichEditLog);
-        10060: FFSYGlobals.ShowOnLog('! O servidor está ativo mas não respondeu dentro do limite de tempo esperado. Favor tentar novamente em alguns minutos. Se o problema persistir por mais de uma hora, favor entrar em contato com o HelpDesk.',RichEditLog);
-    end;
+  { Caso algum erro ocorra devemos exibir uma informação de acordo com o mesmo }
+  case ErrCode of
+    421: FFSYGlobals.ShowOnLog('! O número máximo de usuários simultâneos foi atingido. Favor tentar novamente em alguns minutos.',RichEditLog);
+    10061: FFSYGlobals.ShowOnLog('! O servidor recusou sua conexão. Favor entrar em contato com o HelpDesk.',RichEditLog);
+    10060: FFSYGlobals.ShowOnLog('! O servidor está ativo mas não respondeu dentro do limite de tempo esperado. Favor tentar novamente em alguns minutos. Se o problema persistir por mais de uma hora, favor entrar em contato com o HelpDesk.',RichEditLog);
+  end;
 end;
 
 procedure TFSCForm_Main.FTPClientResponse(Sender: TObject);
@@ -366,12 +367,12 @@ end;
 
 procedure TFSCForm_Main.FTPClientDisplay(Sender: TObject; var Msg: string);
 begin
-	if Pos('>',Msg) <> 1 then
-  	begin
-		Msg := StringReplace(Msg,'< ','',[]);
- 		Msg := StringReplace(Msg,'! ','',[]);
-  		FFSYGlobals.ShowOnLog('RETORNO:> ' + Msg,RichEditLog);
-  	end
+  if Pos('>',Msg) <> 1 then
+  begin
+    Msg := StringReplace(Msg,'< ','',[]);
+    Msg := StringReplace(Msg,'! ','',[]);
+    FFSYGlobals.ShowOnLog('RETORNO:> ' + AnsiString(Msg),RichEditLog);
+  end
 end;
 
 procedure TFSCForm_Main.FTPClientProgress64(Sender: TObject; Count: Int64; var Abort: Boolean);
@@ -410,19 +411,19 @@ begin
 				FFSYGlobals.TakeSnapshot(FTPClient,DataBaseConnection,2,ProgressBar1,Label3,TempBusy,RichEditLog,DoZlibNotification);
 		except
 			on E: Exception do
-				FFSYGlobals.ShowOnLog('! ' + FFSYGlobals.PutLineBreaks(E.Message,93),RichEditLog);
+				FFSYGlobals.ShowOnLog('! ' + FFSYGlobals.PutLineBreaks(AnsiString(E.Message),93),RichEditLog);
 		end;
 
 	finally
-    	{ Parece estupidez o que eu fiz abaixo... e é! Mas fiz isso
-        intencionalmente para indicar que no final, Busy sempre tem receber
-        TempBusy. Isso é uma regra, que se seguida sempre, mesmo quando
-        desnecessariamente, evita problemas }
-        TempBusy := False;
-        Busy := TempBusy;
+   	{ Parece estupidez o que eu fiz abaixo... e é! Mas fiz isso
+    intencionalmente para indicar que no final, Busy sempre tem receber
+    TempBusy. Isso é uma regra, que se seguida sempre, mesmo quando
+    desnecessariamente, evita problemas }
+    TempBusy := False;
+    Busy := TempBusy;
 
-        if FTPClient.Connected then
-            FFSYGlobals.ExecuteCmd(FTPClient,FTPClient.Quit,RichEditLog,'QUIT',ProgressBar1,Label3);
+    if FTPClient.Connected then
+      FFSYGlobals.ExecuteCmd(FTPClient,FTPClient.Quit,RichEditLog,'QUIT',ProgressBar1,Label3);
 	end;
 end;
 
@@ -441,6 +442,7 @@ begin
     	SincronizarD_A.Enabled := not FBusy;
     	SincronizarC_A.Enabled := not FBusy;
     	MakeSnapshot_A.Enabled := not FBusy;
+      Button_ContinuarSincronizacaoCompleta.Enabled := not Busy;
 
     	GroupBox1.Enabled := not FBusy;
   	end;
@@ -465,9 +467,54 @@ begin
   		MessageBox(Handle,'Por favor aguarde até o final do processamento atual. O processo atual terminará quando o programa desconectar do servidor. Isto acontece quando o comando QUIT aparecer no log de ações','Operação em andamento,aguarde...',MB_ICONWARNING);
 end;
 
-procedure TFSCForm_Main.ButtonStop1Click(Sender: TObject);
+procedure TFSCForm_Main.Button_ContinuarSincronizacaoCompletaClick(Sender: TObject);
+var
+	WillGetTempData: Boolean;
+  TempBusy: Boolean;
 begin
-	fStopEverything := True;
+  if not FileExists(FFSYGlobals.FTPDirectory + '\SERVER_DATABASE.DAT') then
+  begin
+    if Application.MessageBox('Não foi possível encontrar um arquivo de dados válido. Deseja realizar a sincronização completa desde o início?','O que deseja fazer?',MB_ICONWARNING or MB_YESNO) = IDYES then
+      SincronizarC_A.Click;
+    Exit;
+  end;
+  
+	WillGetTempData := False;
+	try
+	  Busy := True;
+    TempBusy := Busy;
+
+		try
+			if MessageBox(Handle,PWideChar('A operação que está para ser iniciada DESTRUIRÁ/SUBSTITUIRÁ o banco de dados "' + WideString(FFSYGlobals.Configurations.DB_DataBase) + '". Esta operação não poderá ser interrompida e nem desfeita. Tem certeza?'),'Tem certeza?',MB_ICONWARNING or MB_YESNO) = idYes then
+			begin
+				RichEditLog.Clear;
+				FFSYGlobals.SynchronizeFull(FTPClient
+                                   ,DataBaseConnection
+                                   ,ProgressBar1
+                                   ,Label3
+                                   ,ProgressBarInstrucoes
+                                   ,ProgressBarBlocos
+                                   ,LabelInstrucoes
+                                   ,LabelBlocos
+                                   ,LabelInstrucoesValor
+                                   ,LabelBlocosValor
+                                   ,TempBusy
+                                   ,RichEditLog
+                                   ,DoZlibNotification
+                                   ,True);
+			end;
+		except
+			on E: Exception do
+      begin
+        WillGetTempData := ActionObterDadosTemporariosEmCasoDeErro.Checked;
+        FFSYGlobals.AbortEverything(FTPClient,AnsiString(E.Message),TempBusy,RichEditLog);
+      end;
+		end;
+	finally
+    Busy := TempBusy;
+    if not WillGetTempData then
+		  Busy := False;
+	end;
 end;
 
 procedure TFSCForm_Main.Action1Execute(Sender: TObject);

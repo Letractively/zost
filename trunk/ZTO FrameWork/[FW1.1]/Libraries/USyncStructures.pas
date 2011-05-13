@@ -22,7 +22,7 @@ type
     	FStoredValue: Int64;
         FSyncRecord: TSyncRecord;
     protected
-    	function ReferencedValue(aTableName: ShortString): ShortString; virtual;
+    	function ReferencedValue(aTableName: AnsiString): AnsiString; virtual;
     	property SyncRecord: TSyncRecord read FSyncRecord;
     public
     	constructor Create(aSyncRecord: TSyncRecord);
@@ -33,31 +33,31 @@ type
     TSyncTable = class;
 
 	TSyncRecord = class(TCollectionItem)
-    private
-    	FActionPerformed: TActionPerformed;
-        FNewPrimaryKeyValue: Int64;
-        FOldPrimaryKeyValue: Int64;
-    	FUpdateDateTime: TDateTime;
-    	FUpdateUser: Cardinal;
-    	FCreateDateTime: TDateTime;
-    	FCreateUser: Cardinal;
-	    function GetSyncTable: TSyncTable;
-        function GetMySelf: TSyncRecord;
+  private
+    FActionPerformed: TActionPerformed;
+    FNewPrimaryKeyValue: Int64;
+    FOldPrimaryKeyValue: Int64;
+    FUpdateDateTime: TDateTime;
+    FUpdateUser: Cardinal;
+    FCreateDateTime: TDateTime;
+    FCreateUser: Cardinal;
+	  function GetSyncTable: TSyncTable;
+    function GetMySelf: TSyncRecord;
 	public
-        function InsertClause(const aValues, aUsePrimaryKeyValue: Boolean): String; virtual; abstract;
-        function UpdateClause: String; virtual; abstract;
-	    function PrimaryKeyValue: Int64; virtual; abstract;
-    	property SyncTable: TSyncTable read GetSyncTable;
-        property MySelf: TSyncRecord read GetMySelf;
-    published
-        property ActionPerformed: TActionPerformed read FActionPerformed write FActionPerformed;
-        property NewPrimaryKeyValue: Int64 read FNewPrimaryKeyValue write FNewPrimaryKeyValue;
-        property OldPrimaryKeyValue: Int64 read FOldPrimaryKeyValue write FOldPrimaryKeyValue;
-        property CreateUser: Cardinal read FCreateUser write FCreateUser;
-        property UpdateUser: Cardinal read FUpdateUser write FUpdateUser;
-        property CreateDateTime: TDateTime read FCreateDateTime write FCreateDateTime;
-        property UpdateDateTime: TDateTime read FUpdateDateTime write FUpdateDateTime;
-    end;
+    function InsertClause(const aValues, aUsePrimaryKeyValue: Boolean): AnsiString; virtual; abstract;
+    function UpdateClause: AnsiString; virtual; abstract;
+	  function PrimaryKeyValue: Int64; virtual; abstract;
+    property SyncTable: TSyncTable read GetSyncTable;
+    property MySelf: TSyncRecord read GetMySelf;
+  published
+    property ActionPerformed: TActionPerformed read FActionPerformed write FActionPerformed;
+    property NewPrimaryKeyValue: Int64 read FNewPrimaryKeyValue write FNewPrimaryKeyValue;
+    property OldPrimaryKeyValue: Int64 read FOldPrimaryKeyValue write FOldPrimaryKeyValue;
+    property CreateUser: Cardinal read FCreateUser write FCreateUser;
+    property UpdateUser: Cardinal read FUpdateUser write FUpdateUser;
+    property CreateDateTime: TDateTime read FCreateDateTime write FCreateDateTime;
+    property UpdateDateTime: TDateTime read FUpdateDateTime write FUpdateDateTime;
+  end;
 
     TSyncRecordClass = class of TSyncRecord;
 
@@ -66,29 +66,29 @@ type
 	TSyncTable = class (TCollection)
     private
     	FParentSyncTables: TSyncedTables;
-        FTableName: ShortString;
-        FPrimaryKeyName: ShortString;
+        FTableName: AnsiString;
+        FPrimaryKeyName: AnsiString;
         FMasterParentSyncTableIndex: ShortInt;
         FLastPrimaryKeyValue: Int64;
 //        procedure QuickSort(L, R: Integer);
 //        procedure Sort;
         function GetSyncRecord(i: Cardinal): TSyncRecord;
-	    function GetParentSyncTableByName(aTableName: ShortString): TSyncTable;
+	    function GetParentSyncTableByName(aTableName: AnsiString): TSyncTable;
 	    function GetSyncRecordByPrimaryKey(aPrimaryKey: Int64): TSyncRecord;
         procedure MoveActionToTop(const aActionPerformed: TActionPerformed);
     protected
 //        function Compare(SyncRecord1, SyncRecord2: TSyncRecord): Integer; virtual;
   	public
-	    constructor Create(aSyncRecordClass: TSyncRecordClass; aTableName, aPrimaryKeyName: ShortString; aParentSyncTables: array of TSyncTable; aMasterParentSyncTableIndex: ShortInt = -1); virtual;
+	    constructor Create(aSyncRecordClass: TSyncRecordClass; aTableName, aPrimaryKeyName: AnsiString; aParentSyncTables: array of TSyncTable; aMasterParentSyncTableIndex: ShortInt = -1); virtual;
     	function Add: TSyncRecord;
         property SyncRecord[i: Cardinal]: TSyncRecord read GetSyncRecord; default;
         property SyncRecordByPrimaryKey[aPrimaryKey: Int64]: TSyncRecord read GetSyncRecordByPrimaryKey;
-        property ParentSyncTableByName[aTableName: ShortString]: TSyncTable read GetParentSyncTableByName;
+        property ParentSyncTableByName[aTableName: AnsiString]: TSyncTable read GetParentSyncTableByName;
     published
         property LastPrimaryKeyValue: Int64 read FLastPrimaryKeyValue write FLastPrimaryKeyValue;
         property MasterParentSyncTableIndex: ShortInt read FMasterParentSyncTableIndex;
-        property TableName: ShortString read FTableName;
-        property PrimaryKeyName: ShortString read FPrimaryKeyName;
+        property TableName: AnsiString read FTableName;
+        property PrimaryKeyName: AnsiString read FPrimaryKeyName;
     end;
 
     TSyncTableClass = class of TSyncTable;
@@ -105,7 +105,7 @@ type
     	function GetSyncedTable(i: Cardinal): TSyncedTable;
     public
      	function Add: TSyncedTable;
-        function FindSyncedTable(aTableName: ShortString; out aFoundIndex: Word): Boolean;
+        function FindSyncedTable(aTableName: AnsiString; out aFoundIndex: Word): Boolean;
         property SyncedTable[i: Cardinal]: TSyncedTable read GetSyncedTable; default;
     end;
 
@@ -116,23 +116,23 @@ isso evita ter que passar por parâmetro em InsertCommand pois no create ela já é
     private
     	FSyncedTables: TSyncedTables;
         FUsePrimaryKeyValue: Boolean;
-    	function GetScript: String;
+    	function GetScript: AnsiString;
     protected
-    	function InsertCommand(aSynctable: TSyncTable; aSyncRecord: TSyncRecord; const aUsePrimaryKeyValue: Boolean): String; virtual; abstract;
-    	function UpdateCommand(aSynctable: TSyncTable; aSyncRecord: TSyncRecord): String; virtual; abstract;
-        function DeleteCommand(aSynctable: TSyncTable; aSyncRecord: TSyncRecord): String; virtual; abstract;
-        function SynKeyCommand(aSynctable: TSyncTable; aSyncRecord: TSyncRecord): String; virtual; abstract;
-		function PreTbActnCmds(aSynctable: TSyncTable): String; virtual;
-		function PosTbActnCmds(aSynctable: TSyncTable): String; virtual;
-		function PreDbActnCmds: String; virtual;
-		function PosDbActnCmds: String; virtual;
+    	function InsertCommand(aSynctable: TSyncTable; aSyncRecord: TSyncRecord; const aUsePrimaryKeyValue: Boolean): AnsiString; virtual; abstract;
+    	function UpdateCommand(aSynctable: TSyncTable; aSyncRecord: TSyncRecord): AnsiString; virtual; abstract;
+        function DeleteCommand(aSynctable: TSyncTable; aSyncRecord: TSyncRecord): AnsiString; virtual; abstract;
+        function SynKeyCommand(aSynctable: TSyncTable; aSyncRecord: TSyncRecord): AnsiString; virtual; abstract;
+		function PreTbActnCmds(aSynctable: TSyncTable): AnsiString; virtual;
+		function PosTbActnCmds(aSynctable: TSyncTable): AnsiString; virtual;
+		function PreDbActnCmds: AnsiString; virtual;
+		function PosDbActnCmds: AnsiString; virtual;
     public
     	constructor Create(const aOwner: TComponent; const aUsePrimaryKeyValue: Boolean); reintroduce; virtual;
         destructor Destroy; override;
         { Se precisar sobreponha este método para detectar nomes de tabela,
         nomes de chave primária, tableas mestre, etc. }
-	    procedure AddSyncTable(aSyncTableClass: TSyncTableClass; aSyncRecordClass: TSyncRecordClass; var aSyncTableInstance; aTableName, aPrimaryKeyName: ShortString; aParentSyncTables: array of TSyncTable; aMasterParentSyncTableIndex: ShortInt = -1); virtual;
-        property ToScript: String read GetScript;
+	    procedure AddSyncTable(aSyncTableClass: TSyncTableClass; aSyncRecordClass: TSyncRecordClass; var aSyncTableInstance; aTableName, aPrimaryKeyName: AnsiString; aParentSyncTables: array of TSyncTable; aMasterParentSyncTableIndex: ShortInt = -1); virtual;
+        property ToScript: AnsiString read GetScript;
     	property SyncedTables: TSyncedTables read FSyncedTables write FSyncedTables;
     end;
 
@@ -152,7 +152,7 @@ type
 
 { TSyncFile }
 
-procedure TSyncFile.AddSyncTable(aSyncTableClass: TSyncTableClass; aSyncRecordClass: TSyncRecordClass; var aSyncTableInstance; aTableName, aPrimaryKeyName: ShortString; aParentSyncTables: array of TSyncTable; aMasterParentSyncTableIndex: ShortInt = -1);
+procedure TSyncFile.AddSyncTable(aSyncTableClass: TSyncTableClass; aSyncRecordClass: TSyncRecordClass; var aSyncTableInstance; aTableName, aPrimaryKeyName: AnsiString; aParentSyncTables: array of TSyncTable; aMasterParentSyncTableIndex: ShortInt = -1);
 var
     FoundIndex: Word;
 begin
@@ -178,7 +178,7 @@ begin
   	inherited;
 end;
 
-function TSyncFile.GetScript: String;
+function TSyncFile.GetScript: AnsiString;
 var
 	ST: Word;
     SR: Cardinal;
@@ -218,22 +218,22 @@ begin
 	Result := Result + PosDbActnCmds;
 end;
 
-function TSyncFile.PosDbActnCmds: String;
+function TSyncFile.PosDbActnCmds: AnsiString;
 begin
 	Result := '# COMANDOS "PÓS AÇÕES" NO BANCO DE DADOS'#13#10;
 end;
 
-function TSyncFile.PosTbActnCmds(aSynctable: TSyncTable): String;
+function TSyncFile.PosTbActnCmds(aSynctable: TSyncTable): AnsiString;
 begin
 	Result := '# COMANDOS "PÓS AÇÕES" PARA A TABELA ' + aSynctable.TableName + #13#10;
 end;
 
-function TSyncFile.PreDbActnCmds: String;
+function TSyncFile.PreDbActnCmds: AnsiString;
 begin
 	Result := '# COMANDOS "PRÉ AÇÕES" NO BANCO DE DADOS'#13#10;
 end;
 
-function TSyncFile.PreTbActnCmds(aSynctable: TSyncTable): String;
+function TSyncFile.PreTbActnCmds(aSynctable: TSyncTable): AnsiString;
 begin
 	Result := '# COMANDOS "PRE AÇÕES" PARA A TABELA ' + aSynctable.TableName + #13#10;
 end;
@@ -354,7 +354,7 @@ end;
 //        QuickSort(0, pred(Count));
 //end;
 
-constructor TSyncTable.Create(aSyncRecordClass: TSyncRecordClass; aTableName, aPrimaryKeyName: ShortString; aParentSyncTables: array of TSyncTable; aMasterParentSyncTableIndex: ShortInt = -1);
+constructor TSyncTable.Create(aSyncRecordClass: TSyncRecordClass; aTableName, aPrimaryKeyName: AnsiString; aParentSyncTables: array of TSyncTable; aMasterParentSyncTableIndex: ShortInt = -1);
 var
 	i: Byte;
 begin
@@ -369,7 +369,7 @@ begin
     		FParentSyncTables.Add.SyncedTable := aParentSyncTables[i];
 end;
 
-function TSyncTable.GetParentSyncTableByName(aTableName: ShortString): TSyncTable;
+function TSyncTable.GetParentSyncTableByName(aTableName: AnsiString): TSyncTable;
 var
 	PST: Byte; { Parent SyncTable }
 begin
@@ -451,7 +451,7 @@ begin
 	Result := TSyncedTable(inherited Add);
 end;
 
-function TSyncedTables.FindSyncedTable(aTableName: ShortString; out aFoundIndex: Word): Boolean;
+function TSyncedTables.FindSyncedTable(aTableName: AnsiString; out aFoundIndex: Word): Boolean;
 var
     i: Word;
 begin
@@ -478,11 +478,11 @@ begin
     FSyncRecord := aSyncRecord;
 end;
 
-function TSyncKey.ReferencedValue(aTableName: ShortString): ShortString;
+function TSyncKey.ReferencedValue(aTableName: AnsiString): AnsiString;
 begin
-    { TODO -oCarlos Feitoza -cEXPLICAÇÃO : Se o valor armazenado na chave for
-    zero, significa que é um valor inválido para uma chave, logo usa-se NULL }
-	Result := IfThen(FStoredValue > 0,IntToStr(FStoredValue),'NULL');
+  { TODO -oCarlos Feitoza -cEXPLICAÇÃO : Se o valor armazenado na chave for
+  zero, significa que é um valor inválido para uma chave, logo usa-se NULL }
+	Result := AnsiString(IfThen(FStoredValue > 0,IntToStr(FStoredValue),'NULL'));
 end;
 
 { TSyncRecord }

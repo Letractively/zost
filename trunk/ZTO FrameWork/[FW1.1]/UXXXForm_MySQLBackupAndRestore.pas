@@ -75,9 +75,9 @@ type
         { Private declarations }
         FProcessorEvents: TProcessorEvents;
         procedure GetBackupFiles(const aStrings: TStrings);
-        function Backup: String;
+        function Backup: AnsiString;
         procedure Restore(const aScriptFile: TFileName);
-        procedure DoMBDBN(aMoment: TMySQLBackupDataBaseNotificationMoment; StrParam0, StrParam1: String; IntParam0, IntParam1: Cardinal);
+        procedure DoMBDBN(aMoment: TMySQLBackupDataBaseNotificationMoment; StrParam0, StrParam1: AnsiString; IntParam0, IntParam1: Cardinal);
         procedure DoExecuteSQLScript(const aExecuteSQLScriptEvent: TExecuteSQLScriptEvent; const aScriptParts: TScriptParts; const aProcessor: TZSQLProcessor);
         procedure DoSplitSQLScript(const aSplitSQLScriptEvent: TSplitSQLScriptEvent; const aScriptParts: TScriptParts; const aProcessor: TZSQLProcessor);
     public
@@ -145,7 +145,7 @@ procedure TXXXForm_MySQLBackupAndRestore.GetBackupFiles(const aStrings: TStrings
 
 begin
 	aStrings.Clear;
-	ChDir(CreateParameters.Configurations.CurrentDir + '\' + BACKUP_SUBDIR);
+	ChDir(String(CreateParameters.Configurations.CurrentDir) + '\' + BACKUP_SUBDIR);
 	SearchTree;
 end;
 
@@ -157,18 +157,17 @@ end;
 
 procedure TXXXForm_MySQLBackupAndRestore.Action_BackupExecute(Sender: TObject);
 var
-    BackupFileName: String;
+  BackupFileName: AnsiString;
 begin
-    inherited;
-    try
-        Action_Backup.Enabled := False;
-        BackupFileName := Label_BackupDirectory.Caption + Label_BackupFileName.Caption;
-        CreateParameters.MyDataModule.SaveTextFile(Backup
-                                 ,BackupFileName);
-        MessageBox(Handle,'O processo de backup foi concluído com sucesso!','Backup concluído',MB_ICONINFORMATION);
-    finally
-        Action_Backup.Enabled := True;
-    end;
+  inherited;
+  try
+    Action_Backup.Enabled := False;
+    BackupFileName := AnsiString(Label_BackupDirectory.Caption + Label_BackupFileName.Caption);
+    CreateParameters.MyDataModule.SaveTextFile(Backup,TFileName(BackupFileName));
+    MessageBox(Handle,'O processo de backup foi concluído com sucesso!','Backup concluído',MB_ICONINFORMATION);
+  finally
+    Action_Backup.Enabled := True;
+  end;
 end;
 
 procedure TXXXForm_MySQLBackupAndRestore.Action_RestoreExecute(Sender: TObject);
@@ -186,19 +185,19 @@ begin
     end;
 end;
 
-function TXXXForm_MySQLBackupAndRestore.Backup: String;
+function TXXXForm_MySQLBackupAndRestore.Backup: AnsiString;
 var
-    MBP: TMySQLBackupDataBaseParameters;
+   MBP: TMySQLBackupDataBaseParameters;
 begin
-    ZeroMemory(@MBP,SizeOf(TMySQLBackupDataBaseParameters));
-    with MBP do
-    begin
-        DataBaseName := LabeledEdit_DatabaseName.Text;
-        OnNotification := DoMBDBN;
-    end;
+  ZeroMemory(@MBP,SizeOf(TMySQLBackupDataBaseParameters));
+  with MBP do
+  begin
+    DataBaseName := AnsiString(LabeledEdit_DatabaseName.Text);
+    OnNotification := DoMBDBN;
+  end;
 
-    Result := CreateParameters.MyDataModule.MySQLBackupDataBase(CreateParameters.MyDataModule.DataModuleMain.ZConnections[0].Connection
-                                                               ,MBP);
+  Result := CreateParameters.MyDataModule.MySQLBackupDataBase(CreateParameters.MyDataModule.DataModuleMain.ZConnections[0].Connection
+                                                             ,MBP);
 end;
 
 procedure TXXXForm_MySQLBackupAndRestore.DoExecuteSQLScript(const aExecuteSQLScriptEvent: TExecuteSQLScriptEvent;
@@ -215,7 +214,7 @@ begin
             ProgressBarBlocos.Position := 0;
             ProgressBarBlocos.Step := 1;
 
-            CreateParameters.MyDataModule.SetLabelDescriptionValue(LabelInstrucoes,Label_InstrucoesValor,'0 / ' + IntToStr(ProgressBarInstrucoes.Max));
+            CreateParameters.MyDataModule.SetLabelDescriptionValue(LabelInstrucoes,Label_InstrucoesValor,'0 / ' + AnsiString(IntToStr(ProgressBarInstrucoes.Max)));
         end;
         esseBeforeExecuteScriptPart: begin
             aProcessor.Parse;
@@ -224,7 +223,7 @@ begin
             ProgressBarInstrucoes.Step := 1;
         end;
         esseAfterExecuteScriptPart: begin
-            CreateParameters.MyDataModule.SetLabelDescriptionValue(LabelBlocos,Label_BlocosValor,IntToStr(Succ(ProgressBarBlocos.Position)) + ' / ' + IntToStr(aScriptParts.Count));
+            CreateParameters.MyDataModule.SetLabelDescriptionValue(LabelBlocos,Label_BlocosValor,AnsiString(IntToStr(Succ(ProgressBarBlocos.Position))) + ' / ' + AnsiString(IntToStr(aScriptParts.Count)));
             ProgressBarBlocos.StepIt;
             Application.ProcessMessages;
         end;
@@ -262,7 +261,7 @@ end;
 
 procedure TXXXForm_MySQLBackupAndRestore.DoMBDBN(aMoment: TMySQLBackupDataBaseNotificationMoment;
                                                  StrParam0
-                                                ,StrParam1: String;
+                                                ,StrParam1: AnsiString;
                                                  IntParam0
                                                 ,IntParam1: Cardinal);
 begin
@@ -278,11 +277,11 @@ begin
             ProgressBar_Current.Step := 1;
 
             if StrParam1 = 'FUNCTION' then
-                Label_Overall.Caption := 'Extraindo stored function "' + StrParam0 + '" (' + IntToStr(IntParam1) + '/' + IntToStr(IntParam0) + ')'
+                Label_Overall.Caption := String('Extraindo stored function "' + StrParam0 + '" (' + AnsiString(IntToStr(IntParam1)) + '/' + AnsiString(IntToStr(IntParam0)) + ')')
             else
-                Label_Overall.Caption := 'Extraindo stored procedure "' + StrParam0 + '" (' + IntToStr(IntParam1) + '/' + IntToStr(IntParam0) + ')';
+                Label_Overall.Caption := String('Extraindo stored procedure "' + StrParam0 + '" (' + AnsiString(IntToStr(IntParam1)) + '/' + AnsiString(IntToStr(IntParam0)) + ')');
 
-            Label_Current.Caption := 'Salvando a definição de "' + StrParam0 + '"...';
+            Label_Current.Caption := String('Salvando a definição de "' + StrParam0 + '"...');
                 
             ProgressBar_Overall.StepIt;
             ProgressBar_Current.StepIt;
@@ -298,9 +297,9 @@ begin
             ProgressBar_Current.Position := 0;
             ProgressBar_Current.Step := 1;
 
-            Label_Overall.Caption := 'Extraindo view "' + StrParam0 + '" (' + IntToStr(IntParam1) + '/' + IntToStr(IntParam0) + ')';
+            Label_Overall.Caption := String('Extraindo view "' + StrParam0 + '" (' + AnsiString(IntToStr(IntParam1)) + '/' + AnsiString(IntToStr(IntParam0)) + ')');
 
-            Label_Current.Caption := 'Salvando a definição de "' + StrParam0 + '"...';
+            Label_Current.Caption := String('Salvando a definição de "' + StrParam0 + '"...');
             
             ProgressBar_Overall.StepIt;
             ProgressBar_Current.StepIt;
@@ -316,9 +315,9 @@ begin
             ProgressBar_Current.Position := 0;
             ProgressBar_Current.Step := 1;
 
-            Label_Overall.Caption := 'Extraindo trigger "' + StrParam0 + '" (' + IntToStr(IntParam1) + '/' + IntToStr(IntParam0) + ')';
+            Label_Overall.Caption := 'Extraindo trigger "' + String(StrParam0) + '" (' + IntToStr(IntParam1) + '/' + IntToStr(IntParam0) + ')';
 
-            Label_Current.Caption := 'Salvando a definição de "' + StrParam0 + '"...';
+            Label_Current.Caption := 'Salvando a definição de "' + String(StrParam0) + '"...';
             
             ProgressBar_Overall.StepIt;
             ProgressBar_Current.StepIt;
@@ -330,7 +329,7 @@ begin
             ProgressBar_Overall.Step := 1;
         end;
         nmBeginExtractTable: begin
-            Label_Overall.Caption := 'Extraindo a definição e as chaves de "' + StrParam0 + '" (' + IntToStr(IntParam1) + '/' + IntToStr(IntParam0) + ')';
+            Label_Overall.Caption := 'Extraindo a definição e as chaves de "' + String(StrParam0) + '" (' + IntToStr(IntParam1) + '/' + IntToStr(IntParam0) + ')';
             ProgressBar_Overall.StepIt;
         end;
         nmBeforeExtractRecords: begin
@@ -339,7 +338,7 @@ begin
             ProgressBar_Current.Step := 1;
         end;
         nmBeginExtractRecord: begin
-            Label_Current.Caption := 'Extraindo as inserções para "' + StrParam0 + '" (' + IntToStr(IntParam1) + '/' + IntToStr(IntParam0) + ')';
+            Label_Current.Caption := 'Extraindo as inserções para "' + String(StrParam0) + '" (' + IntToStr(IntParam1) + '/' + IntToStr(IntParam0) + ')';
             ProgressBar_Current.StepIt;
         end;
     end;
@@ -366,10 +365,10 @@ begin
     inherited;
     TabSheet_Advanced.TabVisible := False;
 
-    Label_BackupDirectory.Caption := CreateParameters.Configurations.CurrentDir + '\' + BACKUP_SUBDIR;
+    Label_BackupDirectory.Caption := String(CreateParameters.Configurations.CurrentDir) + '\' + BACKUP_SUBDIR;
 
-  	if not DirectoryExists(CreateParameters.Configurations.CurrentDir + '\' + BACKUP_SUBDIR) then
-	  	CreateDir(CreateParameters.Configurations.CurrentDir + '\' + BACKUP_SUBDIR);
+  	if not DirectoryExists(String(CreateParameters.Configurations.CurrentDir) + '\' + BACKUP_SUBDIR) then
+	  	CreateDir(String(CreateParameters.Configurations.CurrentDir) + '\' + BACKUP_SUBDIR);
 
     CreateParameters.MyDataModule.DataModuleMain.ZConnections[0].Connection.GetProtocolNames(ComboBox_Protocol.Items);
     ComboBox_IsolationLevel.Items.AddObject('tiNone',TObject(tiNone));
@@ -380,13 +379,13 @@ begin
 
     { Quando for stand alone devemos carregar as configurações da mesma forma, a
     diferença é que a página de configurações modifica estas configurações }
-    ComboBox_Protocol.ItemIndex := ComboBox_Protocol.Items.IndexOf(CreateParameters.Configurations.DBProtocol);
+    ComboBox_Protocol.ItemIndex := ComboBox_Protocol.Items.IndexOf(String(CreateParameters.Configurations.DBProtocol));
     ComboBox_IsolationLevel.ItemIndex := ComboBox_IsolationLevel.Items.IndexOfObject(TObject(CreateParameters.Configurations.DBIsoLevel));
-    LabeledEdit_HostAddress.Text := CreateParameters.Configurations.DBHostAddr;
+    LabeledEdit_HostAddress.Text := String(CreateParameters.Configurations.DBHostAddr);
     LabeledEdit_Port.Text := IntToStr(CreateParameters.Configurations.DBPortNumb);
-    LabeledEdit_DatabaseName.Text := CreateParameters.Configurations.DBDataBase;
-    LabeledEdit_UserName.Text := CreateParameters.Configurations.DBUserName;
-    LabeledEdit_Password.Text := CreateParameters.Configurations.DBPassword;
+    LabeledEdit_DatabaseName.Text := String(CreateParameters.Configurations.DBDataBase);
+    LabeledEdit_UserName.Text := String(CreateParameters.Configurations.DBUserName);
+    LabeledEdit_Password.Text := String(CreateParameters.Configurations.DBPassword);
 
     {$IFNDEF STANDALONE}
     TabSheet_Configurations.Enabled := False;

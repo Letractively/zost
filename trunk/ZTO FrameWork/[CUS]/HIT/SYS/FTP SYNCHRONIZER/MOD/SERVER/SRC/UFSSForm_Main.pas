@@ -65,7 +65,7 @@ type
         procedure FormCreate(Sender: TObject);
         procedure Button1Click(Sender: TObject);
     private
-        FtpRoot: String;
+        FtpRoot: AnsiString;
         FFSYGlobals: TFSYGlobals;
 
         { Estes campos devem estar dentro das threads }
@@ -75,14 +75,14 @@ type
         procedure Ativar;
         function Desativar: Boolean;
         procedure UpdateClientCount;
-        function UsuarioAutenticado(Usuario, Senha: String; ClienteConectado: TFtpCtrlSocket): Boolean;
-        function UsuarioRoboAutenticado(Usuario, Senha: String; ClienteConectado: TFtpCtrlSocket; var DecodedUser: String): Boolean;
-        procedure ClearDirectory(Directory: String);
+        function UsuarioAutenticado(Usuario, Senha: AnsiString; ClienteConectado: TFtpCtrlSocket): Boolean;
+        function UsuarioRoboAutenticado(Usuario, Senha: AnsiString; ClienteConectado: TFtpCtrlSocket; var DecodedUser: AnsiString): Boolean;
+        procedure ClearDirectory(Directory: AnsiString);
         procedure AbortEverything(aConnectedClient: TConnectedClient;
-                                  aErrorMessage: String);
+                                  aErrorMessage: AnsiString);
 
         { Estes métodos devem estar dentro das Threads }
-        procedure DoGetChecksum(aTableName: String; aTableNo, aTableCount: Word; aTableChecksum: String; const aIgnored: Boolean);
+        procedure DoGetChecksum(aTableName: AnsiString; aTableNo, aTableCount: Word; aTableChecksum: AnsiString; const aIgnored: Boolean);
         procedure ProcessRequest(aClient: TConnectedClient);
         procedure DoZlibNotification(aNotificatioType: TZlibNotificationType; aOperation: TZLibOperation; aInputFile, aOutputFile: TFileName);
     public
@@ -105,7 +105,7 @@ procedure TFSSForm_Main.Button1Click(Sender: TObject);
 begin
 	SalvarLog;
     RichEditLog.Clear;
-    FFSYGlobals.ShowOnLog('§ Log salvo e limpo em ' + FormatDateTime('dd.mm.yyyy "às" hh.nn.ss',Now),RichEditLog);
+    FFSYGlobals.ShowOnLog('§ Log salvo e limpo em ' + AnsiString(FormatDateTime('dd.mm.yyyy "às" hh.nn.ss',Now)),RichEditLog);
 end;
 
 {Este procedure ativa o servidor na porta selecionada nas configurações
@@ -123,15 +123,15 @@ begin
   if Self.Tag = 0 then
   begin
     FFSYGlobals.ShowOnLog('Usando:',RichEditLog);
-    FFSYGlobals.ShowOnLog('  ' + Trim(OverbyteIcsWSocket.CopyRight),RichEditLog);
-    FFSYGlobals.ShowOnLog('  ' + Trim(OverbyteIcsFtpSrv.CopyRight),RichEditLog);
+    FFSYGlobals.ShowOnLog('  ' + AnsiString(Trim(OverbyteIcsWSocket.CopyRight)),RichEditLog);
+    FFSYGlobals.ShowOnLog('  ' + AnsiString(Trim(OverbyteIcsFtpSrv.CopyRight)),RichEditLog);
     FFSYGlobals.ShowOnLog('  Informações sobre o Winsock...',RichEditLog);
-    FFSYGlobals.ShowOnLog('    Versão .....: ' + Format('%d.%d', [WSI.wHighVersion shr 8,WSI.wHighVersion and 15]),RichEditLog);
-    FFSYGlobals.ShowOnLog('    Descrição ..: ' + String(StrPas(WSI.szDescription)),RichEditLog);
-    FFSYGlobals.ShowOnLog('    Status .....: ' + String(StrPas(WSI.szSystemStatus)),RichEditLog);
+    FFSYGlobals.ShowOnLog('    Versão .....: ' + AnsiString(Format('%d.%d', [WSI.wHighVersion shr 8,WSI.wHighVersion and 15])),RichEditLog);
+    FFSYGlobals.ShowOnLog('    Descrição ..: ' + StrPas(WSI.szDescription),RichEditLog);
+    FFSYGlobals.ShowOnLog('    Status .....: ' + StrPas(WSI.szSystemStatus),RichEditLog);
 
     if Assigned(WSI.lpVendorInfo) then
-      FFSYGlobals.ShowOnLog('    ' + String(StrPas(WSI.lpVendorInfo)),RichEditLog);
+      FFSYGlobals.ShowOnLog('    ' + AnsiString(StrPas(WSI.lpVendorInfo)),RichEditLog);
 
     Self.Tag := 1;
   end;
@@ -168,16 +168,16 @@ begin
             Free
         end;
 
-  	FFSYGlobals.ShowOnLog(Format(FTPSYNC_COPYRIGHT,[FormatDateTime('yyyy',Now)]),RichEditLog);
+  	FFSYGlobals.ShowOnLog(AnsiString(Format(FTPSYNC_COPYRIGHT,[FormatDateTime('yyyy',Now)])),RichEditLog);
   	FFSYGlobals.ShowOnLog('-----------------------------------------------------------------------------------------------',RichEditLog);
   	Caption := 'FTP Syncronizer - Edição exclusiva para ' + FTPSYNC_CUSTOMCLIENT;
 
   	UpdateClientCount;
 
-  	FtpRoot := GetCurrentDir + '\FTPROOT\';
+  	FtpRoot := AnsiString(GetCurrentDir) + '\FTPROOT\';
 
-  	if not DirectoryExists(FtpRoot) then
-  		CreateDir(FtpRoot);
+  	if not DirectoryExists(String(FtpRoot)) then
+  		CreateDir(String(FtpRoot));
 
 	FFSYGlobals := TFSYGlobals.Create;
 
@@ -234,7 +234,7 @@ procedure TFSSForm_Main.DoStart;
 begin
 	GreenImage.Visible := True;
   	RedImage.Visible := False;
-  	FFSYGlobals.ShowOnLog('§ Servidor ativado na porta ' + IntToStr(FFSYGlobals.Configurations.FT_PortNumb),RichEditLog);
+  	FFSYGlobals.ShowOnLog('§ Servidor ativado na porta ' + AnsiString(IntToStr(FFSYGlobals.Configurations.FT_PortNumb)),RichEditLog);
   	FFSYGlobals.ShowOnLog('-----------------------------------------------------------------------------------------------',RichEditLog);
   	UpdateClientCount;
 end;
@@ -258,7 +258,7 @@ end;
 §param Answer Este parâmetro contém a resposta a ser enviada para o cliente}
 procedure TFSSForm_Main.DoClientCommand;
 begin
-	FFSYGlobals.ShowOnLog('COMANDO:> ' + Keyword + ' ' + Params + ' (' + Client.GetPeerAddr + ')',RichEditLog);
+	FFSYGlobals.ShowOnLog('COMANDO:> ' + AnsiString(Keyword) + ' ' + AnsiString(Params) + ' (' + AnsiString(Client.GetPeerAddr) + ')',RichEditLog);
 end;
 
 {Este evento é lançado quando o servidor manda uma resposta ao cliente
@@ -267,7 +267,7 @@ end;
 §param Answer Este parâmetro variável contém a resposta a ser enviada para o cliente e pode ser alterao aqui}
 procedure TFSSForm_Main.DoAnswerToClient;
 begin
-	FFSYGlobals.ShowOnLog('RETORNO:> ' + Answer + ' (' + Client.GetPeerAddr + ')',RichEditLog);
+	FFSYGlobals.ShowOnLog('RETORNO:> ' + AnsiString(Answer) + ' (' + AnsiString(Client.GetPeerAddr) + ')',RichEditLog);
 end;
 
 {Este procedure limpa o diretório passado como parâmetro, removendo todos os
@@ -307,7 +307,7 @@ procedure TFSSForm_Main.ClearDirectory;
   end;
 
 begin
-	ChDir(Directory);
+	ChDir(String(Directory));
 	SearchTree;
 end;
 
@@ -319,20 +319,20 @@ servidor.
 procedure TFSSForm_Main.DoClientConnect;
 begin
 	{ O cliente iniciou o processo de conexão. Aqui  podem ser feitas verificações
-  	que limitam o acesso. Tente usar uma mascara e compare com o IP }
-  	if Client.GetPeerAddr = '193.121.12.25' then
-  	begin
-		Client.SendAnswer('421 - Conexão não permitida.');
-    	Client.Close;
-    	Exit;
+ 	que limitam o acesso. Tente usar uma mascara e compare com o IP }
+ 	if Client.GetPeerAddr = '193.121.12.25' then
+ 	begin
+		Client.SendAnswer(RawByteString('421 - Conexão não permitida.'));
+   	Client.Close;
+   	Exit;
 	end;
 
-	FFSYGlobals.ShowOnLog('§ O cliente ' + Client.GetPeerAddr + '/' + Client.GetPeerPort + ' acabou de conectar-se',RichEditLog);
+	FFSYGlobals.ShowOnLog('§ O cliente ' + AnsiString(Client.GetPeerAddr) + '/' + AnsiString(Client.GetPeerPort) + ' acabou de conectar-se',RichEditLog);
 
     UpdateClientCount;
 
   	Client.HomeDir := '';
-  	Client.Directory := FtpRoot;
+  	Client.Directory := String(FtpRoot);
 end;
 
 { Este manipulador de evento é executado sempre que um cliente se desconecta do
@@ -342,7 +342,7 @@ servidor.
 §param AError Este parâmetro contém um código de erro. Se for zero indica que não houve erro. Se for maior que zero houve um erro}
 procedure TFSSForm_Main.DoClientDisconnect;
 begin
-	FFSYGlobals.ShowOnLog('§ Cliente (' + Client.GetPeerAddr + ') desconectado',RichEditLog);
+	FFSYGlobals.ShowOnLog('§ Cliente (' + AnsiString(Client.GetPeerAddr) + ') desconectado',RichEditLog);
     UpdateClientCount;
 	{ Se uma conexão com o banco foi estabelecida então devemos destruí-la }
 	if Assigned((Client as TConnectedClient).DataBaseConnection) then
@@ -394,15 +394,15 @@ begin
  	try
   	try
       FFSYGlobals.ConfigureConnection(ROConnection);
-      FFSYGlobals.ConfigureDataSet(ROConnection,RODataSet,Format(SQL_SELECT_ALL_USERS,[Usuario,Senha]));
+      FFSYGlobals.ConfigureDataSet(ROConnection,RODataSet,AnsiString(Format(SQL_SELECT_ALL_USERS,[Usuario,Senha])));
       { Verificando senha e login -- Inicio ============================ }
 			if RODataSet.RecordCount = 1 then
       begin
         Result := True;
         (ClienteConectado as TConnectedClient).UserName := ClienteConectado.UserName;
         (ClienteConectado as TConnectedClient).PassWord := ClienteConectado.PassWord;
-        (ClienteConectado as TConnectedClient).RealName := RODataSet.FieldByName('FULL_NAME').AsString;
-        (ClienteConectado as TConnectedClient).Description := RODataSet.FieldByName('DESCRIPTION').AsString;
+        (ClienteConectado as TConnectedClient).RealName := RODataSet.FieldByName('FULL_NAME').AsAnsiString;
+        (ClienteConectado as TConnectedClient).Description := RODataSet.FieldByName('DESCRIPTION').AsAnsiString;
       end;
             { Verificando senha e login -- Fim =============================== }
         except
@@ -421,37 +421,37 @@ function TFSSForm_Main.UsuarioRoboAutenticado;
 var
 	RODataSet: TZReadOnlyQuery;
     ROConnection: TZConnection;
-    DecodedPass: String;
+    DecodedPass: AnsiString;
 begin
 	Result := False;
     ROConnection := nil;
   	RODataSet := nil;
 
-    if Pos('RobotNoDB',Usuario) = 1 then
-    	DecodedUser := Copy(Usuario,10,Length(Usuario))
-    else if Pos('Robot',Usuario) = 1 then
-    	DecodedUser := Copy(Usuario,6,Length(Usuario))
+    if Pos('RobotNoDB',String(Usuario)) = 1 then
+    	DecodedUser := Copy(Usuario,10,Length(String(Usuario)))
+    else if Pos('Robot',String(Usuario)) = 1 then
+    	DecodedUser := Copy(Usuario,6,Length(String(Usuario)))
     else
     	DecodedUser := '';
 
-    if Pos('My Name Is DO, BDO!',Senha) = 1 then
-    	DecodedPass := Copy(Senha,20,Length(Senha))
+    if Pos('My Name Is DO, BDO!',String(Senha)) = 1 then
+    	DecodedPass := AnsiString(Copy(String(Senha),20,Length(String(Senha))))
     else
     	DecodedPass := '';
 
   	try
 		try
         	FFSYGlobals.ConfigureConnection(ROConnection);
-            FFSYGlobals.ConfigureDataSet(ROConnection,RODataSet,Format(SQL_SELECT_ALL_USERS2,[DecodedUser,DecodedPass]));
+            FFSYGlobals.ConfigureDataSet(ROConnection,RODataSet,AnsiString(Format(SQL_SELECT_ALL_USERS2,[DecodedUser,DecodedPass])));
 
             { Verificando senha e login -- Inicio ============================ }
 			if RODataSet.RecordCount = 1 then
             begin
                 with (ClienteConectado as TConnectedClient) do
                 begin
-                    UserName := Usuario;
-                    Password := Senha;
-                    RealName := 'Optimus Prime (' + Copy(Usuario,10,Length(Usuario)) + ')';
+                    UserName := String(Usuario);
+                    Password := String(Senha);
+                    RealName := 'Optimus Prime (' + AnsiString(Copy(String(Usuario),10,Length(String(Usuario)))) + ')';
                     Description := 'Usuário-Robô de conexão automática avançada';
                 end;
             	Result := True;
@@ -476,16 +476,16 @@ end;
 §param Authenticated Este parâmetro variável pode ser alterado para refletir o status pos autenticação. Se ele receber true, o usuário está autenticado}
 procedure TFSSForm_Main.DoAuthenticate;
 var
-  	StrTemp: String;
+  	StrTemp: AnsiString;
   	HoraAtual: Byte;
-    ClientConnectedIP: String;
+    ClientConnectedIP: AnsiString;
 begin
 	{ If you need to store info about the client for later processing }
   	{ you can use Client.UserData to store a pointer to an object or  }
   	{ a record with the needed info.                                  }
   	Authenticated := False;
   	try
-		if UsuarioAutenticado(UserName,Password,Client) then
+		if UsuarioAutenticado(AnsiString(UserName),AnsiString(Password),Client) then
     	begin
         	{ Criando conexão com o banco e mantendo-a atrelada ao usuário }
   			FFSYGlobals.ShowOnLog('§ Iniciando conexão transacional com o banco de dados...',RichEditLog);
@@ -506,18 +506,18 @@ begin
             end;
 
             { Os nomes dos diretórios serão o IPs das pessoas que conectam }
-            (Client as TConnectedClient).IP := Client.GetPeerAddr;
+            (Client as TConnectedClient).IP := AnsiString(Client.GetPeerAddr);
             ClientConnectedIP := (Client as TConnectedClient).IP;// + '#' + IntToStr(Client.ID);
 
-            if not DirectoryExists(FtpRoot + StringReplace(ClientConnectedIP,'.','x',[rfReplaceAll])) then
+            if not DirectoryExists(String(FtpRoot) + StringReplace(String(ClientConnectedIP),'.','x',[rfReplaceAll])) then
             begin
-                if CreateDir(FtpRoot + StringReplace(ClientConnectedIP,'.','x',[rfReplaceAll])) then
-                    Client.HomeDir := FtpRoot + StringReplace(ClientConnectedIP,'.','x',[rfReplaceAll]) + '\';
+                if CreateDir(String(FtpRoot) + StringReplace(String(ClientConnectedIP),'.','x',[rfReplaceAll])) then
+                    Client.HomeDir := String(FtpRoot) + StringReplace(String(ClientConnectedIP),'.','x',[rfReplaceAll]) + '\';
             end
             else
             begin
-                ClearDirectory(FtpRoot + StringReplace(ClientConnectedIP,'.','x',[rfReplaceAll]));
-                Client.HomeDir := FtpRoot + StringReplace(ClientConnectedIP,'.','x',[rfReplaceAll]) + '\';
+                ClearDirectory(FtpRoot + AnsiString(StringReplace(String(ClientConnectedIP),'.','x',[rfReplaceAll])));
+                Client.HomeDir := String(FtpRoot) + StringReplace(String(ClientConnectedIP),'.','x',[rfReplaceAll]) + '\';
             end;
 
             HoraAtual := StrToInt(FormatDateTime('hh',Now));
@@ -530,12 +530,12 @@ begin
                 StrTemp := 'Boa noite';
 
             Authenticated := True;
-            FFSYGlobals.ShowOnLog('§ O usuário "' + UserName + '@' + ClientConnectedIP + '" foi autenticado',RichEditLog);
-            Client.SendAnswer(Format(FTPSYNC_CLIENT_AUTHENTICATED,[StrTemp,(Client as TConnectedClient).RealName]));
+            FFSYGlobals.ShowOnLog('§ O usuário "' + AnsiString(UserName) + '@' + ClientConnectedIP + '" foi autenticado',RichEditLog);
+            Client.SendAnswer(AnsiString(Format(FTPSYNC_CLIENT_AUTHENTICATED,[StrTemp,(Client as TConnectedClient).RealName])));
 		end
     	{ Conexões cujo usuário começa com "Robot" são temporárias. São conexões
         automáticas para depuração e utilização avançada }
-        else if UsuarioRoboAutenticado(UserName,Password,Client,StrTemp) then
+        else if UsuarioRoboAutenticado(AnsiString(UserName),AnsiString(Password),Client,StrTemp) then
         begin
 			if not (Pos('RobotNoDB',UserName) = 1) then
             begin
@@ -556,13 +556,13 @@ begin
                 end;
             end;
 
-            (Client as TConnectedClient).IP := Client.GetPeerAddr;
+            (Client as TConnectedClient).IP := AnsiString(Client.GetPeerAddr);
             ClientConnectedIP := (Client as TConnectedClient).IP;
 
-            if DirectoryExists(FtpRoot + StrTemp + '\' + StringReplace(ClientConnectedIP,'.','x',[rfReplaceAll])) then
-	            Client.HomeDir := FtpRoot + StrTemp + '\' + StringReplace(ClientConnectedIP,'.','x',[rfReplaceAll]) + '\'
+            if DirectoryExists(String(FtpRoot) + String(StrTemp) + '\' + StringReplace(String(ClientConnectedIP),'.','x',[rfReplaceAll])) then
+	            Client.HomeDir := String(FtpRoot) + String(StrTemp) + '\' + StringReplace(String(ClientConnectedIP),'.','x',[rfReplaceAll]) + '\'
             else
-            	raise Exception.Create('O usuário "' + StrTemp + '" ao qual este usuário-robô se refere, não possui um diretório no servidor. Talvez o usuário "' + StrTemp + '" ainda não tenha feito nenhuma sincronização. Por isso não é possível usar seu usuário-robô.');
+            	raise Exception.Create(String('O usuário "' + StrTemp + '" ao qual este usuário-robô se refere, não possui um diretório no servidor. Talvez o usuário "' + StrTemp + '" ainda não tenha feito nenhuma sincronização. Por isso não é possível usar seu usuário-robô.'));
 
             HoraAtual := StrToInt(FormatDateTime('hh',Now));
 
@@ -574,12 +574,12 @@ begin
                 StrTemp := 'Boa noite';
 
             Authenticated := True;
-            FFSYGlobals.ShowOnLog('§ O usuário-robô "' + UserName + '@' + ClientConnectedIP + '" foi autenticado',RichEditLog);
-            Client.SendAnswer(Format(FTPSYNC_CLIENT_AUTHENTICATED,[StrTemp,(Client as TConnectedClient).RealName]));
+            FFSYGlobals.ShowOnLog('§ O usuário-robô "' + AnsiString(UserName) + '@' + ClientConnectedIP + '" foi autenticado',RichEditLog);
+            Client.SendAnswer(RawByteString(Format(FTPSYNC_CLIENT_AUTHENTICATED,[StrTemp,(Client as TConnectedClient).RealName])));
         end;
     except
     	on E: Exception do
-        	AbortEverything(Client as TConnectedClient,E.Message);
+        	AbortEverything(Client as TConnectedClient,AnsiString(E.Message));
     end;
 end;
 
@@ -592,7 +592,7 @@ um comando GET
 procedure TFSSForm_Main.DoRetrDataSent;
 begin
 	if AError <> 0 then
-  		FFSYGlobals.ShowOnLog('! ' + Client.GetPeerAddr + ' Dados não enviados. Erro #' + IntToStr(AError),RichEditLog);
+  		FFSYGlobals.ShowOnLog('! ' + AnsiString(Client.GetPeerAddr) + ' Dados não enviados. Erro #' + AnsiString(IntToStr(AError)),RichEditLog);
   { TODO :
 No futuro coloque uma barra de progresso multipropósito. Aqui ela cresce de acordo com a quantidade de dados
 enviados ao cliente. }
@@ -606,9 +606,9 @@ end;
 procedure TFSSForm_Main.DoRetrSessionClosed;
 begin
     if AError <> 0 then
-        FFSYGlobals.ShowOnLog('! ' + Client.GetPeerAddr + ' Sessão de dados finalizada. Erro #' + IntToStr(AError),RichEditLog)
+        FFSYGlobals.ShowOnLog('! ' + AnsiString(Client.GetPeerAddr) + ' Sessão de dados finalizada. Erro #' + AnsiString(IntToStr(AError)),RichEditLog)
     else
-        FFSYGlobals.ShowOnLog('§ ' + Client.GetPeerAddr + ' Sessão de dados finalizada sem erros!',RichEditLog);
+        FFSYGlobals.ShowOnLog('§ ' + AnsiString(Client.GetPeerAddr) + ' Sessão de dados finalizada sem erros!',RichEditLog);
 
     if AError = 0 then
         if Client.UserData = 1 then
@@ -639,21 +639,21 @@ begin
 end;
 
 { TODO -oCARLOS FEITOZA -cEXPLICAÇÃO : Este é o manipulador do evento OnGetChecksum gerado pela geração de checksum do banco de dados }
-procedure TFSSForm_Main.DoGetChecksum(      aTableName: String;
+procedure TFSSForm_Main.DoGetChecksum(      aTableName: AnsiString;
                                             aTableNo
                                           , aTableCount: Word;
-                                            aTableChecksum: String;
+                                            aTableChecksum: AnsiString;
                                       const aIgnored: Boolean);
 begin
     if not aIgnored then
     begin
         if FVerboseMode then
-            FFSYGlobals.SendStatus(FConnectedClient,'Tabela: "' + aTableName + '" (' + IntToStr(aTableNo) + '/' + IntToStr(aTableCount) + ') | MD5: ' + aTableChecksum);
+            FFSYGlobals.SendStatus(FConnectedClient,'Tabela: "' + aTableName + '" (' + AnsiString(IntToStr(aTableNo)) + '/' + AnsiString(IntToStr(aTableCount)) + ') | MD5: ' + aTableChecksum);
     end
     else
     begin
         if FVerboseMode then
-            FFSYGlobals.SendStatus(FConnectedClient,'Tabela: "' + aTableName + '" (' + IntToStr(aTableNo) + '/' + IntToStr(aTableCount) + ') | IGNORADA...');
+            FFSYGlobals.SendStatus(FConnectedClient,'Tabela: "' + aTableName + '" (' + AnsiString(IntToStr(aTableNo)) + '/' + AnsiString(IntToStr(aTableCount)) + ') | IGNORADA...');
     end;
 end;
 
@@ -665,12 +665,12 @@ procedure TFSSForm_Main.DoZlibNotification(aNotificatioType: TZlibNotificationTy
 begin
     if aOperation = zloDecompress then
         case aNotificatioType of
-            zlntBeforeProcess: FFSYGlobals.ShowOnLog('§ Descomprimindo arquivo de dados ' + ExtractFileName(aInputFile) + '...',RichEditLog);
+            zlntBeforeProcess: FFSYGlobals.ShowOnLog('§ Descomprimindo arquivo de dados ' + AnsiString(ExtractFileName(aInputFile)) + '...',RichEditLog);
             zlntAfterProcess: FFSYGlobals.ShowOnLog('§ Descompressão concluída!',RichEditLog);
         end
     else if aOperation = zloCompress then
         case aNotificatioType of
-            zlntBeforeProcess: FFSYGlobals.ShowOnLog('§ Comprimindo arquivo de dados ' + ExtractFileName(aInputFile) + '...',RichEditLog);
+            zlntBeforeProcess: FFSYGlobals.ShowOnLog('§ Comprimindo arquivo de dados ' + AnsiString(ExtractFileName(aInputFile)) + '...',RichEditLog);
 
             zlntAfterProcess: FFSYGlobals.ShowOnLog('§ Compressão concluída!',RichEditLog);
         end;
@@ -700,7 +700,7 @@ end;
 { ---------------------------------------------------------------------------- }
 var
     RetrSessionParameters: TRetrSessionParameters;
-	TempStr: String;
+	TempStr: AnsiString;
     ClientDelta, ServerDelta: TSynchronizationFile;
 begin
   FConnectedClient := aClient;
@@ -715,7 +715,7 @@ begin
         ---------------------------------------------------------------------- }
         if UpperCase(aClient.FilePath) = UpperCase(aClient.HomeDir) + FTPSCR_DBCHECKSUM then
         begin
-            FFSYGlobals.ShowOnLog('@ Executando script ' + ExtractFileName(FTPSCR_DBCHECKSUM),RichEditLog);
+            FFSYGlobals.ShowOnLog('@ Executando script ' + AnsiString(ExtractFileName(FTPSCR_DBCHECKSUM)),RichEditLog);
             DeleteFile(aClient.HomeDir + FTPFIL_DBCHECKSUM);
 
             { Previne que os dados sejam enviados automaticamente, permitindo que o
@@ -734,7 +734,7 @@ begin
             FFSYGlobals.SendStatus(aClient,'-----------------------------------------------------------------------------------');
             FFSYGlobals.SendStatus(aClient,'DATABASE CHECKSUM (MD5): ' + TempStr);
             FFSYGlobals.SendStatus(aClient,'-----------------------------------------------------------------------------------');
-            FFSYGlobals.SendStatus(aClient,'SOC: ' + IntToStr(Trunc(FFSYGlobals.FileSize(aClient.HomeDir + FTPFIL_DBCHECKSUM))));
+            FFSYGlobals.SendStatus(aClient,'SOC: ' + AnsiString(IntToStr(Trunc(FFSYGlobals.FileSize(aClient.HomeDir + FTPFIL_DBCHECKSUM)))));
             FFSYGlobals.SendStatus(aClient,'== DBCHECKSUM: Conteúdo gerado com sucesso ========================================');
         end
     { GET.SERVERINFO.DAT.PHPS: Este script obtém algumas informações sobre o
@@ -742,7 +742,7 @@ begin
     -------------------------------------------------------------------------- }
     else if UpperCase(aClient.FilePath) = UpperCase(aClient.HomeDir) + FTPSCR_SERVERINFO then
     begin
-        FFSYGlobals.ShowOnLog('@ Executando script ' + ExtractFileName(FTPSCR_SERVERINFO),RichEditLog);
+        FFSYGlobals.ShowOnLog('@ Executando script ' + AnsiString(ExtractFileName(FTPSCR_SERVERINFO)),RichEditLog);
         DeleteFile(aClient.HomeDir + FTPFIL_SERVERINFO);
 
         { Previne que os dados sejam enviados automaticamente, permitindo que o
@@ -764,7 +764,7 @@ begin
                 if FVerboseMode then
                 begin
                     FFSYGlobals.SendStatus(aClient,'Versão do software servidor: ' + Version.FullVersionString);
-                    FFSYGlobals.SendStatus(aClient,'Data e hora no servidor....: ' + FormatDateTime('dd/mm/yyyy hh:nn:ss',DateAndTime));
+                    FFSYGlobals.SendStatus(aClient,'Data e hora no servidor....: ' + AnsiString(FormatDateTime('dd/mm/yyyy hh:nn:ss',DateAndTime)));
                     FFSYGlobals.SendStatus(aClient,'Cliente mínimo aceitável...: ' + MinimumClientVersion.FullVersionString);
                 end;
             finally
@@ -772,7 +772,7 @@ begin
             end;
 
         FFSYGlobals.SendStatus(aClient,'-----------------------------------------------------------------------------------');
-        FFSYGlobals.SendStatus(aClient,'SOC: ' + IntToStr(Trunc(FFSYGlobals.FileSize(aClient.HomeDir + FTPFIL_SERVERINFO))));
+        FFSYGlobals.SendStatus(aClient,'SOC: ' + AnsiString(IntToStr(Trunc(FFSYGlobals.FileSize(aClient.HomeDir + FTPFIL_SERVERINFO)))));
         FFSYGlobals.SendStatus(aClient,'== SERVERINFO: Conteúdo gerado com sucesso ========================================');
     end
     { GET.SERVER_DELTA.DAT.PHPS: Este é o script mais importante. Ele contém
@@ -784,7 +784,7 @@ begin
     -------------------------------------------------------------------------- }
     else if UpperCase(aClient.FilePath) = UpperCase(aClient.HomeDir) + FTPSCR_SERVER_DELTA then
         try
-            FFSYGlobals.ShowOnLog('@ Executando script ' + ExtractFileName(FTPSCR_SERVER_DELTA),RichEditLog);
+            FFSYGlobals.ShowOnLog('@ Executando script ' + AnsiString(ExtractFileName(FTPSCR_SERVER_DELTA)),RichEditLog);
             DeleteFile(aClient.HomeDir + FTPFIL_SERVER_DELTA);
             aClient.DataStream := TMemoryStream.Create;
 
@@ -855,7 +855,7 @@ begin
                                            ,DoZlibNotification);
 
             FFSYGlobals.SendStatus(aClient,'-----------------------------------------------------------------------------------');
-            FFSYGlobals.SendStatus(aClient,'SOC: ' + IntToStr(Trunc(FFSYGlobals.FileSize(aClient.HomeDir + FTPFIL_SERVER_DELTA))));
+            FFSYGlobals.SendStatus(aClient,'SOC: ' + AnsiString(IntToStr(Trunc(FFSYGlobals.FileSize(aClient.HomeDir + FTPFIL_SERVER_DELTA)))));
             FFSYGlobals.SendStatus(aClient,'== SERVER_DELTA: Conteúdo gerado com sucesso ======================================');
         finally
             ClientDelta.Free;
@@ -869,7 +869,7 @@ begin
     -------------------------------------------------------------------------- }
     else if UpperCase(aClient.FilePath) = UpperCase(aClient.HomeDir) + FTPSCR_SERVER_DATABASE then
     begin
-        FFSYGlobals.ShowOnLog('@ Executando script ' + ExtractFileName(FTPSCR_SERVER_DATABASE),RichEditLog);
+        FFSYGlobals.ShowOnLog('@ Executando script ' + AnsiString(ExtractFileName(FTPSCR_SERVER_DATABASE)),RichEditLog);
         DeleteFile(aClient.HomeDir + FTPFIL_SERVER_DATABASE);
         aClient.DataStream := TMemoryStream.Create;
 
@@ -889,7 +889,7 @@ begin
     -------------------------------------------------------------------------- }
     else if UpperCase(aClient.FilePath) = UpperCase(aClient.HomeDir) + FTPSCR_CONFIRMEVERYTHING then
     begin
-        FFSYGlobals.ShowOnLog('@ Executando script ' + ExtractFileName(FTPSCR_CONFIRMEVERYTHING),RichEditLog);
+        FFSYGlobals.ShowOnLog('@ Executando script ' + AnsiString(ExtractFileName(FTPSCR_CONFIRMEVERYTHING)),RichEditLog);
         DeleteFile(aClient.HomeDir + FTPFIL_CONFIRMEVERYTHING);
         aClient.DataStream := TMemoryStream.Create;
 
@@ -905,10 +905,10 @@ begin
             FFSYGlobals.SendStatus(aClient,'Este arquivo é binário e contém apenas um byte de valor zero, que indica que se');
             FFSYGlobals.SendStatus(aClient,'deve confirmar todas as operações no banco de dados quando a conexão for encerrada');
         end;
-        FFSYGlobals.SaveTextFile(Chr(aClient.DataBaseConnection.Tag),aClient.HomeDir + FTPFIL_CONFIRMEVERYTHING);
+        FFSYGlobals.SaveTextFile(AnsiString(Chr(aClient.DataBaseConnection.Tag)),aClient.HomeDir + FTPFIL_CONFIRMEVERYTHING);
 
         FFSYGlobals.SendStatus(aClient,'-----------------------------------------------------------------------------------');
-        FFSYGlobals.SendStatus(aClient,'SOC: ' + IntToStr(Trunc(FFSYGlobals.FileSize(aClient.HomeDir + FTPFIL_CONFIRMEVERYTHING))));
+        FFSYGlobals.SendStatus(aClient,'SOC: ' + AnsiString(IntToStr(Trunc(FFSYGlobals.FileSize(aClient.HomeDir + FTPFIL_CONFIRMEVERYTHING)))));
         FFSYGlobals.SendStatus(aClient,'== CONFIRMEVERYTHING: Conteúdo gerado com sucesso =================================');
     end
     { GET.REMOTESNAPSHOT.DAT.PHPS: Este script cria uma cópia completa do banco
@@ -916,7 +916,7 @@ begin
     -------------------------------------------------------------------------- }
     else if UpperCase(aClient.FilePath) = UpperCase(aClient.HomeDir) + FTPSCR_REMOTESNAPSHOT then
     begin
-        FFSYGlobals.ShowOnLog('@ Executando script ' + ExtractFileName(FTPSCR_REMOTESNAPSHOT),RichEditLog);
+        FFSYGlobals.ShowOnLog('@ Executando script ' + AnsiString(ExtractFileName(FTPSCR_REMOTESNAPSHOT)),RichEditLog);
         DeleteFile(aClient.HomeDir + FTPFIL_REMOTESNAPSHOT);
         aClient.DataStream := TMemoryStream.Create;
 
@@ -936,7 +936,7 @@ begin
     -------------------------------------------------------------------------- }
     else if UpperCase(aClient.FilePath) = UpperCase(aClient.HomeDir) + FTPSCR_TEMPFILENAMES then
     begin
-        FFSYGlobals.ShowOnLog('@ Executando script ' + ExtractFileName(FTPSCR_TEMPFILENAMES),RichEditLog);
+        FFSYGlobals.ShowOnLog('@ Executando script ' + AnsiString(ExtractFileName(FTPSCR_TEMPFILENAMES)),RichEditLog);
         DeleteFile(aClient.HomeDir + FTPFIL_TEMPFILENAMES);
         aClient.DataStream := TMemoryStream.Create;
 
@@ -947,7 +947,7 @@ begin
         TempStr := FFSYGlobals.GetTempFileNames(aClient.HomeDir);
         FFSYGlobals.SaveTextFile(TempStr,aClient.HomeDir + FTPFIL_TEMPFILENAMES);
 
-        FFSYGlobals.SendStatus(aClient,'SOC: ' + IntToStr(Trunc(FFSYGlobals.FileSize(aClient.HomeDir + FTPFIL_TEMPFILENAMES))));
+        FFSYGlobals.SendStatus(aClient,'SOC: ' + AnsiString(IntToStr(Trunc(FFSYGlobals.FileSize(aClient.HomeDir + FTPFIL_TEMPFILENAMES)))));
         FFSYGlobals.SendStatus(aClient,'-----------------------------------------------------------------------------------');
         FFSYGlobals.SendStatus(aClient,'== TEMPFILENAMES: Conteúdo gerado com sucesso =====================================');
     end
@@ -957,7 +957,7 @@ begin
     {$IFDEF DEVELOPING}
     else if UpperCase(Client.FilePath) = UpperCase(Client.HomeDir) + FTPSCR_TIMEOUTTEST then
         try
-            FFSYGlobals.ShowOnLog('@ Executando script ' + ExtractFileName(FTPSCR_TIMEOUTTEST),RichEditLog);
+            FFSYGlobals.ShowOnLog('@ Executando script ' + AnsiString(ExtractFileName(FTPSCR_TIMEOUTTEST)),RichEditLog);
 
             { Obtendo parâmetros do teste }
             DataSize := RetrSessionParameters.CustIntParm;
@@ -1041,8 +1041,8 @@ begin
         aClient.DataStream := TMemoryStream.Create;
         TempStr := 'This is a file created on the fly by the FTP server' + #13#10 +
          'It could result of a query to a database or anything else.' + #13#10 +
-         'The request was: ''' + aClient.FilePath + '''' + #13#10;
-         aClient.DataStream.Write(TempStr[1], Length(TempStr));
+         'The request was: ''' + AnsiString(aClient.FilePath) + '''' + #13#10;
+         aClient.DataStream.Write(TempStr[1], Length(String(TempStr)));
          aClient.DataStream.Seek(0, 0);
     end;
     { Outro exemplo...}
@@ -1051,7 +1051,7 @@ begin
         // raise Exception.Create('Access prohibed !')
   except
         on E: Exception do
-            AbortEverything(aClient,E.Message);
+            AbortEverything(aClient,AnsiString(E.Message));
   end;
 end;
 
@@ -1081,9 +1081,9 @@ end;
 
 begin
   	if AError <> 0 then
-  		FFSYGlobals.ShowOnLog('! ' + Client.GetPeerAddr + ' Sessão de dados iniciada. Erro #' + IntToStr(AError),RichEditLog)
+  		FFSYGlobals.ShowOnLog('! ' + AnsiString(Client.GetPeerAddr) + ' Sessão de dados iniciada. Erro #' + AnsiString(IntToStr(AError)),RichEditLog)
   	else
-  		FFSYGlobals.ShowOnLog('§ ' + Client.GetPeerAddr + ' Sessão de dados iniciada sem erros!',RichEditLog);
+  		FFSYGlobals.ShowOnLog('§ ' + AnsiString(Client.GetPeerAddr) + ' Sessão de dados iniciada sem erros!',RichEditLog);
 
     { Enviando arquivos gerados na etapa de processamento (GetProcessing) }
 	if AError = 0 then
@@ -1134,17 +1134,17 @@ end;
 procedure TFSSForm_Main.DoStorSessionClosed(Sender: TObject; Client: TFtpCtrlSocket; Data: TWSocket; AError: Word);
 begin
     if AError <> 0 then
-		FFSYGlobals.ShowOnLog('! ' + Client.GetPeerAddr + ' Sessão de dados finalizada de forma incorreta. Erro #' + IntToStr(AError),RichEditLog)
+		FFSYGlobals.ShowOnLog('! ' + AnsiString(Client.GetPeerAddr) + ' Sessão de dados finalizada de forma incorreta. Erro #' + AnsiString(IntToStr(AError)),RichEditLog)
     else
-  	    FFSYGlobals.ShowOnLog('§ ' + Client.GetPeerAddr + ' Sessão de dados finalizada sem erros!',RichEditLog);
+  	    FFSYGlobals.ShowOnLog('§ ' + AnsiString(Client.GetPeerAddr) + ' Sessão de dados finalizada sem erros!',RichEditLog);
 end;
 
 procedure TFSSForm_Main.DoStorSessionConnected(Sender: TObject; Client: TFtpCtrlSocket; Data: TWSocket; AError: Word);
 begin
-    if AError <> 0 then
-  	    FFSYGlobals.ShowOnLog('! ' + Client.GetPeerAddr + ' Não foi possível iniciar a sessão de dados. Erro #' + IntToStr(AError),RichEditLog)
-    else
-        FFSYGlobals.ShowOnLog('§ ' + Client.GetPeerAddr + ' A sessão de dados foi iniciada sem erros!',RichEditLog);
+  if AError <> 0 then
+    FFSYGlobals.ShowOnLog('! ' + AnsiString(Client.GetPeerAddr) + ' Não foi possível iniciar a sessão de dados. Erro #' + AnsiString(IntToStr(AError)),RichEditLog)
+  else
+    FFSYGlobals.ShowOnLog('§ ' + AnsiString(Client.GetPeerAddr) + ' A sessão de dados foi iniciada sem erros!',RichEditLog);
 end;
 
 procedure TFSSForm_Main.FormDestroy(Sender: TObject);
@@ -1223,7 +1223,7 @@ begin
     if SaveDialog1.Execute then
     begin
 	    RichEditLog.Lines.SaveToFile(SaveDialog1.FileName);
-    	FFSYGlobals.ShowOnLog('§ Log salvo em ' + FormatDateTime('dd.mm.yyyy "às" hh.nn.ss',Now),RichEditLog);
+    	FFSYGlobals.ShowOnLog('§ Log salvo em ' + AnsiString(FormatDateTime('dd.mm.yyyy "às" hh.nn.ss',Now)),RichEditLog);
     end;
 end;
 
@@ -1233,14 +1233,11 @@ begin
 end;
 
 procedure TFSSForm_Main.SalvarLog;
-var
-	DataEHora: String;
 begin
 	if not DirectoryExists(FFSYGlobals.CurrentDir + 'logs') then
   	CreateDir(FFSYGlobals.CurrentDir + 'logs');
 
-  DataEHora := FormatDateTime('dd.mm.yyyy "às" hh.nn.ss',Now);
-  RichEditLog.Lines.SaveToFile(FFSYGlobals.CurrentDir + 'logs\' + DataEHora + '.rtf');
+  RichEditLog.Lines.SaveToFile(FFSYGlobals.CurrentDir + 'logs\' + FormatDateTime('dd.mm.yyyy "às" hh.nn.ss',Now) + '.rtf');
 end;
 
 procedure TFSSForm_Main.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
@@ -1414,7 +1411,7 @@ procedure TCustomFtpCli.ExtractMoreResults;
 var
     NumericCode : LongInt;
     p           : PChar;
-    S           : String;
+    S           : AnsiString;
 begin
     if FRequestResult = 0 then begin
         if FFctPrv in [ftpFctSize] then begin
@@ -1440,7 +1437,7 @@ begin
             p := GetInteger(@FLastResponse[1], NumericCode);
             if NumericCode = 251 then
             begin
-	            p := GetNextString(p, FDirResult); // Retira "-" da string
+	            p := GetNextString(p, FDirResult); // Retira "-" da AnsiString
               p := GetQuotedString(p, FDirResult);
               if FDirResult = '' then
                 p := GetNextString(p, FDirResult);

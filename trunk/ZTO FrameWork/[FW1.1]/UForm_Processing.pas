@@ -12,7 +12,7 @@ type
     PTForm_Processing = ^TForm_Processing;
 
     TCreateParameters = record
-        DialogDescription: String;
+        DialogDescription: AnsiString;
         CommonAnimation: TCommonAVI; { aviNone }
         AnimationFileName: TFileName;
         ShowProgressBar: Boolean;
@@ -76,7 +76,7 @@ end;
 procedure TForm_Processing.FormCreate(Sender: TObject);
 begin
 	if Trim(Label_DialogDescription.Caption) = '' then
-	    Label_DialogDescription.Caption := FCreateParameters.DialogDescription;
+	    Label_DialogDescription.Caption := String(FCreateParameters.DialogDescription);
 
     if FCreateParameters.ShowProgressBar then
     begin

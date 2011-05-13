@@ -1,4 +1,5 @@
 unit URtf2Html;
+
 {  ************************************************************************  }
 {                                                                            }
 {  RTF2HTML V 2.1                                                            }
@@ -128,7 +129,7 @@ type
         SubScript: Boolean;            { tiefgestellt }
         Strike: Boolean;               { durchgestrichen }
         FontNumber: SmallInt;                 { Schriftart }
-        FontColor: String;                  { Text-Fabe }
+        FontColor: AnsiString;                  { Text-Fabe }
         FontSize: SmallInt;                { Text-Größe }
         RightJustified: Boolean;           { rechtsbündig }
         FullyJustified: Boolean;
@@ -138,59 +139,59 @@ type
 
     PTag = ^TTag;     { der Formatierungs-Stack }
     TTag = record
-        OpenTag: ShortString; { carlos - era string }
-        CloseTag: ShortString; { carlos - era string}
+        OpenTag: AnsiString; { carlos - era AnsiString }
+        CloseTag: AnsiString; { carlos - era AnsiString}
         NextTag: PTag;
     end;
 
     TRtf2Html = class
     private
-        FRichText: String;
-        FImagesDir: String;
-        function ReplaceAll(aSrcStr: String; const aOldPatterns, aNewPatterns: array of String): String;
-        function OptimizeHtml(aSrcStr: String): String;
-        function ClearHTML(const aHTML: String): String;
-        procedure WriteHtml(const txt: string; var outstring: string; var outfile: textfile);
-        function optStyle(basestyle, actstyle: string): string;
-        procedure CloseLists(var aOutputString: string; var aOutputFile: textfile);
-        procedure InitializeStylesSheets(var aInputFile, aOutputFile: textfile; var aSource: string);
-        procedure ProcessTable(var infile, outfile: textfile; var line: string);
-        procedure ProcessGroup(var infile, outfile: textfile; var line: string; var attrib: TTextFormat);
+        FRichText: AnsiString;
+        FImagesDir: AnsiString;
+        function ReplaceAll(aSrcStr: AnsiString; const aOldPatterns, aNewPatterns: array of AnsiString): AnsiString;
+        function OptimizeHtml(aSrcStr: AnsiString): AnsiString;
+        function ClearHTML(const aHTML: AnsiString): AnsiString;
+        procedure WriteHtml(const txt: AnsiString; var outstring: AnsiString; var outfile: textfile);
+        function optStyle(basestyle, actstyle: AnsiString): AnsiString;
+        procedure CloseLists(var aOutputString: AnsiString; var aOutputFile: textfile);
+        procedure InitializeStylesSheets(var aInputFile, aOutputFile: textfile; var aSource: AnsiString);
+        procedure ProcessTable(var infile, outfile: textfile; var line: AnsiString);
+        procedure ProcessGroup(var infile, outfile: textfile; var line: AnsiString; var attrib: TTextFormat);
         procedure ConvertFile(const aSrcFilename, aDestFilename: TFileName; aExtraParams: TExtraParams);
-        procedure MakeColorTable(var infile, outfile: textfile; var src: string);
-        procedure MakeFontTable(var infile, outfile: textfile; var src: string);
-        procedure IgnoreGroup(var line: string; var infile: textfile);
-        function LineAt(const index: integer; const line: string; var infile: textfile): string;
-        function html(const ctrlword: string; var aTextFormat: TTextFormat): string;
-        function plainchar(ch: string): string;
-        function htmlchar(ch: string; aTextFormat: TTextFormat): string;
-        function createFTags(aTextFormat: TTextFormat): string;
+        procedure MakeColorTable(var infile, outfile: textfile; var src: AnsiString);
+        procedure MakeFontTable(var infile, outfile: textfile; var src: AnsiString);
+        procedure IgnoreGroup(var line: AnsiString; var infile: textfile);
+        function LineAt(const index: integer; const line: AnsiString; var infile: textfile): AnsiString;
+        function html(const ctrlword: AnsiString; var aTextFormat: TTextFormat): AnsiString;
+        function plainchar(ch: AnsiString): AnsiString;
+        function htmlchar(ch: AnsiString; aTextFormat: TTextFormat): AnsiString;
+        function createFTags(aTextFormat: TTextFormat): AnsiString;
         procedure PopTagFromStack(var aTagStack: PTag);
-        function EmptyTagStack(var aTagStack: PTag): string;
-        procedure PushTagIntoStack(var aTagStack: PTag; aOpenTag, aCloseTag: ShortString);
+        function EmptyTagStack(var aTagStack: PTag): AnsiString;
+        procedure PushTagIntoStack(var aTagStack: PTag; aOpenTag, aCloseTag: AnsiString);
         procedure CopyTextFormat(var aDestination: TTextFormat; aSource: TTextFormat);
-        function GetFontName(var aFontNumber: SmallInt): string;
+        function GetFontName(var aFontNumber: SmallInt): AnsiString;
         function CompareTextFormats(TextFormat1, TextFormat2: TTextFormat): boolean;
-        procedure ResetFormat(var attrib: TTextFormat; const kind: string);
-        function HtmlColorFromRtfColor(rtfcol: string): string;
-        procedure cut_tag(rtf_tag: string; var line: string);
-        procedure AddFontName(fname: string);
-        procedure AddFontColor(colstr: string);
-        function Decimal2Hexadecimal(num: integer): string;
-        function Hexadecimal2Decimal(hex: string): integer;
-        procedure incl_hlink(var line: string);
+        procedure ResetFormat(var attrib: TTextFormat; const kind: AnsiString);
+        function HtmlColorFromRtfColor(rtfcol: AnsiString): AnsiString;
+        procedure cut_tag(rtf_tag: AnsiString; var line: AnsiString);
+        procedure AddFontName(fname: AnsiString);
+        procedure AddFontColor(colstr: AnsiString);
+        function Decimal2Hexadecimal(num: integer): AnsiString;
+        function Hexadecimal2Decimal(hex: AnsiString): integer;
+        procedure incl_hlink(var line: AnsiString);
         procedure InitInvalidString;
-        procedure PushInvalidString(aInvalidString: string);
-        function HTMLFontSize(aFontSize: SmallInt): ShortString;
-        function HTMLFontColor(aFontColor: ShortString): ShortString;
-        function HTMLFontFamily(aFontNumber: SmallInt): ShortString;
-        procedure ReplaceSpecialTags(var aText: String);
-        function GetHyperText: String;
+        procedure PushInvalidString(aInvalidString: AnsiString);
+        function HTMLFontSize(aFontSize: SmallInt): AnsiString;
+        function HTMLFontColor(aFontColor: AnsiString): AnsiString;
+        function HTMLFontFamily(aFontNumber: SmallInt): AnsiString;
+        procedure ReplaceSpecialTags(var aText: AnsiString);
+        function GetHyperText: AnsiString;
     public
-        property ImagesDir: String write FImagesDir;
-        function GetRtfCode(aRichEdit: TRichEdit): String;
-        property RichText: String read FRichText write FRichText;
-        property HyperText: String read GetHyperText;
+        property ImagesDir: AnsiString write FImagesDir;
+        function GetRtfCode(aRichEdit: TRichEdit): AnsiString;
+        property RichText: AnsiString read FRichText write FRichText;
+        property HyperText: AnsiString read GetHyperText;
     end;
 
 implementation
@@ -214,13 +215,13 @@ const                               { Pseudo-enum für Tabellen-Behandlung }
 
 type
     TFontFace = record
-        FontFace: ShortString;
+        FontFace: AnsiString;
         Number: SmallInt;
     end;
 
     PInvalidString = ^TInvalidString;
     TInvalidString = record
-        InvalidStr: string;
+        InvalidStr: AnsiString;
         NextInvalidString: PInvalidString;
     end;
 
@@ -231,8 +232,8 @@ type
     end;
 
     TStyleSheet = record
-        name: string;
-        ctrl: string;
+        name: AnsiString;
+        ctrl: AnsiString;
     end;
 
     TConvertionFlags = record
@@ -249,7 +250,7 @@ var
     FontFaces : array[0..200] of TFontFace;
     linkstyles, anchstyles, actlinknum, actanchnum : array [1..9] of integer;
 
-    OutputString, pntxta, pntxtb, enumtxt, txtwait : string;
+    OutputString, pntxta, pntxtb, enumtxt, txtwait : AnsiString;
     bkmkpar, lastline, li_open, listitem, listbull, pnnum, nextpar, enumdigit : boolean;
     ahref, anchor, ahrefwait, newhrefnum, no_newind : boolean;
 
@@ -260,7 +261,7 @@ var
 
     ListLevelInfo : TListLevelInfo;
 
-procedure TRtf2Html.PushInvalidString(aInvalidString: string);
+procedure TRtf2Html.PushInvalidString(aInvalidString: AnsiString);
 var
     NewInvalidString : PInvalidString;
 begin
@@ -279,15 +280,15 @@ end;
 
 {  ************************************************************************  }
 
-procedure TRtf2Html.incl_hlink (var line: string);
+procedure TRtf2Html.incl_hlink (var line: AnsiString);
 var
-   helpstr, htxt, str : string;
+   helpstr, htxt, str : AnsiString;
    h, h_end, strlen : integer;
 
 begin
     str := line;
 
-    h := Pos('http://', str);
+    h := Pos('http://', String(str));
     helpstr := '';
 
     while h > 0 do
@@ -305,7 +306,7 @@ begin
         helpstr := helpstr + Copy(str, 1, h-1) + '<A HREF="' + htxt + '">' + htxt + '</A>';
         str     := Copy(str, h_end, length(str));
 
-        h := Pos('http://', str);
+        h := Pos('http://', String(str));
     end;
 
     line := helpstr + str;
@@ -315,7 +316,7 @@ end;
 
 {  ************************************************************************  }
 
-function TRtf2Html.Hexadecimal2Decimal (hex: string): integer;  { hexadezimal -> dezimal - Konvertierung für Zahlen <= 255 }
+function TRtf2Html.Hexadecimal2Decimal (hex: AnsiString): integer;  { hexadezimal -> dezimal - Konvertierung für Zahlen <= 255 }
 var
     i : integer;
 
@@ -328,14 +329,14 @@ begin
         else if (hex[i] = 'D') or (hex[i] = 'd') then Result := Result*16 + 13
         else if (hex[i] = 'E') or (hex[i] = 'e') then Result := Result*16 + 14
         else if (hex[i] = 'F') or (hex[i] = 'f') then Result := Result*16 + 15
-        else Result := Result*16 + strtoint(hex[i]);
+        else Result := Result*16 + strtoint(String(hex[i]));
 end;
 
 {  ************************************************************************  }
 
-function TRtf2Html.Decimal2Hexadecimal (num: integer): string;  { dezimal -> hexadezimal - Konvertierung für Zahlen <= 255 }
+function TRtf2Html.Decimal2Hexadecimal (num: integer): AnsiString;  { dezimal -> hexadezimal - Konvertierung für Zahlen <= 255 }
 var
-    hex : string;
+    hex : AnsiString;
     digit : integer;
 begin
     hex := '';
@@ -344,7 +345,7 @@ begin
     while length(hex) < 2 do
     begin
         if digit <= 9 then
-            hex := hex + inttostr(digit)
+            hex := hex + AnsiString(inttostr(digit))
         else if digit = 10 then
             hex := hex + 'A'
         else if digit = 11 then
@@ -366,9 +367,9 @@ end;
 
 {  ************************************************************************  }
 
-procedure TRtf2Html.AddFontColor (colstr: string);
+procedure TRtf2Html.AddFontColor (colstr: AnsiString);
 var
-    str : string;
+    str : AnsiString;
 
 begin
     str := '<SPAN STYLE="color: ' + colstr + '"></SPAN>';
@@ -377,9 +378,9 @@ end;
 
 {  ************************************************************************  }
 
-procedure TRtf2Html.AddFontName (fname: string);
+procedure TRtf2Html.AddFontName (fname: AnsiString);
 var
-    str : string;
+    str : AnsiString;
 
 begin
     str := '<SPAN STYLE="font-family: ' + fname + '"></SPAN>';
@@ -394,30 +395,30 @@ begin
 end;
 {  ************************************************************************  }
 
-function TRtf2Html.HTMLFontSize (aFontSize: SmallInt): ShortString;  { liefert den html-Code für die angegebene neue Schrift-Größe }
+function TRtf2Html.HTMLFontSize (aFontSize: SmallInt): AnsiString;  { liefert den html-Code für die angegebene neue Schrift-Größe }
 begin
-    Result := Format('<SPAN STYLE="font-size: %upt">',[aFontSize]);
+    Result := AnsiString(Format('<SPAN STYLE="font-size: %upt">',[aFontSize]));
     PushInvalidString(Result + '</SPAN>');
 end;
 
-function TRtf2Html.HTMLFontFamily (aFontNumber: SmallInt): ShortString;
+function TRtf2Html.HTMLFontFamily (aFontNumber: SmallInt): AnsiString;
 begin
-    Result := Format('<SPAN STYLE="font-family: %s">',[GetFontName(aFontNumber)]);
+    Result := AnsiString(Format('<SPAN STYLE="font-family: %s">',[GetFontName(aFontNumber)]));
     PushInvalidString(Result + '</SPAN>');
 end;
 
-function TRtf2Html.HTMLFontColor (aFontColor: ShortString): ShortString;
+function TRtf2Html.HTMLFontColor (aFontColor: AnsiString): AnsiString;
 begin
-    Result := Format('<SPAN STYLE="color: %s">',[aFontColor]);
+    Result := AnsiString(Format('<SPAN STYLE="color: %s">',[aFontColor]));
     PushInvalidString(Result + '</SPAN>');
 end;
 
 {  ************************************************************************  }
 
-procedure TRtf2Html.cut_tag (rtf_tag : string; var line : string);     { verkürzt Stylesheet-Strings }
+procedure TRtf2Html.cut_tag (rtf_tag : AnsiString; var line : AnsiString);     { verkürzt Stylesheet-Strings }
 var
     i, strlen : integer;
-    act_tag : string;
+    act_tag : AnsiString;
 
 begin
     i := Pos(rtf_tag, line);
@@ -433,15 +434,15 @@ begin
             Inc(i);
         end;
 
-        line := StringReplace(Line,act_tag, '',[rfReplaceAll]);
+        line := AnsiString(StringReplace(String(Line),String(act_tag), '',[rfReplaceAll]));
         i := Pos(rtf_tag, line);
     end;
 end;
 
-function TRtf2Html.HtmlColorFromRtfColor (rtfcol: string): string;  { wandelt rft-Farbangabe in html-Farbangabe um }
+function TRtf2Html.HtmlColorFromRtfColor (rtfcol: AnsiString): AnsiString;  { wandelt rft-Farbangabe in html-Farbangabe um }
 var
     red_ind, green_ind, blue_ind : integer;
-    redstr, greenstr, bluestr, colstr : string;
+    redstr, greenstr, bluestr, colstr : AnsiString;
     red, green, blue : integer;
 
 begin
@@ -449,9 +450,9 @@ begin
     greenstr := '';
     bluestr := '';
 
-    red_ind := pos('red',rtfcol)+3;
-    green_ind := pos('green',rtfcol)+5;
-    blue_ind := pos('blue',rtfcol)+4;
+    red_ind := pos('red',String(rtfcol))+3;
+    green_ind := pos('green',String(rtfcol))+5;
+    blue_ind := pos('blue',String(rtfcol))+4;
 
     while (rtfcol[red_ind] in ['0'..'9']) and (red_ind <= length(rtfcol)) do
     begin
@@ -459,7 +460,7 @@ begin
         Inc(red_ind);
     end;
     try
-       red := strtoint(redstr);
+       red := strtoint(String(redstr));
     except
        on EConvertError do red := 0;
     end;
@@ -471,7 +472,7 @@ begin
         Inc(green_ind);
     end;
     try
-       green := strtoint(greenstr);
+       green := strtoint(String(greenstr));
     except
        on EConvertError do green := 0;
     end;
@@ -483,7 +484,7 @@ begin
         Inc(blue_ind);
     end;
     try
-       blue := strtoint(bluestr);
+       blue := strtoint(String(bluestr));
     except
        on EConvertError do blue := 0;
     end;
@@ -495,7 +496,7 @@ end;
 
 {  ************************************************************************  }
 
-procedure TRtf2Html.ResetFormat (var attrib: TTextFormat; const kind: string);  { setzt intern gespeicherte Formatierungen zurück }
+procedure TRtf2Html.ResetFormat (var attrib: TTextFormat; const kind: AnsiString);  { setzt intern gespeicherte Formatierungen zurück }
 begin
     with attrib do
     begin
@@ -546,7 +547,7 @@ end;
 
 {  ************************************************************************  }
 
-function TRtf2Html.GetFontName (var aFontNumber: SmallInt): string;
+function TRtf2Html.GetFontName (var aFontNumber: SmallInt): AnsiString;
 var
     i : integer;
 begin
@@ -587,8 +588,8 @@ end;
 {  ************************************************************************  }
 
 procedure TRtf2Html.PushTagIntoStack(var aTagStack: PTag;
-                                         aOpenTag: ShortString;
-                                         aCloseTag: ShortString);
+                                         aOpenTag: AnsiString;
+                                         aCloseTag: AnsiString);
 var                             { neue Formatierung auf den Stack ..... }
     ptr : PTag;
 begin
@@ -611,8 +612,8 @@ begin
 end;
 
 {  ************************************************************************  }
-{ Esvazia a pilha criando como resultado uma string com os tags de fechamento }
-function TRtf2Html.EmptyTagStack(var aTagStack: PTag): string;
+{ Esvazia a pilha criando como resultado uma AnsiString com os tags de fechamento }
+function TRtf2Html.EmptyTagStack(var aTagStack: PTag): AnsiString;
 begin
     Result := '';
     while (aTagStack <> nil) do
@@ -628,7 +629,7 @@ end;
 
 {  ************************************************************************  }
 
-function TRtf2Html.createFTags (aTextFormat: TTextFormat): string;
+function TRtf2Html.createFTags (aTextFormat: TTextFormat): AnsiString;
 begin
     Result := '';
     
@@ -692,10 +693,10 @@ end;
 
 {  ************************************************************************  }
 
-function TRtf2Html.htmlchar(ch: string; aTextFormat: TTextFormat): string;
+function TRtf2Html.htmlchar(ch: AnsiString; aTextFormat: TTextFormat): AnsiString;
 var
-    ltr : char;
-    curlink, curanch : string;
+    ltr : AnsiChar;
+    curlink, curanch : AnsiString;
 
 begin
     Result := '';
@@ -729,7 +730,7 @@ begin
             ahref := true;
             newhrefnum := false;
             Inc(actlinknum[indexlvl]);
-            curlink := inttostr(indexlvl) + '-' + inttostr(actlinknum[indexlvl]);
+            curlink := AnsiString(inttostr(indexlvl) + '-' + inttostr(actlinknum[indexlvl]));
             Result := Result + '<A HREF="#' + curlink + '">';
         end;
     end;
@@ -737,7 +738,7 @@ begin
     if anchor then
     begin                         { jetzt kommt eine Sprungmarke }
         Inc(actanchnum[anchlvl]);
-        curanch := inttostr(anchlvl) + '-' + inttostr(actanchnum[anchlvl]);
+        curanch := AnsiString(inttostr(anchlvl) + '-' + inttostr(actanchnum[anchlvl]));
         Result := Result + '<A NAME="' + curanch + '">';
     end;
 
@@ -756,7 +757,7 @@ begin
                 if ltr in ['a'..'z'] then
                 begin
                     if aTextFormat.CapsLock then
-                        Result := Result + UpperCase(ltr)
+                        Result := Result + AnsiString(UpperCase(Char(ltr)))
                     else
                         Result := Result + ltr;
                 end
@@ -791,14 +792,14 @@ begin
             end
             else if ch = 'df' then Result := Result + '&szlig;'     { 'ß' }
             else if ch = 'b7' then Result := Result + '&middot;'    { Aufzählungs-Punkt }
-            else Result := Result + chr(Hexadecimal2Decimal(ch));
+            else Result := Result + AnsiString(chr(Hexadecimal2Decimal(ch)));
         end { if length(ch) = 1 ... }
         else
         begin
             if ch = '&pict;' then
                 Result := Result + '<P>[*** picture ***]</P>'     { Graphik-Substitut}
-            else if (Pos('&&', ch) = 1) then
-                Result := Result + Copy(ch, 3, length(ch)-2)     { Aufzählungstext }
+            else if (Pos('&&', String(ch)) = 1) then
+                Result := Result + Copy(ch, 3, length(String(ch))-2)     { Aufzählungstext }
             else if ch = '&tab;' then
                 Result := Result + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'
             else if ch = '&quote;' then
@@ -829,7 +830,7 @@ end;
 
 {  ************************************************************************  }
 
-function TRtf2Html.plainchar(ch: string): string;
+function TRtf2Html.plainchar(ch: AnsiString): AnsiString;
 begin
     if ch = 'c4' then Result := 'Ä'
     else if ch = 'd6' then Result := 'Ö'
@@ -838,15 +839,15 @@ begin
     else if ch = 'f6' then Result := 'ö'
     else if ch = 'fc' then Result := 'ü'
     else if ch = 'df' then Result := 'ß'
-    else Result := chr(Hexadecimal2Decimal(ch));
+    else Result := AnsiString(chr(Hexadecimal2Decimal(ch)));
 end;
 
 {  ************************************************************************  }
 {$WARNINGS OFF}
-function TRtf2Html.html (const ctrlword: string; var aTextFormat: TTextFormat): string;
+function TRtf2Html.html (const ctrlword: AnsiString; var aTextFormat: TTextFormat): AnsiString;
 var                                      { frißt rtf-Kontrollwort & spuckt entsprechenden html-Code aus }
     num : integer;
-    txt : string;
+    txt : AnsiString;
 
 begin
     Result := '';
@@ -1215,9 +1216,9 @@ end;
 {$WARNINGS ON}
 {  ************************************************************************  }
 
-function TRtf2Html.LineAt (const index: integer; const line: string; var infile: textfile): string;
+function TRtf2Html.LineAt (const index: integer; const line: AnsiString; var infile: textfile): AnsiString;
 var                                                      { liefert einen Teilstring von 'line' ab Position 'index' }
-    nextstr, str : string;                               { zurück. Ist 'line' kürzer als 'index', wird eine        }
+    nextstr, str : AnsiString;                               { zurück. Ist 'line' kürzer als 'index', wird eine        }
 begin                                                    { neue Zeile eingelesen und an 'line' angehängt, und dies }
     str := line;                                         { bei Bedarf so lange wiederholt, bis 'index' kleiner als }
     while (not EOF(infile)) and (index > length(str)) do { die Zeilenlänge ist und somit das gewünschte Resultat   }
@@ -1234,7 +1235,7 @@ end;
 
 {  ************************************************************************  }
 
-procedure TRtf2Html.IgnoreGroup(var line: string; var infile: textfile);   { springt zum Ende der aktuellen Group }
+procedure TRtf2Html.IgnoreGroup(var line: AnsiString; var infile: textfile);   { springt zum Ende der aktuellen Group }
 var
     lastline : boolean;
     i, brk, strlen : integer;
@@ -1255,13 +1256,13 @@ begin
         begin
             if line[i] = '\' then
             begin
-                if pos('bin',line) = i+1 then     { bei Binär-Daten im RTF-File funktioniert das Klammern-Zählen }
+                if pos('bin',String(line)) = i+1 then     { bei Binär-Daten im RTF-File funktioniert das Klammern-Zählen }
                 begin                             { nicht und daher wird die im 'bin'-tag angegebene Menge von   }
                     binlen := 0;                  { Bytes ungeprüft übersprungen                                 }
                     i := i+4;
                     while (line[i] in ['0'..'9']) and (i <= strlen) do
                     begin                                           { Länge der Binär-Daten erfassen }
-                        binlen := binlen * 10 + strtoint(line[i]);
+                        binlen := binlen * 10 + strtoint(String(line[i]));
                         Inc(i);
                     end;
                     binind := 1;
@@ -1303,17 +1304,17 @@ end;
 
 {  ************************************************************************  }
 
-procedure TRtf2Html.MakeFontTable (var infile, outfile: textfile; var src: string);
+procedure TRtf2Html.MakeFontTable (var infile, outfile: textfile; var src: AnsiString);
 var
     fnum, ftind, i, i2, strlen: integer;
     endfonts, lastline: boolean;
-    nextstr: string;
+    nextstr: AnsiString;
 
 begin
     ftind := 0;
     endfonts := false;
     lastline := false;
-    i := pos('\fonttbl',src)+8;
+    i := pos('\fonttbl',String(src))+8;
     strlen := length(src);
 
     While not lastline and not endfonts do
@@ -1330,7 +1331,7 @@ begin
             Inc(i);
             while (src[i] in ['0'..'9']) and (i <= strlen) do   { Font-Nummer }
             begin
-                fnum := (fnum*10)+strtoint(src[i]);
+                fnum := (fnum*10)+strtoint(String(src[i]));
                 Inc(i);
             end;
 
@@ -1344,7 +1345,7 @@ begin
             { und nun das Ende..... }
             i2 := i;
             while (i2 <= strlen) and (src[i2] <> ';') and (src[i2] <> '{') and (src[i2] <> '\') do Inc(i2);
-            if (src[i2] = '{') and (pos('\*\falt',src) = i2+1) then
+            if (src[i2] = '{') and (pos('\*\falt',String(src)) = i2+1) then
             begin
                 i := i2+9;
                 while (i2 <= strlen) and (src[i2] <> '}') do Inc(i2);
@@ -1407,16 +1408,16 @@ end;
 
 {  ************************************************************************  }
 
-procedure TRtf2Html.MakeColorTable (var infile, outfile: textfile; var src: string);
+procedure TRtf2Html.MakeColorTable (var infile, outfile: textfile; var src: AnsiString);
 var
     i, i2, strlen : integer;
     endcolours, lastline : boolean;
-    colstr, nextstr : string;
+    colstr, nextstr : AnsiString;
 
 begin
     endcolours := false;
     lastline := false;
-    i := pos('\colortbl',src)+10; { carlos - era 9}
+    i := pos('\colortbl',String(src))+10; { carlos - era 9}
     strlen := length(src);
 
     if (src[i] = ';') then col.add('#000000');  { "auto" color (Farbe 0) nicht gesetzt --> schwarz }
@@ -1433,7 +1434,7 @@ begin
         if (src[i2+1] = '}') then endcolours := true;
 
         colstr := HtmlColorFromRtfColor(Copy(src,i,i2-i));
-        col.add(colstr); { im html-Farben-Format in die Liste eintragen }
+        col.add(String(colstr)); { im html-Farben-Format in die Liste eintragen }
 
         if ConvertionFlags.Optimize then
             AddFontColor(colstr); { KillStrings zum späteren Optimieren setzen }
@@ -1454,28 +1455,28 @@ end;
 { TRtf2Html }
 
 { Substitui cada uma das ocorrências indicadas em aOldPatterns pelas strings
-indicadas em aReplaceWith respectivamente na string aSrcStr. }
-function TRtf2Html.ReplaceAll(aSrcStr: String; const aOldPatterns, aNewPatterns: array of String): String;
+indicadas em aReplaceWith respectivamente na AnsiString aSrcStr. }
+function TRtf2Html.ReplaceAll(aSrcStr: AnsiString; const aOldPatterns, aNewPatterns: array of AnsiString): AnsiString;
 var
     i: Cardinal;
 begin
     Result := aSrcStr;
     if High(aOldPatterns) = High(aNewPatterns) then
         for i := 0 to High(aOldPatterns) do
-            Result := StringReplace(Result,aOldPatterns[i],aNewPatterns[i],[rfReplaceAll]);
+            Result := AnsiString(StringReplace(String(Result),String(aOldPatterns[i]),String(aNewPatterns[i]),[rfReplaceAll]));
 end;
 
-procedure TRtf2Html.ReplaceSpecialTags(var aText: String);
-    procedure ReplaceImage(aImgTag: ShortString);
+procedure TRtf2Html.ReplaceSpecialTags(var aText: AnsiString);
+    procedure ReplaceImage(aImgTag: AnsiString);
     var
-        ImgHtmlTag: String;
+        ImgHtmlTag: AnsiString;
     begin
         { Remove os tags NÃO HTML}
-        ImgHtmlTag := StringReplace(aImgTag,'[img]','',[]);
-        ImgHtmlTag := StringReplace(ImgHtmlTag,'[/img]','',[]);
+        ImgHtmlTag := AnsiString(StringReplace(String(aImgTag),'[img]','',[]));
+        ImgHtmlTag := AnsiString(StringReplace(String(ImgHtmlTag),'[/img]','',[]));
         { Cria o tag HTML }
         ImgHtmlTag := '<IMG SRC="' + FImagesDir + '\' + ImgHtmlTag + '">';
-        aText := StringReplace(aText,aImgTag,ImgHtmlTag,[rfReplaceAll]);
+        aText := AnsiString(StringReplace(String(aText),String(aImgTag),String(ImgHtmlTag),[rfReplaceAll]));
     end;
 var
     OffSet, PosImg: Integer;
@@ -1485,11 +1486,11 @@ begin
     { Buscando tags de imagem e substituindo... }
     OffSet := 1;
     repeat
-        PosImg := PosEx('[img]',aText,OffSet);
+        PosImg := PosEx('[img]',String(aText),OffSet);
         if PosImg > 0 then
         begin
             OffSet := PosImg;
-            OffSet := PosEx('[/img]',aText,OffSet) + 6; // 6 = restante dos caracteres do tag de fechamento + 1
+            OffSet := PosEx('[/img]',String(aText),OffSet) + 6; // 6 = restante dos caracteres do tag de fechamento + 1
             LengthOfTag := OffSet - PosImg;
             ReplaceImage(Copy(aText,PosImg,LengthOfTag));
         end;
@@ -1497,9 +1498,9 @@ begin
 end;
 
 { eliminiert überflüssige Formatierungs-Anweisungen }
-function TRtf2Html.OptimizeHtml(aSrcStr: String): String;
+function TRtf2Html.OptimizeHtml(aSrcStr: AnsiString): AnsiString;
 var
-    line, comp : string;
+    line, comp : AnsiString;
     helpp : PInvalidString;
 
 begin
@@ -1522,7 +1523,7 @@ begin
             helpp := InvalidString;
             while (helpp <> NIL) do
             begin
-                line := StringReplace(Line,helpp^.InvalidStr,'',[rfReplaceAll]);
+                line := AnsiString(StringReplace(String(Line),String(helpp^.InvalidStr),'',[rfReplaceAll]));
                 helpp := helpp^.NextInvalidString;
             end;
         end;
@@ -1533,7 +1534,7 @@ begin
 end;
 
 { Limpa e corrige o HTML final gerado }
-function TRtf2Html.ClearHTML(const aHTML: String): String;
+function TRtf2Html.ClearHTML(const aHTML: AnsiString): AnsiString;
 var
     i: Cardinal;
 begin
@@ -1541,23 +1542,23 @@ begin
     { A correção tem de ser feita linha a linha }
     with TStringList.Create do
         try
-            Text := aHTML;
+            Text := String(aHTML);
             for i := 0 to Pred(Count) do
                 if Strings[i] <> '' then
                 begin
                     { removendo <BR> desncessários }
-                    Strings[i] := ReplaceAll(Strings[i],['</UL><BR>','</OL><BR>'],['</UL>','</OL>'])
+                    Strings[i] := String(ReplaceAll(AnsiString(Strings[i]),['</UL><BR>','</OL><BR>'],['</UL>','</OL>']))
                 end;
         finally
-            Result := Text;
+            Result := AnsiString(Text);
             Free;
         end;
 end;
 
-procedure TRtf2Html.WriteHtml (const txt: string; var outstring: string; var outfile: textfile);
+procedure TRtf2Html.WriteHtml (const txt: AnsiString; var outstring: AnsiString; var outfile: textfile);
 var
     i, strlen: integer;
-    str, htxt: string;
+    str, htxt: AnsiString;
     par, br: boolean;
 
 begin
@@ -1572,10 +1573,10 @@ begin
 
         strlen := length(str);
 
-        i := Pos('<P>', str) + 2;
+        i := Pos('<P>', String(str)) + 2;
         if i = 2 then
         begin
-            i := Pos('<BR>', str) + 3;
+            i := Pos('<BR>', String(str)) + 3;
             if i > 3 then br := true;
         end
         else
@@ -1589,15 +1590,15 @@ begin
                 incl_hlink(htxt);
 
                 WriteLn(outfile, htxt);
-                str := Copy(str, i+1, length(str)-i);
+                str := AnsiString(Copy(String(str), i+1, length(String(str))-i));
 
                 par := false;
                 br := false;
 
-                i := Pos('<P>', str) + 2;
+                i := Pos('<P>', String(str)) + 2;
                 if i = 2 then
                 begin
-                    i := Pos('<BR>', str) + 3;
+                    i := Pos('<BR>', String(str)) + 3;
                     if i > 3 then br := true;
                 end
                 else
@@ -1620,9 +1621,9 @@ begin
     end; { if length(txt) > 0 ... }
 end;
 
-function TRtf2Html.optStyle(basestyle, actstyle: string) : string;
+function TRtf2Html.optStyle(basestyle, actstyle: AnsiString) : AnsiString;
 var
-    sbased, sact : string;
+    sbased, sact : AnsiString;
 
 begin
     Result := '';
@@ -1649,8 +1650,8 @@ begin
     begin
         sbased := '';
     end;
-    if ((pos('\fi', sact) > 0) or (pos('\li', sact) > 0))
-    and ((pos('\fi', sbased) > 0) or (pos('\li', sbased) > 0)) then
+    if ((pos('\fi', String(sact)) > 0) or (pos('\li', String(sact)) > 0))
+    and ((pos('\fi', String(sbased)) > 0) or (pos('\li', String(sbased)) > 0)) then
     begin
         cut_tag('\fi', sbased);
         cut_tag('\li', sbased);
@@ -1659,10 +1660,10 @@ begin
     Result := sbased + sact;
 end;
 
-procedure TRtf2Html.CloseLists (var aOutputString: String;
+procedure TRtf2Html.CloseLists (var aOutputString: AnsiString;
                                 var aOutputFile: TextFile);
 var
-    txt : string;
+    txt : AnsiString;
 begin
     txt := '';
 
@@ -1679,7 +1680,7 @@ begin
 end;
 
 
-function TRtf2Html.GetRtfCode(aRichEdit: TRichEdit): String;
+function TRtf2Html.GetRtfCode(aRichEdit: TRichEdit): AnsiString;
 var
     strStream: TStringStream;
 begin
@@ -1687,13 +1688,13 @@ begin
     try
         aRichEdit.PlainText := False;
         aRichEdit.Lines.SaveToStream(strStream) ;
-        Result := strStream.DataString;
+        Result := AnsiString(strStream.DataString);
     finally
         strStream.Free
     end;
 end;
 
-function TRtf2Html.GetHyperText: String;
+function TRtf2Html.GetHyperText: AnsiString;
 begin
     Result := '';
 
@@ -1733,18 +1734,18 @@ end;
 
 procedure TRtf2Html.InitializeStylesSheets (var aInputFile
                                               , aOutputFile: TextFile;
-                                            var aSource: string);
+                                            var aSource: AnsiString);
 var
     i, j, hrnum, strlen, snum, sbased : integer;
     endstyles, lastline, str, ctr, firststyle : boolean;
-    basedon, cwd, txt, nextstr, sname, snumstr, spchar : string;
+    basedon, cwd, txt, nextstr, sname, snumstr, spchar : AnsiString;
 
 begin
     basedon := '';      { Platzhalter für Basis-Styles }
     spchar := '';       { Sonderzeichen }
     snum := 0;          { Style-Nummer im Stylesheet }
     sbased := 0;        { basierend auf Style Nr. <sbased> }
-    snumstr := '';      { Style-Nummer im String-Format }
+    snumstr := '';      { Style-Nummer im AnsiString-Format }
     cwd := '';          { Kontroll-Wort }
     sname := '';        { Style-Bezeichnung }
     ctr := false;       { derzeit in einem Kontrollwort ? }
@@ -1753,7 +1754,7 @@ begin
     lastline := false;  { Ende des Input-Files ???????   (wer weiß...) }
 
     firststyle := true;
-    i := pos('\stylesheet',aSource)+11;
+    i := pos('\stylesheet',String(aSource))+11;
     strlen := length(aSource);
 
     While (not lastline) and (not endstyles) do
@@ -1854,7 +1855,7 @@ begin
                     Inc(i);
                 end;
                 try
-                    snum := strtoint(snumstr);
+                    snum := strtoint(String(snumstr));
                 except
                     on EConvertError do
                         snum := 300;
@@ -1872,24 +1873,24 @@ begin
                          stylesheet[snum].name := sname;
                          str := false;
 
-                         if pos('toc', sname) > 0 then
+                         if pos('toc', String(sname)) > 0 then
                          begin
                              hrnum := 0;
-                             for j := 4 to length(sname) do
+                             for j := 4 to length(String(sname)) do
                              begin
                                  if sname[j] in ['1'..'9'] then
-                                     hrnum := strtoint(sname[j]);
+                                     hrnum := strtoint(String(sname[j]));
                              end;
                              if hrnum > 0 then
                                  linkstyles[hrnum] := snum;
                          end
-                         else if pos('heading', sname) > 0 then
+                         else if pos('heading', String(sname)) > 0 then
                          begin
                              hrnum := 0;
-                             for j := 8 to length(sname) do
+                             for j := 8 to length(String(sname)) do
                              begin
                                  if sname[j] in ['1'..'9'] then
-                                     hrnum := strtoint(sname[j]);
+                                     hrnum := strtoint(String(sname[j]));
                              end;
                              if hrnum > 0 then
                                  anchstyles[hrnum] := snum;
@@ -1913,7 +1914,7 @@ begin
                         if Copy(cwd, 1, 8) = 'sbasedon' then  { Grundlage ist ein anderer Style }
                         begin
                             try
-                                sbased := strtoint(Copy(cwd, 9, length(cwd)-9));
+                                sbased := strtoint(Copy(String(cwd), 9, length(String(cwd))-9));
                             except
                                 on EConvertError do
                                     sbased := -1;
@@ -1941,7 +1942,7 @@ begin
                             if Copy(cwd, 1, 8) = 'sbasedon' then { Grundlage ist ein anderer Style }
                             begin
                                 try
-                                    sbased := strtoint(Copy(cwd, 9, length(cwd)-9));
+                                    sbased := strtoint(Copy(String(cwd), 9, length(String(cwd))-9));
                                 except
                                     on EConvertError do
                                         sbased := -1;
@@ -2007,17 +2008,17 @@ begin
     end;
 end;
 
-procedure TRtf2Html.ProcessTable (var infile, outfile: textfile; var line: string);
+procedure TRtf2Html.ProcessTable (var infile, outfile: textfile; var line: AnsiString);
 var                                   { bearbeitet eine Tabelle }
     brkopen, i, lvl, strlen : integer;
-    ctrlword, txt, buf : string;
+    ctrlword, txt, buf : AnsiString;
     TextFormat : TTextFormat;
     tempattrib : array[1..20] of TTextFormat;
     fmtdiff, lastline, tabpard : boolean;
 
 begin
     lvl := 1;
-    brkopen := 1;             { String-Index bei öffnender Klammer, wird vor IgnoreGroup() gebraucht }
+    brkopen := 1;             { AnsiString-Index bei öffnender Klammer, wird vor IgnoreGroup() gebraucht }
     i := 1;
     lastline := false;
     li_open := false;
@@ -2227,7 +2228,7 @@ begin
                             begin
                                 tabpard := false;
                             end
-                            else if (ctrlword = 'pard') or ((ctrlword = 'widctlpar') and (pos('\intbl', line) <> i+1)) then
+                            else if (ctrlword = 'pard') or ((ctrlword = 'widctlpar') and (pos('\intbl', String(line)) <> i+1)) then
                             begin
                                 if TextFormat.Table = row_end then
                                 begin
@@ -2323,10 +2324,10 @@ begin
     end;  { While not lastline }
 end;
 
-procedure TRtf2Html.ProcessGroup (var infile, outfile: textfile; var line: string; var attrib: TTextFormat);
+procedure TRtf2Html.ProcessGroup (var infile, outfile: textfile; var line: AnsiString; var attrib: TTextFormat);
 var                                   { bearbeitet eine rtf-'Group' }
     brk, i, j, num, strlen : integer;
-    ctrlword, txt, lvlnumstr : string;
+    ctrlword, txt, lvlnumstr : AnsiString;
     tempattrib : TTextFormat;
     fmtdiff, quitblock, inv : boolean;
 
@@ -2428,7 +2429,7 @@ begin
                                             Dec(i);    { sonst verlieren wir ein Zeichen }
 
                                             if (ctrlword = 'pnlvlblt')
-                                            or ((pos('pnlvl', ctrlword) = 1) and (ctrlword[6] in ['5'..'9']))
+                                            or ((pos('pnlvl', String(ctrlword)) = 1) and (ctrlword[6] in ['5'..'9']))
                                             then
                                             begin
                                                 pnnum := false;
@@ -2441,7 +2442,7 @@ begin
                                             end
                                             else if (ctrlword = 'pnlvlcont')
                                                  or (ctrlword = 'pnlvlbody')
-                                                 or ((pos('pnlvl', ctrlword) = 1) and (ctrlword[6] in ['1'..'4'])) then
+                                                 or ((pos('pnlvl', String(ctrlword)) = 1) and (ctrlword[6] in ['1'..'4'])) then
                                             begin
                                                 if (ctrlword = 'pnlvlbody') then
                                                     pnnum := true
@@ -2464,17 +2465,17 @@ begin
                                             begin
                                                 enumdigit := true;
                                             end
-                                            else if (Pos('pnstart', ctrlword) > 0) then
+                                            else if (Pos('pnstart', String(ctrlword)) > 0) then
                                             begin
                                                 if enumdigit and pnnum then
                                                 begin
                                                     lvlnumstr := '';
-                                                    for j := 8 to length(ctrlword) do
+                                                    for j := 8 to length(String(ctrlword)) do
                                                     begin
                                                         lvlnumstr := lvlnumstr + ctrlword[j];
                                                     end;
                                                     try
-                                                        lvlnum := strtoint(lvlnumstr);
+                                                        lvlnum := strtoint(String(lvlnumstr));
                                                     except
                                                         on EConvertError do
                                                             lvlnum := 1;
@@ -2621,10 +2622,10 @@ begin
                                 strlen := length(line);
                                 if EOF(infile) then lastline := true;  { just in case... }
                             end
-                            else if (pos('s',ctrlword) = 1) and (ctrlword[2] in ['0'..'9']) then
+                            else if (pos('s',String(ctrlword)) = 1) and (ctrlword[2] in ['0'..'9']) then
                             begin                                   { Stylesheet-Eintrag }
                                 try
-                                    num := strtoint(copy(ctrlword,2,length(ctrlword)-1));
+                                    num := strtoint(copy(String(ctrlword),2,length(ctrlword)-1));
                                 except
                                     on EConvertError do
                                         num := 0;
@@ -2651,7 +2652,7 @@ begin
 
                                 txt := LineAt(i+1, line, infile);
                                 line := stylesheet[num].ctrl + txt;
-                                strlen := length(line);
+                                strlen := length(String(line));
                                 i := 0;
                             end
                             else if ctrlword = 'trowd' then
@@ -2732,7 +2733,7 @@ end;
 procedure TRtf2Html.ConvertFile (const aSrcFilename, aDestFilename: TFileName; aExtraParams: TExtraParams);
 var
     infile, outfile: textfile;
-    src, txt: string;
+    src, txt: AnsiString;
     TextFormat: TTextFormat;
     i: integer;
 
@@ -2781,7 +2782,7 @@ begin
     pnnum := false;              { true, wenn ein Aufzählungspunkt mit formatierter Numerierung folgt }
     nextpar := true;             { true, sobald ein \par gelesen wird; false ab erstem Dokument-Text-Zeichen danach }
     enumdigit := false;          { true, wenn eine numerische Aufzählung folgt }
-    enumtxt := '';               { der String, der die formatierte Numerierung enthält }
+    enumtxt := '';               { der AnsiString, der die formatierte Numerierung enthält }
 
     col := TStringList.Create;   { interne Farbtabelle }
     lvlnum := -1;                { aktuelle Zahl bei Aufzählungen }

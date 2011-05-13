@@ -247,12 +247,12 @@ end;
 
 procedure TXXXForm_MainTabbedTemplate.DoCreate(Sender: TObject);
 begin
-    PageControl_Main.OnChange := DoNotifyTabsChanged;
-    PageControl_Main.OnActivatePage := DoNotifyTabsChanged;
+  PageControl_Main.OnChange := DoNotifyTabsChanged;
+  PageControl_Main.OnActivatePage := DoNotifyTabsChanged;
 
-    Application.OnHint := DoShowHint;
+  Application.OnHint := DoShowHint;
 
-    BalloonToolTip_Validation.TipTitle := RS_VALIDATE_ERROR_BALLOON_TITLE;
+  BalloonToolTip_Validation.TipTitle := ShortString(RS_VALIDATE_ERROR_BALLOON_TITLE);
 	BalloonToolTip_Validation.TipIcon := tiError;
 end;
 

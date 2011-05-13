@@ -31,28 +31,28 @@ type
         { Private declarations }
         LarguraTotal: Word;
         procedure SetCreationDateAndTime(const Value: TDateTime);
-        procedure SetCreatorFullName(const Value: ShortString);
+        procedure SetCreatorFullName(const Value: AnsiString);
         procedure SetCreatorId(const Value: Cardinal);
         procedure SetLastModificationDateAndTime(const Value: TDateTime);
-        procedure SetLastModifierFullName(const Value: ShortString);
+        procedure SetLastModifierFullName(const Value: AnsiString);
         procedure SetLastModifierId(const Value: Cardinal);
-        procedure SetRecordStatus(const Value: ShortString);
+        procedure SetRecordStatus(const Value: AnsiString);
         procedure SetRecordId(const Value: Cardinal);
-        procedure SetTableName(const Value: ShortString);
+        procedure SetTableName(const Value: AnsiString);
     public
         { Public declarations }
-        property TableName: ShortString write SetTableName;
+        property TableName: AnsiString write SetTableName;
         property RecordId: Cardinal write SetRecordId;
 
         property CreatorId: Cardinal write SetCreatorId;
-        property CreatorFullName: ShortString write SetCreatorFullName;
+        property CreatorFullName: AnsiString write SetCreatorFullName;
         property CreationDateAndTime: TDateTime write SetCreationDateAndTime;
 
         property LastModifierId: Cardinal write SetLastModifierId;
-        property LastModifierFullName: ShortString write SetLastModifierFullName;
+        property LastModifierFullName: AnsiString write SetLastModifierFullName;
         property LastModificationDateAndTime: TDateTime write SetLastModificationDateAndTime;
 
-        property RecordStatus: ShortString write SetRecordStatus;
+        property RecordStatus: AnsiString write SetRecordStatus;
     end;
 
 implementation
@@ -71,9 +71,9 @@ begin
  	Label_CreationDateAndTime.Width := LarguraTotal - Label_CreationDateAndTimeValor.Width;
 end;
 
-procedure TXXXForm_RecordInformation.SetCreatorFullName(const Value: ShortString);
+procedure TXXXForm_RecordInformation.SetCreatorFullName(const Value: AnsiString);
 begin
-    Label_CreatorFullNameValor.Caption := Value;
+    Label_CreatorFullNameValor.Caption := String(Value);
 	Label_CreatorFullName.Width := LarguraTotal - Label_CreatorFullNameValor.Width;
 end;
 
@@ -89,9 +89,9 @@ begin
 	Label_LastModificationDateAndTime.Width := LarguraTotal - Label_LastModificationDateAndTimeValor.Width;
 end;
 
-procedure TXXXForm_RecordInformation.SetLastModifierFullName(const Value: ShortString);
+procedure TXXXForm_RecordInformation.SetLastModifierFullName(const Value: AnsiString);
 begin
-    Label_LastModifierFullNameValor.Caption := Value;
+    Label_LastModifierFullNameValor.Caption := String(Value);
 	Label_LastModifierFullName.Width := LarguraTotal - Label_LastModifierFullNameValor.Width;
 end;
 
@@ -107,15 +107,15 @@ begin
 	Label_RecordId.Width := LarguraTotal - Label_RecordIdValor.Width;
 end;
 
-procedure TXXXForm_RecordInformation.SetRecordStatus(const Value: ShortString);
+procedure TXXXForm_RecordInformation.SetRecordStatus(const Value: AnsiString);
 begin
-    Label_RecordStatusValor.Caption := UpperCase(Value);
+    Label_RecordStatusValor.Caption := UpperCase(String(Value));
 	Label_RecordStatus.Width := LarguraTotal - Label_RecordStatusValor.Width;
 end;
 
-procedure TXXXForm_RecordInformation.SetTableName(const Value: ShortString);
+procedure TXXXForm_RecordInformation.SetTableName(const Value: AnsiString);
 begin
-    Label_TableNameValor.Caption := UpperCase(Value);
+    Label_TableNameValor.Caption := UpperCase(String(Value));
 	Label_TableName.Width := LarguraTotal - Label_TableNameValor.Width;  
 end;
 

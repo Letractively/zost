@@ -53,7 +53,7 @@ begin
         end;
 
 		try
-        	ExecuteQuery(DataModuleMain.ZConnections[0].Connection,SQL);
+        	ExecuteQuery(DataModuleMain.ZConnections[0].Connection,AnsiString(SQL));
       	finally
         	TXXXForm_AddEntity(Owner).Close;
         end;

@@ -34,36 +34,36 @@ uses
 	Classes, Contnrs, USyncStructures;
 
 type
-	TString150 = String{$IFNDEF UNICODE}[150]{$ENDIF};
-  TString128 = String{$IFNDEF UNICODE}[128]{$ENDIF};
-  TString64 = String{$IFNDEF UNICODE}[64]{$ENDIF};
-  TString40 = String{$IFNDEF UNICODE}[40]{$ENDIF};
-  TString32 = String{$IFNDEF UNICODE}[32]{$ENDIF};
-  TString16 = String{$IFNDEF UNICODE}[16]{$ENDIF};
-  TString8 = String{$IFNDEF UNICODE}[8]{$ENDIF};
-  TString6 = String{$IFNDEF UNICODE}[6]{$ENDIF};
-  TString4 = String{$IFNDEF UNICODE}[4]{$ENDIF};
-  TString3 = String{$IFNDEF UNICODE}[3]{$ENDIF};
-  TString2 = String{$IFNDEF UNICODE}[2]{$ENDIF};
+	TString150 = {$IFDEF UNICODE}AnsiString{$ELSE}String[150]{$ENDIF};
+  TString128 = {$IFDEF UNICODE}AnsiString{$ELSE}String[128]{$ENDIF};
+  TString64 = {$IFDEF UNICODE}AnsiString{$ELSE}String[64]{$ENDIF};
+  TString40 = {$IFDEF UNICODE}AnsiString{$ELSE}String[40]{$ENDIF};
+  TString32 = {$IFDEF UNICODE}AnsiString{$ELSE}String[32]{$ENDIF};
+  TString16 = {$IFDEF UNICODE}AnsiString{$ELSE}String[16]{$ENDIF};
+  TString8 = {$IFDEF UNICODE}AnsiString{$ELSE}String[8]{$ENDIF};
+  TString6 = {$IFDEF UNICODE}AnsiString{$ELSE}String[6]{$ENDIF};
+  TString4 = {$IFDEF UNICODE}AnsiString{$ELSE}String[4]{$ENDIF};
+  TString3 = {$IFDEF UNICODE}AnsiString{$ELSE}String[3]{$ENDIF};
+  TString2 = {$IFDEF UNICODE}AnsiString{$ELSE}String[2]{$ENDIF};
 
     TID = class(TSyncKey)
     public
-    	function ReferencedValue(aTableName: String): String; override;
+    	function ReferencedValue(aTableName: AnsiString): AnsiString; override;
     end;
 
     TEntidadeDoSistema = class(TSyncRecord)
   	private
     	FIN_ENTIDADESDOSISTEMA_ID: Cardinal;
-        FVA_NOME: TString128;
-        FTI_TIPO: Byte;
+      FVA_NOME: TString128;
+      FTI_TIPO: Byte;
     public
-        function PrimaryKeyValue: Int64; override;
-        function InsertClause(const aValues, aUsePrimaryKeyValue: Boolean): String; override;
-        function UpdateClause: String; override;
+      function PrimaryKeyValue: Int64; override;
+      function InsertClause(const aValues, aUsePrimaryKeyValue: Boolean): AnsiString; override;
+      function UpdateClause: AnsiString; override;
     published
     	property IN_ENTIDADESDOSISTEMA_ID: Cardinal read FIN_ENTIDADESDOSISTEMA_ID write FIN_ENTIDADESDOSISTEMA_ID;
-        property VA_NOME: TString128 read FVA_NOME write FVA_NOME;
-        property TI_TIPO: Byte read FTI_TIPO write FTI_TIPO;
+      property VA_NOME: TString128 read FVA_NOME write FVA_NOME;
+      property TI_TIPO: Byte read FTI_TIPO write FTI_TIPO;
     end;
 
     TEntidadesDoSistema = class(TSyncTable)
@@ -85,8 +85,8 @@ type
         FBO_DISPONIVEL: Boolean;
     public
         function PrimaryKeyValue: Int64; override;
-        function InsertClause(const aValues, aUsePrimaryKeyValue: Boolean): String; override;
-        function UpdateClause: String; override;
+        function InsertClause(const aValues, aUsePrimaryKeyValue: Boolean): AnsiString; override;
+        function UpdateClause: AnsiString; override;
     published
     	property IN_EQUIPAMENTOS_ID: Cardinal read FIN_EQUIPAMENTOS_ID write FIN_EQUIPAMENTOS_ID;
         property VA_MODELO: TString64 read FVA_MODELO write FVA_MODELO;
@@ -111,8 +111,8 @@ type
         FVA_DESCRICAO: TString64;
     public
         function PrimaryKeyValue: Int64; override;
-        function InsertClause(const aValues, aUsePrimaryKeyValue: Boolean): String; override;
-        function UpdateClause: String; override;
+        function InsertClause(const aValues, aUsePrimaryKeyValue: Boolean): AnsiString; override;
+        function UpdateClause: AnsiString; override;
     published
     	property TI_FAMILIAS_ID: Byte read FTI_FAMILIAS_ID write FTI_FAMILIAS_ID;
         property VA_DESCRICAO: TString64 read FVA_DESCRICAO write FVA_DESCRICAO;
@@ -133,8 +133,8 @@ type
         FVA_DESCRICAO: TString128;
     public
         function PrimaryKeyValue: Int64; override;
-        function InsertClause(const aValues, aUsePrimaryKeyValue: Boolean): String; override;
-        function UpdateClause: String; override;
+        function InsertClause(const aValues, aUsePrimaryKeyValue: Boolean): AnsiString; override;
+        function UpdateClause: AnsiString; override;
     published
     	property TI_GRUPOS_ID: Byte read FTI_GRUPOS_ID write FTI_GRUPOS_ID;
         property VA_NOME: TString64 read FVA_NOME write FVA_NOME;
@@ -154,18 +154,18 @@ type
   		FTI_REGIOES_ID: Byte;
   		FVA_REGIAO: TString8;
   		FCH_PREFIXODAPROPOSTA: TString4;
-  		FVA_PRIMEIRORODAPE: String;
-  		FVA_SEGUNDORODAPE: String;
+  		FVA_PRIMEIRORODAPE: AnsiString;
+  		FVA_SEGUNDORODAPE: AnsiString;
     public
         function PrimaryKeyValue: Int64; override;
-        function InsertClause(const aValues, aUsePrimaryKeyValue: Boolean): String; override;
-        function UpdateClause: String; override;
+        function InsertClause(const aValues, aUsePrimaryKeyValue: Boolean): AnsiString; override;
+        function UpdateClause: AnsiString; override;
     published
   		property TI_REGIOES_ID: Byte read FTI_REGIOES_ID write FTI_REGIOES_ID;
   		property VA_REGIAO: TString8 read FVA_REGIAO write FVA_REGIAO;
   		property CH_PREFIXODAPROPOSTA: TString4 read FCH_PREFIXODAPROPOSTA write FCH_PREFIXODAPROPOSTA;
-  		property VA_PRIMEIRORODAPE: String read FVA_PRIMEIRORODAPE write FVA_PRIMEIRORODAPE;
-  		property VA_SEGUNDORODAPE: String read FVA_SEGUNDORODAPE write FVA_SEGUNDORODAPE;
+  		property VA_PRIMEIRORODAPE: AnsiString read FVA_PRIMEIRORODAPE write FVA_PRIMEIRORODAPE;
+  		property VA_SEGUNDORODAPE: AnsiString read FVA_SEGUNDORODAPE write FVA_SEGUNDORODAPE;
     end;
 
     TRegioes = class(TSyncTable)
@@ -185,8 +185,8 @@ type
         FTI_DIASPARAEXPIRACAO: Byte;
     public
         function PrimaryKeyValue: Int64; override;
-        function InsertClause(const aValues, aUsePrimaryKeyValue: Boolean): String; override;
-        function UpdateClause: String; override;
+        function InsertClause(const aValues, aUsePrimaryKeyValue: Boolean): AnsiString; override;
+        function UpdateClause: AnsiString; override;
     published
   		property TI_SITUACOES_ID: Byte read FTI_SITUACOES_ID write FTI_SITUACOES_ID;
   		property VA_DESCRICAO: TString32 read FVA_DESCRICAO write FVA_DESCRICAO;
@@ -209,8 +209,8 @@ type
         FVA_DESCRICAO: TString64;
     public
         function PrimaryKeyValue: Int64; override;
-        function InsertClause(const aValues, aUsePrimaryKeyValue: Boolean): String; override;
-        function UpdateClause: String; override;
+        function InsertClause(const aValues, aUsePrimaryKeyValue: Boolean): AnsiString; override;
+        function UpdateClause: AnsiString; override;
     published
   		property TI_TIPOS_ID: Byte read FTI_TIPOS_ID write FTI_TIPOS_ID;
   		property VA_DESCRICAO: TString64 read FVA_DESCRICAO write FVA_DESCRICAO;
@@ -230,8 +230,8 @@ type
   		FVA_NOME: TString64;
     public
         function PrimaryKeyValue: Int64; override;
-        function InsertClause(const aValues, aUsePrimaryKeyValue: Boolean): String; override;
-        function UpdateClause: String; override;
+        function InsertClause(const aValues, aUsePrimaryKeyValue: Boolean): AnsiString; override;
+        function UpdateClause: AnsiString; override;
     published
   		property SM_PROJETISTAS_ID: Word read FSM_PROJETISTAS_ID write FSM_PROJETISTAS_ID;
   		property VA_NOME: TString64 read FVA_NOME write FVA_NOME;
@@ -251,8 +251,8 @@ type
   		FFL_VALOR: Double;
     public
         function PrimaryKeyValue: Int64; override;
-        function InsertClause(const aValues, aUsePrimaryKeyValue: Boolean): String; override;
-        function UpdateClause: String; override;
+        function InsertClause(const aValues, aUsePrimaryKeyValue: Boolean): AnsiString; override;
+        function UpdateClause: AnsiString; override;
     published
   		property TI_ICMS_ID: Byte read FTI_ICMS_ID write FTI_ICMS_ID;
   		property FL_VALOR: Double read FFL_VALOR write FFL_VALOR;
@@ -272,8 +272,8 @@ type
         FVA_NOME: TString64;
     public
         function PrimaryKeyValue: Int64; override;
-        function InsertClause(const aValues, aUsePrimaryKeyValue: Boolean): String; override;
-        function UpdateClause: String; override;
+        function InsertClause(const aValues, aUsePrimaryKeyValue: Boolean): AnsiString; override;
+        function UpdateClause: AnsiString; override;
     published
   		property SM_INSTALADORES_ID: Word read FSM_INSTALADORES_ID write FSM_INSTALADORES_ID;
   		property VA_NOME: TString64 read FVA_NOME write FVA_NOME;
@@ -294,8 +294,8 @@ type
   		FVA_DESCRICAO: TString64;
     public
 		function PrimaryKeyValue: Int64; override;
-        function InsertClause(const aValues, aUsePrimaryKeyValue: Boolean): String; override;
-        function UpdateClause: String; override;
+        function InsertClause(const aValues, aUsePrimaryKeyValue: Boolean): AnsiString; override;
+        function UpdateClause: AnsiString; override;
     published
   		property TI_UNIDADES_ID: Byte read FTI_UNIDADES_ID write FTI_UNIDADES_ID;
   		property VA_ABREVIATURA: TString8 read FVA_ABREVIATURA write FVA_ABREVIATURA;
@@ -315,17 +315,17 @@ type
   		FSM_USUARIOS_ID: Word;
   		FVA_NOME: TString64;
   		FVA_LOGIN: TString16;
-  		FTB_SENHA: String;
+  		FTB_SENHA: AnsiString;
         FVA_EMAIL: TString64;
     public
 		function PrimaryKeyValue: Int64; override;
-        function InsertClause(const aValues, aUsePrimaryKeyValue: Boolean): String; override;
-        function UpdateClause: String; override;
+        function InsertClause(const aValues, aUsePrimaryKeyValue: Boolean): AnsiString; override;
+        function UpdateClause: AnsiString; override;
     published
   		property SM_USUARIOS_ID: Word read FSM_USUARIOS_ID write FSM_USUARIOS_ID;
   		property VA_NOME: TString64 read FVA_NOME write FVA_NOME;
         property VA_LOGIN: TString16 read FVA_LOGIN write FVA_LOGIN;
-        property TB_SENHA: String read FTB_SENHA write FTB_SENHA;
+        property TB_SENHA: AnsiString read FTB_SENHA write FTB_SENHA;
         property VA_EMAIL: TString64 read FVA_EMAIL write FVA_EMAIL;
     end;
 
@@ -340,15 +340,15 @@ type
     TJustificativa = class(TSyncRecord)
   	private
         FTI_JUSTIFICATIVAS_ID: Byte;
-        FEN_CATEGORIA: Char;
+        FEN_CATEGORIA: AnsiChar;
         FVA_JUSTIFICATIVA: TString128;
     public
 		function PrimaryKeyValue: Int64; override;
-        function InsertClause(const aValues, aUsePrimaryKeyValue: Boolean): String; override;
-        function UpdateClause: String; override;
+        function InsertClause(const aValues, aUsePrimaryKeyValue: Boolean): AnsiString; override;
+        function UpdateClause: AnsiString; override;
     published
   		property TI_JUSTIFICATIVAS_ID: Byte read FTI_JUSTIFICATIVAS_ID write FTI_JUSTIFICATIVAS_ID;
-  		property EN_CATEGORIA: Char read FEN_CATEGORIA write FEN_CATEGORIA;
+  		property EN_CATEGORIA: AnsiChar read FEN_CATEGORIA write FEN_CATEGORIA;
         property VA_JUSTIFICATIVA: TString128 read FVA_JUSTIFICATIVA write FVA_JUSTIFICATIVA;
     end;
 
@@ -370,8 +370,8 @@ type
         destructor Destroy; override;
 
 		function PrimaryKeyValue: Int64; override;
-        function InsertClause(const aValues, aUsePrimaryKeyValue: Boolean): String; override;
-        function UpdateClause: String; override;
+        function InsertClause(const aValues, aUsePrimaryKeyValue: Boolean): AnsiString; override;
+        function UpdateClause: AnsiString; override;
     published
   		property MI_JUSTIFICATIVASDASOBRAS_ID: Cardinal read FMI_JUSTIFICATIVASDASOBRAS_ID write FMI_JUSTIFICATIVASDASOBRAS_ID;
   		property IN_OBRAS_ID: TID read FIN_OBRAS_ID write FIN_OBRAS_ID;
@@ -400,8 +400,8 @@ type
         destructor Destroy; override;
 
 		function PrimaryKeyValue: Int64; override;
-        function InsertClause(const aValues, aUsePrimaryKeyValue: Boolean): String; override;
-        function UpdateClause: String; override;
+        function InsertClause(const aValues, aUsePrimaryKeyValue: Boolean): AnsiString; override;
+        function UpdateClause: AnsiString; override;
     published
   		property IN_PERMISSOESDOSGRUPOS_ID: Cardinal read FIN_PERMISSOESDOSGRUPOS_ID write FIN_PERMISSOESDOSGRUPOS_ID;
   		property IN_ENTIDADESDOSISTEMA_ID: TID read FIN_ENTIDADESDOSISTEMA_ID write FIN_ENTIDADESDOSISTEMA_ID;
@@ -434,8 +434,8 @@ type
         destructor Destroy; override;
 
 		function PrimaryKeyValue: Int64; override;
-        function InsertClause(const aValues, aUsePrimaryKeyValue: Boolean): String; override;
-        function UpdateClause: String; override;
+        function InsertClause(const aValues, aUsePrimaryKeyValue: Boolean): AnsiString; override;
+        function UpdateClause: AnsiString; override;
     published
   		property IN_PERMISSOESDOSUSUARIOS_ID: Cardinal read FIN_PERMISSOESDOSUSUARIOS_ID write FIN_PERMISSOESDOSUSUARIOS_ID;
   		property IN_ENTIDADESDOSISTEMA_ID: TID read FIN_ENTIDADESDOSISTEMA_ID write FIN_ENTIDADESDOSISTEMA_ID;
@@ -464,8 +464,8 @@ type
         destructor Destroy; override;
 
 		function PrimaryKeyValue: Int64; override;
-        function InsertClause(const aValues, aUsePrimaryKeyValue: Boolean): String; override;
-        function UpdateClause: String; override;
+        function InsertClause(const aValues, aUsePrimaryKeyValue: Boolean): AnsiString; override;
+        function UpdateClause: AnsiString; override;
     published
   		property MI_GRUPOSDOSUSUARIOS_ID: Cardinal read FMI_GRUPOSDOSUSUARIOS_ID write FMI_GRUPOSDOSUSUARIOS_ID;
   		property TI_GRUPOS_ID: TID read FTI_GRUPOS_ID write FTI_GRUPOS_ID;
@@ -490,8 +490,8 @@ type
         destructor Destroy; override;
 
 		function PrimaryKeyValue: Int64; override;
-        function InsertClause(const aValues, aUsePrimaryKeyValue: Boolean): String; override;
-        function UpdateClause: String; override;
+        function InsertClause(const aValues, aUsePrimaryKeyValue: Boolean): AnsiString; override;
+        function UpdateClause: AnsiString; override;
     published
   		property MI_REGIOESDOSUSUARIOS_ID: Cardinal read FMI_REGIOESDOSUSUARIOS_ID write FMI_REGIOESDOSUSUARIOS_ID;
   		property TI_REGIOES_ID: TID read FTI_REGIOES_ID write FTI_REGIOES_ID;
@@ -519,8 +519,8 @@ type
         destructor Destroy; override;
 
         function PrimaryKeyValue: Int64; override;
-        function InsertClause(const aValues, aUsePrimaryKeyValue: Boolean): String; override;
-        function UpdateClause: String; override;
+        function InsertClause(const aValues, aUsePrimaryKeyValue: Boolean): AnsiString; override;
+        function UpdateClause: AnsiString; override;
     published
     	property IN_EQUIPAMENTOSDOSITENS_ID: Cardinal read FIN_EQUIPAMENTOSDOSITENS_ID write FIN_EQUIPAMENTOSDOSITENS_ID;
     	property IN_ITENS_ID: TID read FIN_ITENS_ID write FIN_ITENS_ID;
@@ -555,8 +555,8 @@ type
         destructor Destroy; override;
 
         function PrimaryKeyValue: Int64; override;
-        function InsertClause(const aValues, aUsePrimaryKeyValue: Boolean): String; override;
-        function UpdateClause: String; override;
+        function InsertClause(const aValues, aUsePrimaryKeyValue: Boolean): AnsiString; override;
+        function UpdateClause: AnsiString; override;
     published
 	    property IN_ITENS_ID: Cardinal read FIN_ITENS_ID write FIN_ITENS_ID;
     	property IN_PROPOSTAS_ID: TID read FIN_PROPOSTAS_ID write FIN_PROPOSTAS_ID;
@@ -597,8 +597,8 @@ type
         destructor Destroy; override;
 
         function PrimaryKeyValue: Int64; override;
-        function InsertClause(const aValues, aUsePrimaryKeyValue: Boolean): String; override;
-        function UpdateClause: String; override;
+        function InsertClause(const aValues, aUsePrimaryKeyValue: Boolean): AnsiString; override;
+        function UpdateClause: AnsiString; override;
     published
     	property IN_PROPOSTAS_ID: Cardinal read FIN_PROPOSTAS_ID write FIN_PROPOSTAS_ID;
 		property IN_OBRAS_ID: TID read FIN_OBRAS_ID write FIN_OBRAS_ID;
@@ -626,20 +626,20 @@ type
     private
         FIN_OBRAS_ID: Cardinal;
         FTI_REGIOES_ID: TID;
-        FVA_NOMEDAOBRA: String;
-        FVA_CIDADE: String;
+        FVA_NOMEDAOBRA: AnsiString;
+        FVA_CIDADE: AnsiString;
         FCH_ESTADO: TString2;
         FTI_SITUACOES_ID: TID;
-        FVA_PRAZODEENTREGA: String;
+        FVA_PRAZODEENTREGA: AnsiString;
         FYR_ANOPROVAVELDEENTREGA: Word;
         FTI_MESPROVAVELDEENTREGA: Byte;
-        FTX_CONDICAODEPAGAMENTO: String;
+        FTX_CONDICAODEPAGAMENTO: AnsiString;
         FFL_ICMS: Double;
         FEN_FRETE: TString3;
-        FTX_CONDICOESGERAIS: String;
-        FTX_OBSERVACOES: String;
+        FTX_CONDICOESGERAIS: AnsiString;
+        FTX_OBSERVACOES: AnsiString;
         FSM_USUARIOJUSTIFICADOR_ID: TID;
-        FVA_CONSTRUTORA: String;
+        FVA_CONSTRUTORA: AnsiString;
         FTI_TIPOS_ID: TID;
         FSM_PROJETISTAS_ID: TID;
     	FDA_DATADEEXPIRACAO: TDateTime;
@@ -648,25 +648,25 @@ type
         destructor Destroy; override;
 
 		function PrimaryKeyValue: Int64; override;
-        function InsertClause(const aValues, aUsePrimaryKeyValue: Boolean): String; override;
-        function UpdateClause: String; override;
+        function InsertClause(const aValues, aUsePrimaryKeyValue: Boolean): AnsiString; override;
+        function UpdateClause: AnsiString; override;
     published
     	property IN_OBRAS_ID: Cardinal read FIN_OBRAS_ID write FIN_OBRAS_ID;
         property TI_REGIOES_ID: TID read FTI_REGIOES_ID write FTI_REGIOES_ID;
-        property VA_NOMEDAOBRA: String read FVA_NOMEDAOBRA write FVA_NOMEDAOBRA;
-        property VA_CIDADE: String read FVA_CIDADE write FVA_CIDADE;
+        property VA_NOMEDAOBRA: AnsiString read FVA_NOMEDAOBRA write FVA_NOMEDAOBRA;
+        property VA_CIDADE: AnsiString read FVA_CIDADE write FVA_CIDADE;
         property CH_ESTADO: TString2 read FCH_ESTADO write FCH_ESTADO;
         property TI_SITUACOES_ID: TID read FTI_SITUACOES_ID write FTI_SITUACOES_ID;
-        property VA_PRAZODEENTREGA: String read FVA_PRAZODEENTREGA write FVA_PRAZODEENTREGA;
+        property VA_PRAZODEENTREGA: AnsiString read FVA_PRAZODEENTREGA write FVA_PRAZODEENTREGA;
         property YR_ANOPROVAVELDEENTREGA: Word read FYR_ANOPROVAVELDEENTREGA write FYR_ANOPROVAVELDEENTREGA;
         property TI_MESPROVAVELDEENTREGA: Byte read FTI_MESPROVAVELDEENTREGA write FTI_MESPROVAVELDEENTREGA;
-        property TX_CONDICAODEPAGAMENTO: String read FTX_CONDICAODEPAGAMENTO write FTX_CONDICAODEPAGAMENTO;
+        property TX_CONDICAODEPAGAMENTO: AnsiString read FTX_CONDICAODEPAGAMENTO write FTX_CONDICAODEPAGAMENTO;
         property FL_ICMS: Double read FFL_ICMS write FFL_ICMS;
         property EN_FRETE: TString3 read FEN_FRETE write FEN_FRETE;
-        property TX_CONDICOESGERAIS: String read FTX_CONDICOESGERAIS write FTX_CONDICOESGERAIS;
-        property TX_OBSERVACOES: String read FTX_OBSERVACOES write FTX_OBSERVACOES;
+        property TX_CONDICOESGERAIS: AnsiString read FTX_CONDICOESGERAIS write FTX_CONDICOESGERAIS;
+        property TX_OBSERVACOES: AnsiString read FTX_OBSERVACOES write FTX_OBSERVACOES;
         property SM_USUARIOJUSTIFICADOR_ID: TID read FSM_USUARIOJUSTIFICADOR_ID write FSM_USUARIOJUSTIFICADOR_ID;
-        property VA_CONSTRUTORA: String read FVA_CONSTRUTORA write FVA_CONSTRUTORA;
+        property VA_CONSTRUTORA: AnsiString read FVA_CONSTRUTORA write FVA_CONSTRUTORA;
         property TI_TIPOS_ID: TID read FTI_TIPOS_ID write FTI_TIPOS_ID;
         property SM_PROJETISTAS_ID: TID read FSM_PROJETISTAS_ID write FSM_PROJETISTAS_ID;
         property DA_DATADEEXPIRACAO: TDateTime read FDA_DATADEEXPIRACAO write FDA_DATADEEXPIRACAO;
@@ -707,13 +707,13 @@ type
 		FObras: TObras;
 	protected
         procedure Clear; override;
-    	function InsertCommand(aSynctable: TSyncTable; aSyncRecord: TSyncRecord; const aUsePrimaryKeyValue: Boolean): String; override;
-    	function UpdateCommand(aSynctable: TSyncTable; aSyncRecord: TSyncRecord): String; override;
-        function DeleteCommand(aSynctable: TSyncTable; aSyncRecord: TSyncRecord): String; override;
-        function SynKeyCommand(aSynctable: TSyncTable; aSyncRecord: TSyncRecord): String; override;
-		function PosDbActnCmds: String; override;
+    	function InsertCommand(aSynctable: TSyncTable; aSyncRecord: TSyncRecord; const aUsePrimaryKeyValue: Boolean): AnsiString; override;
+    	function UpdateCommand(aSynctable: TSyncTable; aSyncRecord: TSyncRecord): AnsiString; override;
+        function DeleteCommand(aSynctable: TSyncTable; aSyncRecord: TSyncRecord): AnsiString; override;
+        function SynKeyCommand(aSynctable: TSyncTable; aSyncRecord: TSyncRecord): AnsiString; override;
+		function PosDbActnCmds: AnsiString; override;
         {$IFDEF FTPSYNCCLI}
-        function PosTbActnCmds(aSynctable: TSyncTable): String; override;
+        function PosTbActnCmds(aSynctable: TSyncTable): AnsiString; override;
         {$ENDIF}
     public
     	constructor Create(const aOwner: TComponent; const aUsePrimaryKeyValue: Boolean); override;
@@ -854,7 +854,7 @@ begin
 end;
 
 
-function TSynchronizationFile.DeleteCommand(aSynctable: TSyncTable; aSyncRecord: TSyncRecord): String;
+function TSynchronizationFile.DeleteCommand(aSynctable: TSyncTable; aSyncRecord: TSyncRecord): AnsiString;
 const
 	DELETE_TEMPLATE = 'DELETE IGNORE FROM %s'#13#10 +
                       ' WHERE %s = %d;'#13#10;
@@ -866,7 +866,7 @@ end;
 
 function TSynchronizationFile.InsertCommand(      aSynctable: TSyncTable;
                                                   aSyncRecord: TSyncRecord;
-                                            const aUsePrimaryKeyValue: Boolean): String;
+                                            const aUsePrimaryKeyValue: Boolean): AnsiString;
 const
 	{ No servidor INSERT IGNORE impede que erros sejam lançandos quando há a
     tentativa de inserir um registro que viola uma chave única. Neste caso a
@@ -926,32 +926,32 @@ begin
                                                       ,ifThen(aUsePrimaryKeyValue,IntToStr(aSyncRecord.PrimaryKeyValue),'LAST_INSERT_ID()')]);
 end;
 
-function TSynchronizationFile.PosDbActnCmds: String;
+function TSynchronizationFile.PosDbActnCmds: AnsiString;
 const
-    DELETE_TEMPLATE = 'DELETE FROM %s'#13#10 +
-                      ' WHERE %s > %d;'#13#10;
+  DELETE_TEMPLATE = 'DELETE FROM %s'#13#10 +
+                    ' WHERE %s > %d;'#13#10;
 var
 	ST: Word;
-    SyncTable: TSyncTable;
+  SyncTable: TSyncTable;
 begin
 	Result := '';
 
-    for ST := 0 to Pred(SyncedTables.Count) do
-    begin
-        SyncTable := SyncedTables[ST].SyncedTable;
+  for ST := 0 to Pred(SyncedTables.Count) do
+  begin
+    SyncTable := SyncedTables[ST].SyncedTable;
 
-        if SyncTable.Count > 0 then
-        begin
-	    	Result := Result + '# EXCLUINDO REGISTROS SOBRANTES NA TABELA ' + SyncTable.TableName + #13#10;
-    		Result := Result + TFSYGlobals.MySQLFormat(DELETE_TEMPLATE,[SyncTable.TableName
+    if SyncTable.Count > 0 then
+    begin
+	    Result := Result + '# EXCLUINDO REGISTROS SOBRANTES NA TABELA ' + SyncTable.TableName + #13#10;
+    	Result := Result + TFSYGlobals.MySQLFormat(DELETE_TEMPLATE,[SyncTable.TableName
     		                   						  ,SyncTable.PrimaryKeyName
                                                       ,SyncTable.LastPrimaryKeyValue]);
-        end;
     end;
+  end;
 end;
 
 {$IFDEF FTPSYNCCLI}
-function TSynchronizationFile.PosTbActnCmds(aSynctable: TSyncTable): String;
+function TSynchronizationFile.PosTbActnCmds(aSynctable: TSyncTable): AnsiString;
 const
     UPDATE_TEMPLATE =
     'UPDATE %s'#13#10 +
@@ -964,7 +964,7 @@ begin
                                             ,aSynctable.PrimaryKeyName]);
 end;{$ENDIF}
 
-function TSynchronizationFile.UpdateCommand(aSynctable: TSyncTable; aSyncRecord: TSyncRecord): String;
+function TSynchronizationFile.UpdateCommand(aSynctable: TSyncTable; aSyncRecord: TSyncRecord): AnsiString;
 const
     UPDATE_TEMPLATE = 'UPDATE %s'#13#10 +
                       '   SET %s'#13#10 +
@@ -982,7 +982,7 @@ end;
 
 { SynKeyCommand só está sendo usado quando script é executado no cliente, como
 volta do servidor, logo tudo que for gerado aqui será executado no cliente! }
-function TSynchronizationFile.SynKeyCommand(aSynctable: TSyncTable; aSyncRecord: TSyncRecord): String;
+function TSynchronizationFile.SynKeyCommand(aSynctable: TSyncTable; aSyncRecord: TSyncRecord): AnsiString;
 const
     UPDATE_KEY_TEMPLATE1 = 'UPDATE %s'#13#10 +
                            '   SET %s = %d'#13#10 +
@@ -1350,7 +1350,7 @@ begin
     inherited;
 end;
 
-function TJustificativaDaObra.InsertClause(const aValues, aUsePrimaryKeyValue: Boolean): String;
+function TJustificativaDaObra.InsertClause(const aValues, aUsePrimaryKeyValue: Boolean): AnsiString;
 const
 	INSERT_TEMPLATE = '%s,%s,%s' + INFO_INSERT_TEMPLATE_VALUES;
 begin
@@ -1367,7 +1367,7 @@ begin
     	Result := 'MI_JUSTIFICATIVASDASOBRAS_ID,IN_OBRAS_ID,TI_JUSTIFICATIVAS_ID' + INFO_INSERT_TEMPLATE_COLUMNS;
 end;
 
-function TJustificativaDaObra.UpdateClause: String;
+function TJustificativaDaObra.UpdateClause: AnsiString;
 const
 	UPDATE_TEMPLATE = 'IN_OBRAS_ID = %s'#13#10 +
                '     , TI_JUSTIFICATIVAS_ID = %s' + INFO_UPDATE_TEMPLATE;
@@ -1387,7 +1387,7 @@ begin
     Result := FTI_JUSTIFICATIVAS_ID;
 end;
 
-function TJustificativa.InsertClause(const aValues, aUsePrimaryKeyValue: Boolean): String;
+function TJustificativa.InsertClause(const aValues, aUsePrimaryKeyValue: Boolean): AnsiString;
 const
 	INSERT_TEMPLATE = '%s,%s,%s' + INFO_INSERT_TEMPLATE_VALUES;
 begin
@@ -1404,7 +1404,7 @@ begin
     	Result := 'TI_JUSTIFICATIVAS_ID,EN_CATEGORIA,VA_JUSTIFICATIVA' + INFO_INSERT_TEMPLATE_COLUMNS;
 end;
 
-function TJustificativa.UpdateClause: String;
+function TJustificativa.UpdateClause: AnsiString;
 const
 	UPDATE_TEMPLATE = 'EN_CATEGORIA = %s'#13#10 +
                '     , VA_JUSTIFICATIVA = %s' + INFO_UPDATE_TEMPLATE;
@@ -1419,7 +1419,7 @@ end;
 
 { TEntidadeDoSistema }
 
-function TEntidadeDoSistema.InsertClause(const aValues, aUsePrimaryKeyValue: Boolean): String;
+function TEntidadeDoSistema.InsertClause(const aValues, aUsePrimaryKeyValue: Boolean): AnsiString;
 const
 	INSERT_TEMPLATE = '%s,%s,%u' + INFO_INSERT_TEMPLATE_VALUES;
 begin
@@ -1441,7 +1441,7 @@ begin
 	Result := FIN_ENTIDADESDOSISTEMA_ID;
 end;
 
-function TEntidadeDoSistema.UpdateClause: String;
+function TEntidadeDoSistema.UpdateClause: AnsiString;
 const
 	UPDATE_TEMPLATE = 'VA_NOME = %s'#13#10 +
                '     , TI_TIPO = %u' + INFO_UPDATE_TEMPLATE;
@@ -1456,7 +1456,7 @@ end;
 
 { TEquipamento }
 
-function TEquipamento.InsertClause(const aValues, aUsePrimaryKeyValue: Boolean): String;
+function TEquipamento.InsertClause(const aValues, aUsePrimaryKeyValue: Boolean): AnsiString;
 const
 	INSERT_TEMPLATE = '%s,%s,%.4f,%.4f,%.4f,%u,%s' + INFO_INSERT_TEMPLATE_VALUES;
 begin
@@ -1482,7 +1482,7 @@ begin
 	Result := FIN_EQUIPAMENTOS_ID;
 end;
 
-function TEquipamento.UpdateClause: String;
+function TEquipamento.UpdateClause: AnsiString;
 const
 	UPDATE_TEMPLATE = 'VA_MODELO = %s'#13#10 +
                '     , FL_LUCROBRUTO = %.4f'#13#10 +
@@ -1505,7 +1505,7 @@ end;
 
 { TFamilia }
 
-function TFamilia.InsertClause(const aValues, aUsePrimaryKeyValue: Boolean): String;
+function TFamilia.InsertClause(const aValues, aUsePrimaryKeyValue: Boolean): AnsiString;
 const
 	INSERT_TEMPLATE = '%s,%s' + INFO_INSERT_TEMPLATE_VALUES;
 begin
@@ -1526,7 +1526,7 @@ begin
 	Result := FTI_FAMILIAS_ID;
 end;
 
-function TFamilia.UpdateClause: String;
+function TFamilia.UpdateClause: AnsiString;
 const
 	UPDATE_TEMPLATE = 'VA_DESCRICAO = %s' + INFO_UPDATE_TEMPLATE;
 begin
@@ -1539,7 +1539,7 @@ end;
 
 { TGrupo }
 
-function TGrupo.InsertClause(const aValues, aUsePrimaryKeyValue: Boolean): String;
+function TGrupo.InsertClause(const aValues, aUsePrimaryKeyValue: Boolean): AnsiString;
 const
 	INSERT_TEMPLATE = '%s,%s,%s' + INFO_INSERT_TEMPLATE_VALUES;
 begin
@@ -1561,7 +1561,7 @@ begin
 	Result := FTI_GRUPOS_ID;
 end;
 
-function TGrupo.UpdateClause: String;
+function TGrupo.UpdateClause: AnsiString;
 const
 	UPDATE_TEMPLATE = 'VA_NOME = %s'#13#10 +
                '     , VA_DESCRICAO = %s' + INFO_UPDATE_TEMPLATE;
@@ -1576,7 +1576,7 @@ end;
 
 { TRegiao }
 
-function TRegiao.InsertClause(const aValues, aUsePrimaryKeyValue: Boolean): String;
+function TRegiao.InsertClause(const aValues, aUsePrimaryKeyValue: Boolean): AnsiString;
 const
 	INSERT_TEMPLATE = '%s,%s,%s,%s,%s' + INFO_INSERT_TEMPLATE_VALUES;
 begin
@@ -1600,7 +1600,7 @@ begin
 	Result := FTI_REGIOES_ID;
 end;
 
-function TRegiao.UpdateClause: String;
+function TRegiao.UpdateClause: AnsiString;
 const
 	UPDATE_TEMPLATE = 'VA_REGIAO = %s'#13#10 +
                '     , CH_PREFIXODAPROPOSTA = %s'#13#10 +
@@ -1619,7 +1619,7 @@ end;
 
 { TSituacao }
 
-function TSituacao.InsertClause(const aValues, aUsePrimaryKeyValue: Boolean): String;
+function TSituacao.InsertClause(const aValues, aUsePrimaryKeyValue: Boolean): AnsiString;
 const
 	INSERT_TEMPLATE = '%s,%s,%s,%s,%u' + INFO_INSERT_TEMPLATE_VALUES;
 begin
@@ -1643,7 +1643,7 @@ begin
 	Result := FTI_SITUACOES_ID;
 end;
 
-function TSituacao.UpdateClause: String;
+function TSituacao.UpdateClause: AnsiString;
 const
 	UPDATE_TEMPLATE = 'VA_DESCRICAO = %s'#13#10 +
                '     , BO_EXPIRAVEL = %s'#13#10 +
@@ -1662,7 +1662,7 @@ end;
 
 { TTipo }
 
-function TTipo.InsertClause(const aValues, aUsePrimaryKeyValue: Boolean): String;
+function TTipo.InsertClause(const aValues, aUsePrimaryKeyValue: Boolean): AnsiString;
 const
 	INSERT_TEMPLATE = '%s,%s' + INFO_INSERT_TEMPLATE_VALUES;
 begin
@@ -1683,7 +1683,7 @@ begin
 	Result := FTI_TIPOS_ID;
 end;
 
-function TTipo.UpdateClause: String;
+function TTipo.UpdateClause: AnsiString;
 const
 	UPDATE_TEMPLATE = 'VA_DESCRICAO = %s' + INFO_UPDATE_TEMPLATE;
 begin
@@ -1696,7 +1696,7 @@ end;
 
 { TProjetista }
 
-function TProjetista.InsertClause(const aValues, aUsePrimaryKeyValue: Boolean): String;
+function TProjetista.InsertClause(const aValues, aUsePrimaryKeyValue: Boolean): AnsiString;
 const
 	INSERT_TEMPLATE = '%s,%s' + INFO_INSERT_TEMPLATE_VALUES;
 begin
@@ -1717,7 +1717,7 @@ begin
 	Result := FSM_PROJETISTAS_ID;
 end;
 
-function TProjetista.UpdateClause: String;
+function TProjetista.UpdateClause: AnsiString;
 const
 	UPDATE_TEMPLATE = 'VA_NOME = %s' + INFO_UPDATE_TEMPLATE;
 begin
@@ -1730,7 +1730,7 @@ end;
 
 { TIcms }
 
-function TIcms.InsertClause(const aValues, aUsePrimaryKeyValue: Boolean): String;
+function TIcms.InsertClause(const aValues, aUsePrimaryKeyValue: Boolean): AnsiString;
 const
 	INSERT_TEMPLATE = '%s,%.4f' + INFO_INSERT_TEMPLATE_VALUES;
 begin
@@ -1751,7 +1751,7 @@ begin
 	Result := FTI_ICMS_ID;
 end;
 
-function TIcms.UpdateClause: String;
+function TIcms.UpdateClause: AnsiString;
 const
 	UPDATE_TEMPLATE = 'FL_VALOR = %.4f' + INFO_UPDATE_TEMPLATE;
 begin
@@ -1764,7 +1764,7 @@ end;
 
 { TInstalador }
 
-function TInstalador.InsertClause(const aValues, aUsePrimaryKeyValue: Boolean): String;
+function TInstalador.InsertClause(const aValues, aUsePrimaryKeyValue: Boolean): AnsiString;
 const
 	INSERT_TEMPLATE = '%s,%s' + INFO_INSERT_TEMPLATE_VALUES;
 begin
@@ -1785,7 +1785,7 @@ begin
 	Result := FSM_INSTALADORES_ID;
 end;
 
-function TInstalador.UpdateClause: String;
+function TInstalador.UpdateClause: AnsiString;
 const
 	UPDATE_TEMPLATE = 'VA_NOME = %s' + INFO_UPDATE_TEMPLATE;
 begin
@@ -1798,7 +1798,7 @@ end;
 
 { TUnidade }
 
-function TUnidade.InsertClause(const aValues, aUsePrimaryKeyValue: Boolean): String;
+function TUnidade.InsertClause(const aValues, aUsePrimaryKeyValue: Boolean): AnsiString;
 const
 	INSERT_TEMPLATE = '%s,%s,%s' + INFO_INSERT_TEMPLATE_VALUES;
 begin
@@ -1819,7 +1819,7 @@ begin
 	Result := FTI_UNIDADES_ID;
 end;
 
-function TUnidade.UpdateClause: String;
+function TUnidade.UpdateClause: AnsiString;
 const
 	UPDATE_TEMPLATE = 'VA_ABREVIATURA = %s'#13#10 +
                '     , VA_DESCRICAO = %s' + INFO_UPDATE_TEMPLATE;
@@ -1833,7 +1833,7 @@ end;
 
 { TUsuario }
 
-function TUsuario.InsertClause(const aValues, aUsePrimaryKeyValue: Boolean): String;
+function TUsuario.InsertClause(const aValues, aUsePrimaryKeyValue: Boolean): AnsiString;
 const
 	INSERT_TEMPLATE = '%s,%s,%s,%s,%s' + INFO_INSERT_TEMPLATE_VALUES;
 begin
@@ -1858,7 +1858,7 @@ begin
 	Result := FSM_USUARIOS_ID;
 end;
 
-function TUsuario.UpdateClause: String;
+function TUsuario.UpdateClause: AnsiString;
 const
 	UPDATE_TEMPLATE = 'VA_NOME = %s'#13#10 +
                '     , VA_LOGIN = %s'#13#10 +
@@ -1891,7 +1891,7 @@ begin
   	inherited;
 end;
 
-function TPermissaoDoGrupo.InsertClause(const aValues, aUsePrimaryKeyValue: Boolean): String;
+function TPermissaoDoGrupo.InsertClause(const aValues, aUsePrimaryKeyValue: Boolean): AnsiString;
 const
 	INSERT_TEMPLATE = '%s,%s,%s,%d,%d,%d,%d' + INFO_INSERT_TEMPLATE_VALUES;
 begin
@@ -1917,7 +1917,7 @@ begin
 	Result := FIN_PERMISSOESDOSGRUPOS_ID;
 end;
 
-function TPermissaoDoGrupo.UpdateClause: String;
+function TPermissaoDoGrupo.UpdateClause: AnsiString;
 const
 	UPDATE_TEMPLATE = 'IN_ENTIDADESDOSISTEMA_ID = %s'#13#10 +
                '     , TI_GRUPOS_ID = %s'#13#10 +
@@ -1954,7 +1954,7 @@ begin
   	inherited;
 end;
 
-function TPermissaoDoUsuario.InsertClause(const aValues, aUsePrimaryKeyValue: Boolean): String;
+function TPermissaoDoUsuario.InsertClause(const aValues, aUsePrimaryKeyValue: Boolean): AnsiString;
 const
 	INSERT_TEMPLATE = '%s,%s,%s,%d,%d,%d,%d' + INFO_INSERT_TEMPLATE_VALUES;
 begin
@@ -1980,7 +1980,7 @@ begin
 	Result := FIN_PERMISSOESDOSUSUARIOS_ID;
 end;
 
-function TPermissaoDoUsuario.UpdateClause: String;
+function TPermissaoDoUsuario.UpdateClause: AnsiString;
 const
 	UPDATE_TEMPLATE = 'IN_ENTIDADESDOSISTEMA_ID = %s'#13#10 +
                '     , SM_USUARIOS_ID = %s'#13#10 +
@@ -2017,7 +2017,7 @@ begin
   	inherited;
 end;
 
-function TGrupoDoUsuario.InsertClause(const aValues, aUsePrimaryKeyValue: Boolean): String;
+function TGrupoDoUsuario.InsertClause(const aValues, aUsePrimaryKeyValue: Boolean): AnsiString;
 const
 	INSERT_TEMPLATE = '%s,%s,%s' + INFO_INSERT_TEMPLATE_VALUES;
 begin
@@ -2039,7 +2039,7 @@ begin
 	Result := FMI_GRUPOSDOSUSUARIOS_ID;
 end;
 
-function TGrupoDoUsuario.UpdateClause: String;
+function TGrupoDoUsuario.UpdateClause: AnsiString;
 const
 	UPDATE_TEMPLATE = 'TI_GRUPOS_ID = %s'#13#10 +
                '     , SM_USUARIOS_ID = %s' + INFO_UPDATE_TEMPLATE;
@@ -2068,7 +2068,7 @@ begin
   	inherited;
 end;
 
-function TRegiaoDoUsuario.InsertClause(const aValues, aUsePrimaryKeyValue: Boolean): String;
+function TRegiaoDoUsuario.InsertClause(const aValues, aUsePrimaryKeyValue: Boolean): AnsiString;
 const
 	INSERT_TEMPLATE = '%s,%s,%s' + INFO_INSERT_TEMPLATE_VALUES;
 begin
@@ -2090,7 +2090,7 @@ begin
 	Result := FMI_REGIOESDOSUSUARIOS_ID;
 end;
 
-function TRegiaoDoUsuario.UpdateClause: String;
+function TRegiaoDoUsuario.UpdateClause: AnsiString;
 const
 	UPDATE_TEMPLATE = 'TI_REGIOES_ID = %s'#13#10 +
                '     , SM_USUARIOS_ID = %s' + INFO_UPDATE_TEMPLATE;
@@ -2125,7 +2125,7 @@ begin
   	inherited;
 end;
 
-function TObra.InsertClause(const aValues, aUsePrimaryKeyValue: Boolean): String;
+function TObra.InsertClause(const aValues, aUsePrimaryKeyValue: Boolean): AnsiString;
 const
 	INSERT_TEMPLATE = '%s,%s,%s,%s,%s,%s,%s,%u,%u,%s,%.4f,%s,%s,%s,%s,%s,%s,%s,%s' + INFO_INSERT_TEMPLATE_VALUES;
 begin
@@ -2163,7 +2163,7 @@ begin
 	Result := FIN_OBRAS_ID;
 end;
 
-function TObra.UpdateClause: String;
+function TObra.UpdateClause: AnsiString;
 const
 	UPDATE_TEMPLATE = 'TI_REGIOES_ID = %s'#13#10 +
                '     , VA_NOMEDAOBRA = %s'#13#10 +
@@ -2224,7 +2224,7 @@ begin
   	inherited;
 end;
 
-function TProposta.InsertClause(const aValues, aUsePrimaryKeyValue: Boolean): String;
+function TProposta.InsertClause(const aValues, aUsePrimaryKeyValue: Boolean): AnsiString;
 const
 	INSERT_TEMPLATE = '%s,%s,%s,%s,%s,%s,%s,%s,%s,%u,%s,%u' + INFO_INSERT_TEMPLATE_VALUES;
 begin
@@ -2237,8 +2237,8 @@ begin
                                                           ,FSM_INSTALADORES_ID.ReferencedValue('INSTALADORES')
                                                           ,TFSYGlobals.Hex(FVA_CONTATO)
                                                           ,BoolToStr(FBO_PROPOSTAPADRAO,True)
-                                                          ,IfThen(FFL_DESCONTOPERC <> 0,TFSYGlobals.MySQLFormat('%.4f',[FFL_DESCONTOPERC]),'NULL')
-                                                          ,IfThen(FFL_DESCONTOVAL <> 0,TFSYGlobals.MySQLFormat('%.4f',[FFL_DESCONTOVAL]),'NULL')
+                                                          ,IfThen(FFL_DESCONTOPERC <> 0,String(TFSYGlobals.MySQLFormat('%.4f',[FFL_DESCONTOPERC])),'NULL')
+                                                          ,IfThen(FFL_DESCONTOVAL <> 0,String(TFSYGlobals.MySQLFormat('%.4f',[FFL_DESCONTOVAL])),'NULL')
                                                           ,FTI_MOEDA
                                                           ,TFSYGlobals.Hex(FVA_COTACOES)
                                                           ,FTI_VALIDADE
@@ -2255,7 +2255,7 @@ begin
 	Result := FIN_PROPOSTAS_ID;
 end;
 
-function TProposta.UpdateClause: String;
+function TProposta.UpdateClause: AnsiString;
 const
 	UPDATE_TEMPLATE = 'IN_OBRAS_ID = %s'#13#10 +
                '     , SM_CODIGO = %u'#13#10 +
@@ -2275,8 +2275,8 @@ begin
                                                       ,FSM_INSTALADORES_ID.ReferencedValue('INSTALADORES')
                                                       ,TFSYGlobals.Hex(FVA_CONTATO)
                                                       ,BoolToStr(FBO_PROPOSTAPADRAO,True)
-                                                      ,IfThen(FFL_DESCONTOPERC <> 0,TFSYGlobals.MySQLFormat('%.4f',[FFL_DESCONTOPERC]),'NULL')
-                                                      ,IfThen(FFL_DESCONTOVAL <> 0,TFSYGlobals.MySQLFormat('%.4f',[FFL_DESCONTOVAL]),'NULL')
+                                                      ,IfThen(FFL_DESCONTOPERC <> 0,String(TFSYGlobals.MySQLFormat('%.4f',[FFL_DESCONTOPERC])),'NULL')
+                                                      ,IfThen(FFL_DESCONTOVAL <> 0,String(TFSYGlobals.MySQLFormat('%.4f',[FFL_DESCONTOVAL])),'NULL')
                                                       ,FTI_MOEDA
                                                       ,TFSYGlobals.Hex(FVA_COTACOES)
                                                       ,FTI_VALIDADE
@@ -2304,7 +2304,7 @@ begin
   	inherited;
 end;
 
-function TItem.InsertClause(const aValues, aUsePrimaryKeyValue: Boolean): String;
+function TItem.InsertClause(const aValues, aUsePrimaryKeyValue: Boolean): AnsiString;
 const
 	INSERT_TEMPLATE = '%s,%s,%s,%s,%.4f,%s,%u,%s,%.4f,%u' + INFO_INSERT_TEMPLATE_VALUES;
 begin
@@ -2333,7 +2333,7 @@ begin
 	Result := FIN_ITENS_ID;
 end;
 
-function TItem.UpdateClause: String;
+function TItem.UpdateClause: AnsiString;
 const
 	UPDATE_TEMPLATE = 'IN_PROPOSTAS_ID = %s'#13#10 +
                '     , TI_FAMILIAS_ID = %s'#13#10 +
@@ -2376,7 +2376,7 @@ begin
   	inherited;
 end;
 
-function TEquipamentoDoItem.InsertClause(const aValues, aUsePrimaryKeyValue: Boolean): String;
+function TEquipamentoDoItem.InsertClause(const aValues, aUsePrimaryKeyValue: Boolean): AnsiString;
 const
 	INSERT_TEMPLATE = '%s,%s,%s,%.4f,%.4f,%u' + INFO_INSERT_TEMPLATE_VALUES;
 begin
@@ -2399,7 +2399,7 @@ begin
 	Result := FIN_EQUIPAMENTOSDOSITENS_ID;
 end;
 
-function TEquipamentoDoItem.UpdateClause: String;
+function TEquipamentoDoItem.UpdateClause: AnsiString;
 const
 	UPDATE_TEMPLATE = 'IN_ITENS_ID = %s'#13#10 +
                '     , IN_EQUIPAMENTOS_ID = %s'#13#10 +
@@ -2418,25 +2418,25 @@ end;
 
 { TID }
 
-function TID.ReferencedValue(aTableName: String): String;
+function TID.ReferencedValue(aTableName: AnsiString): AnsiString;
 var
-    ParentSyncTable: TSyncTable;
-    ParentSyncRecord: TSyncRecord;
+  ParentSyncTable: TSyncTable;
+  ParentSyncRecord: TSyncRecord;
 begin
 	Result := inherited ReferencedValue(aTableName);
 
 	{ Obtendo a tabela pai... }
-    ParentSyncTable := SyncRecord.SyncTable.ParentSyncTableByName[aTableName];
-    { Se há uma tabela pai... }
-    if Assigned(ParentSyncTable) then
+  ParentSyncTable := SyncRecord.SyncTable.ParentSyncTableByName[aTableName];
+  { Se há uma tabela pai... }
+  if Assigned(ParentSyncTable) then
 	begin
-    	{ Obtendo o registro na tabela pai que corresponde à chave especificada}
-        ParentSyncRecord := ParentSyncTable.SyncRecordByPrimaryKey[StoredValue];
-        { Se há o registro identificado pela chave e se este registro tiver sido
-        inserido devemos formatar o retorno da função }
-        if Assigned(ParentSyncRecord) and (ParentSyncRecord.ActionPerformed = apInsert) then
-        	Result := TFSYGlobals.MySQLFormat('@%S_KEY_%U',[aTableName,StoredValue]);
-    end;
+    { Obtendo o registro na tabela pai que corresponde à chave especificada}
+    ParentSyncRecord := ParentSyncTable.SyncRecordByPrimaryKey[StoredValue];
+    { Se há o registro identificado pela chave e se este registro tiver sido
+    inserido devemos formatar o retorno da função }
+    if Assigned(ParentSyncRecord) and (ParentSyncRecord.ActionPerformed = apInsert) then
+      Result := TFSYGlobals.MySQLFormat('@%S_KEY_%U',[aTableName,StoredValue]);
+  end;
 end;
 
 end.
