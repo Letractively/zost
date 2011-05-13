@@ -45,7 +45,7 @@ uses
 
 procedure TXXXForm_ChangePassword.BitBtn_ChangePasswordClick(Sender: TObject);
 var
-  	NewPassword, CurrentPassword: ShortString;
+  	NewPassword, CurrentPassword: AnsiString;
   	AuthenticatedUser: TAuthenticatedUser;
     USERS: TZReadOnlyQuery;
 begin
@@ -55,7 +55,7 @@ begin
 	    USERS := nil;
         CreateParameters.MyDataModule.DataModuleMain.ConfigureDataSet(CreateParameters.MyDataModule.DataModuleMain.ZConnections[0].Connection
                                                     ,USERS
-                                                    ,Format(SQL_SELECT_LOGIN
+                                                    ,AnsiString(Format(SQL_SELECT_LOGIN
                                                            ,[CreateParameters.Configurations.UserTableKeyFieldName
                                                             ,CreateParameters.Configurations.UserTableRealNameFieldName
                                                             ,CreateParameters.Configurations.UserTableUserNameFieldName
@@ -63,14 +63,14 @@ begin
                                                             ,CreateParameters.Configurations.UserTableTableName
                                                             ]
                                                            )
-                                                     );
+                                                     ));
 
 
-		if USERS.Locate(CreateParameters.Configurations.UserTableKeyFieldName,AuthenticatedUser.Id,[]) then
+		if USERS.Locate(String(CreateParameters.Configurations.UserTableKeyFieldName),AuthenticatedUser.Id,[]) then
         begin
             if Edit_CurrentPassword.Text <> '' then
             begin
-                CurrentPassword := TXXXDataModule.GetStringCheckSum(Edit_CurrentPassword.Text,[CreateParameters.Configurations.PasswordCipherAlgorithm]);
+                CurrentPassword := TXXXDataModule.GetStringCheckSum(AnsiString(Edit_CurrentPassword.Text),[CreateParameters.Configurations.PasswordCipherAlgorithm]);
                 if CurrentPassword = AuthenticatedUser.Password then
                 begin
                     if (Edit_NewPassword.Text <> '') and (Edit_ConfirmPassword.Text <> '') then
@@ -80,17 +80,17 @@ begin
                             (* Apenas aqui todos os requisitos foram satisfeitos e a
                             nova senha será salva no registro do usuário e também na
                             viariavel de seção (AuthenticatedUser) *)
-                            NewPassword := TXXXDataModule.GetStringCheckSum(Edit_ConfirmPassword.Text,[CreateParameters.Configurations.PasswordCipherAlgorithm]);
+                            NewPassword := TXXXDataModule.GetStringCheckSum(AnsiString(Edit_ConfirmPassword.Text),[CreateParameters.Configurations.PasswordCipherAlgorithm]);
                             CreateParameters.MyDataModule.DataModuleMain.ExecuteQuery(CreateParameters.MyDataModule.DataModuleMain.ZConnections[0].Connection
-                                                                      ,Format(SQL_UPDATE_PASSWORD
+                                                                      ,AnsiString(Format(SQL_UPDATE_PASSWORD
                                                                              ,[CreateParameters.Configurations.UserTableTableName
                                                                               ,CreateParameters.Configurations.UserTablePasswordFieldName
-                                                                              ,QuotedStr(NewPassword)
+                                                                              ,QuotedStr(String(NewPassword))
                                                                               ,CreateParameters.Configurations.UserTableKeyFieldName
                                                                               ,AuthenticatedUser.Id
                                                                               ]
                                                                              )
-                                                                      );
+                                                                      ));
                             AuthenticatedUser.Password := NewPassword;
                             CreateParameters.Configurations.AuthenticatedUser := AuthenticatedUser;
                             MessageBox(Handle,'Sua senha foi alterada com sucesso. Anote-a num lugar seguro!','Senha alterada com sucesso',MB_ICONINFORMATION);
@@ -136,9 +136,9 @@ end;
 
 procedure TXXXForm_ChangePassword.FormShow(Sender: TObject);
 begin
-  	inherited;
-  	Label_LoggedUser.Caption := CreateParameters.Configurations.AuthenticatedUser.RealName;
-  	Label_Login.Caption := CreateParameters.Configurations.AuthenticatedUser.Login;
+  inherited;
+  Label_LoggedUser.Caption := String(CreateParameters.Configurations.AuthenticatedUser.RealName);
+  Label_Login.Caption := String(CreateParameters.Configurations.AuthenticatedUser.Login);
 end;
 
 end.

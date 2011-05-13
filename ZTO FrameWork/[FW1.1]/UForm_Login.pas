@@ -49,7 +49,7 @@ implementation
 
 procedure TXXXForm_Login.BitBtn_OkClick(Sender: TObject);
 var
-	SenhaExistente, SenhaDigitada: ShortString;
+	SenhaExistente, SenhaDigitada: AnsiString;
 begin
 	inherited;
     {$IFDEF DEVELOPING}
@@ -82,7 +82,7 @@ begin
 
     { Caso estejamos no modo normal (não expandido) devemos fazer uma busca no
     DataSet pelo login }
-    if not FExpandedMode and not FDataSource_Login.DataSet.Locate(CreateParameters.Configurations.UserTableUserNameFieldName,EditLogin.Text,[]) then
+    if not FExpandedMode and not FDataSource_Login.DataSet.Locate(String(CreateParameters.Configurations.UserTableUserNameFieldName),EditLogin.Text,[]) then
 	begin
     	Inc(FTentativas);
 		if FTentativas < 3 then
@@ -99,8 +99,8 @@ begin
         Exit;
 	end;
 
-	SenhaExistente := UpperCase(FDataSource_Login.DataSet.FieldByName(CreateParameters.Configurations.UserTablePasswordFieldName).AsString);
-	SenhaDigitada := TXXXDataModule.GetStringCheckSum(EditSenha.Text,[CreateParameters.Configurations.PasswordCipherAlgorithm]);
+	SenhaExistente := AnsiString(UpperCase(FDataSource_Login.DataSet.FieldByName(String(CreateParameters.Configurations.UserTablePasswordFieldName)).AsString));
+	SenhaDigitada := AnsiString(TXXXDataModule.GetStringCheckSum(AnsiString(EditSenha.Text),[CreateParameters.Configurations.PasswordCipherAlgorithm]));
     {$IFDEF DEVELOPING}
     SenhaDigitada := SenhaExistente;
     {$ENDIF}
@@ -109,9 +109,9 @@ begin
 	begin
         with CreateParameters.Configurations.AuthenticatedUser do
         begin
-			Id := FDataSource_Login.DataSet.FieldByName(CreateParameters.Configurations.UserTableKeyFieldName).AsInteger;
-			RealName := FDataSource_Login.DataSet.FieldByName(CreateParameters.Configurations.UserTableRealNameFieldName).AsString;
-			Login := FDataSource_Login.DataSet.FieldByName(CreateParameters.Configurations.UserTableUserNameFieldName).AsString;
+			Id := FDataSource_Login.DataSet.FieldByName(String(CreateParameters.Configurations.UserTableKeyFieldName)).AsInteger;
+			RealName := FDataSource_Login.DataSet.FieldByName(String(CreateParameters.Configurations.UserTableRealNameFieldName)).AsAnsiString;
+			Login := FDataSource_Login.DataSet.FieldByName(String(CreateParameters.Configurations.UserTableUserNameFieldName)).AsAnsiString;
 			Password := SenhaExistente;
     	end;
 
@@ -172,7 +172,7 @@ procedure TXXXForm_Login.DBGridUsuariosEnter(Sender: TObject);
 begin
 	inherited;
     TCFDBGrid(Sender).Options := TCFDBGrid(Sender).Options + [dgAlwaysShowSelection];
-	EditLogin.Text := FDataSource_Login.DataSet.FieldByName(CreateParameters.Configurations.UserTableUserNameFieldName).AsString;
+	EditLogin.Text := FDataSource_Login.DataSet.FieldByName(String(CreateParameters.Configurations.UserTableUserNameFieldName)).AsString;
 end;
 
 procedure TXXXForm_Login.EditLoginChange(Sender: TObject);
@@ -181,7 +181,7 @@ begin
     if FExpandedMode then
     begin
 	    DBGridUsuarios.Options := DBGridUsuarios.Options - [dgAlwaysShowSelection];
-  		if FDataSource_Login.DataSet.Locate(CreateParameters.Configurations.UserTableUserNameFieldName,EditLogin.Text,[]) then
+  		if FDataSource_Login.DataSet.Locate(String(CreateParameters.Configurations.UserTableUserNameFieldName),EditLogin.Text,[]) then
     		DBGridUsuarios.Options := DBGridUsuarios.Options + [dgAlwaysShowSelection];
     end;
 end;
@@ -220,15 +220,15 @@ begin
         begin
             if LastAuthenticatedUser <> 0 then
             begin
-                FDataSource_Login.DataSet.Locate(UserTableKeyFieldName,LastAuthenticatedUser,[]);
-                EditLogin.Text := FDataSource_Login.DataSet.FieldByName(UserTableUserNameFieldName).AsString;
+                FDataSource_Login.DataSet.Locate(String(UserTableKeyFieldName),LastAuthenticatedUser,[]);
+                EditLogin.Text := FDataSource_Login.DataSet.FieldByName(String(UserTableUserNameFieldName)).AsString;
                 EditSenha.SetFocus;
             end;
 
             { Configurando o DBGrid }
             with DBGridUsuarios.Columns.Add do
             begin
-                FieldName := UserTableUserNameFieldName;
+                FieldName := WideString(UserTableUserNameFieldName);
                 Alignment := taCenter;
                 Title.Caption := 'Nomes de usuário';
                 Title.Alignment := taCenter;
@@ -241,7 +241,7 @@ begin
 
             { Configurando o DBText }
             DBTextNomeDoUsuario.DataSource := FDataSource_Login;
-            DBTextNomeDoUsuario.DataField := UserTableRealNameFieldName;
+            DBTextNomeDoUsuario.DataField := WideString(UserTableRealNameFieldName);
 
             { Definindo um manipulador para o evendo DataChange do DataSource }
             FDataSource_Login.OnDataChange := DoDataChange;
@@ -253,7 +253,7 @@ end;
 procedure TXXXForm_Login.DoDataChange(Sender: TObject; Field: TField);
 begin
 	inherited;
-	EditLogin.Text := TDataSource(Sender).DataSet.FieldByName(CreateParameters.Configurations.UserTableUserNameFieldName).AsString;
+	EditLogin.Text := TDataSource(Sender).DataSet.FieldByName(String(CreateParameters.Configurations.UserTableUserNameFieldName)).AsString;
 	{$IFDEF DEVELOPING}
 	//EditSenha.Text := DCR_Password.SingleEncryptDecrypt(FSharedConfigurations.MasterPassword,TDataSource(Sender).DataSet.FieldByName(FSharedConfigurations.UserTablePasswordFieldName).AsString,dcDecriptar);
   {$ENDIF}

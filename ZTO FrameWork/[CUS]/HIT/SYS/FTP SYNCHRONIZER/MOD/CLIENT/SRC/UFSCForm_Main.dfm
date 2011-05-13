@@ -113,9 +113,12 @@ object FSCForm_Main: TFSCForm_Main
           Caption = 'Interromper'
           TabOrder = 1
           Visible = False
-          OnClick = ButtonStop1Click
         end
       end
+    end
+    object TabSheet_SincronizacaoDeCache: TTabSheet
+      Caption = 'Sincroniza'#231#227'o de cache'
+      ImageIndex = 3
     end
     object TabSheet2: TTabSheet
       Caption = 'Sincroniza'#231#227'o completa'
@@ -182,7 +185,7 @@ object FSCForm_Main: TFSCForm_Main
         BevelInner = bvLowered
         TabOrder = 0
         object SincronizarC_A: TButton
-          Left = 193
+          Left = 9
           Top = 18
           Width = 435
           Height = 25
@@ -200,6 +203,17 @@ object FSCForm_Main: TFSCForm_Main
           Caption = 'Interromper'
           TabOrder = 1
           Visible = False
+        end
+        object Button_ContinuarSincronizacaoCompleta: TButton
+          Left = 450
+          Top = 18
+          Width = 360
+          Height = 25
+          Caption = 
+            'Clique aqui para continuar uma sincroniza'#231#227'o completa interrompi' +
+            'da'
+          TabOrder = 2
+          OnClick = Button_ContinuarSincronizacaoCompletaClick
         end
       end
     end

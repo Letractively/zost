@@ -13,9 +13,9 @@ type
 
     TConnectedClient  = class(TFtpCtrlSocket)
     private
-        FRealName: String;
-        FDescription: String;
-        FIP: String;
+        FRealName: AnsiString;
+        FDescription: AnsiString;
+        FIP: AnsiString;
         {$IFDEF THREADED}
         FWorkerThread: TGetProcessingThread;
         {$ENDIF}
@@ -27,9 +27,9 @@ type
 
         constructor Create(AOwner: TComponent); override;
 
-        property RealName: String read FRealName write FRealName;
-        property Description: String read FDescription write FDescription;
-        property IP: String read FIP write FIP;
+        property RealName: AnsiString read FRealName write FRealName;
+        property Description: AnsiString read FDescription write FDescription;
+        property IP: AnsiString read FIP write FIP;
     end;
     {$IFDEF THREADED}
         isso tem de ser consertado
@@ -41,27 +41,27 @@ type
         FFSSForm_Main: TFSSForm_Main;
         FVerboseMode: Boolean;
 
-        FLogMessage: String;
-        FStatusMessage: String;
-        FAbortMessage: String;
+        FLogMessage: AnsiString;
+        FStatusMessage: AnsiString;
+        FAbortMessage: AnsiString;
 
-        procedure DoGetChecksum(      aTableName: String;
+        procedure DoGetChecksum(      aTableName: AnsiString;
                                       aTableNo
                                     , aTableCount: Word;
-                                      aTableChecksum: String;
+                                      aTableChecksum: AnsiString;
                                 const aIgnored: Boolean);
         procedure DoZlibNotification(aNotificatioType: TZlibNotificationType; aOperation: TZLibOperation; aInputFile, aOutputFile: TFileName);
 
         { Membros que tornam possível o envio de mensagem para o log }
-        procedure SetLogMessage(const aValue: String);
+        procedure SetLogMessage(const aValue: AnsiString);
         procedure ShowOnLog;
 
         { Membros que tornam possível o envio de mensagem para o cliente }
-        procedure SetStatusMessage(const aValue: String);
+        procedure SetStatusMessage(const aValue: AnsiString);
         procedure SendStatus;
 
         { Membros que tornam possível o término da conexão por causa de um erro }
-        procedure SetAbortMessage(const aValue: String);
+        procedure SetAbortMessage(const aValue: AnsiString);
         procedure AbortEveryThing;
     protected
         property Server: TFtpServer read FServer write FServer;
@@ -71,9 +71,9 @@ type
 //        property FSYGlobals: TFSYGlobals write FFSYGlobals;
 //        property RichEditLog: TRichEdit write FRichEditLog;
 
-        property LogMessage: String write SetLogMessage;
-        property StatusMessage: String write SetStatusMessage;
-        property AbortMessage: String write SetAbortMessage;
+        property LogMessage: AnsiString write SetLogMessage;
+        property StatusMessage: AnsiString write SetStatusMessage;
+        property AbortMessage: AnsiString write SetAbortMessage;
     public
         procedure Execute; override;
     end;
@@ -81,22 +81,22 @@ type
 
     EAddSynchronizableItem = class(Exception)
     private
-        fTableName: String;
+        fTableName: AnsiString;
         fPrimaryKeyValue: Cardinal;
         fActionPerformed: Byte; { Precisará de cast para TActionPerformed }
     public
-        constructor CreateFmt(const aTableName: String; const aPrimaryKeyValue: Cardinal; const aActionPerformed: Byte; const aMsg: String; const aArgs: array of const);
-        constructor Create(const aTableName: String; const aPrimaryKeyValue: Cardinal; const aActionPerformed: Byte; const aMsg: String);
+        constructor CreateFmt(const aTableName: AnsiString; const aPrimaryKeyValue: Cardinal; const aActionPerformed: Byte; const aMsg: AnsiString; const aArgs: array of const);
+        constructor Create(const aTableName: AnsiString; const aPrimaryKeyValue: Cardinal; const aActionPerformed: Byte; const aMsg: AnsiString);
     end;
 
     TScriptPart = class (TCollectionItem)
     private
-    	FDelimiter: String;
-        FScript: String;
+    	FDelimiter: AnsiString;
+        FScript: AnsiString;
     public
     	constructor Create(Collection: TCollection); override;
-    	property Delimiter: String read FDelimiter write FDelimiter;
-        property Script: String read FScript write FScript;
+    	property Delimiter: AnsiString read FDelimiter write FDelimiter;
+        property Script: AnsiString read FScript write FScript;
     end;
 
     TScriptParts = class (TCollection)
@@ -127,12 +127,12 @@ type
 	    FMajor: Word;
     	FBuild: Word;
         function GetFullVersionNumber: Int64;
-        function GetFullVersionString: String;
+        function GetFullVersionString: AnsiString;
 //	    FFullVersionNumber: Int64;
-//    	FFullVersionString: String;
+//    	FFullVersionString: AnsiString;
     public
     	constructor Create;
-        property FullVersionString: String read GetFullVersionString;
+        property FullVersionString: AnsiString read GetFullVersionString;
 		property FullVersionNumber: Int64 read GetFullVersionNumber;
     published
     	property Minor: Word read FMinor write FMinor;
@@ -187,18 +187,18 @@ type
   end;
 
 const
-    MINIMUM_CLIENT_MAJORVERSION = 3;
-    MINIMUM_CLIENT_MINORVERSION = 1;
-    MINIMUM_CLIENT_RELEASE      = 3;
-    MINIMUM_CLIENT_BUILD        = 100;
+  MINIMUM_CLIENT_MAJORVERSION = 3;
+  MINIMUM_CLIENT_MINORVERSION = 1;
+  MINIMUM_CLIENT_RELEASE      = 3;
+  MINIMUM_CLIENT_BUILD        = 100;
 
 	MAX_QUERY_SIZE: Word = High(SmallInt);
-  	ARQUIVO_DE_CONFIGURACOES: String = 'FTPSyncConfig.dat';
-	DB_PASSWORD: String = '';
-	DB_USERNAME: String = 'root';
-	DB_PROTOCOL: String = 'mysql-5';
-	DB_DATABASE: String = '';
-	DB_HOSTADDR: String = '127.0.0.1';
+	ARQUIVO_DE_CONFIGURACOES: AnsiString = 'FTPSyncConfig.dat';
+	DB_PASSWORD: AnsiString = '';
+	DB_USERNAME: AnsiString = 'root';
+	DB_PROTOCOL: AnsiString = 'mysql-5';
+	DB_DATABASE: AnsiString = '';
+	DB_HOSTADDR: AnsiString = '127.0.0.1';
 	DB_PORTNUMB: Word = 3306;
   	(* FTP *)
     {$IFDEF FTPSYNCCLI}
@@ -385,20 +385,16 @@ end;
 
 procedure TProcessorEvents.DoAfterExecute(Processor: TZSQLProcessor; StatementIndex: Integer);
 begin
-	if Assigned(FProgressBarCurrent) then
-    begin
-		FProgressBarCurrent.StepIt;
-    	Application.ProcessMessages;
-    end;
+  if Assigned(FProgressBarCurrent) then
+    FProgressBarCurrent.StepIt;
 end;
 
 procedure TProcessorEvents.DoBeforeExecute(Processor: TZSQLProcessor; StatementIndex: Integer);
 begin
-	if Assigned(FLabelCurrentDescription) and Assigned(FLabelCurrentValue) then
-    begin
-	    TFSYGlobals.SetLabelDescriptionValue(FLabelCurrentDescription,FLabelCurrentValue,IntToStr(Succ(StatementIndex)) + ' / ' + IntToStr(Processor.StatementCount));
-    	Application.ProcessMessages;
-    end;
+  if Assigned(FLabelCurrentDescription) and Assigned(FLabelCurrentValue) then
+  begin
+    TFSYGlobals.SetLabelDescriptionValue(FLabelCurrentDescription,FLabelCurrentValue,AnsiString(IntToStr(Succ(StatementIndex))) + ' / ' + AnsiString(IntToStr(Processor.StatementCount)));
+  end;
 end;
 
 { TVersion }
@@ -419,34 +415,34 @@ begin
                         +IntToStr(FBuild));
 end;
 
-function TVersion.GetFullVersionString: String;
+function TVersion.GetFullVersionString: AnsiString;
 begin
-    Result := IntToStr(FMajor) + '.' + IntToStr(FMinor) + '.' + IntToStr(FRelease) + '.' + IntToStr(FBuild);
+  Result := AnsiString(IntToStr(FMajor)) + '.' + AnsiString(IntToStr(FMinor)) + '.' + AnsiString(IntToStr(FRelease)) + '.' + AnsiString(IntToStr(FBuild));
 end;
 
 { EDeltaReferenceNotFound }
 
-constructor EAddSynchronizableItem.Create(const aTableName: String;
+constructor EAddSynchronizableItem.Create(const aTableName: AnsiString;
                                           const aPrimaryKeyValue: Cardinal;
                                           const aActionPerformed: Byte;
-                                          const aMsg: String);
+                                          const aMsg: AnsiString);
 begin
-    inherited Create(aMsg);
-    fTableName := aTableName;
-    fPrimaryKeyValue := aPrimaryKeyValue;
-    fActionPerformed := aActionPerformed;
+  inherited Create(String(aMsg));
+  fTableName := aTableName;
+  fPrimaryKeyValue := aPrimaryKeyValue;
+  fActionPerformed := aActionPerformed;
 end;
 
-constructor EAddSynchronizableItem.CreateFmt(const aTableName: String;
+constructor EAddSynchronizableItem.CreateFmt(const aTableName: AnsiString;
                                              const aPrimaryKeyValue: Cardinal;
                                              const aActionPerformed: Byte;
-                                             const aMsg: String;
+                                             const aMsg: AnsiString;
                                              const aArgs: array of const);
 begin
-    inherited CreateFmt(aMsg,aArgs);
-    fTableName := aTableName;
-    fPrimaryKeyValue := aPrimaryKeyValue;
-    fActionPerformed := aActionPerformed;
+  inherited CreateFmt(String(aMsg),aArgs);
+  fTableName := aTableName;
+  fPrimaryKeyValue := aPrimaryKeyValue;
+  fActionPerformed := aActionPerformed;
 end;
 
 end.

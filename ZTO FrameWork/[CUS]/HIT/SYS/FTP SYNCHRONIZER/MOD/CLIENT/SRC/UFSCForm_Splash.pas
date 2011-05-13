@@ -57,7 +57,7 @@ end;
 
 procedure TFSCForm_Splash.FormShow(Sender: TObject);
 begin
-    LabelVersion.Caption := TFileInformation.GetInfo(Application.ExeName,'FULLVERSION').AsString;
+  LabelVersion.Caption := String(TFileInformation.GetInfo(Application.ExeName,'FULLVERSION').AsAnsiString);
 end;
 
 procedure TFSCForm_Splash.Image1Click(Sender: TObject);

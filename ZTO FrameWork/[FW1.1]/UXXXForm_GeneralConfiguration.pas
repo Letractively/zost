@@ -89,7 +89,7 @@ begin
     ComboBox_PasswordCipherAlgorithm.Clear;
         
     for i := Low(THashAlgorithm) to High(THashAlgorithm) do
-    	ComboBox_PasswordCipherAlgorithm.Items.Add(HASH_ALGORITHMS[i]);
+    	ComboBox_PasswordCipherAlgorithm.Items.Add(String(HASH_ALGORITHMS[i]));
 end;
 
 end.
