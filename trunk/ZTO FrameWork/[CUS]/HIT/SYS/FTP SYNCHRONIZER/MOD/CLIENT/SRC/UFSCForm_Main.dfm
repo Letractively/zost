@@ -55,7 +55,7 @@ object FSCForm_Main: TFSCForm_Main
     Top = 25
     Width = 843
     Height = 172
-    ActivePage = TabSheet1
+    ActivePage = TabSheet2
     TabOrder = 1
     OnChanging = PageControl1Changing
     object TabSheet1: TTabSheet
