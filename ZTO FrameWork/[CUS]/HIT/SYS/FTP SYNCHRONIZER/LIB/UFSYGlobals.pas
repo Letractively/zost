@@ -169,8 +169,8 @@ type
                                                         aVerboseMode: Boolean);
         {$ENDIF}
 
-		{$IFDEF FTPSYNCCLI}
         procedure InitializeProgress(aProgressBar: TProgressBar; aLabelPercentDone: TLabel; aMax: Cardinal);
+		{$IFDEF FTPSYNCCLI}
     	procedure IncreaseProgress(aProgressBar: TProgressBar; aLabelPercentDone: TLabel);
     	procedure SetProgressWith(aProgressBar: TProgressBar; aLabelPercentDone: TLabel; aPosition: Cardinal);
         {$ENDIF}
@@ -208,6 +208,7 @@ type
         procedure SaveTextFile(aText: AnsiString; const aFileName: TFileName);
         function LoadTextFile(const aFileName: TFileName): AnsiString;
         procedure WaitFor(const aSeconds: Byte; const aUseProcessMessages: Boolean = True);
+        procedure ClearDirectory(aDirectory: AnsiString);
         {$IFDEF FTPSYNCCLI}
     	procedure AddAllUniqueIndexes(aRichEdit: TRichEdit);
         procedure AddUniqueIndex(aConnection: TZConnection; aTableName, aIndexName, aFieldValue: AnsiString; aRichEdit: TRichEdit);
@@ -220,7 +221,6 @@ type
         procedure CheckVersion(aFTPClient: TFtpClient; aRichEdit: TRichEdit);
 		procedure Authenticate(aFTPClient: TFtpClient; var aZConnection: TZConnection; aUserName, aPassWord: AnsiString; aAutomatic: Boolean; aUseDataBaseName: Boolean; var aBusy: Boolean; aRichEdit: TRichEdit; aResume: Boolean);
         function ExecuteCmd(aFTPClient: TFtpClient; aSyncCmd: TSyncCmd; aRichEdit: TRichEdit; aDescription: AnsiString = ''; aProgressBar: TProgressBar = nil; aLabelPercentDone: TLabel = nil): Boolean;
-        procedure ClearDirectory(aDirectory: AnsiString);
         procedure AbortEverything(aFTPClient: TFtpClient; aErrorMessage: AnsiString; var aBusy: Boolean; aRichEdit: TRichEdit);
     	function MD5Get(aFTPClient: TFtpClient; aProgressBar: TProgressBar; aLabelPercentDone: TLabel; aLocalFileName, aRemoteFileName: AnsiString; aRichEdit: TRichEdit; aMaxTries: Byte = 5): Boolean;
     	function MD5Put(aFTPClient: TFtpClient; aProgressBar: TProgressBar; aLabelPercentDone: TLabel; aLocalFileName, aRemoteFileName: AnsiString; aRichEdit: TRichEdit; aMaxTries: Byte = 5): Boolean;
@@ -258,7 +258,7 @@ uses
 
   ZDBCIntfs, ZScriptParser, ZAbstractRoDataSet, DCPsha512, DCPsha256, DCPsha1,
   DCPripemd160, DCPripemd128, DCPmd5, DCPmd4, DCPhaval, DCPtiger, DCPcrypt2, OverbyteIcsWSocket,
-  UObjectFile, UXXXDataModule;
+  UObjectFile, UXXXDataModule, AnsiStrings;
 
 { TFSYGlobals }
 
@@ -284,14 +284,12 @@ end;
 {$IFDEF FTPSYNCCLI}
 procedure TFSYGlobals.IncreaseProgress(aProgressBar: TProgressBar; aLabelPercentDone: TLabel);
 begin
-  	aProgressBar.StepIt;
+  aProgressBar.StepIt;
 
-  	if aProgressBar.Max > 0 then
-  		aLabelPercentDone.Caption := Format('%d%%',[Round(aProgressBar.Position / aProgressBar.Max * 100)])
-  	else
-  		aLabelPercentDone.Caption := '0%';
-
-  	Application.ProcessMessages;
+  if aProgressBar.Max > 0 then
+    aLabelPercentDone.Caption := Format('%d%%',[Round(aProgressBar.Position / aProgressBar.Max * 100)])
+  else
+    aLabelPercentDone.Caption := '0%';
 end;{$ENDIF}
 
 {$IFDEF FTPSYNCCLI}
@@ -299,27 +297,24 @@ procedure TFSYGlobals.SetProgressWith(aProgressBar: TProgressBar; aLabelPercentD
 begin
 	aProgressBar.Position := aPosition;
 
-  	if aProgressBar.Max > 0 then
-  		aLabelPercentDone.Caption := Format('%d%%',[Round(aProgressBar.Position / aProgressBar.Max * 100)])
-  	else
-  		aLabelPercentDone.Caption := '0%';
-
-  	Application.ProcessMessages;
+  if aProgressBar.Max > 0 then
+    aLabelPercentDone.Caption := Format('%d%%',[Round(aProgressBar.Position / aProgressBar.Max * 100)])
+  else
+    aLabelPercentDone.Caption := '0%';
 end;{$ENDIF}
 
-{$IFDEF FTPSYNCCLI}
 procedure TFSYGlobals.InitializeProgress(aProgressBar: TProgressBar; aLabelPercentDone: TLabel; aMax: Cardinal);
 begin
 	if Assigned(aProgressBar) then
-    begin
-        aProgressBar.Max := aMax;
-        aProgressBar.Position := 0;
-        aProgressBar.Step := 1;
-    end;
+  begin
+    aProgressBar.Position := 0;
+    aProgressBar.Max := aMax;
+    aProgressBar.Step := 1;
+  end;
 
-    if Assigned(aLabelPercentDone) then
-	  	aLabelPercentDone.Caption := '0%';
-end;{$ENDIF}
+  if Assigned(aLabelPercentDone) then
+  	aLabelPercentDone.Caption := '0%';
+end;
 
 procedure TFSYGlobals.ExecuteQuery(aZConnection: TZConnection; aSQLCommand: AnsiString);
 var
@@ -1094,7 +1089,6 @@ begin
   end;
 end;{$ENDIF}
 
-{$IFDEF FTPSYNCCLI}
 procedure TFSYGlobals.ClearDirectory(aDirectory: AnsiString);
 	{Procedures e funções locais}
     procedure SearchTree;
@@ -1133,7 +1127,7 @@ procedure TFSYGlobals.ClearDirectory(aDirectory: AnsiString);
 begin
 	ChDir(String(aDirectory));
 	SearchTree;
-end;{$ENDIF}
+end;
 
 procedure TFSYGlobals.ConfigureConnection(var aZConnection: TZConnection; UseDatabase: Boolean = True);
 begin
@@ -1894,15 +1888,7 @@ begin
     else
       ConfigureDataSet(aZConnection,Delta,'SELECT * FROM DELTA ORDER BY MI_ORDEM');
 
-    if Assigned(aProgressBar) then
-    begin
-      aProgressBar.Position := 0;
-      aProgressBar.Max := Delta.RecordCount;
-      aProgressBar.Step := 1;
-    end;
-
-    if Assigned(aLabelPercentDone) then
-      aLabelPercentDone.Caption := '0%';
+    InitializeProgress(aProgressBar,aLabelPercentDone,Delta.RecordCount);
 
     if Delta.RecordCount > 0 then
     begin
@@ -2136,100 +2122,152 @@ end;{$ENDIF}
 //    		RODataSet.Free;
 //  	end;
 //end;
-
 procedure TFSYGlobals.MySQLExecuteSQLScript(aZConnection: TZConnection; aRichEdit: TRichEdit; const aSQLScriptFile: TFileName = ''; const aSQLScriptText: AnsiString = ''; const aForeignKeysCheck: Boolean = True; aProgressBarCurrent: TProgressBar = nil; aProgressBarOverall: TProgressBar = nil; aLabelCurrentDescription: TLabel = nil; aLabelOverallDescription: TLabel = nil; aLabelCurrentValue: TLabel = nil; aLabelOverallValue: TLabel = nil);
+const
+  PARTSPERFILE = 120;
+  DIVISIONTAG = '# == A INSTRUÇÃO ACIMA POSSUI';
 var
-    i: Cardinal;
-    Processor: TZSQLProcessor;
-    ProcessorEvents: TProcessorEvents;
-    ScriptParts: TScriptParts;
+  i: Cardinal;
+  Processor: TZSQLProcessor;
+  ProcessorEvents: TProcessorEvents;
+  ScriptParts: TScriptParts;
+  ScriptFileName: TFileName;
+  AuxTextFileRead, AuxTextFileWrite: TextFile;
+  FileNumber, PartNumber: Cardinal;
+  CurrentLine: AnsiString;
 begin
-    if Trim(aSQLScriptFile) <> '' then
+  if Trim(aSQLScriptFile) <> '' then
+  begin
+    if not FileExists(aSQLScriptFile) then
+      raise Exception.Create('O arquivo especificado não existe fisicamente');
+
+    ScriptFileName := aSQLScriptFile;
+  end
+  else if Trim(String(aSQLScriptText)) = '' then
+    raise Exception.Create('Nenhum arquivo ou texto de script foi informado')
+  else
+    ScriptFileName := FCurrentDir + 'TEMP\SCRIPTFILE000000.SQL';
+
+  { Diretório para arquivos temporários }
+  if not DirectoryExists(FCurrentDir + 'TEMP') then
+    CreateDir(FCurrentDir + 'TEMP');
+
+  { Limpa o diretório temporário }
+  ClearDirectory(AnsiString(FCurrentDir + 'TEMP'));
+
+  { Aqui, ScriptFileName contém o nome do script inicial que será dividido }
+  try
+    AssignFile(AuxTextFileRead,ScriptFileName);
+    Reset(AuxTextFileRead);
+
+    FileNumber := 0;
+    PartNumber := 0;
+    while not Eof(AuxTextFileRead) do
     begin
-		if not FileExists(aSQLScriptFile) then
-    		raise Exception.Create('O arquivo especificado não existe fisicamente');
-    end
-    else if Trim(String(aSQLScriptText)) = '' then
-    	raise Exception.Create('Nenhum arquivo ou texto de script foi informado');
+      ReadLn(AuxTextFileRead,CurrentLine);
 
-    try
-	    { PASSO 1:  Dividindo o script de acordo com seus delimitadores }
-    	ScriptParts := nil;
-	    SplitSQLScript(aZConnection,aRichEdit,ScriptParts,aSQLScriptFile,aSQLScriptText,aForeignKeysCheck);
+      if AnsiStrings.PosEx(DIVISIONTAG,CurrentLine) = 1 then
+        Inc(PartNumber);
 
-    	{ PASSO 2: Executando cada uma das partes do script dividido }
-		if ScriptParts.Count > 0 then
+      if PartNumber mod PARTSPERFILE = 0 then
+      begin
+        Inc(PartNumber);
+        { Grava a linha inteira que foi encontrada no arquivo atualmente
+        aberto e fecha ele em seguida }
+        if FileNumber > 0 then
         begin
-            if aZConnection.Connected then
-            begin
-                if Assigned(aProgressBarOverall) then
-                begin
-                    aProgressBarOverall.Max := ScriptParts.Count;
-                    aProgressBarOverall.Position := 0;
-                    aProgressBarOverall.Step := 1;
-                end;
+          Writeln(AuxTextFileWrite,CurrentLine);
+          CloseFile(AuxTextFileWrite);
+        end;
 
-                if Assigned(aLabelCurrentDescription) and Assigned(aLabelCurrentValue) then
-                    SetLabelDescriptionValue(aLabelCurrentDescription,aLabelCurrentValue,'0 / ' + AnsiString(IntToStr(aProgressBarCurrent.Max)));
+        { Obtém o próximo número de arquivo, cria-o e vai diretamente para o
+        início do loop }
+        Inc(FileNumber);
+        AssignFile(AuxTextFileWrite,FCurrentDir + 'TEMP\' + Format('SCRIPTFILE%.6U.SQL',[FileNumber]));
+        Rewrite(AuxTextFileWrite);
 
-                Processor := nil;
-                ProcessorEvents := nil;
-                try
-                    ProcessorEvents := TProcessorEvents.Create(aProgressBarCurrent,aLabelCurrentValue,aLabelCurrentDescription);
+        if FileNumber = 1 then
+          Writeln(AuxTextFileWrite,CurrentLine);
 
-                    Processor := TZSQLProcessor.Create(aZConnection);
-                    Processor.ParamCheck := False;
-                    Processor.Connection := aZConnection;
-                    Processor.DelimiterType := dtSetTerm;
+        Continue;
+      end;
 
-                    Processor.AfterExecute := ProcessorEvents.DoAfterExecute;
-                    Processor.BeforeExecute := ProcessorEvents.DoBeforeExecute;
-
-		            if Assigned(aRichEdit) then
-        	            ShowOnLog('§ Executando script. Favor aguardar...',aRichEdit);
-
-                    for i := 0 to Pred(ScriptParts.Count) do
-                    begin
-                        Processor.Clear;
-                        Processor.Delimiter := String(ScriptParts[i].Delimiter);
-                        Processor.Script.Text := String(ScriptParts[i].Script);
-
-                        if Assigned(aProgressBarCurrent) then
-                        begin
-	                        Processor.Parse;
-                            aProgressBarCurrent.Max := Processor.StatementCount;
-                            aProgressBarCurrent.Position := 0;
-                            aProgressBarCurrent.Step := 1;
-                        end;
-
-                        Processor.Execute;
-
-                        if Assigned(aLabelOverallDescription) and Assigned(aLabelOverallValue) then
-		                    SetLabelDescriptionValue(aLabelOverallDescription,aLabelOverallValue,AnsiString(IntToStr(Succ(i)) + ' / ' + IntToStr(ScriptParts.Count)));
-                        if Assigned(aProgressBarOverall) then
-                            aProgressBarOverall.StepIt;
-
-                        {$IFDEF FTPSYNCCLI}
-                        Application.ProcessMessages;
-                        {$ENDIF}
-                    end;
-
-                    if Assigned(aRichEdit) then
-				        ShowOnLog('§ Execução do script finalizada!',aRichEdit);
-                finally
-  	                if Assigned(ProcessorEvents) then
-                    	ProcessorEvents.Free;
-                    if Assigned(Processor) then
-	                    Processor.Free;
-                end;
-            end;
-        end
-        else
-            raise Exception.Create('O arquivo selecionado não contém um script válido!');
-    finally
-    	if Assigned(ScriptParts) then
-        	ScriptParts.Free
+      WriteLn(AuxTextFileWrite,CurrentLine);
     end;
+  finally
+    CloseFile(AuxTextFileRead);
+    CloseFile(AuxTextFileWrite);
+  end;
+
+  { Para cada arquivo. inicio }
+  try
+    ScriptParts := nil;
+    SplitSQLScript(aZConnection,aRichEdit,ScriptParts,aSQLScriptFile,aSQLScriptText,aForeignKeysCheck);
+
+    if ScriptParts.Count > 0 then
+    begin
+      if aZConnection.Connected then
+      begin
+        InitializeProgress(aProgressBarOverall,nil,ScriptParts.Count);
+
+        if Assigned(aLabelCurrentDescription) and Assigned(aLabelCurrentValue) then
+          SetLabelDescriptionValue(aLabelCurrentDescription,aLabelCurrentValue,'0 / ' + AnsiString(IntToStr(aProgressBarCurrent.Max)));
+
+        Processor := nil;
+        ProcessorEvents := nil;
+
+        try
+          ProcessorEvents := TProcessorEvents.Create(aProgressBarCurrent,aLabelCurrentValue,aLabelCurrentDescription);
+
+          Processor := TZSQLProcessor.Create(aZConnection);
+          Processor.ParamCheck := False;
+          Processor.Connection := aZConnection;
+          Processor.DelimiterType := dtSetTerm;
+
+          Processor.AfterExecute := ProcessorEvents.DoAfterExecute;
+          Processor.BeforeExecute := ProcessorEvents.DoBeforeExecute;
+
+          if Assigned(aRichEdit) then
+            ShowOnLog('§ Executando script. Favor aguardar...',aRichEdit);
+
+          for i := 0 to Pred(ScriptParts.Count) do
+          begin
+            Processor.Clear;
+            Processor.Delimiter := String(ScriptParts[i].Delimiter);
+            Processor.Script.Text := String(ScriptParts[i].Script);
+
+            if Assigned(aProgressBarCurrent) then
+            begin
+              Processor.Parse;
+              InitializeProgress(aProgressBarCurrent,nil,Processor.StatementCount);
+            end;
+
+            Processor.Execute;
+
+            if Assigned(aLabelOverallDescription) and Assigned(aLabelOverallValue) then
+              SetLabelDescriptionValue(aLabelOverallDescription,aLabelOverallValue,AnsiString(IntToStr(Succ(i)) + ' / ' + IntToStr(ScriptParts.Count)));
+            if Assigned(aProgressBarOverall) then
+              aProgressBarOverall.StepIt;
+          end;
+
+          if Assigned(aRichEdit) then
+            ShowOnLog('§ Execução do script finalizada!',aRichEdit);
+        finally
+          if Assigned(ProcessorEvents) then
+            ProcessorEvents.Free;
+          if Assigned(Processor) then
+            Processor.Free;
+        end;
+      end;
+    end
+    else
+      raise Exception.Create('O arquivo selecionado não contém um script válido!');
+  finally
+    if Assigned(ScriptParts) then
+      ScriptParts.Free
+  end;
+  { Para cada arquivo. Fim }
+
 end;
 
 //procedure TNewGlobals.ExecuteSQLScript(theConnection: TZConnection; FileName: TFileName; Script: AnsiString = '');
@@ -5057,17 +5095,67 @@ procedure TFSYGlobals.SynchronizeFull(    aFTPClient: TFtpClient;
                                           aOnZLibNotification: TZLibNotification;
                                           aResume: Boolean);
 
+//function RawByteStringReplace(const S, OldPattern, NewPattern: AnsiString; Flags: TReplaceFlags): AnsiString;
+//var
+//  SearchStr, Patt, NewStr: AnsiString;
+//  Offset: Integer;
+//begin
+//  //Removed the uppercase part...
+//  SearchStr := S;
+//  Patt := OldPattern;
+//
+//  NewStr := S;
+//  Result := '';
+//  while SearchStr <> '' do
+//  begin
+//    Offset := AnsiStrings.PosEx(Patt, SearchStr);
+//    if Offset = 0 then
+//    begin
+//      Result := Result + NewStr;
+//      Break;
+//    end;
+//    Result := Result + Copy(NewStr, 1, Offset - 1) + NewPattern;
+//    NewStr := Copy(NewStr, Offset + Length(OldPattern), MaxInt);
+//    if not (rfReplaceAll in Flags) then
+//    begin
+//      Result := Result + NewStr;
+//      Break;
+//    end;
+//    SearchStr := Copy(SearchStr, Offset + Length(Patt), MaxInt);
+//  end;
+//end;
+
 procedure ReplaceIntoFile(Filename: TFileName; OldPattern, NewPattern: AnsiString);
+var
+  FileStream: TFileStream;
+  Contents: AnsiString;
 begin
-  with TStringList.Create do
-    try
-      LoadFromFile(Filename);
-      Text := StringReplace(Text,String(OldPattern),String(NewPattern),[rfReplaceAll]);
-      SaveToFile(FileName);
-    finally
-      Free;
-    end;
+  FileStream := TFileStream.Create(FileName, fmOpenread or fmShareDenyNone);
+  try
+    SetLength(Contents, FileStream.Size);
+    FileStream.ReadBuffer(Contents[1], FileStream.Size);
+  finally
+    FileStream.Free;
+  end;
+
+  Contents := AnsiStrings.StringReplace(Contents, OldPattern, NewPattern, [rfReplaceAll, rfIgnoreCase]);
+
+  FileStream := TFileStream.Create(FileName, fmCreate);
+  try
+    FileStream.WriteBuffer(Contents[1], Length(Contents));
+  finally
+    FileStream.Free;
+  end;
+//  with TStringList.Create do
+//    try
+//      LoadFromFile(Filename);
+//      Text := StringReplace(Text,String(OldPattern),String(NewPattern),[rfReplaceAll]);
+//      SaveToFile(FileName);
+//    finally
+//      Free;
+//    end;
 end;
+
 
 var
   RetrSessionParameters: TRetrSessionParameters;
@@ -5100,7 +5188,9 @@ begin
           end;
 
         { Substituindo o nome do banco de dados }
-        ReplaceIntoFile(FFTPDirectory + '\' + FTPFIL_SERVER_DATABASE,'<%>DATABASENAME<%>',AnsiString(UpperCase(String(FConfigurations.DB_DataBase))));
+        ShowOnLog('§ Configurando o script...',aRichEdit);
+        ReplaceIntoFile(FFTPDirectory + '\' + FTPFIL_SERVER_DATABASE,'<%>DATABASENAME<%>',Ansistrings.UpperCase(FConfigurations.DB_DataBase));
+        ShowOnLog('§ Configuração concluída!',aRichEdit);
 
         try
           TPanel(aProgressBarCurrent.Parent).Show;
