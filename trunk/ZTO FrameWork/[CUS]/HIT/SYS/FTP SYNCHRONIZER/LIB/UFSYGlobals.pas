@@ -2767,7 +2767,7 @@ const
   '# ============================================================================ #'#13#10 +
   '# DEFINIÇÃO DE ROTINAS - INÍCIO                                                #'#13#10 +
   '# ============================================================================ #'#13#10 +
-  '<%>DBROUTINES<%>' +
+  '<%>DBROUTINES<%>'#13#10 +
   '# ============================================================================ #'#13#10 +
   '# DEFINIÇÃO DE ROTINAS - FIM                                                   #'#13#10 +
   '# ============================================================================ #'#13#10#13#10 +
@@ -2778,7 +2778,7 @@ const
   '# ============================================================================ #'#13#10 +
   '# DEFINIÇÃO DE TABELAS - INÍCIO                                                #'#13#10 +
   '# ============================================================================ #'#13#10 +
-  '<%>TABLEDEFINITIONS<%>' +
+  '<%>TABLEDEFINITIONS<%>'#13#10 +
   '# ============================================================================ #'#13#10 +
   '# DEFINIÇÃO DE TABELAS - FIM                                                   #'#13#10 +
   '# ============================================================================ #'#13#10#13#10 +
@@ -2786,7 +2786,7 @@ const
   '# ============================================================================ #'#13#10 +
   '# DEFINIÇÃO DE TRIGGERS - INÍCIO                                               #'#13#10 +
   '# ============================================================================ #'#13#10 +
-  '<%>DBTRIGGERS<%>' +
+  '<%>DBTRIGGERS<%>'#13#10 +
   '# ============================================================================ #'#13#10 +
   '# DEFINIÇÃO DE TRIGGERS - FIM                                                  #'#13#10 +
   '# ============================================================================ #'#13#10#13#10 +
@@ -2794,7 +2794,7 @@ const
   '# ============================================================================ #'#13#10 +
   '# ADIÇÃO DE CONSTRAINTS - INÍCIO                                               #'#13#10 +
   '# ============================================================================ #'#13#10 +
-  '<%>TABLECONSTRAINTS<%>' +
+  '<%>TABLECONSTRAINTS<%>'#13#10 +
   '# ============================================================================ #'#13#10 +
   '# ADIÇÃO DE CONSTRAINTS - FIM                                                  #'#13#10 +
   '# ============================================================================ #'#13#10#13#10 +
@@ -2802,16 +2802,16 @@ const
   '# ============================================================================ #'#13#10 +
   '# DEFINIÇÃO DE VIEWS - INÍCIO                                                  #'#13#10 +
   '# ============================================================================ #'#13#10 +
-  '<%>DBVIEWS<%>' +
+  '<%>DBVIEWS<%>'#13#10 +
   '# ============================================================================ #'#13#10 +
   '# DEFINIÇÃO DE VIEWS - FIM                                                     #'#13#10 +
   '# ============================================================================ #';
 
   INSHEADER =
-  '# == INSERÇÕES PARA A TABELA %s'#13#10#13#10;
+  '# == INSERÇÕES PARA A TABELA %s'#13#10;
 
   ADJUSTHEADER =
-  '# == AJUSTES ESTRUTURAIS PARA A TABELA %s'#13#10#13#10;
+  '# == AJUSTES ESTRUTURAIS PARA A TABELA %s'#13#10;
 
   COMPLEMENTARY_TABLES =
   'CREATE TABLE SINCRONIZACOES ('#13#10 +
@@ -2823,9 +2823,10 @@ const
 
   '# == INSERÇÕES PARA A TABELA SINCRONIZACOES'#13#10#13#10 +
 
-  'INSERT INTO SINCRONIZACOES VALUES (SYSDATE());'#13#10#13#10;
+  'INSERT INTO SINCRONIZACOES VALUES (SYSDATE());';
 
-  INSERT_SCHEMA = 'INSERT INTO '#13#10'  %s'#13#10'VALUES'#13#10;
+  INSERT_SCHEMA = 'INSERT INTO %s'#13#10 +
+                  '     VALUES ';
 
   QUERY_SIZE =
   '# == A INSTRUÇÃO ACIMA POSSUI %u INSERÇÕES (%u BYTES)';
@@ -2845,27 +2846,39 @@ const
 var
 	AvailableTables, CurrentTableDefinition, TableInsertions,
   DatabaseRoutines, DatabaseViews, CurrentRoutine, CurrentView, DatabaseTriggers, CurrentTrigger: TZReadOnlyQuery;
-	TableDefinitions, CurrentDefinition, TableConstraints, CurrentConstraint,
-  CurrentQuery, ValuesPart, DBRoutines, DBViews, DBTriggers, ScriptFinal: AnsiString;
+	CurrentDefinition, CurrentConstraint,
+  CurrentQuery, ValuesPart, AuxString: AnsiString;
 	i, QuerySize: Word;
 	CurrentRow: Cardinal;
 	Version: AnsiString;
+  DBScript, DBRoutines, DBViews, DBTriggers, DBTables, DBConstraints, DBScriptFinal: TextFile;
 begin
-  ScriptFinal := StringReplace(SQLScript,'<%>CURRENTDATEANDTIME<%>',FormatDateTime('dd/mm/yyyy "às" hh:nn:ss',Now) + '  ',[]);
-
   SendStatus(aClient,'== MySQLSmartSnapShot: Iniciando geração de conteúdo... ===========================');
   SendStatus(aClient,'-----------------------------------------------------------------------------------');
 
-  Version := TFileInformation.GetInfo(Application.ExeName,'FULLVERSION').AsAnsiString;
+  { == Criando o arquivo final temporário ================================== }
+  try
+    AssignFile(DBScript,aClient.HomeDir + 'DBSCRIPT.SQL');
+    Rewrite(DBScript);
 
-  ScriptFinal := StringReplace(ScriptFinal,'<%>SYNCRONIZERVERSION<%>',Version + DupeString(' ',24 - Length(Version)),[]);
+    AuxString := StringReplace(SQLScript,'<%>CURRENTDATEANDTIME<%>',FormatDateTime('dd/mm/yyyy "às" hh:nn:ss',Now) + '  ',[]);
+    Version := TFileInformation.GetInfo(Application.ExeName,'FULLVERSION').AsAnsiString;
+    AuxString := StringReplace(AuxString,'<%>SYNCRONIZERVERSION<%>',Version + DupeString(' ',24 - Length(Version)),[]);
+    Write(DBScript,AuxString);
+  finally
+    CloseFile(DBScript);
+  end;
 
   { == Extração de stored routines ========================================= }
   try
+    AssignFile(DBRoutines,aClient.HomeDir + 'DBROUTINES.SQL');
+    Rewrite(DBRoutines);
+
     DatabaseRoutines := nil;
     CurrentRoutine := nil;
-    DBRoutines := '';
+
     ConfigureDataSet(aZConnection,DatabaseRoutines,'SELECT SPECIFIC_NAME, ROUTINE_TYPE FROM information_schema.ROUTINES WHERE ROUTINE_SCHEMA = ' + QuotedStr(FConfigurations.DB_DataBase));
+
     if DatabaseRoutines.RecordCount > 0 then
     begin
       if aVerboseMode then
@@ -2889,21 +2902,19 @@ begin
         else if UpperCase(DatabaseRoutines.Fields[1].AsAnsiString) = 'PROCEDURE' then
           ConfigureDataSet(aZConnection,CurrentRoutine,'SHOW CREATE PROCEDURE ' + DatabaseRoutines.Fields[0].AsAnsiString);
 
-        DBRoutines := DBRoutines + Format(ROUTINE_TEMPLATE,[DELIMITER,CurrentRoutine.Fields[2].AsAnsiString]);
-
         if DatabaseRoutines.RecNo < DatabaseRoutines.RecordCount then
-          DBRoutines := DBRoutines + #13#10#13#10
+          WriteLn(DBRoutines,Format(ROUTINE_TEMPLATE + #13#10,[DELIMITER,CurrentRoutine.Fields[2].AsAnsiString]))
         else
-          DBRoutines := DBRoutines + #13#10;
+          Write(DBRoutines,Format(ROUTINE_TEMPLATE,[DELIMITER,CurrentRoutine.Fields[2].AsAnsiString]));
 
         DatabaseRoutines.Next;
       end;
     end
     else
-      DBRoutines := #13#10'# A base de dados ' + UpperCase(FConfigurations.DB_DataBase) + ' não possui stored procedures ou funções!'#13#10#13#10;
-
-    SalvarEZerar(DBRoutines,aClient.HomeDir + 'DBROUTINES.SQL');
+      Write(DBRoutines,'# A base de dados ' + UpperCase(FConfigurations.DB_DataBase) + ' não possui stored procedures ou funções!');
   finally
+    CloseFile(DBRoutines);
+
     if Assigned(CurrentRoutine) then
       FreeAndNil(CurrentRoutine);
 
@@ -2913,348 +2924,460 @@ begin
 
   { == Extração de visões ================================================== }
   try
-  DatabaseViews := nil;
-  CurrentView := nil;
-  DBViews := '';
-  ConfigureDataSet(aZConnection,DatabaseViews,'SHOW FULL TABLES WHERE TABLE_TYPE = ''VIEW''');
-  if DatabaseViews.RecordCount > 0 then
-  begin
-  if aVerboseMode then
-  SendStatus(aClient,'Extraindo ' + IntToStr(DatabaseViews.RecordCount) + ' "Views"...');
-  while not DatabaseViews.Eof do
-  begin
-  if DatabaseViews.RecNo < DatabaseViews.RecordCount then
-  begin
-  if aVerboseMode then
-  SendStatus(aClient,' |- ' + DatabaseViews.Fields[0].AsAnsiString);
-  end
-  else
-  begin
-  if aVerboseMode then
-  SendStatus(aClient,' \- ' + DatabaseViews.Fields[0].AsAnsiString);
-  end;
+    AssignFile(DBViews,aClient.HomeDir + 'DBVIEWS.SQL');
+    Rewrite(DBViews);
 
-  ConfigureDataSet(aZConnection,CurrentView,'SHOW CREATE VIEW ' + DatabaseViews.Fields[0].AsAnsiString);
+    DatabaseViews := nil;
+    CurrentView := nil;
 
-  DBViews := DBViews + CurrentView.Fields[1].AsAnsiString + ';';
+    ConfigureDataSet(aZConnection,DatabaseViews,'SHOW FULL TABLES WHERE TABLE_TYPE = ''VIEW''');
 
-  if DatabaseViews.RecNo < DatabaseViews.RecordCount then
-  DBViews := DBViews + #13#10#13#10
-  else
-  DBViews := DBViews + #13#10;
+    if DatabaseViews.RecordCount > 0 then
+    begin
+      if aVerboseMode then
+        SendStatus(aClient,'Extraindo ' + IntToStr(DatabaseViews.RecordCount) + ' "Views"...');
 
-  DatabaseViews.Next;
-  end;
-  end
-  else
-  DBViews := #13#10'# A base de dados ' + UpperCase(FConfigurations.DB_DataBase) + ' não possui visões!'#13#10#13#10;
+      while not DatabaseViews.Eof do
+      begin
+        if DatabaseViews.RecNo < DatabaseViews.RecordCount then
+        begin
+          if aVerboseMode then
+          SendStatus(aClient,' |- ' + DatabaseViews.Fields[0].AsAnsiString);
+        end
+        else
+        begin
+          if aVerboseMode then
+            SendStatus(aClient,' \- ' + DatabaseViews.Fields[0].AsAnsiString);
+        end;
+
+        ConfigureDataSet(aZConnection,CurrentView,'SHOW CREATE VIEW ' + DatabaseViews.Fields[0].AsAnsiString);
+
+        if DatabaseViews.RecNo < DatabaseViews.RecordCount then
+          WriteLn(DBViews,CurrentView.Fields[1].AsAnsiString + ';')
+        else
+          Write(DBViews,CurrentView.Fields[1].AsAnsiString + ';');
+
+        DatabaseViews.Next;
+      end;
+    end
+    else
+      Write(DBViews,'# A base de dados ' + UpperCase(FConfigurations.DB_DataBase) + ' não possui visões!');
   finally
-  if Assigned(CurrentView) then
-  FreeAndNil(CurrentView);
+    CloseFile(DBViews);
 
-  FreeAndNil(DatabaseViews);
+    if Assigned(CurrentView) then
+      FreeAndNil(CurrentView);
+
+    FreeAndNil(DatabaseViews);
   end;
   { ======================================================================== }
 
   { == Extração de triggers ================================================ }
   try
-  DatabaseTriggers := nil;
-  CurrentTrigger := nil;
-  DBTriggers := '';
-  ConfigureDataSet(aZConnection,DatabaseTriggers,'SHOW TRIGGERS');
-  if DatabaseTriggers.RecordCount > 0 then
-  begin
-  if aVerboseMode then
-  SendStatus(aClient,'Extraindo ' + IntToStr(DatabaseTriggers.RecordCount) + ' "Triggers"...');
-  while not DatabaseTriggers.Eof do
-  begin
-  if DatabaseTriggers.RecNo < DatabaseTriggers.RecordCount then
-  begin
-  if aVerboseMode then
-  SendStatus(aClient,' |- ' + DatabaseTriggers.Fields[0].AsAnsiString);
-  end
-  else
-  begin
-  if aVerboseMode then
-  SendStatus(aClient,' \- ' + DatabaseTriggers.Fields[0].AsAnsiString);
-  end;
+    AssignFile(DBTriggers,aClient.HomeDir + 'DBTRIGGERS.SQL');
+    Rewrite(DBTriggers);
 
-  DBTriggers := DBTriggers + Format(TRIGGER_TEMPLATE,[
-  DELIMITER,
-  DatabaseTriggers.Fields[0].AsAnsiString,
-  DatabaseTriggers.Fields[4].AsAnsiString,
-  DatabaseTriggers.Fields[1].AsAnsiString,
-  DatabaseTriggers.Fields[2].AsAnsiString,
-  DatabaseTriggers.Fields[3].AsAnsiString
-  ]);
+    DatabaseTriggers := nil;
+    CurrentTrigger := nil;
 
-  if DatabaseTriggers.RecNo < DatabaseTriggers.RecordCount then
-  DBTriggers := DBTriggers + #13#10#13#10
-  else
-  DBTriggers := DBTriggers + #13#10;
+    ConfigureDataSet(aZConnection,DatabaseTriggers,'SHOW TRIGGERS');
 
-  DatabaseTriggers.Next;
-  end;
-  end
-  else
-  DBTriggers := #13#10'# A base de dados ' + UpperCase(FConfigurations.DB_DataBase) + ' não possui triggers!'#13#10#13#10;
+    if DatabaseTriggers.RecordCount > 0 then
+    begin
+      if aVerboseMode then
+        SendStatus(aClient,'Extraindo ' + IntToStr(DatabaseTriggers.RecordCount) + ' "Triggers"...');
+
+      while not DatabaseTriggers.Eof do
+      begin
+        if DatabaseTriggers.RecNo < DatabaseTriggers.RecordCount then
+        begin
+          if aVerboseMode then
+            SendStatus(aClient,' |- ' + DatabaseTriggers.Fields[0].AsAnsiString);
+        end
+        else
+        begin
+          if aVerboseMode then
+            SendStatus(aClient,' \- ' + DatabaseTriggers.Fields[0].AsAnsiString);
+        end;
+
+
+        if DatabaseTriggers.RecNo < DatabaseTriggers.RecordCount then
+          WriteLn(DBTriggers,Format(TRIGGER_TEMPLATE,[DELIMITER
+                                                     ,DatabaseTriggers.Fields[0].AsAnsiString
+                                                     ,DatabaseTriggers.Fields[4].AsAnsiString
+                                                     ,DatabaseTriggers.Fields[1].AsAnsiString
+                                                     ,DatabaseTriggers.Fields[2].AsAnsiString
+                                                     ,DatabaseTriggers.Fields[3].AsAnsiString]) + #13#10)
+        else
+          Write(DBTriggers,Format(TRIGGER_TEMPLATE,[DELIMITER
+                                                   ,DatabaseTriggers.Fields[0].AsAnsiString
+                                                   ,DatabaseTriggers.Fields[4].AsAnsiString
+                                                   ,DatabaseTriggers.Fields[1].AsAnsiString
+                                                   ,DatabaseTriggers.Fields[2].AsAnsiString
+                                                   ,DatabaseTriggers.Fields[3].AsAnsiString]));
+
+        DatabaseTriggers.Next;
+      end;
+    end
+    else
+      Write(DBTriggers,'# A base de dados ' + UpperCase(FConfigurations.DB_DataBase) + ' não possui triggers!');
   finally
-  if Assigned(CurrentTrigger) then
-  FreeAndNil(CurrentTrigger);
+    CloseFile(DBTriggers);
 
-  FreeAndNil(DatabaseTriggers);
+    if Assigned(CurrentTrigger) then
+      FreeAndNil(CurrentTrigger);
+
+    FreeAndNil(DatabaseTriggers);
   end;
   { ======================================================================== }
 
+  { == Extração de tabelas e seus dados ==================================== }
   try
-  AvailableTables := nil;
-  CurrentTableDefinition := nil;
-  TableInsertions := nil;
+    AvailableTables := nil;
+    CurrentTableDefinition := nil;
+    TableInsertions := nil;
 
-  ConfigureDataSet(aZConnection,AvailableTables,'SHOW FULL TABLES WHERE TABLE_TYPE <> ''VIEW''');
+    ConfigureDataSet(aZConnection,AvailableTables,'SHOW FULL TABLES WHERE TABLE_TYPE <> ''VIEW''');
 
-  with AvailableTables do
-  begin
-  TableDefinitions := '';
-  TableConstraints := '';
-  First;
+    with AvailableTables do
+    begin
+      AssignFile(DBTables,aClient.HomeDir + 'DBTABLES.SQL');
+      Rewrite(DBTables);
 
-  if aVerboseMode then
-  SendStatus(aClient,'Extraindo ' + IntToStr(AvailableTables.RecordCount) + ' Tabelas...');
+      AssignFile(DBConstraints,aClient.HomeDir + 'DBCONSTRAINTS.SQL');
+      Rewrite(DBConstraints);
 
-  while not Eof do
-  begin
-  if RecNo < RecordCount then
-  begin
-  if aVerboseMode then
-  SendStatus(aClient,' |- ' + Fields[0].AsAnsiString);
-  end
-  else
-  begin
-  if aVerboseMode then
-  SendStatus(aClient,' \- ' + Fields[0].AsAnsiString);
+      First;
+
+      if aVerboseMode then
+        SendStatus(aClient,'Extraindo ' + IntToStr(AvailableTables.RecordCount) + ' Tabelas...');
+
+      while not Eof do
+      begin
+        if RecNo < RecordCount then
+        begin
+          if aVerboseMode then
+            SendStatus(aClient,' |- ' + Fields[0].AsAnsiString);
+        end
+        else
+        begin
+          if aVerboseMode then
+            SendStatus(aClient,' \- ' + Fields[0].AsAnsiString);
+        end;
+
+        { As tabelas abaixo não devem ser criadas no cliente }
+        if UpperCase(Fields[0].AsAnsiString) = 'SEQUENCIAS' then
+        begin
+          Next;
+          Continue;
+        end;
+
+        if RecNo < RecordCount then
+        begin
+          if UpperCase(Fields[0].AsAnsiString) = 'DELTA' then
+          begin
+            if aVerboseMode then
+              SendStatus(aClient,' |   \- DDL (Comando de criação)...');
+          end
+          else
+          begin
+            if aVerboseMode then
+              SendStatus(aClient,' |   |- DDL (Comando de criação)...');
+          end;
+        end
+        else
+        begin
+          if UpperCase(Fields[0].AsAnsiString) = 'DELTA' then
+          begin
+            if aVerboseMode then
+              SendStatus(aClient,'     \- DDL (Comando de criação)...');
+          end
+          else
+          begin
+            if aVerboseMode then
+              SendStatus(aClient,'     |- DDL (Comando de criação)...');
+          end;
+        end;
+
+        ConfigureDataSet(aZConnection,CurrentTableDefinition,'SHOW CREATE TABLE ' + FConfigurations.DB_DataBase + '.' + UpperCase(Fields[0].AsAnsiString));
+
+        { Montando a constraint atual }
+        CurrentDefinition := UpperCase(StringReplace(CurrentTableDefinition.Fields[1].AsAnsiString,#$0A,#$0D#$0A,[rfReplaceAll]));
+
+        if Pos('  CONSTRAINT',CurrentDefinition) > 0 then
+        begin
+          CurrentConstraint := 'ALTER TABLE ' + UpperCase(Fields[0].AsAnsiString) + #13#10;
+
+          repeat
+            i := Pos('  CONSTRAINT',CurrentDefinition);
+            if i > 0 then
+            begin
+              CurrentConstraint := CurrentConstraint + StringReplace(Copy(CurrentDefinition,i,PosEx(#13#10,CurrentDefinition,i) - i + 2),'  CONSTRAINT','  ADD CONSTRAINT',[]);
+              System.Delete(CurrentDefinition,i,PosEx(#13#10,CurrentDefinition,i) - i + 2);
+            end;
+          until i = 0;
+
+          System.Insert(';',CurrentConstraint,Length(CurrentConstraint) - 1);
+
+          { Gravando a constraint no arquivo }
+          WriteLn(DBConstraints,CurrentConstraint);
+          //TableConstraints := TableConstraints + CurrentConstraint + #13#10;
+        end;
+
+        // Insere ";" no final da definição
+        System.Insert(';',CurrentDefinition,Length(CurrentDefinition) + 1);
+
+        // Retira os comentários
+        i := Pos(' COMMENT=''',CurrentDefinition);
+        if i > 0 then
+          System.Delete(CurrentDefinition,i,PosEx(';',CurrentDefinition,i) - i);
+
+        WriteLn(DBTables,StringReplace(CurrentDefinition,','#13#10')',#13#10')',[]) + #13#10);
+        //TableDefinitions := TableDefinitions + StringReplace(CurrentDefinition,','#13#10')',#13#10')',[]) + #13#10#13#10;
+
+        { Algumas tabelas tem diferenças estruturais entre a versão do
+        servidor e a versão dos clientes. Aqui as alterações estruturais são
+        feitas para tais tabelas }
+        WriteLn(DBTables,Format(ADJUSTHEADER,[UpperCase(Fields[0].AsAnsiString)]));
+        //TableDefinitions := TableDefinitions + Format(ADJUSTHEADER,[UpperCase(Fields[0].AsAnsiString)]);
+
+        { Atualmente nenhuma tabela precisa de ajustes estruturais, mas isso pode
+        ser necessário no futuro }
+        WriteLn(DBTables,'# A tabela ' + UpperCase(Fields[0].AsAnsiString) + ' não precisa de ajustes estruturais!'#13#10);
+        //TableDefinitions := TableDefinitions + '# A tabela ' + UpperCase(Fields[0].AsAnsiString) + ' não precisa de ajustes estruturais!'#13#10#13#10;
+
+        WriteLn(DBTables,Format(INSHEADER,[UpperCase(Fields[0].AsAnsiString)]));
+        //TableDefinitions := TableDefinitions + Format(INSHEADER,[UpperCase(Fields[0].AsAnsiString)]);
+
+        { As tabelas abaixo não devem ter seus dados inseridos no cliente }
+        if (UpperCase(Fields[0].AsAnsiString) <> 'DELTA') and (UpperCase(Fields[0].AsAnsiString) <> 'ACOESDOSUSUARIOS') then
+        begin
+          ConfigureDataSet(aZConnection,TableInsertions,'SELECT * FROM ' + Fields[0].AsAnsiString);
+
+          if TableInsertions.RecordCount > 0 then
+          begin
+            if RecNo < RecordCount then
+            begin
+              if aVerboseMode then
+                SendStatus(aClient,' |   \- DML (' + IntToStr(TableInsertions.RecordCount) + ' registros)...');
+            end
+            else
+            begin
+              if aVerboseMode then
+                SendStatus(aClient,'     \- DML (' + IntToStr(TableInsertions.RecordCount) + ' registros)...');
+            end;
+            { QuerySize será acumulado até que ele contenha um
+            valor de no máximo MAX_QUERY_SIZE, quando
+            CurrentQuery é concluído e juntado à TableDefinitions }
+            QuerySize := 0;
+            CurrentRow := 0;
+
+            while not TableInsertions.Eof do
+            begin
+              Inc(CurrentRow);
+
+              ValuesPart := '(';
+
+              for i := 0 to Pred(TableInsertions.FieldCount) do
+              begin
+                { Se for o campo de situação do registro
+                deveremos colocar em seu lugar a palavra
+                SINCRONIZADO, já que será este o estado dos
+                registros após uma sincronização completa }
+                if TableInsertions.Fields[i].FieldName = 'EN_SITUACAO' then
+                  ValuesPart := ValuesPart + Hex('SINCRONIZADO')
+                else
+                begin
+                  // Nulo?
+                  if TableInsertions.Fields[i].IsNull then
+                    ValuesPart := ValuesPart + 'NULL'
+                  // Inteiro?
+                  else if TableInsertions.Fields[i].DataType in [ftSmallint,ftInteger,ftWord,ftLargeint] then
+                    ValuesPart := ValuesPart + TableInsertions.Fields[i].AsAnsiString
+                  // Decimal?
+                  else if TableInsertions.Fields[i].DataType in [ftFloat,ftCurrency] then
+                    ValuesPart := ValuesPart + StringReplace(TableInsertions.Fields[i].AsAnsiString,',','.',[])
+                  // Data?
+                  else if (TableInsertions.Fields[i].DataType = ftDate) then
+                    ValuesPart := ValuesPart + FormatDateTime('yyyymmdd',TableInsertions.Fields[i].AsDateTime)
+                  // Tempo?
+                  else if (TableInsertions.Fields[i].DataType = ftTime) then
+                    ValuesPart := ValuesPart + FormatDateTime('hhnnss',TableInsertions.Fields[i].AsDateTime)
+                  // Data + Tempo?
+                  else if (TableInsertions.Fields[i].DataType = ftDateTime) then
+                    ValuesPart := ValuesPart + FormatDateTime('yyyymmddhhnnss',TableInsertions.Fields[i].AsDateTime)
+                  // Binário, AnsiString ou qualquer outra coisa?
+                  else
+                    ValuesPart := ValuesPart + Hex(TableInsertions.Fields[i].AsAnsiString);
+                end;
+
+                if i < Pred(TableInsertions.FieldCount) then
+                  ValuesPart := ValuesPart + ','
+                else
+                  ValuesPart := ValuesPart + ')'
+              end;
+
+              if CurrentRow = 1 then
+                CurrentQuery := Format(INSERT_SCHEMA,[UpperCase(Fields[0].AsAnsiString)]) + ValuesPart
+              else
+              begin
+                CurrentQuery := ValuesPart;
+
+                if (QuerySize + Length(ValuesPart)) > MAX_QUERY_SIZE then
+                begin
+                  WriteLn(DBTables,';'#13#10 + Format(QUERY_SIZE,[CurrentRow,QuerySize]));
+               
+                  QuerySize := 0;
+                  CurrentRow := 1;
+
+                  CurrentQuery := Format(INSERT_SCHEMA,[UpperCase(Fields[0].AsAnsiString)]) + ValuesPart;
+                end;
+              end;
+
+              Inc(QuerySize,Length(CurrentQuery));
+
+              if CurrentRow = 1 then
+                Write(DBTables,CurrentQuery)
+              else
+                Write(DBTables,#13#10'          , ' + CurrentQuery);
+
+              TableInsertions.Next;
+            end;
+
+            if CurrentRow > 0 then
+              WriteLn(DBTables,';'#13#10 + Format(QUERY_SIZE,[CurrentRow,QuerySize]) + #13#10)
+          end
+          else
+            WriteLn(DBTables,'# A tabela ' + UpperCase(Fields[0].AsAnsiString) + ' está vazia!');
+
+          TableInsertions.Close;
+        end
+        else
+          WriteLn(DBTables,'# A tabela ' + UpperCase(Fields[0].AsAnsiString) + ' não terá seus dados exportados...'#13#10);
+
+        Next;
+      end;
+
+      { Complementando o  script com a  criação  de tabelas  adicionais
+      que não existem no servidor }
+      Write(DBTables,COMPLEMENTARY_TABLES);
+    end;
+  finally
+    CloseFile(DBTables);  { talvez nao sejam estes dois aqui }
+    CloseFile(DBConstraints);
+
+    if Assigned(TableInsertions) then
+      TableInsertions.Free;
+    if Assigned(CurrentTableDefinition) then
+      CurrentTableDefinition.Free;
+
+    if Assigned(AvailableTables) then
+      AvailableTables.Free;
   end;
 
-  { As tabelas abaixo não devem ser criadas no cliente }
-  if UpperCase(Fields[0].AsAnsiString) = 'SEQUENCIAS' then
-  begin
-  Next;
-  Continue;
+  { Criando o script final }
+  try
+    SendStatus(aClient,'Montando o arquivo final para envio. Aguarde um instante...');
+
+    AssignFile(DBScriptFinal,aClient.HomeDir + FTPFIL_SERVER_DATABASE);
+    Rewrite(DBScriptFinal);
+
+    AssignFile(DBScript,aClient.HomeDir + 'DBSCRIPT.SQL');
+    Reset(DBScript);
+
+    while not Eof(DBScript) do
+    begin
+      ReadLn(DBScript,AuxString);
+
+      if AuxString = '<%>DBROUTINES<%>' then
+        try
+          AssignFile(DBRoutines,aClient.HomeDir + 'DBROUTINES.SQL');
+          Reset(DBRoutines);
+
+          while not Eof(DBRoutines) do
+          begin
+            ReadLn(DBRoutines,AuxString);
+            WriteLn(DBScriptFinal,AuxString);
+          end;
+        finally
+          CloseFile(DBRoutines);
+          DeleteFile(aClient.HomeDir + 'DBROUTINES.SQL');
+        end
+      else if AuxString = '<%>TABLEDEFINITIONS<%>' then
+        try
+          AssignFile(DBTables,aClient.HomeDir + 'DBTABLES.SQL');
+          Reset(DBTables);
+
+          while not Eof(DBTables) do
+          begin
+            ReadLn(DBTables,AuxString);
+            WriteLn(DBScriptFinal,AuxString);
+          end;
+        finally
+          CloseFile(DBTables);
+          DeleteFile(aClient.HomeDir + 'DBTABLES.SQL');
+        end
+      else if AuxString = '<%>DBTRIGGERS<%>' then
+        try
+          AssignFile(DBTriggers,aClient.HomeDir + 'DBTRIGGERS.SQL');
+          Reset(DBTriggers);
+
+          while not Eof(DBTriggers) do
+          begin
+            ReadLn(DBTriggers,AuxString);
+            WriteLn(DBScriptFinal,AuxString);
+          end;
+        finally
+          CloseFile(DBTriggers);
+          DeleteFile(aClient.HomeDir + 'DBTRIGGERS.SQL');
+        end
+      else if AuxString = '<%>TABLECONSTRAINTS<%>' then
+        try
+          AssignFile(DBConstraints,aClient.HomeDir + 'DBCONSTRAINTS.SQL');
+          Reset(DBConstraints);
+
+          while not Eof(DBConstraints) do
+          begin
+            ReadLn(DBConstraints,AuxString);
+            WriteLn(DBScriptFinal,AuxString);
+          end;
+        finally
+          CloseFile(DBConstraints);
+          DeleteFile(aClient.HomeDir + 'DBCONSTRAINTS.SQL');
+        end
+      else if AuxString = '<%>DBVIEWS<%>' then
+        try
+          AssignFile(DBViews,aClient.HomeDir + 'DBVIEWS.SQL');
+          Reset(DBViews);
+
+        finally
+          CloseFile(DBViews);
+          DeleteFile(aClient.HomeDir + 'DBVIEWS.SQL');
+        end
+      else
+        WriteLn(DBScriptFinal,AuxString);
+    end;
+
+  finally
+    CloseFile(DBScriptFinal);
+    CloseFile(DBScript);
+
+    DeleteFile(aClient.HomeDir + 'DBSCRIPT.SQL');
+    SendStatus(aClient,'Arquivo final montado. Continuando...');
   end;
-
-  if RecNo < RecordCount then
-  begin
-  if UpperCase(Fields[0].AsAnsiString) = 'DELTA' then
-  begin
-  if aVerboseMode then
-  SendStatus(aClient,' |   \- DDL (Comando de criação)...');
-  end
-  else
-  begin
-  if aVerboseMode then
-  SendStatus(aClient,' |   |- DDL (Comando de criação)...');
-  end;
-  end
-  else
-  begin
-  if UpperCase(Fields[0].AsAnsiString) = 'DELTA' then
-  begin
-  if aVerboseMode then
-  SendStatus(aClient,'     \- DDL (Comando de criação)...');
-  end
-  else
-  begin
-  if aVerboseMode then
-  SendStatus(aClient,'     |- DDL (Comando de criação)...');
-  end;
-  end;
-
-  ConfigureDataSet(aZConnection,CurrentTableDefinition,'SHOW CREATE TABLE ' + FConfigurations.DB_DataBase + '.' + UpperCase(Fields[0].AsAnsiString));
-
-  CurrentDefinition := UpperCase(StringReplace(CurrentTableDefinition.Fields[1].AsAnsiString,#$0A,#$0D#$0A,[rfReplaceAll]));
-
-  if Pos('  CONSTRAINT',CurrentDefinition) > 0 then
-  begin
-  CurrentConstraint := 'ALTER TABLE ' + UpperCase(Fields[0].AsAnsiString) + #13#10;
-  repeat
-  i := Pos('  CONSTRAINT',CurrentDefinition);
-  if i > 0 then
-  begin
-  CurrentConstraint := CurrentConstraint + StringReplace(Copy(CurrentDefinition,i,PosEx(#13#10,CurrentDefinition,i) - i + 2),'  CONSTRAINT','  ADD CONSTRAINT',[]);
-  System.Delete(CurrentDefinition,i,PosEx(#13#10,CurrentDefinition,i) - i + 2);
-  end;
-  until i = 0;
-
-  System.Insert(';',CurrentConstraint,Length(CurrentConstraint) - 1);
-  TableConstraints := TableConstraints + CurrentConstraint + #13#10;
-  end;
-
-  // Insere ";" no final da definição
-  System.Insert(';',CurrentDefinition,Length(CurrentDefinition) + 1);
-
-  // Retira os comentários
-  i := Pos(' COMMENT=''',CurrentDefinition);
-  if i > 0 then
-  begin
-  System.Delete(CurrentDefinition,i,PosEx(';',CurrentDefinition,i) - i);
-  end;
-
-  TableDefinitions := TableDefinitions + StringReplace(CurrentDefinition,','#13#10')',#13#10')',[]) + #13#10#13#10;
-
-  { Algumas tabelas tem diferenças estruturais entre a versão do
-  servidor e a versão dos clientes. Aqui as alterações estruturais são
-  feitas para tais tabelas }
-  TableDefinitions := TableDefinitions + Format(ADJUSTHEADER,[UpperCase(Fields[0].AsAnsiString)]);
-
-  if UpperCase(Fields[0].AsAnsiString) = 'DELTA' then
-  begin
-  //                    TableDefinitions := TableDefinitions +
-  //                    'ALTER TABLE DELTA '#13#10 +
-  //                    '  CHANGE DT_DATAEHORADAACAO DT_DATAEHORADAACAO DATETIME;'#13#10#13#10;
-  { Tabela DELTA não tem mais diferenças entre o servidor e
-  o cliente. Nada precisa ser feito. A estrutura foi deixada aqui como referência }
-  TableDefinitions := TableDefinitions + '# A tabela ' + UpperCase(Fields[0].AsAnsiString) + ' não precisa de ajustes estruturais!'#13#10#13#10;
-  end
-  else
-  TableDefinitions := TableDefinitions + '# A tabela ' + UpperCase(Fields[0].AsAnsiString) + ' não precisa de ajustes estruturais!'#13#10#13#10;
-
-  TableDefinitions := TableDefinitions + Format(INSHEADER,[UpperCase(Fields[0].AsAnsiString)]);
-
-  { As tabelas abaixo não devem ter seus dados inseridos no cliente }
-  if (UpperCase(Fields[0].AsAnsiString) <> 'DELTA') and
-  (UpperCase(Fields[0].AsAnsiString) <> 'ACOESDOSUSUARIOS') then
-  begin
-
-  ConfigureDataSet(aZConnection,TableInsertions,'SELECT * FROM ' + Fields[0].AsAnsiString);
-
-  if TableInsertions.RecordCount > 0 then
-  begin
-  if RecNo < RecordCount then
-  begin
-  if aVerboseMode then
-  SendStatus(aClient,' |   \- DML (' + IntToStr(TableInsertions.RecordCount) + ' registros)...');
-  end
-  else
-  begin
-  if aVerboseMode then
-  SendStatus(aClient,'     \- DML (' + IntToStr(TableInsertions.RecordCount) + ' registros)...');
-  end;
-  { QuerySize será acumulado até que ele contenha um
-  valor de no máximo MAX_QUERY_SIZE, quando
-  CurrentQuery é concluído e juntado à TableDefinitions }
-  QuerySize := 0;
-  CurrentRow := 0;
-
-  while not TableInsertions.Eof do
-  begin
-  Inc(CurrentRow);
-
-  ValuesPart := '  (';
-  for i := 0 to Pred(TableInsertions.FieldCount) do
-  begin
-  { Se for o campo de situação do registro
-  deveremos colocar em seu lugar a palavra
-  SINCRONIZADO, já que será este o estado dos
-  registros após uma sincronização completa }
-  if TableInsertions.Fields[i].FieldName = 'EN_SITUACAO' then
-  ValuesPart := ValuesPart + Hex('SINCRONIZADO')
-  else
-  begin
-  // Nulo?
-  if TableInsertions.Fields[i].IsNull then
-  ValuesPart := ValuesPart + 'NULL'
-  // Inteiro?
-  else if TableInsertions.Fields[i].DataType in [ftSmallint,ftInteger,ftWord,ftLargeint] then
-  ValuesPart := ValuesPart + TableInsertions.Fields[i].AsAnsiString
-  // Decimal?
-  else if TableInsertions.Fields[i].DataType in [ftFloat,ftCurrency] then
-  ValuesPart := ValuesPart + StringReplace(TableInsertions.Fields[i].AsAnsiString,',','.',[])
-  // Data?
-  else if (TableInsertions.Fields[i].DataType = ftDate) then
-  ValuesPart := ValuesPart + FormatDateTime('yyyymmdd',TableInsertions.Fields[i].AsDateTime)
-  // Tempo?
-  else if (TableInsertions.Fields[i].DataType = ftTime) then
-  ValuesPart := ValuesPart + FormatDateTime('hhnnss',TableInsertions.Fields[i].AsDateTime)
-  // Data + Tempo?
-  else if (TableInsertions.Fields[i].DataType = ftDateTime) then
-  ValuesPart := ValuesPart + FormatDateTime('yyyymmddhhnnss',TableInsertions.Fields[i].AsDateTime)
-  // Binário, AnsiString ou qualquer outra coisa?
-  else
-  ValuesPart := ValuesPart + Hex(TableInsertions.Fields[i].AsAnsiString);
-  end;
-
-
-  if i < Pred(TableInsertions.FieldCount) then
-  ValuesPart := ValuesPart + ','
-  else
-  ValuesPart := ValuesPart + ')'
-  end;
-
-  if CurrentRow = 1 then
-  CurrentQuery := Format(INSERT_SCHEMA,[UpperCase(Fields[0].AsAnsiString)]) + ValuesPart
-  else
-  begin
-  CurrentQuery := ValuesPart;
-  if (QuerySize + Length(ValuesPart)) > MAX_QUERY_SIZE then
-  begin
-  TableDefinitions := TableDefinitions + ';'#13#10 + Format(QUERY_SIZE,[CurrentRow,QuerySize]) + #13#10;
-  QuerySize := 0;
-  CurrentRow := 1;
-  CurrentQuery := Format(INSERT_SCHEMA,[UpperCase(Fields[0].AsAnsiString)]) + ValuesPart;
-  end;
-  end;
-  Inc(QuerySize,Length(CurrentQuery));
-
-  if CurrentRow = 1 then
-  TableDefinitions := TableDefinitions + CurrentQuery
-  else
-  TableDefinitions := TableDefinitions + ','#13#10 + CurrentQuery;
-
-  TableInsertions.Next;
-  end;
-
-  if CurrentRow > 0 then
-  TableDefinitions := TableDefinitions + ';'#13#10 + Format(QUERY_SIZE,[CurrentRow,QuerySize]) + #13#10#13#10;
-  end
-  else
-  TableDefinitions := TableDefinitions + '# A tabela ' + UpperCase(Fields[0].AsAnsiString) + ' está vazia!'#13#10#13#10;
-
-  TableInsertions.Close;
-  end;
-  Next;
-  end;
-  { Complementando o  script com a  criação  de tabelas  adicionais
-  que não existem no servidor }
-
-  TableDefinitions := TableDefinitions + COMPLEMENTARY_TABLES;
-
-  ScriptFinal := StringReplace(ScriptFinal,'<%>DBROUTINES<%>',DBRoutines,[]);
-  ScriptFinal := StringReplace(ScriptFinal,'<%>TABLEDEFINITIONS<%>',TableDefinitions,[]);
-  ScriptFinal := StringReplace(ScriptFinal,'<%>DBTRIGGERS<%>',DBTriggers,[]);
-  ScriptFinal := StringReplace(ScriptFinal,'<%>TABLECONSTRAINTS<%>',TableConstraints,[]);
-  ScriptFinal := StringReplace(ScriptFinal,'<%>DBVIEWS<%>',DBViews,[]);
-  end;
-
-  SaveTextFile(ScriptFinal,aClient.HomeDir + FTPFIL_SERVER_DATABASE);
 
   { Comprimindo caso seja necessário }
   if aUseCompression then
-  ComprimirArquivo(aClient.HomeDir + FTPFIL_SERVER_DATABASE
-  ,aRichEdit
-  ,aOnZLibNotification);
+  begin
+    SendStatus(aClient,'Comprimindo o arquivo...');
+    ComprimirArquivo(aClient.HomeDir + FTPFIL_SERVER_DATABASE,aRichEdit,aOnZLibNotification);
+    SendStatus(aClient,'Compressão concluída!');
+  end;
 
   SendStatus(aClient,'-----------------------------------------------------------------------------------');
   SendStatus(aClient,'SOC: ' + IntToStr(Trunc(FileSize(aClient.HomeDir + FTPFIL_SERVER_DATABASE))));
   SendStatus(aClient,'== MySQLSmartSnapShot: Conteúdo gerado com sucesso ================================');
-        
-  finally
-  if Assigned(TableInsertions) then
-  TableInsertions.Free;
-  if Assigned(CurrentTableDefinition) then
-  CurrentTableDefinition.Free;
-  if Assigned(AvailableTables) then
-  AvailableTables.Free;
-  end;
+
 end;{$WARNINGS ON}
 {$ENDIF}
 
