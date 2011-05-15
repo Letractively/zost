@@ -266,7 +266,7 @@ class function TFSYGlobals.Hex(aASCII: AnsiString): AnsiString;
 begin
 	Result := TXXXDataModule.Hex(aASCII);
   if Result <> '' then
-  	Result := 'x' + AnsiString(QuotedStr(String(Result)))
+  	Result := 'x' + AnsiStrings.QuotedStr(Result)
   else
     Result := 'NULL';
 end;
@@ -2135,6 +2135,7 @@ var
   AuxTextFileRead, AuxTextFileWrite: TextFile;
   FileNumber, PartNumber: Cardinal;
   CurrentLine: AnsiString;
+  SearchRec: TSearchRec;
 begin
   if Trim(aSQLScriptFile) <> '' then
   begin
@@ -2156,11 +2157,13 @@ begin
   ClearDirectory(AnsiString(FCurrentDir + 'TEMP'));
 
   { Aqui, ScriptFileName contém o nome do script inicial que será dividido }
+
+  FileNumber := 0;
   try
+    ShowOnLog('§ Iniciando o particionamento do script. Favor queira aguardar...',aRichEdit);
     AssignFile(AuxTextFileRead,ScriptFileName);
     Reset(AuxTextFileRead);
 
-    FileNumber := 0;
     PartNumber := 0;
     while not Eof(AuxTextFileRead) do
     begin
@@ -2197,77 +2200,87 @@ begin
   finally
     CloseFile(AuxTextFileRead);
     CloseFile(AuxTextFileWrite);
+    ShowOnLog('§ Particionamento concluído. ' + AnsiString(IntToStr(FileNumber)) + ' scripts foram criados!',aRichEdit);
   end;
 
-  { Para cada arquivo. inicio }
-  try
-    ScriptParts := nil;
-    SplitSQLScript(aZConnection,aRichEdit,ScriptParts,aSQLScriptFile,aSQLScriptText,aForeignKeysCheck);
+  { Processa arquivos na pasta atual }
+  if FindFirst(FCurrentDir + 'TEMP\SCRIPTFILE??????.SQL', 0, SearchRec) = 0 then
+    try
+      repeat
+        if SearchRec.Name <> 'SCRIPTFILE000000.SQL' then
+        { ==================================================================== }
+          try
+            ShowOnLog('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~',aRichEdit);
+            ShowOnLog('§ Executando script ' + AnsiString(SearchRec.Name) + '. Favor aguardar...',aRichEdit);
+            ScriptParts := nil;
 
-    if ScriptParts.Count > 0 then
-    begin
-      if aZConnection.Connected then
-      begin
-        InitializeProgress(aProgressBarOverall,nil,ScriptParts.Count);
+            SplitSQLScript(aZConnection,aRichEdit,ScriptParts,FCurrentDir + 'TEMP\' + SearchRec.Name,aSQLScriptText,aForeignKeysCheck);
 
-        if Assigned(aLabelCurrentDescription) and Assigned(aLabelCurrentValue) then
-          SetLabelDescriptionValue(aLabelCurrentDescription,aLabelCurrentValue,'0 / ' + AnsiString(IntToStr(aProgressBarCurrent.Max)));
-
-        Processor := nil;
-        ProcessorEvents := nil;
-
-        try
-          ProcessorEvents := TProcessorEvents.Create(aProgressBarCurrent,aLabelCurrentValue,aLabelCurrentDescription);
-
-          Processor := TZSQLProcessor.Create(aZConnection);
-          Processor.ParamCheck := False;
-          Processor.Connection := aZConnection;
-          Processor.DelimiterType := dtSetTerm;
-
-          Processor.AfterExecute := ProcessorEvents.DoAfterExecute;
-          Processor.BeforeExecute := ProcessorEvents.DoBeforeExecute;
-
-          if Assigned(aRichEdit) then
-            ShowOnLog('§ Executando script. Favor aguardar...',aRichEdit);
-
-          for i := 0 to Pred(ScriptParts.Count) do
-          begin
-            Processor.Clear;
-            Processor.Delimiter := String(ScriptParts[i].Delimiter);
-            Processor.Script.Text := String(ScriptParts[i].Script);
-
-            if Assigned(aProgressBarCurrent) then
+            if ScriptParts.Count > 0 then
             begin
-              Processor.Parse;
-              InitializeProgress(aProgressBarCurrent,nil,Processor.StatementCount);
-            end;
+              if aZConnection.Connected then
+              begin
+                InitializeProgress(aProgressBarOverall,nil,ScriptParts.Count);
 
-            Processor.Execute;
+                if Assigned(aLabelCurrentDescription) and Assigned(aLabelCurrentValue) then
+                  SetLabelDescriptionValue(aLabelCurrentDescription,aLabelCurrentValue,'0 / ' + AnsiString(IntToStr(aProgressBarCurrent.Max)));
 
-            if Assigned(aLabelOverallDescription) and Assigned(aLabelOverallValue) then
-              SetLabelDescriptionValue(aLabelOverallDescription,aLabelOverallValue,AnsiString(IntToStr(Succ(i)) + ' / ' + IntToStr(ScriptParts.Count)));
-            if Assigned(aProgressBarOverall) then
-              aProgressBarOverall.StepIt;
+                Processor := nil;
+                ProcessorEvents := nil;
+
+                try
+                  ProcessorEvents := TProcessorEvents.Create(aProgressBarCurrent,aLabelCurrentValue,aLabelCurrentDescription);
+
+                  Processor := TZSQLProcessor.Create(aZConnection);
+                  Processor.ParamCheck := False;
+                  Processor.Connection := aZConnection;
+                  Processor.DelimiterType := dtSetTerm;
+
+                  Processor.AfterExecute := ProcessorEvents.DoAfterExecute;
+                  Processor.BeforeExecute := ProcessorEvents.DoBeforeExecute;
+
+                  for i := 0 to Pred(ScriptParts.Count) do
+                  begin
+                    Processor.Clear;
+                    Processor.Delimiter := String(ScriptParts[i].Delimiter);
+                    Processor.Script.Text := String(ScriptParts[i].Script);
+
+                    if Assigned(aProgressBarCurrent) then
+                    begin
+                      Processor.Parse;
+                      InitializeProgress(aProgressBarCurrent,nil,Processor.StatementCount);
+                    end;
+
+                    Processor.Execute;
+
+                    if Assigned(aLabelOverallDescription) and Assigned(aLabelOverallValue) then
+                      SetLabelDescriptionValue(aLabelOverallDescription,aLabelOverallValue,AnsiString(IntToStr(Succ(i)) + ' / ' + IntToStr(ScriptParts.Count)));
+                    if Assigned(aProgressBarOverall) then
+                      aProgressBarOverall.StepIt;
+                  end;
+
+                  ShowOnLog('§ Execução do script ' + AnsiString(SearchRec.Name) + ' finalizada!',aRichEdit);
+                finally
+                  if Assigned(ProcessorEvents) then
+                    ProcessorEvents.Free;
+                  if Assigned(Processor) then
+                    Processor.Free;
+                end;
+              end;
+            end
+            else
+              raise Exception.Create('O arquivo selecionado não contém um script válido!');
+          finally
+            if Assigned(ScriptParts) then
+              ScriptParts.Free;
+
+            ShowOnLog('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~',aRichEdit);
           end;
-
-          if Assigned(aRichEdit) then
-            ShowOnLog('§ Execução do script finalizada!',aRichEdit);
-        finally
-          if Assigned(ProcessorEvents) then
-            ProcessorEvents.Free;
-          if Assigned(Processor) then
-            Processor.Free;
-        end;
-      end;
-    end
-    else
-      raise Exception.Create('O arquivo selecionado não contém um script válido!');
-  finally
-    if Assigned(ScriptParts) then
-      ScriptParts.Free
-  end;
-  { Para cada arquivo. Fim }
-
+        { ==================================================================== }
+      until FindNext(SearchRec) <> 0;
+    finally
+      FindClose(SearchRec);
+    end;
 end;
 
 //procedure TNewGlobals.ExecuteSQLScript(theConnection: TZConnection; FileName: TFileName; Script: AnsiString = '');
@@ -3958,7 +3971,7 @@ begin
 
             if Assigned(aRichEdit) then
             begin
-	            ShowOnLog('§ ' + AnsiString(IntToStr(StatementCount)) + ' parte(s) detectada(s). Iniciando a carga do objeto de manipulação do script...',aRichEdit);
+	            ShowOnLog('§ ' + AnsiString(IntToStr(StatementCount)) + ' parte(s) detectada(s). Selecionando blocos executáveis...',aRichEdit);
             end;
 
             for i := 0 to Pred(StatementCount) do
@@ -3986,7 +3999,7 @@ begin
             end;
 
             if Assigned(aRichEdit) then
-	            ShowOnLog(AnsiString('§ O objeto de manipulação do script foi carregado com ' + IntToStr(aScriptParts.Count) + ' bloco(s)!'),aRichEdit);
+	            ShowOnLog(AnsiString('§ O objeto de manipulação do script foi carregado com ' + IntToStr(aScriptParts.Count) + ' blocos executáveis!'),aRichEdit);
 
         end;
     finally
