@@ -40,7 +40,7 @@ type
     Label5: TLabel;
     Label6: TLabel;
     ButtonStop1: TButton;
-    ButtonStop2: TButton;
+    Button_SalvarArquivoDeDados: TButton;
     ButtonStop3: TButton;
     Action1: TAction;
     ActionChecarChavesEstrangeiras: TAction;
@@ -60,6 +60,7 @@ type
     Action_TesteDeTamanhoDeConteudo: TAction;
     Button_ContinuarSincronizacaoCompleta: TButton;
     TabSheet_SincronizacaoDeCache: TTabSheet;
+    Button_CarregarArquivoDeDados: TButton;
     procedure TimerGetTemporaryDataTimer(Sender: TObject);
     procedure ActionObterDadosTemporariosEmCasoDeErroExecute(Sender: TObject);
     procedure ActionChecarChavesEstrangeirasExecute(Sender: TObject);
@@ -86,6 +87,8 @@ type
     procedure FTPClientProgress64(Sender: TObject; Count: Int64;
       var Abort: Boolean);
     procedure Button_ContinuarSincronizacaoCompletaClick(Sender: TObject);
+    procedure Button_CarregarArquivoDeDadosClick(Sender: TObject);
+    procedure Button_SalvarArquivoDeDadosClick(Sender: TObject);
   private
     { Private declarations }
     DataBaseConnection: TZConnection;
@@ -239,7 +242,8 @@ begin
                                    ,TempBusy
                                    ,RichEditLog
                                    ,DoZlibNotification
-                                   ,False);
+                                   ,False
+                                   ,nil);
 			end;
 		except
 			on E: Exception do
@@ -443,6 +447,8 @@ begin
     	SincronizarC_A.Enabled := not FBusy;
     	MakeSnapshot_A.Enabled := not FBusy;
       Button_ContinuarSincronizacaoCompleta.Enabled := not Busy;
+      Button_CarregarArquivoDeDados.Enabled := not FBusy;
+      Button_SalvarArquivoDeDados.Enabled := not FBusy;
 
     	GroupBox1.Enabled := not FBusy;
   	end;
@@ -465,6 +471,11 @@ begin
 	CanClose := not FTPClient.Connected;
     if not CanClose then
   		MessageBox(Handle,'Por favor aguarde até o final do processamento atual. O processo atual terminará quando o programa desconectar do servidor. Isto acontece quando o comando QUIT aparecer no log de ações','Operação em andamento,aguarde...',MB_ICONWARNING);
+end;
+
+procedure TFSCForm_Main.Button_CarregarArquivoDeDadosClick(Sender: TObject);
+begin
+  { Copia o arquivo SERVER_DATABASE.DAT no diretório corret }
 end;
 
 procedure TFSCForm_Main.Button_ContinuarSincronizacaoCompletaClick(Sender: TObject);
@@ -501,7 +512,8 @@ begin
                                    ,TempBusy
                                    ,RichEditLog
                                    ,DoZlibNotification
-                                   ,True);
+                                   ,True
+                                   ,SincronizarD_AClick);
 			end;
 		except
 			on E: Exception do
@@ -515,6 +527,11 @@ begin
     if not WillGetTempData then
 		  Busy := False;
 	end;
+end;
+
+procedure TFSCForm_Main.Button_SalvarArquivoDeDadosClick(Sender: TObject);
+begin
+  { Salva o arquivo SERVER_DATABASE.DAT em um diretório correto }
 end;
 
 procedure TFSCForm_Main.Action1Execute(Sender: TObject);

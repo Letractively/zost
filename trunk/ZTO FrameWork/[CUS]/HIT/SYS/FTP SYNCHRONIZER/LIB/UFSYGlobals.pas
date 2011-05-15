@@ -22,12 +22,9 @@ TScriptParts
 interface
 
 uses
-    Windows, Classes, SysUtils, StdCtrls, ComCtrls,
-
-	UFSYSyncStructures, USyncStructures, UXXXTypesConstantsAndClasses,
-    UFSYTypesConstantsAndClasses,
-
-    ZDataSet, ZConnection, ZSQLProcessor, OverbyteIcsFtpSrv, OverbyteIcsFtpCli;
+  Windows, Classes, SysUtils, StdCtrls, ComCtrls, UFSYSyncStructures,
+  USyncStructures, UXXXTypesConstantsAndClasses, UFSYTypesConstantsAndClasses,
+  ZDataSet, ZConnection, ZSQLProcessor, OverbyteIcsFtpSrv, OverbyteIcsFtpCli;
 
 type
 	//PZConnection = ^TZConnection;
@@ -106,7 +103,8 @@ type
                                   var aBusy: Boolean;
                                       aRichEdit: TRichEdit;
                                       aOnZLibNotification: TZLibNotification;
-                                      aResume: Boolean);
+                                      aResume: Boolean;
+                                      aDeltaSynchronization: TNotifyEvent);
     	procedure TakeSnapshot(    aFTPClient: TFtpClient;
                                    aZConnection: TZConnection;
                                    aMode: Byte;
@@ -5106,7 +5104,8 @@ procedure TFSYGlobals.SynchronizeFull(    aFTPClient: TFtpClient;
                                       var aBusy: Boolean;
                                           aRichEdit: TRichEdit;
                                           aOnZLibNotification: TZLibNotification;
-                                          aResume: Boolean);
+                                          aResume: Boolean;
+                                          aDeltaSynchronization: TNotifyEvent);
 
 //function RawByteStringReplace(const S, OldPattern, NewPattern: AnsiString; Flags: TReplaceFlags): AnsiString;
 //var
@@ -5224,13 +5223,22 @@ begin
         end;
 
         { Se nosso banco de dados local for exatamente igual ao do servidor ... }
-        if DatabaseCheckSumCompare(aFTPClient,aZConnection,aProgressBar,aLabelPercentDone,aRichEdit,nil) then
+        if aResume or DatabaseCheckSumCompare(aFTPClient,aZConnection,aProgressBar,aLabelPercentDone,aRichEdit,nil) then
         begin
           ClearDeltaAndSaveLastSyncDateTime(aFTPClient,aZConnection,aProgressBar,aLabelPercentDone,True,aRichEdit);
           ShowOnLog('§ A data e a hora da sincronização foram salvas e o delta local foi limpo',aRichEdit);
           ShowOnLog('§ Desconectando...',aRichEdit);
           ConfirmEverything(aFTPClient,aZConnection,aProgressBar,aLabelPercentDone,False,aRichEdit);
-          MessageBox(Application.Handle,'A data e a hora da sincronização foram salvas e o delta local foi limpo. Agora, o banco de dados local e o banco de dados remoto são idênticos.','Sincronização concluídca com sucesso!',MB_ICONINFORMATION);
+
+          if aResume then
+          begin
+            Application.MessageBox('A data e a hora da sincronização foram salvas e o delta local foi limpo','Sincronização concluídca com sucesso!',MB_ICONINFORMATION);
+            if Application.MessageBox('Como esta sincronização foi continuada a partir de um arquivo local, não há garantias de que o seu banco de dados seja idêntico ao do servidor. Por favor, realize uma sincronização por diferenças para certificar-se da integridade do seu banco de dados. Deseja realizar uma sincronização por diferenças agora?','O que deseja fazer?',MB_ICONQUESTION or MB_YESNO) = IDYES then
+              if Assigned(aDeltaSynchronization) then
+                aDeltaSynchronization(nil);
+          end
+          else
+            Application.MessageBox('A data e a hora da sincronização foram salvas e o delta local foi limpo. Agora, o banco de dados local e o banco de dados remoto são idênticos.','Sincronização concluídca com sucesso!',MB_ICONINFORMATION);
         end
         else
           raise Exception.Create('Ainda existem diferenças entre o banco de dados local e o remoto. A sincronização falhou');
