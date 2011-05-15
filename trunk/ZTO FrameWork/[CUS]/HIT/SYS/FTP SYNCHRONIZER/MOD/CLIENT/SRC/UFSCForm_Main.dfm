@@ -371,6 +371,7 @@ object FSCForm_Main: TFSCForm_Main
     Height = 26
     AutoSize = True
     BevelOuter = bvNone
+    ParentBackground = False
     TabOrder = 3
     Visible = False
     object LabelInstrucoes: TLabel

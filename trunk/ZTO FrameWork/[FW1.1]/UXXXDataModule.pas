@@ -326,7 +326,7 @@ uses
     UXXXForm_TextsManager, {$IFDEF CURRENCY_CONVERT_MANAGER}UXXXForm_CurrencyConvertManager,{$ENDIF}
     { COMPONENTES }
     ZSQLProcessor, ZScriptParser, DCPsha512, DCPsha256, DCPsha1, DCPripemd160,
-    DCPripemd128, DCPmd5, DCPmd4, DCPhaval, DCPtiger, DCPcrypt2, ZSqlUpdate;
+    DCPripemd128, DCPmd5, DCPmd4, DCPhaval, DCPtiger, DCPcrypt2, ZSqlUpdate, AnsiStrings;
 
 {$R *.dfm}
 
@@ -3989,17 +3989,15 @@ end;
 class function TXXXDataModule.Hex(aAscii: AnsiString): AnsiString;
 var
 	i, StrLength: Cardinal;
-  ConvertedStr: AnsiString;
 begin
 	Result := '';
-  ConvertedStr := '';
 
  	StrLength := Length(aAscii);
+
   if StrLength > 0 then
   begin
     for i := 1 to StrLength do
-   		ConvertedStr := ConvertedStr + AnsiString(UpperCase(IntToHex(Ord(String(aAscii[i])),2)));
-    Result := ConvertedStr;
+   		Result := Result + AnsiString(UpperCase(IntToHex(Ord(aAscii[i]),2)));
   end;
 end;
 
