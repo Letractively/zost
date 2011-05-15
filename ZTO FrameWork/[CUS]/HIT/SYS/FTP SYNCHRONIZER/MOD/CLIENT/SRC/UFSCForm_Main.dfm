@@ -55,7 +55,7 @@ object FSCForm_Main: TFSCForm_Main
     Top = 25
     Width = 843
     Height = 172
-    ActivePage = TabSheet2
+    ActivePage = TabSheet1
     TabOrder = 1
     OnChanging = PageControl1Changing
     object TabSheet1: TTabSheet
@@ -185,9 +185,9 @@ object FSCForm_Main: TFSCForm_Main
         BevelInner = bvLowered
         TabOrder = 0
         object SincronizarC_A: TButton
-          Left = 9
-          Top = 18
-          Width = 435
+          Left = 5
+          Top = 5
+          Width = 405
           Height = 25
           Caption = 
             'Clique aqui para sincronizar o banco dedados local com o banco d' +
@@ -195,25 +195,34 @@ object FSCForm_Main: TFSCForm_Main
           TabOrder = 0
           OnClick = SincronizarC_AClick
         end
-        object ButtonStop2: TButton
-          Left = 726
+        object Button_SalvarArquivoDeDados: TButton
+          Left = 413
           Top = 32
-          Width = 92
+          Width = 405
           Height = 25
-          Caption = 'Interromper'
+          Caption = 'Exportar arquivo de dados'
           TabOrder = 1
-          Visible = False
+          OnClick = Button_SalvarArquivoDeDadosClick
         end
         object Button_ContinuarSincronizacaoCompleta: TButton
-          Left = 450
-          Top = 18
-          Width = 360
+          Left = 413
+          Top = 5
+          Width = 405
           Height = 25
           Caption = 
             'Clique aqui para continuar uma sincroniza'#231#227'o completa interrompi' +
             'da'
           TabOrder = 2
           OnClick = Button_ContinuarSincronizacaoCompletaClick
+        end
+        object Button_CarregarArquivoDeDados: TButton
+          Left = 5
+          Top = 32
+          Width = 405
+          Height = 25
+          Caption = 'Importar arquivo de dados'
+          TabOrder = 3
+          OnClick = Button_CarregarArquivoDeDadosClick
         end
       end
     end
