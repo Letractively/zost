@@ -101,7 +101,7 @@
 						<VersionInfo Name="MajorVer">4</VersionInfo>
 						<VersionInfo Name="MinorVer">0</VersionInfo>
 						<VersionInfo Name="Release">1</VersionInfo>
-						<VersionInfo Name="Build">7</VersionInfo>
+						<VersionInfo Name="Build">104</VersionInfo>
 						<VersionInfo Name="Debug">False</VersionInfo>
 						<VersionInfo Name="PreRelease">False</VersionInfo>
 						<VersionInfo Name="Special">False</VersionInfo>
@@ -111,7 +111,7 @@
 						<VersionInfo Name="CodePage">1252</VersionInfo>
 					</VersionInfo>
 					<VersionInfoKeys>
-						<VersionInfoKeys Name="FileVersion">4.0.1.7</VersionInfoKeys>
+						<VersionInfoKeys Name="FileVersion">4.0.1.104</VersionInfoKeys>
 						<VersionInfoKeys Name="ProductVersion">4.0</VersionInfoKeys>
 						<VersionInfoKeys Name="CompanyName">Hitachi Ar Condicionado do Brasil Ltda.</VersionInfoKeys>
 						<VersionInfoKeys Name="FileDescription">Servidor de sincronização via FTP</VersionInfoKeys>

@@ -3913,10 +3913,11 @@ end;
 class procedure TFSYGlobals.SetLabelDescriptionValue(const aLabelDescription, aLabelValue: TLabel; const aValue: AnsiString; const aSpacing: Byte = 2);
 begin
 	aLabelValue.Alignment := taRightJustify;
-    aLabelValue.Caption := String(aValue);
-//    aLabelValue.Top := aLabelDescription.Top;
-  //  aLabelValue.Left := aLabelDescription.Left + aLabelDescription.Width - aLabelValue.Width;
-    aLabelDescription.Width := aLabelValue.Left - aLabelDescription.Left - aSpacing;
+  aLabelValue.Caption := String(aValue);
+  aLabelDescription.Width := aLabelValue.Left - aLabelDescription.Left - aSpacing;
+
+  aLabelDescription.Update;
+  aLabelValue.Update;
 end;
 
 procedure TFSYGlobals.SplitSQLScript(const aZConnection: TZConnection; aRichEdit: TRichEdit; var aScriptParts: TScriptParts; const aSQLScriptFile: TFileName = ''; const aSQLScriptText: AnsiString = ''; const aForeignKeysCheck: Boolean = True);
@@ -5233,7 +5234,7 @@ begin
           if aResume then
           begin
             Application.MessageBox('A data e a hora da sincronização foram salvas e o delta local foi limpo','Sincronização concluídca com sucesso!',MB_ICONINFORMATION);
-            if Application.MessageBox('Como esta sincronização foi continuada a partir de um arquivo local, não há garantias de que o seu banco de dados seja idêntico ao do servidor. Por favor, realize uma sincronização por diferenças para certificar-se da integridade do seu banco de dados. Deseja realizar uma sincronização por diferenças agora?','O que deseja fazer?',MB_ICONQUESTION or MB_YESNO) = IDYES then
+            if Application.MessageBox('Como esta sincronização foi continuada a partir de um arquivo local, não há garantias de que o seu banco de dados seja idêntico ao do servidor. Por favor' + ', realize uma sincronização por diferenças para certificar-se da integridade do seu banco de dados. Deseja realizar uma sincronização por diferenças agora?','O que deseja fazer?',MB_ICONQUESTION or MB_YESNO) = IDYES then
               if Assigned(aDeltaSynchronization) then
                 aDeltaSynchronization(nil);
           end

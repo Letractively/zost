@@ -50,6 +50,15 @@ object FSCForm_Main: TFSCForm_Main
     Font.Style = [fsBold]
     ParentFont = False
   end
+  object ProgressBar1: TProgressBar
+    Left = 3
+    Top = 425
+    Width = 662
+    Height = 25
+    Anchors = [akLeft, akRight, akBottom]
+    Step = 1
+    TabOrder = 4
+  end
   object PageControl1: TPageControl
     Left = 0
     Top = 25
@@ -353,15 +362,6 @@ object FSCForm_Main: TFSCForm_Main
     ScrollBars = ssVertical
     TabOrder = 2
     WordWrap = False
-  end
-  object ProgressBar1: TProgressBar
-    Left = 3
-    Top = 425
-    Width = 662
-    Height = 25
-    Anchors = [akLeft, akRight, akBottom]
-    Step = 1
-    TabOrder = 4
   end
   object SalvarLog: TButton
     Left = 736
