@@ -1,0 +1,80 @@
+<BR>
+<CENTER>
+<SCRIPT language=JavaScript>
+<!-- 
+   function Gerar(){
+     document.form.codigo.value= ("<Script Language=\"JavaScript1.2\">\n<!--\nif (document.all)\ndocument.body.onmousedown=new Function\(\"if (event.button==2||event.button==3)alert\(\'"+document.form.mensagem.value+"\'\)\"\)\;\n\/\/ -->\n\<\/SCRIPT\>")
+     
+}
+//-->
+</SCRIPT>
+
+<SCRIPT language=JavaScript>
+<!--
+  function Selecionar(){
+     document.form.codigo.focus();
+     document.form.codigo.select();
+}
+//-->
+</SCRIPT>
+
+<SCRIPT language=JavaScript>
+<!--
+   function Limpar(){
+     document.form.codigo.value= " ";
+}
+//-->
+</SCRIPT>
+
+<TABLE cellSpacing=1 cellPadding=1 width="100%" bgColor=green border=0>
+  <TBODY>
+  <TR>
+    <TD align=middle bgColor=#C0C0C0><B><FONT face=verdana 
+      size=3>Protegendo sua página contra o botão direito</FONT></b> </TD></TR>
+  <TR>
+    <TD align=middle bgColor=white><BR>
+      <TABLE cellSpacing=0 cellPadding=0 width="95%" border=0>
+        <TBODY>
+        <TR>
+          <TD>
+            <DIV align=justify><font face="Verdana" size="2">Este Assistente gera o código que exibirá uma 
+            mensagem quando o visitante clicar em sua página com o botão 
+            direito. Ideal para proteger suas imagens de cópia. Observe que este 
+            código usa JavaScript 1.2 e só funciona com versões a partir do 
+            Internet Explorer 4.</font><BR></DIV></TD></TR>
+        <TR>
+          <TD>
+            <DIV align=center><FONT size=3><B><FONT color=#ffffff>Gerar 
+            Código</FONT></b></FONT><BR><font face="Verdana" size="2">Para gerar o código, escreva a mensagem 
+            que deverá ser exibida quando o botão direito for 
+          pressionado:</font></DIV></TD></TR>
+        <TR>
+          <TD vAlign=top>
+            <DIV align=center>
+            <FORM name=form action="" method=post>
+            <TABLE cellSpacing=5 cellPadding=0 width="100%" border=0>
+              <TBODY>
+              <TR>
+                <TD align=right width="50%"><font face="Verdana" size="2">Escreva aqui a sua mensagem:</font></TD>
+                <TD>
+                <INPUT size=45 value="Este recurso foi desativado!" name=mensagem> </TD></TR>
+              <TR>
+                <TD align=right width="50%"><font face="Verdana" size="2">Para gerar o código clique ao 
+                lado:</font></TD>
+                <TD><INPUT onclick=Gerar() type=button value="Gerar Código" name=Button10> 
+                  <INPUT type=hidden value='<script language="JavaScript1.2">' name=abertura> 
+                  <INPUT type=hidden value="</script>" name=fechar> 
+                </TD></TR>
+              <TR>
+                <TD vAlign=top align=right width="50%">
+                <font face="Verdana" size="2">Aqui está o seu código. 
+                  Copie e cole entre o &lt;BODY&gt; &lt;/BODY&gt; de sua 
+                página.</font></TD>
+                <TD><TEXTAREA name=codigo rows=6 cols=44></TEXTAREA> 
+<INPUT onclick="window.form.codigo.select();therange=window.form.codigo.createTextRange();therange.execCommand('Copy');" type=button value="Selecionar e Copiar"> 
+                </TD></TR>
+              <TR>
+                <TD align=middle colSpan=2><font face="Verdana" size="2">
+                <INPUT onclick=Limpar() type=button value="Limpar Código" name=Limpar1>
+                <input type=button value="Fechar Janela" name=fechar onclick="window.close()"></font>&nbsp; 
+                </TD></TR></TBODY></TABLE></FORM></DIV></TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE> </CENTER></body></HTML>
