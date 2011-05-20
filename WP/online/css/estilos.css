@@ -1,43 +1,43 @@
 body {
   text-align: center;
   margin: 0px;
-  background-image: url("../img/fundocabecalho.png");
   background-repeat: repeat-x;
+
 }
 
 div.site {
   margin: 0px auto 0px auto;
-  width: 800px;
+  width: 100%;
 }
 
 div.cabecalho {
-  height: 120px;
-  background-image: url("../img/fundocabecalho.png");
+  height: 50px;
   background-repeat: repeat-x;
   text-align: center;
 }
-                                                     
+
 div.menu {
   height: 41px;
-  background-image: url("../img/fundocabecalho.png");
   background-repeat: repeat-x;
   background-position: 0px -120px;
 }
 
 div.propagandas {
-  height: 110px;
-  background-image: url("../img/fundocabecalho.png");
+  height: 50px;
+  background-image: url("../img/azul_wbarra.png");
   background-repeat: repeat-x;
-  background-position: bottom;
+  background-position: botton;
+  margin: 0px auto 0px auto;
+
 }
 
 div.conteudo {
-   
 }
 
 div.rodape {
-  height: 50px;
-  background-color: gray;
+ /* height: 50px;
+  background-color: gray;*/
+
 }
 p {
   text-align: justify;
