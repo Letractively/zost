@@ -359,9 +359,9 @@
 						<VersionInfo Name="IncludeVerInfo">True</VersionInfo>
 						<VersionInfo Name="AutoIncBuild">True</VersionInfo>
 						<VersionInfo Name="MajorVer">3</VersionInfo>
-						<VersionInfo Name="MinorVer">1</VersionInfo>
-						<VersionInfo Name="Release">4</VersionInfo>
-						<VersionInfo Name="Build">179</VersionInfo>
+						<VersionInfo Name="MinorVer">2</VersionInfo>
+						<VersionInfo Name="Release">1</VersionInfo>
+						<VersionInfo Name="Build">8</VersionInfo>
 						<VersionInfo Name="Debug">False</VersionInfo>
 						<VersionInfo Name="PreRelease">False</VersionInfo>
 						<VersionInfo Name="Special">False</VersionInfo>
@@ -373,7 +373,7 @@
 					<VersionInfoKeys>
 						<VersionInfoKeys Name="CompanyName">Hitachi Ar Condicionado do Brasil Ltda.</VersionInfoKeys>
 						<VersionInfoKeys Name="FileDescription">Módulo principal do sistema Banco de Obras</VersionInfoKeys>
-						<VersionInfoKeys Name="FileVersion">3.1.4.179</VersionInfoKeys>
+						<VersionInfoKeys Name="FileVersion">3.2.1.8</VersionInfoKeys>
 						<VersionInfoKeys Name="InternalName">BDO</VersionInfoKeys>
 						<VersionInfoKeys Name="LegalCopyright">Copyright Carlos Barreto Feitoza Filho &amp; Hitachi Ar Condicionado do Brasil Ltda.</VersionInfoKeys>
 						<VersionInfoKeys Name="LegalTrademarks"/>

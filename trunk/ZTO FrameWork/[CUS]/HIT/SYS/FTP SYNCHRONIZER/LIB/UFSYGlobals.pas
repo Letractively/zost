@@ -2135,18 +2135,6 @@ var
   CurrentLine: AnsiString;
   SearchRec: TSearchRec;
 begin
-  if Trim(aSQLScriptFile) <> '' then
-  begin
-    if not FileExists(aSQLScriptFile) then
-      raise Exception.Create('O arquivo especificado não existe fisicamente');
-
-    ScriptFileName := aSQLScriptFile;
-  end
-  else if Trim(String(aSQLScriptText)) = '' then
-    raise Exception.Create('Nenhum arquivo ou texto de script foi informado')
-  else
-    ScriptFileName := FCurrentDir + 'TEMP\SCRIPTFILE000000.SQL';
-
   { Diretório para arquivos temporários }
   if not DirectoryExists(FCurrentDir + 'TEMP') then
     CreateDir(FCurrentDir + 'TEMP');
@@ -2154,8 +2142,22 @@ begin
   { Limpa o diretório temporário }
   ClearDirectory(AnsiString(FCurrentDir + 'TEMP'));
 
-  { Aqui, ScriptFileName contém o nome do script inicial que será dividido }
+  if Trim(aSQLScriptFile) <> '' then
+  begin
+    if not FileExists(aSQLScriptFile) then
+      raise Exception.Create('O arquivo de script especificado não existe');
 
+    ScriptFileName := aSQLScriptFile;
+  end
+  else if AnsiStrings.Trim(aSQLScriptText) <> '' then
+  begin
+    ScriptFileName := FCurrentDir + 'TEMP\SCRIPTFILE000000.SQL';
+    SaveTextFile(AnsiStrings.Trim(aSQLScriptText),ScriptFileName);
+  end
+  else
+    raise Exception.Create('Nenhum arquivo ou texto de script foi informado');
+
+  { Aqui, ScriptFileName contém o nome do script inicial que será dividido }
   FileNumber := 0;
   try
     ShowOnLog('§ Iniciando o particionamento do script. Favor queira aguardar...',aRichEdit);

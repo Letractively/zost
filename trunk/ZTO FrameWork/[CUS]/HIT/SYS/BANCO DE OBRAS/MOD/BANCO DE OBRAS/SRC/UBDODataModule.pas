@@ -35,22 +35,22 @@ type
         procedure ExibirInformacoesDoEquipamento(const aMes, aAno, aEquipamento, aVoltagem: Cardinal);
 
         function SituacaoJustificavel(const aTI_SITUACOES_ID: Byte): Boolean;
-        function SimboloMonetario(const aCodigo: Byte): ShortString;
-        function CodigoDaProposta(const aIN_PROPOSTAS_ID: Cardinal): ShortString;
-        function ValorDaProposta(const aIN_PROPOSTAS_ID: Cardinal; aSubTotal, aAutoDetectarCotacoes: Boolean; const aCotacoes: ShortString): Currency;
+        function SimboloMonetario(const aCodigo: Byte): AnsiString;
+        function CodigoDaProposta(const aIN_PROPOSTAS_ID: Cardinal): AnsiString;
+        function ValorDaProposta(const aIN_PROPOSTAS_ID: Cardinal; aSubTotal, aAutoDetectarCotacoes: Boolean; const aCotacoes: AnsiString): Currency;
 //        function ReajusteDaProposta(const aIN_PROPOSTAS_ID: Cardinal): Double;
-        function ValorDaObra(const aIN_OBRAS_ID: Cardinal; aAutoDetectarCotacoes: Boolean; const aCotacoes: ShortString): Currency;
+        function ValorDaObra(const aIN_OBRAS_ID: Cardinal; aAutoDetectarCotacoes: Boolean; const aCotacoes: AnsiString): Currency;
         function QuantidadeDePropostas(const aIN_OBRAS_ID: Cardinal): Byte;
         function PropostaPadrao(const aIN_OBRAS_ID: Cardinal): Cardinal;
         function RegiaoDaProposta(const aIN_PROPOSTAS_ID: Cardinal): Byte;
         function SituacaoDaProposta(const aIN_PROPOSTAS_ID: Cardinal): Byte;
         function SituacaoDaObra(const aIN_OBRAS_ID: Cardinal): Byte;
         function RegioesDoUsuario(const aSM_USUARIOS_ID: Word): TBytesArray;
-        function Equipamento(const aIN_EQUIPAMENTOS_ID: Cardinal): ShortString;
+        function Equipamento(const aIN_EQUIPAMENTOS_ID: Cardinal): AnsiString;
     	//procedure AddAllUniqueIndexes(aProgressBar: TProgressBar; aLabelPercentDone: TLabel);
     	//procedure DropAllUniqueIndexes(aProgressBar: TProgressBar; aLabelPercentDone: TLabel);
         function ShowAutoSyncForm(const aDescription: String): TModalResult;
-        //function DatabaseCheckSum(const aZConnection: TZConnection): ShortString;
+        //function DatabaseCheckSum(const aZConnection: TZConnection): AnsiString;
         procedure LoadGeneralConfigurations(const aZConnection: TZConnection; aForm: TForm; const aPagesToShow: TPagesToShow; const aBasicConfigurations: TXXXConfigurations); override;
         procedure SaveGeneralConfigurations(const aZConnection: TZConnection; aForm: TForm; const aPagesToShow: TPagesToShow; const aBasicConfigurations: TXXXConfigurations); override;
     public
@@ -58,10 +58,10 @@ type
         procedure ExibirExportadorImportador;
         function ObraDaProposta(const aIN_PROPOSTA_ID: Cardinal): Cardinal;
         function RegiaoPermitidaParaOUsuario(const aSM_USUARIOS_ID: Word; const aTI_REGIOES_ID: Byte): Boolean;
-		function ReplaceSystemObjectNames(const aText: String): String; override;
+		function ReplaceSystemObjectNames(const aText: AnsiString): AnsiString; override;
 		procedure ReplaceSystemObjectNames(const aZQuery: TZQuery); override;
         function SHBrowseForObject(const aOwner: TComponent;
-                                   const aDialogTitle: ShortString;
+                                   const aDialogTitle: AnsiString;
                                    const aDialogText: String;
                                      out aSelection: String): Boolean;
         function EhRichText(const aText: String): Boolean;
@@ -71,7 +71,7 @@ implementation
 
 uses
 	{ VCL }
-    DBCtrls,
+    DBCtrls, AnsiStrings,
     { FRAMEWORK }
     UXXXForm_ModuleTabbedTemplate, UXXXForm_DialogTemplate,
     { APLICAÇÃO }
@@ -256,13 +256,13 @@ begin
     end;
 end;
 
-function TBDODataModule.ReplaceSystemObjectNames(const aText: String): String;
+function TBDODataModule.ReplaceSystemObjectNames(const aText: AnsiString): AnsiString;
 begin
 	Result := inherited ReplaceSystemObjectNames(aText);
-    Result := StringReplace(Result,'X[RDU.' + DEFAULT_USERREGIONS_TABLENAME + ']X',TBDOConfigurations(Configurations).UserRegionsTableTableName,[rfReplaceAll,rfIgnoreCase]);
-    Result := StringReplace(Result,'X[RDU.' + DEFAULT_USERREGIONS_KEYFIELDNAME + ']X',TBDOConfigurations(Configurations).UserRegionsTableKeyFieldName,[rfReplaceAll,rfIgnoreCase]);
-    Result := StringReplace(Result,'X[RDU.' + DEFAULT_USERREGIONS_USERFIELDNAME + ']X',TBDOConfigurations(Configurations).UserRegionsTableUserFieldName,[rfReplaceAll,rfIgnoreCase]);
-    Result := StringReplace(Result,'X[RDU.' + DEFAULT_USERREGIONS_REGIONFIELDNAME + ']X',TBDOConfigurations(Configurations).UserRegionsTableRegionFieldName,[rfReplaceAll,rfIgnoreCase]);
+    Result := AnsiStrings.StringReplace(Result,'X[RDU.' + DEFAULT_USERREGIONS_TABLENAME + ']X',TBDOConfigurations(Configurations).UserRegionsTableTableName,[rfReplaceAll,rfIgnoreCase]);
+    Result := AnsiStrings.StringReplace(Result,'X[RDU.' + DEFAULT_USERREGIONS_KEYFIELDNAME + ']X',TBDOConfigurations(Configurations).UserRegionsTableKeyFieldName,[rfReplaceAll,rfIgnoreCase]);
+    Result := AnsiStrings.StringReplace(Result,'X[RDU.' + DEFAULT_USERREGIONS_USERFIELDNAME + ']X',TBDOConfigurations(Configurations).UserRegionsTableUserFieldName,[rfReplaceAll,rfIgnoreCase]);
+    Result := AnsiStrings.StringReplace(Result,'X[RDU.' + DEFAULT_USERREGIONS_REGIONFIELDNAME + ']X',TBDOConfigurations(Configurations).UserRegionsTableRegionFieldName,[rfReplaceAll,rfIgnoreCase]);
 end;
 
 procedure TBDODataModule.ReplaceSystemObjectNames(const aZQuery: TZQuery);
@@ -294,7 +294,7 @@ end;
 function TBDODataModule.ValorDaProposta(const aIN_PROPOSTAS_ID: Cardinal;
                                               aSubTotal
                                             , aAutoDetectarCotacoes: Boolean;
-                                        const aCotacoes: ShortString): Currency;
+                                        const aCotacoes: AnsiString): Currency;
 begin
 	Result := ExecuteDbFunction(DataModuleMain.ZConnections.ByName['ZConnection_BDO'].Connection
                                ,Format('FNC_GET_PROPOSAL_VALUE(%u,%s,%s,''%s'',2)' //2 = DUAS CASAS DECIMAIS EM CADA ITEM SOMADO
@@ -306,7 +306,7 @@ end;
 
 function TBDODataModule.ValorDaObra(const aIN_OBRAS_ID: Cardinal;
                                           aAutoDetectarCotacoes: Boolean;
-                                    const aCotacoes: ShortString): Currency;
+                                    const aCotacoes: AnsiString): Currency;
 begin
 	Result := ExecuteDbFunction(DataModuleMain.ZConnections.ByName['ZConnection_BDO'].Connection
                                ,Format('FNC_GET_WORK_VALUE(%u,%s,''%s'',2)' //2 = DUAS CASAS DECIMAIS EM CADA ITEM SOMADO
@@ -321,10 +321,10 @@ begin
                                ,Format('FNC_GET_PROPOSAL_COUNT(%u)',[aIN_OBRAS_ID])).AsDWord;
 end;
 
-function TBDODataModule.CodigoDaProposta(const aIN_PROPOSTAS_ID: Cardinal): ShortString;
+function TBDODataModule.CodigoDaProposta(const aIN_PROPOSTAS_ID: Cardinal): AnsiString;
 begin
 	Result := ExecuteDbFunction(DataModuleMain.ZConnections.ByName['ZConnection_BDO'].Connection
-                               ,Format('FNC_GET_PROPOSAL_CODE(%u)',[aIN_PROPOSTAS_ID])).AsString;
+                               ,Format('FNC_GET_PROPOSAL_CODE(%u)',[aIN_PROPOSTAS_ID])).AsAnsiString;
 end;
 
 
@@ -348,7 +348,7 @@ begin
 end;
 
 function TBDODataModule.SHBrowseForObject(const aOwner: TComponent;
-                                          const aDialogTitle: ShortString;
+                                          const aDialogTitle: AnsiString;
                                           const aDialogText: String;
                                             out aSelection: String): Boolean;
 var
@@ -376,7 +376,7 @@ begin
     end;
 end;
 
-//function TBDODataModule.DatabaseCheckSum(const aZConnection: TZConnection): ShortString;
+//function TBDODataModule.DatabaseCheckSum(const aZConnection: TZConnection): AnsiString;
 //begin
 //    Result := MySQLDatabaseCheckSum(aZConnection
 //                                   ,['DELTA' { ambos }
@@ -491,7 +491,7 @@ begin
 	Result := TXXXForm_DialogTemplate.CreateDialog(Owner,Form_AutoSync,TBDOForm_AutoSync,CreateParameters);
 end;
 
-function TBDODataModule.SimboloMonetario(const aCodigo: Byte): ShortString;
+function TBDODataModule.SimboloMonetario(const aCodigo: Byte): AnsiString;
 begin
     Result := CURRENCY_STRINGS[aCodigo];
 end;
@@ -741,7 +741,7 @@ begin
     Result := Pos('{\rtf1',aText) = 1;
 end;
 
-function TBDODataModule.Equipamento(const aIN_EQUIPAMENTOS_ID: Cardinal): ShortString;
+function TBDODataModule.Equipamento(const aIN_EQUIPAMENTOS_ID: Cardinal): AnsiString;
 var
 	Equipamentos: TZReadOnlyQuery;
 begin

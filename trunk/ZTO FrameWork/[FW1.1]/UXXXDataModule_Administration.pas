@@ -139,7 +139,7 @@ type
 	    procedure GiveFullUserPermission(const aAllow: Boolean);
     	procedure GiveFullGroupPermission(const aAllow: Boolean);
     protected
-        procedure SetRefreshSQL(const aZQuery: TZQuery; const aDBAction: TDBAction; out aRefreshSQL: String); override;
+        procedure SetRefreshSQL(const aZQuery: TZQuery; const aDBAction: TDBAction; out aRefreshSQL: AnsiString); override;
         procedure DoBeforePost(aDataSet: TDataSet); override;
         procedure DoBeforeDelete(aDataSet: TDataSet); override;
         procedure DoDataChange(aSender: TObject; aField: TField); override;
@@ -1183,7 +1183,7 @@ begin
     end;
 end;
 
-procedure TXXXDataModule_Administration.SetRefreshSQL(const aZQuery: TZQuery; const aDBAction: TDBAction; out aRefreshSQL: String);
+procedure TXXXDataModule_Administration.SetRefreshSQL(const aZQuery: TZQuery; const aDBAction: TDBAction; out aRefreshSQL: AnsiString);
 begin
     inherited;
     if aZQuery = ENTIDADESDOSISTEMA then

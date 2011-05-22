@@ -9,13 +9,13 @@ uses
   UBDODataModule, UXXXTypesConstantsAndClasses, _ActnList,
 
   ZSqlUpdate, ZAbstractRODataset, ZAbstractDataset, ZAbstractTable, ZDataset,
-  CFDBValidationChecks, DB, Menus, ActnPopup;
+  CFDBValidationChecks, DB, Menus, ActnPopup, PlatformDefaultStyleActnCtrls;
 
 type
   	TBDODataModule_Instaladores = class(TBDODataModule)
     	INSTALADORES: TZQuery;
-    	INSTALADORESSM_INSTALADORES_ID: TIntegerField;
-	    INSTALADORESVA_NOME: TStringField;
+    	INSTALADORESSM_INSTALADORES_ID: TSmallIntField;
+    INSTALADORESVA_NOME: TWideStringField;
     	UpdateSQL_INS: TZUpdateSQL;
     	DataSource_INS: TDataSource;
     	CFDBValidationChecks_INS: TCFDBValidationChecks;
@@ -31,7 +31,7 @@ type
   	private
     	{ Private declarations }
 	protected
-        procedure SetRefreshSQL(const aZQuery: TZQuery; const aDBAction: TDBAction; out aRefreshSQL: String); override;
+        procedure SetRefreshSQL(const aZQuery: TZQuery; const aDBAction: TDBAction; out aRefreshSQL: AnsiString); override;
         procedure DoBeforePost(aDataSet: TDataSet); override;
         procedure DoBeforeDelete(aDataSet: TDataSet); override;
 	public
@@ -132,7 +132,7 @@ begin
     LocateFirstRecord(INSTALADORES,TEdit(aLabeledEdit),'VA_NOME');
 end;
 
-procedure TBDODataModule_Instaladores.SetRefreshSQL(const aZQuery: TZQuery; const aDBAction: TDBAction; out aRefreshSQL: String);
+procedure TBDODataModule_Instaladores.SetRefreshSQL(const aZQuery: TZQuery; const aDBAction: TDBAction; out aRefreshSQL: AnsiString);
 begin
     inherited;
     case aDBAction of

@@ -31,7 +31,7 @@ type
   	private
     	{ Private declarations }
 	protected
-        procedure SetRefreshSQL(const aZQuery: TZQuery; const aDBAction: TDBAction; out aRefreshSQL: String); override;
+        procedure SetRefreshSQL(const aZQuery: TZQuery; const aDBAction: TDBAction; out aRefreshSQL: AnsiString); override;
         procedure DoBeforePost(aDataSet: TDataSet); override;
         procedure DoBeforeDelete(aDataSet: TDataSet); override;
         procedure DoDataChange(aSender: TObject; aField: TField); override;
@@ -127,7 +127,7 @@ begin
     end;
 end;
 
-procedure TBDODataModule_Projetistas.SetRefreshSQL(const aZQuery: TZQuery; const aDBAction: TDBAction; out aRefreshSQL: String);
+procedure TBDODataModule_Projetistas.SetRefreshSQL(const aZQuery: TZQuery; const aDBAction: TDBAction; out aRefreshSQL: AnsiString);
 begin
     inherited;
     case aDBAction of

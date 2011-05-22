@@ -35,13 +35,13 @@ type
         procedure DoDestroyAvailableRegions(aSender: TObject);
     protected
         { Protected declarations }
-        procedure SetRefreshSQL(const aZQuery: TZQuery; const aDBAction: TDBAction; out aRefreshSQL: String); override;
+        procedure SetRefreshSQL(const aZQuery: TZQuery; const aDBAction: TDBAction; out aRefreshSQL: AnsiString); override;
         procedure DoBeforePost(aDataSet: TDataSet); override;
         procedure DoBeforeDelete(aDataSet: TDataSet); override;
         procedure DoDataChange(aSender: TObject; aField: TField); override;
-		function ReplaceSystemObjectNames(const aText: String): String; override;
+		function ReplaceSystemObjectNames(const aText: AnsiString): AnsiString; override;
 		procedure ReplaceSystemObjectNames(const aZQuery: TZQuery); override;
-        function IsSystemTable(const aTableName: String): Boolean; override;
+        function IsSystemTable(const aTableName: AnsiString): Boolean; override;
     public
     	{ Public declarations }
     end;
@@ -65,7 +65,7 @@ end;
 dos usuarios é uma tabela colocada na aplicação (não no frame) será necessário
 incluir substituições para ela? Se isso for um padrão para o módulo de
 permissões, então devemos deixar... }
-function TBDODataModule_Administration.ReplaceSystemObjectNames(const aText: String): String;
+function TBDODataModule_Administration.ReplaceSystemObjectNames(const aText: AnsiString): AnsiString;
 begin
     Result := TBDODataModule_Main(DataModuleMain).ReplaceSystemObjectNames(aText);
 end;
@@ -75,7 +75,7 @@ begin
     TBDODataModule_Main(DataModuleMain).ReplaceSystemObjectNames(aZQuery);
 end;
 
-procedure TBDODataModule_Administration.SetRefreshSQL(const aZQuery: TZQuery; const aDBAction: TDBAction; out aRefreshSQL: String);
+procedure TBDODataModule_Administration.SetRefreshSQL(const aZQuery: TZQuery; const aDBAction: TDBAction; out aRefreshSQL: AnsiString);
 begin
     inherited;
     if aZQuery = REGIOESDOSUSUARIOS then
@@ -244,7 +244,7 @@ begin
     end;
 end;
 
-function TBDODataModule_Administration.IsSystemTable(const aTableName: String): Boolean;
+function TBDODataModule_Administration.IsSystemTable(const aTableName: AnsiString): Boolean;
 begin
     Result := (inherited IsSystemTable(aTableName)) or (aTableName = TBDOConfigurations(Configurations).UserRegionsTableTableName);
 end;

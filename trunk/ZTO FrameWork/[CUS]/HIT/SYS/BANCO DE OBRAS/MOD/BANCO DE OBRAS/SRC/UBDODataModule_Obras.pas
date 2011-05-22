@@ -244,9 +244,9 @@ type
         procedure CreateTemporaryTablePropostasSearch;
         procedure CreateTemporaryTableEquipamentosSearch;
         procedure DropTemporaryTables;
-        function OBR_SCH_WhereClause(const aOBRFilter: TOBRFilter): String;
-        function PRO_SCH_WhereClause(const aPROFilter: TPROFilter): String;
-        function EQP_SCH_WhereClause(const aEQPFilter: TEQPFilter): String;
+        function OBR_SCH_WhereClause(const aOBRFilter: TOBRFilter): AnsiString;
+        function PRO_SCH_WhereClause(const aPROFilter: TPROFilter): AnsiString;
+        function EQP_SCH_WhereClause(const aEQPFilter: TEQPFilter): AnsiString;
         function ObraExpirou(aTabelaExpiravel: TTabelaExpiravel; const aID: Cardinal): TDateTime;
         procedure ExchangePositions(const aItem1, aItem2: Cardinal);
         function GetNextItem(const aCurrentItem: Cardinal): Cardinal;
@@ -260,9 +260,9 @@ type
                                           out aUsuario: Integer;
                                           out aJustificativas: TBytesArray);
         procedure ExibirJustificativa(const aIN_OBRAS_ID: Cardinal);
-        function ClausulaWherePorPalavras(const aVA_NOMEDAOBRA: ShortString): String;
+        function ClausulaWherePorPalavras(const aVA_NOMEDAOBRA: AnsiString): String;
 	protected
-        procedure SetRefreshSQL(const aZQuery: TZQuery; const aDBAction: TDBAction; out aRefreshSQL: String); override;
+        procedure SetRefreshSQL(const aZQuery: TZQuery; const aDBAction: TDBAction; out aRefreshSQL: AnsiString); override;
         procedure DoNewRecord(aDataSet: TDataSet); override;
         procedure DoBeforeInsert(aDataSet: TDataSet); override;
         procedure DoBeforeEdit(aDataSet: TDataSet); override;
@@ -279,15 +279,15 @@ type
     	{ Public declarations }
         procedure ExibirJustificativa2(const aIN_OBRAS_ID: Cardinal);
         procedure ExibirComboDeSituacoes(const aSender: TObject);
-        procedure LocalizarEquipamento(const aEdit: TEdit; const aFieldName: ShortString);
+        procedure LocalizarEquipamento(const aEdit: TEdit; const aFieldName: AnsiString);
         procedure TogglePropostaPadrao;
         procedure DefinirPropostaPadrao(const aIN_OBRAS_ID: Cardinal);
         procedure OBR_SCH_UpdateMetrics(const aCFDBGrid: TCFDBGrid; const aOBRFilter: TOBRFilter);
         procedure PRO_SCH_UpdateMetrics(const aCFDBGrid: TCFDBGrid; const aPROFilter: TPROFilter);
         procedure EQP_SCH_UpdateMetrics(const aCFDBGrid: TCFDBGrid; const aEQPFilter: TEQPFilter);
-        procedure OBR_SCH_GotoPage(const aPageButton: TDBPageButton; aOBRFilter: TOBRFilter; const aOrderBy: ShortString; const aPage: Word = 0);
-        procedure PRO_SCH_GotoPage(const aPageButton: TDBPageButton; aPROFilter: TPROFilter; const aOrderBy: ShortString; const aPage: Word = 0);
-        procedure EQP_SCH_GotoPage(const aPageButton: TDBPageButton; aEQPFilter: TEQPFilter; const aOrderBy: ShortString; const aPage: Word = 0);
+        procedure OBR_SCH_GotoPage(const aPageButton: TDBPageButton; aOBRFilter: TOBRFilter; const aOrderBy: AnsiString; const aPage: Word = 0);
+        procedure PRO_SCH_GotoPage(const aPageButton: TDBPageButton; aPROFilter: TPROFilter; const aOrderBy: AnsiString; const aPage: Word = 0);
+        procedure EQP_SCH_GotoPage(const aPageButton: TDBPageButton; aEQPFilter: TEQPFilter; const aOrderBy: AnsiString; const aPage: Word = 0);
 	    procedure DBButtonClick_OBR(aDBButton: TDBButton; aComponentToFocusOnInsertAndEdit: TWinControl; aUseBookMark: Boolean = False);
         procedure DBButtonClick_OBR_SCH(aDBButton: TDBButton);
     	procedure DBButtonClick_PRO(aDBButton: TDBButton; aComponentToFocusOnInsertAndEdit: TWinControl; aUseBookMark: Boolean = False);
@@ -307,9 +307,9 @@ type
         procedure PRO_SCH_SelecionarObra;
         procedure EQP_SCH_SelecionarObra;
         procedure OBR_SCH_SEM_SelecionarObra(const aDataSet: TDataSet);
-        procedure OBR_SCH_Filtrar(const aOBRFilter: TOBRFilter; const aPageNo, aRecordsByPage: Word; const aOrderBy: ShortString = 'IN_OBRAS_ID');
-        procedure PRO_SCH_Filtrar(const aPROFilter: TPROFilter; const aPageNo, aRecordsByPage: Word; const aOrderBy: ShortString = 'IN_PROPOSTAS_ID');
-        procedure EQP_SCH_Filtrar(const aEQPFilter: TEQPFilter; const aPageNo, aRecordsByPage: Word; const aOrderBy: ShortString = 'IN_EQUIPAMENTOSDOSITENS_ID');
+        procedure OBR_SCH_Filtrar(const aOBRFilter: TOBRFilter; const aPageNo, aRecordsByPage: Word; const aOrderBy: AnsiString = 'IN_OBRAS_ID');
+        procedure PRO_SCH_Filtrar(const aPROFilter: TPROFilter; const aPageNo, aRecordsByPage: Word; const aOrderBy: AnsiString = 'IN_PROPOSTAS_ID');
+        procedure EQP_SCH_Filtrar(const aEQPFilter: TEQPFilter; const aPageNo, aRecordsByPage: Word; const aOrderBy: AnsiString = 'IN_EQUIPAMENTOSDOSITENS_ID');
 
         procedure AtualizarLabelDeDataDeExpiracao(const UsarRefresh: Boolean);
         procedure AdicionarJustificativas(const aIN_OBRAS_ID: Cardinal;
@@ -323,8 +323,8 @@ type
         procedure PreencherComProjetistas(const aItems: TStrings);
         procedure PreencherComInstaladores(const aItems: TStrings);
         procedure ObterJustificativas(const aItems: TStrings);
-        function ObrasSemelhantes(const aVA_NOMEDAOBRA: ShortString): Cardinal;
-        procedure ExibirObrasSemelhantes(const aVA_NOMEDAOBRA: ShortString);
+        function ObrasSemelhantes(const aVA_NOMEDAOBRA: AnsiString): Cardinal;
+        procedure ExibirObrasSemelhantes(const aVA_NOMEDAOBRA: AnsiString);
 
 
         property OBR_SCH_RecordsByPage: Word read FOBR_SCH_RecordsByPage write FOBR_SCH_RecordsByPage;
@@ -337,7 +337,7 @@ type
 
 implementation
 
-uses
+uses AnsiStrings,
     UXXXDataModule, UXXXForm_DialogTemplate,
     UBDOForm_JustificativaParaObra, UBDOForm_JustificativaSalva,
     UBDOForm_ObrasSemelhantes, ComCtrls, DateUtils;
@@ -459,13 +459,13 @@ end;
 procedure TBDODataModule_Obras.OBR_SCH_Filtrar(const aOBRFilter: TOBRFilter;
                                                const aPageNo
                                                    , aRecordsByPage: Word;
-                                               const aOrderBy: ShortString = 'IN_OBRAS_ID');
+                                               const aOrderBy: AnsiString = 'IN_OBRAS_ID');
 const
 	SQL_CLEAR = 'DELETE FROM OBRAS_SEARCH';
     SQL_INSERT = 'INSERT INTO OBRAS_SEARCH %s';
 var
-	WhereClause: String;
-    SQLFinal: String;
+	WhereClause: AnsiString;
+    SQLFinal: AnsiString;
 begin
     Screen.Cursor := crSQLWait;
     try
@@ -475,8 +475,8 @@ begin
         { MONTANDO A CLÁUSULA WHERE QUE SERÁ USADA PARA FILTRAR OS DADOS }
         WhereClause := OBR_SCH_WhereClause(aOBRFilter);
 
-        SQLFinal := Format(SQL_OBR_SEARCH_SELECT_FILTERED_RECORDS,[WhereClause,aOrderBy,GetRowOffsetByPageNo(aPageNo,aRecordsByPage),aRecordsByPage]);
-        SQLFinal := Format(SQL_INSERT,[SQLFinal]);
+        SQLFinal := AnsiStrings.Format(SQL_OBR_SEARCH_SELECT_FILTERED_RECORDS,[WhereClause,aOrderBy,GetRowOffsetByPageNo(aPageNo,aRecordsByPage),aRecordsByPage]);
+        SQLFinal := AnsiStrings.Format(SQL_INSERT,[SQLFinal]);
 
         { PREENCHENDO A TABELA TEMPORÁRIA APENAS COM OS DADOS FILTRADOS }
         ExecuteQuery(DataModuleMain.ZConnections.ByName['ZConnection_BDO'].Connection,SQLFinal);
@@ -496,13 +496,13 @@ end;
 procedure TBDODataModule_Obras.PRO_SCH_Filtrar(const aPROFilter: TPROFilter;
                                                const aPageNo
                                                    , aRecordsByPage: Word;
-                                               const aOrderBy: ShortString = 'IN_PROPOSTAS_ID');
+                                               const aOrderBy: AnsiString = 'IN_PROPOSTAS_ID');
 const
 	SQL_CLEAR = 'DELETE FROM PROPOSTAS_SEARCH';
     SQL_INSERT = 'INSERT INTO PROPOSTAS_SEARCH %s';
 var
-	WhereClause: String;
-    SQLFinal: String;
+	WhereClause: AnsiString;
+    SQLFinal: AnsiString;
 begin
     Screen.Cursor := crSQLWait;
     try
@@ -512,8 +512,8 @@ begin
         { MONTANDO A CLÁUSULA WHERE QUE SERÁ USADA PARA FILTRAR OS DADOS }
         WhereClause := PRO_SCH_WhereClause(aPROFilter);
 
-        SQLFinal := Format(SQL_PRO_SEARCH_SELECT_FILTERED_RECORDS,[WhereClause,aOrderBy,GetRowOffsetByPageNo(aPageNo,aRecordsByPage),aRecordsByPage]);
-        SQLFinal := Format(SQL_INSERT,[SQLFinal]);
+        SQLFinal := AnsiStrings.Format(SQL_PRO_SEARCH_SELECT_FILTERED_RECORDS,[WhereClause,aOrderBy,GetRowOffsetByPageNo(aPageNo,aRecordsByPage),aRecordsByPage]);
+        SQLFinal := AnsiStrings.Format(SQL_INSERT,[SQLFinal]);
 
         { PREENCHENDO A TABELA TEMPORÁRIA APENAS COM OS DADOS FILTRADOS }
         ExecuteQuery(DataModuleMain.ZConnections.ByName['ZConnection_BDO'].Connection,SQLFinal);
@@ -531,7 +531,7 @@ begin
     end;
 end;
 
-procedure TBDODataModule_Obras.OBR_SCH_GotoPage(const aPageButton: TDBPageButton; aOBRFilter: TOBRFilter; const aOrderBy: ShortString; const aPage: Word = 0);
+procedure TBDODataModule_Obras.OBR_SCH_GotoPage(const aPageButton: TDBPageButton; aOBRFilter: TOBRFilter; const aOrderBy: AnsiString; const aPage: Word = 0);
 begin
     case aPageButton of
         dpbFirst: FOBR_SCH_CurrentPage := 1;
@@ -548,7 +548,7 @@ begin
     ShowRecordInformationForm(DataModuleMain.ZConnections.ByName['ZConnection_BDO'].Connection,'OBRAS','IN_OBRAS_ID',OBRAS_SEARCHIN_OBRAS_ID.AsInteger);
 end;
 
-procedure TBDODataModule_Obras.PRO_SCH_GotoPage(const aPageButton: TDBPageButton; aPROFilter: TPROFilter; const aOrderBy: ShortString; const aPage: Word = 0);
+procedure TBDODataModule_Obras.PRO_SCH_GotoPage(const aPageButton: TDBPageButton; aPROFilter: TPROFilter; const aOrderBy: AnsiString; const aPage: Word = 0);
 begin
     case aPageButton of
         dpbFirst: FPRO_SCH_CurrentPage := 1;
@@ -795,7 +795,7 @@ begin
                            ,Format(SQL_PRO_SEARCH_SELECT_COUNT_RECORDS,[PRO_SCH_WhereClause(aPROFilter)]));
 end;
 
-function TBDODataModule_Obras.OBR_SCH_WhereClause(const aOBRFilter: TOBRFilter): String;
+function TBDODataModule_Obras.OBR_SCH_WhereClause(const aOBRFilter: TOBRFilter): AnsiString;
 begin
     Result := '';
     with aOBRFilter do
@@ -847,7 +847,7 @@ begin
     end;
 end;
 
-function TBDODataModule_Obras.PRO_SCH_WhereClause(const aPROFilter: TPROFilter): String;
+function TBDODataModule_Obras.PRO_SCH_WhereClause(const aPROFilter: TPROFilter): AnsiString;
 begin
     Result := '';
     with aPROFilter do
@@ -875,7 +875,7 @@ begin
     end;
 end;
 
-procedure TBDODataModule_Obras.SetRefreshSQL(const aZQuery: TZQuery; const aDBAction: TDBAction; out aRefreshSQL: String);
+procedure TBDODataModule_Obras.SetRefreshSQL(const aZQuery: TZQuery; const aDBAction: TDBAction; out aRefreshSQL: AnsiString);
 begin
     inherited;
     if aZQuery = OBRAS then
@@ -1505,7 +1505,7 @@ end;
 
 procedure TBDODataModule_Obras.Action_PRO_DefinirCotacoesExecute(Sender: TObject);
 var
-    Cotacoes: ShortString;
+    Cotacoes: AnsiString;
 begin
     inherited;
     if MyModule.DBComboBox_PRO_TI_MOEDA.ItemIndex = -1 then
@@ -1623,7 +1623,7 @@ begin
     end;
 end;
 
-function TBDODataModule_Obras.ClausulaWherePorPalavras(const aVA_NOMEDAOBRA: ShortString): String;
+function TBDODataModule_Obras.ClausulaWherePorPalavras(const aVA_NOMEDAOBRA: AnsiString): String;
 var
     i: Byte;
 begin
@@ -1650,7 +1650,7 @@ begin
         end;
 end;
 
-function TBDODataModule_Obras.ObrasSemelhantes(const aVA_NOMEDAOBRA: ShortString): Cardinal;
+function TBDODataModule_Obras.ObrasSemelhantes(const aVA_NOMEDAOBRA: AnsiString): Cardinal;
 const
     SQL1 =
     'SELECT COUNT(IN_OBRAS_ID)'#13#10 +
@@ -1787,7 +1787,7 @@ begin
 end;
 
 //procedure TBDODataModule_Obras.FiltrarObras(const aItems: TStrings;
-//                                            const aVA_NOMEDAOBRA: ShortString);
+//                                            const aVA_NOMEDAOBRA: AnsiString);
 //begin
 //    aItems.Clear;
 //    try
@@ -2317,8 +2317,8 @@ begin
         SafeSetActionEnabled(MyModule.Action_OBR_SCH_LastPage,PButtonEnabled[3]);
 
         MyModule.BitBtn_OBR_SCH_MaisDetalhes.Enabled := OBRAS_SEARCH.RecordCount > 0;
-        MyModule.Label_OBR_SCH_RegistrosValor.Caption := Format(CURRENT_TOTAL,[GetRecordNoInSet(FOBR_SCH_CurrentPage,FOBR_SCH_RecordsByPage,DataSource_OBR_SCH.DataSet.RecNo),OBR_SCH_RecordCount]);
-        MyModule.Label_OBR_SCH_PaginasValor.Caption := Format(CURRENT_TOTAL,[FOBR_SCH_CurrentPage,OBR_SCH_PageCount]);
+        MyModule.Label_OBR_SCH_RegistrosValor.Caption := AnsiStrings.Format(CURRENT_TOTAL,[GetRecordNoInSet(FOBR_SCH_CurrentPage,FOBR_SCH_RecordsByPage,DataSource_OBR_SCH.DataSet.RecNo),OBR_SCH_RecordCount]);
+        MyModule.Label_OBR_SCH_PaginasValor.Caption := AnsiStrings.Format(CURRENT_TOTAL,[FOBR_SCH_CurrentPage,OBR_SCH_PageCount]);
 	end
 	else if aSender = DataSource_PRO_SCH then
 	begin
@@ -2342,8 +2342,8 @@ begin
         SafeSetActionEnabled(MyModule.Action_PRO_SCH_LastPage,PButtonEnabled[3]);
 
         MyModule.Action_PRO_SCH_Details.Enabled := PROPOSTAS_SEARCH.RecordCount > 0;
-        MyModule.Label_PRO_SCH_RegistrosValor.Caption := Format(CURRENT_TOTAL,[GetRecordNoInSet(FPRO_SCH_CurrentPage,FPRO_SCH_RecordsByPage,DataSource_PRO_SCH.DataSet.RecNo),PRO_SCH_RecordCount]);
-        MyModule.Label_PRO_SCH_PaginasValor.Caption := Format(CURRENT_TOTAL,[FPRO_SCH_CurrentPage,PRO_SCH_PageCount]);
+        MyModule.Label_PRO_SCH_RegistrosValor.Caption := AnsiStrings.Format(CURRENT_TOTAL,[GetRecordNoInSet(FPRO_SCH_CurrentPage,FPRO_SCH_RecordsByPage,DataSource_PRO_SCH.DataSet.RecNo),PRO_SCH_RecordCount]);
+        MyModule.Label_PRO_SCH_PaginasValor.Caption := AnsiStrings.Format(CURRENT_TOTAL,[FPRO_SCH_CurrentPage,PRO_SCH_PageCount]);
 	end
 	else if aSender = DataSource_EQP_SCH then
 	begin
@@ -2367,8 +2367,8 @@ begin
         SafeSetActionEnabled(MyModule.Action_EQP_SCH_LastPage,PButtonEnabled[3]);
 
         MyModule.Action_EQP_SCH_Details.Enabled := EQUIPAMENTOS_SEARCH.RecordCount > 0;
-        MyModule.Label_EQP_SCH_RegistrosValor.Caption := Format(CURRENT_TOTAL,[GetRecordNoInSet(FEQP_SCH_CurrentPage,FEQP_SCH_RecordsByPage,DataSource_EQP_SCH.DataSet.RecNo),EQP_SCH_RecordCount]);
-        MyModule.Label_EQP_SCH_PaginasValor.Caption := Format(CURRENT_TOTAL,[FEQP_SCH_CurrentPage,EQP_SCH_PageCount]);
+        MyModule.Label_EQP_SCH_RegistrosValor.Caption := AnsiStrings.Format(CURRENT_TOTAL,[GetRecordNoInSet(FEQP_SCH_CurrentPage,FEQP_SCH_RecordsByPage,DataSource_EQP_SCH.DataSet.RecNo),EQP_SCH_RecordCount]);
+        MyModule.Label_EQP_SCH_PaginasValor.Caption := AnsiStrings.Format(CURRENT_TOTAL,[FEQP_SCH_CurrentPage,EQP_SCH_PageCount]);
 	end;
    
 end;
@@ -2459,7 +2459,7 @@ begin
     ShowRecordInformationForm(DataModuleMain.ZConnections.ByName['ZConnection_BDO'].Connection,'EQUIPAMENTOS','IN_EQUIPAMENTOS_ID',EQUIPAMENTOS_LOOKUPIN_EQUIPAMENTOS_ID.AsInteger);
 end;
 
-procedure TBDODataModule_Obras.EQP_SCH_Filtrar(const aEQPFilter: TEQPFilter; const aPageNo, aRecordsByPage: Word; const aOrderBy: ShortString = 'IN_EQUIPAMENTOSDOSITENS_ID');
+procedure TBDODataModule_Obras.EQP_SCH_Filtrar(const aEQPFilter: TEQPFilter; const aPageNo, aRecordsByPage: Word; const aOrderBy: AnsiString = 'IN_EQUIPAMENTOSDOSITENS_ID');
 const
 	SQL_CLEAR = 'DELETE FROM EQUIPAMENTOS_SEARCH';
     SQL_INSERT = 'INSERT INTO EQUIPAMENTOS_SEARCH %s';
@@ -2475,8 +2475,8 @@ begin
         { MONTANDO A CLÁUSULA WHERE QUE SERÁ USADA PARA FILTRAR OS DADOS }
         WhereClause := EQP_SCH_WhereClause(aEQPFilter);
 
-        SQLFinal := Format(SQL_EQP_SEARCH_SELECT_FILTERED_RECORDS,[WhereClause,aOrderBy,GetRowOffsetByPageNo(aPageNo,aRecordsByPage),aRecordsByPage]);
-        SQLFinal := Format(SQL_INSERT,[SQLFinal]);
+        SQLFinal := AnsiStrings.Format(SQL_EQP_SEARCH_SELECT_FILTERED_RECORDS,[WhereClause,aOrderBy,GetRowOffsetByPageNo(aPageNo,aRecordsByPage),aRecordsByPage]);
+        SQLFinal := AnsiStrings.Format(SQL_INSERT,[SQLFinal]);
 
         { PREENCHENDO A TABELA TEMPORÁRIA APENAS COM OS DADOS FILTRADOS }
         ExecuteQuery(DataModuleMain.ZConnections.ByName['ZConnection_BDO'].Connection,SQLFinal);
@@ -2494,7 +2494,7 @@ begin
     end;
 end;
 
-procedure TBDODataModule_Obras.EQP_SCH_GotoPage(const aPageButton: TDBPageButton; aEQPFilter: TEQPFilter; const aOrderBy: ShortString; const aPage: Word = 0);
+procedure TBDODataModule_Obras.EQP_SCH_GotoPage(const aPageButton: TDBPageButton; aEQPFilter: TEQPFilter; const aOrderBy: AnsiString; const aPage: Word = 0);
 begin
     case aPageButton of
         dpbFirst: FEQP_SCH_CurrentPage := 1;
@@ -2556,7 +2556,7 @@ begin
                            ,Format(SQL_EQP_SEARCH_SELECT_COUNT_RECORDS,[EQP_SCH_WhereClause(aEQPFilter)]));
 end;
 
-function TBDODataModule_Obras.EQP_SCH_WhereClause(const aEQPFilter: TEQPFilter): String;
+function TBDODataModule_Obras.EQP_SCH_WhereClause(const aEQPFilter: TEQPFilter): AnsiString;
 begin
     Result := '';
     with aEQPFilter do
@@ -2590,7 +2590,7 @@ begin
 end;
 
 procedure TBDODataModule_Obras.LocalizarEquipamento(const aEdit: TEdit;
-                                                    const aFieldName: ShortString);
+                                                    const aFieldName: AnsiString);
 begin
     LocateFirstRecord(EQUIPAMENTOS_LOOKUP, aEdit, aFieldName);
 end;
@@ -2649,7 +2649,7 @@ begin
                 end
                 else
                     // Faltam dias para expirar
-                    MyModule.Label_OBR_DA_DATADEEXPIRACAO.Caption := Format('Esta obra expira em %u dia(s) (%s)', [Trunc(DataDaExpiracao - DataAtualServer), FormatDateTime('dd/mm/yyyy', DataDaExpiracao)]);
+                    MyModule.Label_OBR_DA_DATADEEXPIRACAO.Caption := AnsiStrings.Format('Esta obra expira em %u dia(s) (%s)', [Trunc(DataDaExpiracao - DataAtualServer), FormatDateTime('dd/mm/yyyy', DataDaExpiracao)]);
             end;
         end
         else
@@ -2703,7 +2703,7 @@ begin
     ExecuteDbProcedure(DataModuleMain.ZConnections.ByName['ZConnection_BDO'].Connection,Format('PRC_COPY_ITEMS_FROM_PROPOSAL(FNC_GET_DEFAULT_PROPOSAL(%u),%u)',[aObra,aPropostaDeDestino]));
 end;
 
-procedure TBDODataModule_Obras.ExibirObrasSemelhantes(const aVA_NOMEDAOBRA: ShortString);
+procedure TBDODataModule_Obras.ExibirObrasSemelhantes(const aVA_NOMEDAOBRA: AnsiString);
 const
     SQL =
     'SELECT OBR.IN_OBRAS_ID'#13#10 +

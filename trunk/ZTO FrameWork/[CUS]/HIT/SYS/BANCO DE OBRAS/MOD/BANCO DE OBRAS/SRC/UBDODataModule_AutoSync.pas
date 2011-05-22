@@ -11,25 +11,25 @@ type
 //	TSyncCmd = function: Boolean of object;
 //
 //    TUndoRecord = packed record
-//	    EntityName: ShortString;
-//    	ActionPerformed: String[3];
-//	    KeyName: ShortString;
-//    	KeyValue: ShortString;
+//	    EntityName: AnsiString;
+//    	ActionPerformed: AnsiString[3];
+//	    KeyName: AnsiString;
+//    	KeyValue: AnsiString;
 //    end;
 //
 //    TUndoInformation = array of TUndoRecord;
 
 //	TFTPConfigurations = packed record
-//		DB_Password: ShortString; { Não usado aqui! }
-//		DB_UserName: ShortString; { Não usado aqui! }
-//		DB_Protocol: ShortString; { Não usado aqui! }
-//	    DB_Database: ShortString; { Não usado aqui! }
-//		DB_HostAddr: ShortString; { Não usado aqui! }
+//		DB_Password: AnsiString; { Não usado aqui! }
+//		DB_UserName: AnsiString; { Não usado aqui! }
+//		DB_Protocol: AnsiString; { Não usado aqui! }
+//	    DB_Database: AnsiString; { Não usado aqui! }
+//		DB_HostAddr: AnsiString; { Não usado aqui! }
 //		DB_PortNumb: Word;        { Não usado aqui! }
 //
-//    	FT_UserName: ShortString;
-//	    FT_PassWord: ShortString;
-//    	FT_HostName: ShortString;
+//    	FT_UserName: AnsiString;
+//	    FT_PassWord: AnsiString;
+//    	FT_HostName: AnsiString;
 //	    FT_PortNumb: Word;
 //  	end;
 
@@ -55,30 +55,30 @@ type
     	FBusy: Boolean;
     	FProcessing: Boolean;
         FFSYGlobals: TFSYGlobals;
-//	    procedure Authenticate(aUserName, aPassword: ShortString);
-//    	procedure Connect(HostName: ShortString; Port: Word);
-//    	procedure ShowOnLog(aText: String);
-//	    procedure AbortEverything(const aErrorMessage: String);
+//	    procedure Authenticate(aUserName, aPassword: AnsiString);
+//    	procedure Connect(HostName: AnsiString; Port: Word);
+//    	procedure ShowOnLog(aText: AnsiString);
+//	    procedure AbortEverything(const aErrorMessage: AnsiString);
 	    procedure SetBusy(const Value: Boolean);
 //	    procedure SetProcessing(const Value: Boolean);
 //    	procedure SendLastSyncDateAndTime;
 //    	procedure CreateLastSyncFile;
-//    	function MD5Put(aLocalFileName, aRemoteFileName: ShortString; aMaxTries: Byte = 3): Boolean;
-//        function ExecuteCmd(aSyncCmd: TSyncCmd; aDescription: ShortString = ''): Boolean;
-//        function CheckMD5(aFileName: ShortString; aTry: Byte; aDeleteCopyOn: Char): Boolean;
+//    	function MD5Put(aLocalFileName, aRemoteFileName: AnsiString; aMaxTries: Byte = 3): Boolean;
+//        function ExecuteCmd(aSyncCmd: TSyncCmd; aDescription: AnsiString = ''): Boolean;
+//        function CheckMD5(aFileName: AnsiString; aTry: Byte; aDeleteCopyOn: Char): Boolean;
 //    	function PermissionTableWasChanged: Boolean;
-//    	function MD5Get(aLocalFileName, aRemoteFileName: ShortString; aMaxTries: Byte = 3): Boolean;
+//    	function MD5Get(aLocalFileName, aRemoteFileName: AnsiString; aMaxTries: Byte = 3): Boolean;
 //	    procedure CreateUndoInformation(aUndoInformation: TUndoInformation);
 //    	function DatabaseCheckSumCompare: Boolean;
 //    	procedure ConfirmEverything;
 //    	procedure UndoUnpermittedActions;
-//    	procedure Synchronize(aZConnection: TZConnection; aFTPHostName: ShortString; aFTPPortNumb: Word; aFTPUserName, aFTPPassword: ShortString; aProgressBar: TProgressBar = nil; aLabelPercentDone: TLabel = nil);
+//    	procedure Synchronize(aZConnection: TZConnection; aFTPHostName: AnsiString; aFTPPortNumb: Word; aFTPUserName, aFTPPassword: AnsiString; aProgressBar: TProgressBar = nil; aLabelPercentDone: TLabel = nil);
 //    	function ReviewDelta(aZConnection: TZConnection; aProgressBar: TProgressBar = nil; aLabelPercentDone: TLabel = nil): TUndoInformation;
-//        function GenerateScript(aZConnection: TZConnection; aProgressBar: TProgressBar = nil; aLabelPercentDone: TLabel = nil): String;
-//        function GenerateValuesString(aZConnection: TZConnection; aTableName, aKey: ShortString; aMode: Char; var aFieldsString: String): String; overload;
-//        function GenerateValuesString(aZConnection: TZConnection; aTableName, aKey: ShortString; aMode: Char): String; overload;
-//        function GenerateValuesString(aZConnection: TZConnection; aTableName, aKeyName, aKeyValue: ShortString; aMode: Char): String; overload;
-//        function GetKeyFields(aZConnection: TZConnection; aTableName: ShortString): ShortString;
+//        function GenerateScript(aZConnection: TZConnection; aProgressBar: TProgressBar = nil; aLabelPercentDone: TLabel = nil): AnsiString;
+//        function GenerateValuesString(aZConnection: TZConnection; aTableName, aKey: AnsiString; aMode: Char; var aFieldsString: AnsiString): AnsiString; overload;
+//        function GenerateValuesString(aZConnection: TZConnection; aTableName, aKey: AnsiString; aMode: Char): AnsiString; overload;
+//        function GenerateValuesString(aZConnection: TZConnection; aTableName, aKeyName, aKeyValue: AnsiString; aMode: Char): AnsiString; overload;
+//        function GetKeyFields(aZConnection: TZConnection; aTableName: AnsiString): AnsiString;
 //	    procedure ClearDeltaAndSaveLastSyncDateTime(aSaveLastSyncDateTime: Boolean);
         procedure DoZlibNotification(aNotificatioType: TZlibNotificationType; aOperation: TZLibOperation; aInputFile, aOutputFile: TFileName);
 
@@ -96,7 +96,7 @@ type
 
 implementation
 
-uses
+uses AnsiStrings,
 	UXXXDataModule, StrUtils, UBDOForm_AutoSync, ZDBCIntfs, ZDataset,
   	DB, UBDOTypesConstantsAndClasses;
 
@@ -125,12 +125,12 @@ procedure TBDODataModule_AutoSync.DoZlibNotification(aNotificatioType: TZlibNoti
 begin
     if aOperation = zloDecompress then
         case aNotificatioType of
-            zlntBeforeProcess: FFSYGlobals.ShowOnLog('§ Descomprimindo arquivo de dados ' + ExtractFileName(aInputFile) + '...',TBDOForm_AutoSync(Owner).RichEdit_Log);
+            zlntBeforeProcess: FFSYGlobals.ShowOnLog('§ Descomprimindo arquivo de dados ' + AnsiString(ExtractFileName(aInputFile)) + '...',TBDOForm_AutoSync(Owner).RichEdit_Log);
             zlntAfterProcess: FFSYGlobals.ShowOnLog('§ Descompressão concluída!',TBDOForm_AutoSync(Owner).RichEdit_Log);
         end
     else if aOperation = zloCompress then
         case aNotificatioType of
-            zlntBeforeProcess: FFSYGlobals.ShowOnLog('§ Comprimindo arquivo de dados ' + ExtractFileName(aInputFile) + '...',TBDOForm_AutoSync(Owner).RichEdit_Log);
+            zlntBeforeProcess: FFSYGlobals.ShowOnLog('§ Comprimindo arquivo de dados ' + AnsiString(ExtractFileName(aInputFile)) + '...',TBDOForm_AutoSync(Owner).RichEdit_Log);
 
             zlntAfterProcess: FFSYGlobals.ShowOnLog('§ Compressão concluída!',TBDOForm_AutoSync(Owner).RichEdit_Log);
         end;
@@ -138,11 +138,11 @@ end;
 
 procedure TBDODataModule_AutoSync.FtpClient_AutoSyncCommand(Sender: TObject; var Cmd: string);
 var
-	Comando: ShortString;
+	Comando: AnsiString;
 begin
-	Comando := Cmd;
-  	if Pos('PASS',Comando) = 1 then
-  		Comando := 'PASS ' + DupeString(#248,Random(15));
+	Comando := AnsiString(Cmd);
+  	if Pos('PASS',String(Comando)) = 1 then
+  		Comando := 'PASS ' + AnsiStrings.DupeString(#248,Random(15));
 
   	FFSYGlobals.ShowOnLog('COMANDO:> ' + Comando,TBDOForm_AutoSync(Owner).RichEdit_Log);
 end;
@@ -154,7 +154,7 @@ begin
   	begin
 		Msg := StringReplace(Msg,'< ','',[]);
  		Msg := StringReplace(Msg,'! ','',[]);
-  		FFSYGlobals.ShowOnLog('RETORNO:> ' + Msg,TBDOForm_AutoSync(Owner).RichEdit_Log);
+  		FFSYGlobals.ShowOnLog('RETORNO:> ' + AnsiString(Msg),TBDOForm_AutoSync(Owner).RichEdit_Log);
   	end
 end;
 
@@ -166,7 +166,7 @@ end;
 
 procedure TBDODataModule_AutoSync.FtpClient_AutoSyncRequestDone(Sender: TObject; RqType: TFtpRequest; ErrCode: Word);
 var
-    Comando, Texto: ShortString;
+  Comando, Texto: AnsiString;
 begin
   	inherited;
     case RqType of
@@ -180,8 +180,8 @@ begin
         else
         	Comando := 'Desconhecido';
     end;
-    Texto := '@ Comando "' + Comando + '" concluído (Código de retorno = ' + IntToStr(ErrCode) + ') ';
-    Texto := Texto + DupeString('<',95 - Length(Texto));
+    Texto := '@ Comando "' + Comando + '" concluído (Código de retorno = ' + AnsiString(IntToStr(ErrCode)) + ') ';
+    Texto := Texto + AnsiStrings.DupeString('<',95 - Length(Texto));
     FFSYGlobals.ShowOnLog(Texto,TBDOForm_AutoSync(Owner).RichEdit_Log);
 end;
 
@@ -312,9 +312,9 @@ begin
 			on E: Exception do
             begin
             	FGeneralResult := mrAbort;
-				FFSYGlobals.AbortEverything(FtpClient_AutoSync,E.Message,TempBusy,TBDOForm_AutoSync(Owner).RichEdit_Log);
+				FFSYGlobals.AbortEverything(FtpClient_AutoSync,AnsiString(E.Message),TempBusy,TBDOForm_AutoSync(Owner).RichEdit_Log);
     			Application.MessageBox('Não foi possível sincronizar, contate o desenvolvedor imediatamente! Ao clicar o botão "OK" nesta mensagem, um arquivo de nome "AutoSyncLog.rtf" será criado no diretório raiz do Banco De Obras. Envie-o ao desenvolvedor para análise.','Não foi possível sincronizar',MB_ICONERROR);
-				TBDOForm_AutoSync(Owner).RichEdit_Log.Lines.SaveToFile(Configurations.CurrentDir + '\AutoSyncLog.rtf');
+				TBDOForm_AutoSync(Owner).RichEdit_Log.Lines.SaveToFile(String(Configurations.CurrentDir) + '\AutoSyncLog.rtf');
             end;
 		end;
 	finally
