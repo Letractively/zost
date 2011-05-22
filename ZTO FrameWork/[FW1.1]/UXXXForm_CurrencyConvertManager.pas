@@ -57,16 +57,19 @@ type
         { Private declarations }
         FDestinationCurrencyID: CurrencyID;
         procedure LoadStringGrid;
-        function GetCotacoes: ShortString;
-        procedure SetCotacoes(const Value: ShortString);
+        function GetCotacoes: AnsiString;
+        procedure SetCotacoes(const Value: AnsiString);
         procedure SetDestinationCurrency(const Value: Byte);
     public
         { Public declarations }
-        property Cotacoes: ShortString read GetCotacoes write SetCotacoes;
+        property Cotacoes: AnsiString read GetCotacoes write SetCotacoes;
         property DestinationCurrency: Byte write SetDestinationCurrency;
     end;
 
 implementation
+
+uses
+  AnsiStrings;
 
 const
     CURRENCY_IDS: array [1..5] of CurrencyID = (USD,EUR,BRL,GBP,JPY);
@@ -181,7 +184,7 @@ begin
     LoadStringGrid;
 end;
 
-function TXXXForm_CurrencyConvertManager.GetCotacoes: ShortString;
+function TXXXForm_CurrencyConvertManager.GetCotacoes: AnsiString;
 var
 	i: Byte;
     FormatSettings: TFormatSettings;
@@ -194,7 +197,7 @@ begin
     	if StringGridCotacoes.Cells[2,i] = '' then
 	        Result := Result + '1.0000'
         else
-			Result := Result + FormatFloat('#0.0000',StrToFloat(StringGridCotacoes.Cells[2,i]),FormatSettings);
+			Result := Result + AnsiString(FormatFloat('#0.0000',StrToFloat(StringGridCotacoes.Cells[2,i]),FormatSettings));
 
         if i < Pred(StringGridCotacoes.RowCount) then
 	        Result := Result + ';'
@@ -203,10 +206,10 @@ end;
 
 procedure TXXXForm_CurrencyConvertManager.LoadStringGrid;
 var
-  	i: Byte;
+  i: Byte;
 begin
-    for i := 1 to High(CURRENCY_STRINGS) do
-        StringGridCotacoes.Cells[0,Pred(i)] := CURRENCY_STRINGS[i] + ' 1,00 =';
+  for i := 1 to High(CURRENCY_STRINGS) do
+    StringGridCotacoes.Cells[0,Pred(i)] := String(CURRENCY_STRINGS[i]) + ' 1,00 =';
 end;
 
 
@@ -223,7 +226,7 @@ showmessage(SoapClient.GetResult);
 
 end;
 
-procedure TXXXForm_CurrencyConvertManager.SetCotacoes(const Value: ShortString);
+procedure TXXXForm_CurrencyConvertManager.SetCotacoes(const Value: AnsiString);
 var
 	i: Byte;
     FormatSettings: TFormatSettings;
@@ -236,7 +239,7 @@ begin
             if Value = '' then
                 DelimitedText := '1;1;1;1;1'
             else
-                DelimitedText := Value;
+                DelimitedText := String(Value);
 
             for i := 0 to Pred(Count) do
 				StringGridCotacoes.Cells[2,i] := FormatFloat('#0.0000',StrToFloat(Strings[i],FormatSettings));
@@ -247,14 +250,14 @@ end;
 
 procedure TXXXForm_CurrencyConvertManager.SetDestinationCurrency(const Value: Byte);
 begin
-    PanelMoedaDeDestino.Caption := CURRENCY_STRINGS[Value];
+    PanelMoedaDeDestino.Caption := String(CURRENCY_STRINGS[Value]);
     FDestinationCurrencyID := CURRENCY_IDS[Value];
 end;
 
 procedure TXXXForm_CurrencyConvertManager.StringGridCotacoesKeyPress(Sender: TObject; var Key: Char);
 begin
     inherited;
-    Key := CreateParameters.MyDataModule.AllowedChars(Key,['0'..'9',#8,DecimalSeparator]);
+    Key := Char(CreateParameters.MyDataModule.AllowedChars(AnsiChar(Key),['0'..'9',#8,DecimalSeparator]));
 end;
 
 end.

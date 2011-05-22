@@ -38,7 +38,7 @@ type
   	private
     	{ Private declarations }
 	protected
-        procedure SetRefreshSQL(const aZQuery: TZQuery; const aDBAction: TDBAction; out aRefreshSQL: String); override;
+        procedure SetRefreshSQL(const aZQuery: TZQuery; const aDBAction: TDBAction; out aRefreshSQL: AnsiString); override;
         procedure DoBeforePost(aDataSet: TDataSet); override;
         procedure DoBeforeDelete(aDataSet: TDataSet); override;
   	public
@@ -146,7 +146,7 @@ begin
     LocateFirstRecord(SITUACOES,TEdit(aLabeledEdit),'VA_DESCRICAO');
 end;
 
-procedure TBDODataModule_Situacoes.SetRefreshSQL(const aZQuery: TZQuery; const aDBAction: TDBAction; out aRefreshSQL: String);
+procedure TBDODataModule_Situacoes.SetRefreshSQL(const aZQuery: TZQuery; const aDBAction: TDBAction; out aRefreshSQL: AnsiString);
 begin
     inherited;
     case aDBAction of

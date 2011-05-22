@@ -1668,7 +1668,7 @@ end;
 procedure TBDOForm_Obras.ApenasNumeros(Sender: TObject; var Key: Char);
 begin
     inherited;
-    Key := MyDataModule.AllowedChars(Key,['0'..'9']);
+    Key := Char(MyDataModule.AllowedChars(AnsiChar(Key),['0'..'9']));
 end;
 
 procedure TBDOForm_Obras.InicializarRegioes;

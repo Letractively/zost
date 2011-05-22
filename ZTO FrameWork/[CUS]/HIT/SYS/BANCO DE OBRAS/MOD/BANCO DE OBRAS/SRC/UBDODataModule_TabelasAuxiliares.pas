@@ -62,7 +62,7 @@ type
     	{ Private declarations }
         function MyModule: TBDOForm_TabelasAuxiliares;
 	protected
-        procedure SetRefreshSQL(const aZQuery: TZQuery; const aDBAction: TDBAction; out aRefreshSQL: String); override;
+        procedure SetRefreshSQL(const aZQuery: TZQuery; const aDBAction: TDBAction; out aRefreshSQL: AnsiString); override;
     	procedure DoBeforeDelete(aDataSet: TDataSet); override;
 	    procedure DoBeforePost(aDataSet: TDataSet); override;
   	public
@@ -291,7 +291,7 @@ begin
 	Result := TBDOForm_TabelasAuxiliares(Owner);
 end;
 
-procedure TBDODataModule_TabelasAuxiliares.SetRefreshSQL(const aZQuery: TZQuery; const aDBAction: TDBAction; out aRefreshSQL: String);
+procedure TBDODataModule_TabelasAuxiliares.SetRefreshSQL(const aZQuery: TZQuery; const aDBAction: TDBAction; out aRefreshSQL: AnsiString);
 begin
     inherited;
     if aZQuery = ICMS then

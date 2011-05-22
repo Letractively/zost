@@ -4,7 +4,7 @@ No caso dos componentes eles devem ser postos aqui, caso não se queira usa-los
 de forma convencional, isto é, colocando em formulários, a fim de se ter uma
 orientação a objetos mais precisa }
 interface
-
+{$WARNINGS OFF}
 uses
 	Windows, ActiveX, ShlObj, Classes;
 
@@ -709,5 +709,5 @@ begin
     	CoUninitialize;
     end;
 end;
-
+{$WARNINGS ON}
 end.

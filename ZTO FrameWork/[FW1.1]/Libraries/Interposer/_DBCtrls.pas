@@ -38,8 +38,8 @@ uses
 
 procedure TDBEdit.KeyDown(var Key: Word; Shift: TShiftState);
 begin
-  	inherited;
-    EnterIsTab(TForm(Owner),Key,ClassName);
+  inherited;
+  EnterIsTab(TForm(Owner),Key,AnsiString(ClassName));
 end;
 
 { TDBComboBox }
@@ -47,7 +47,7 @@ end;
 procedure TDBComboBox.KeyDown(var Key: Word; Shift: TShiftState);
 begin
     inherited;
-    EnterIsTab(TForm(Owner),Key,ClassName);
+    EnterIsTab(TForm(Owner),Key,AnsiString(ClassName));
 end;
 
 { TDBLookupComboBox }
@@ -55,7 +55,7 @@ end;
 procedure TDBLookupComboBox.KeyDown(var Key: Word; Shift: TShiftState);
 begin
     inherited;
-    EnterIsTab(TForm(Owner),Key,ClassName);
+    EnterIsTab(TForm(Owner),Key,AnsiString(ClassName));
 end;
 
 end.

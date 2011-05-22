@@ -9,7 +9,7 @@ uses
 
 type
 	TOBRFilter = record
-        VA_NOMEDAOBRA, VA_CIDADE, CH_ESTADO, VA_CONSTRUTORA: ShortString;
+        VA_NOMEDAOBRA, VA_CIDADE, CH_ESTADO, VA_CONSTRUTORA: AnsiString;
         TI_REGIOES_ID, TI_TIPOS_ID, TI_SITUACOES_ID: Byte;
         DA_DATADEENTRADA_I, DA_DATADEENTRADA_F: TDateTime;
         SM_PROJETISTAS_ID: Word;
@@ -17,14 +17,14 @@ type
     end;
 
     TPROFilter = record
-    	VA_CONTATO, VA_NOMEDAOBRA: ShortString;
+    	VA_CONTATO, VA_NOMEDAOBRA: AnsiString;
         SM_CODIGO, YR_ANO: Word;
         BO_PROPOSTAPADRAO: 0..2; { 0 = Não, 1 = Sim, 2 = Ambas }
         SM_INSTALADORES_ID: Word;
     end;
 
     TEQPFilter = record
-        VA_MODELO, EN_VOLTAGEM: ShortString;
+        VA_MODELO, EN_VOLTAGEM: AnsiString;
         SM_CODIGO, YR_ANO: Word;
         BO_PROPOSTAPADRAO: 0..2; { 0 = Não, 1 = Sim, 2 = Ambas }
         SM_INSTALADORES_ID: Word;
@@ -34,10 +34,10 @@ type
     private
     	FFTPSynchronizerLocation: TFileName;
 
-        FUserRegionsTableTableName: ShortString; { REGIOESDOSUSUARIOS }
-        FUserRegionsTableKeyFieldName: ShortString;
-        FUserRegionsTableUserFieldName: ShortString;
-        FUserRegionsTableRegionFieldName: ShortString;
+        FUserRegionsTableTableName: AnsiString; { REGIOESDOSUSUARIOS }
+        FUserRegionsTableKeyFieldName: AnsiString;
+        FUserRegionsTableUserFieldName: AnsiString;
+        FUserRegionsTableRegionFieldName: AnsiString;
 
         FExibirColunaLucroBrutoEmCadastroDeItens: Boolean;
     public { Public declarations }
@@ -45,20 +45,20 @@ type
         destructor Destroy; override;
     published { Published declarations }
     	property FTPSynchronizerLocation: TFileName read FFTPSynchronizerLocation write FFTPSynchronizerLocation;
-        property UserRegionsTableTableName: ShortString read FUserRegionsTableTableName write FUserRegionsTableTableName;
-        property UserRegionsTableKeyFieldName: ShortString read FUserRegionsTableKeyFieldName write FUserRegionsTableKeyFieldName;
-        property UserRegionsTableUserFieldName: ShortString read FUserRegionsTableUserFieldName write FUserRegionsTableUserFieldName;
-        property UserRegionsTableRegionFieldName: ShortString read FUserRegionsTableRegionFieldName write FUserRegionsTableRegionFieldName;
+        property UserRegionsTableTableName: AnsiString read FUserRegionsTableTableName write FUserRegionsTableTableName;
+        property UserRegionsTableKeyFieldName: AnsiString read FUserRegionsTableKeyFieldName write FUserRegionsTableKeyFieldName;
+        property UserRegionsTableUserFieldName: AnsiString read FUserRegionsTableUserFieldName write FUserRegionsTableUserFieldName;
+        property UserRegionsTableRegionFieldName: AnsiString read FUserRegionsTableRegionFieldName write FUserRegionsTableRegionFieldName;
 
         property ExibirColunaLucroBrutoEmCadastroDeItens: Boolean read FExibirColunaLucroBrutoEmCadastroDeItens write FExibirColunaLucroBrutoEmCadastroDeItens;
     end;
 
 const
-    DEFAULT_USERREGIONS_TABLENAME = 'REGIOESDOSUSUARIOS';
-    DEFAULT_USERREGIONS_KEYFIELDNAME = 'MI_REGIOESDOSUSUARIOS_ID';
-    DEFAULT_USERREGIONS_USERFIELDNAME = 'SM_USUARIOS_ID';
-    DEFAULT_USERREGIONS_REGIONFIELDNAME = 'TI_REGIOES_ID';
-    VOLTAGENS: array [1..5] of ShortString = ('N/A','220/1Ø','220/3Ø','380/3Ø','440/3Ø');
+    DEFAULT_USERREGIONS_TABLENAME: AnsiString = 'REGIOESDOSUSUARIOS';
+    DEFAULT_USERREGIONS_KEYFIELDNAME: AnsiString = 'MI_REGIOESDOSUSUARIOS_ID';
+    DEFAULT_USERREGIONS_USERFIELDNAME: AnsiString = 'SM_USUARIOS_ID';
+    DEFAULT_USERREGIONS_REGIONFIELDNAME: AnsiString = 'TI_REGIOES_ID';
+    VOLTAGENS: array [1..5] of AnsiString = ('N/A','220/1Ø','220/3Ø','380/3Ø','440/3Ø');
 
 resourcestring
     RS_PAGE_CHANGE_NOT_ALLOWED = PAGE_CHANGE_NOT_ALLOWED;
@@ -112,12 +112,12 @@ begin
 //    UserTablePasswordFieldName := APPLICATION_USERTABLE_PASSWORDFIELDNAME;
 
     { Se tiver, carrega. Se não, mantém o padrão acima }
-    LoadFromBinaryFile(CurrentDir + CONFIG_FILENAME);
+    LoadFromBinaryFile(String(CurrentDir) + CONFIG_FILENAME);
 end;
 
 destructor TBDOConfigurations.Destroy;
 begin
-    SaveToBinaryFile(CurrentDir + CONFIG_FILENAME);
+    SaveToBinaryFile(String(CurrentDir) + CONFIG_FILENAME);
   	inherited;
 end;
 

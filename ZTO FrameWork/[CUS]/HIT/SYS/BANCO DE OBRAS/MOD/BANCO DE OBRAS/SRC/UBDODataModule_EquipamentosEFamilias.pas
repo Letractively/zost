@@ -62,7 +62,7 @@ type
     	{ Private declarations }
 	    procedure CSV2SQLEquipamentos(aArquivoCSV: TFileName; var aRegistrosProcessados: Cardinal; var aScript: String; aSalvarScript: Boolean = False);
 	protected
-        procedure SetRefreshSQL(const aZQuery: TZQuery; const aDBAction: TDBAction; out aRefreshSQL: String); override;
+        procedure SetRefreshSQL(const aZQuery: TZQuery; const aDBAction: TDBAction; out aRefreshSQL: AnsiString); override;
     	procedure DoBeforeDelete(aDataSet: TDataSet); override;
 	    procedure DoBeforePost(aDataSet: TDataSet); override;
   	public
@@ -734,7 +734,7 @@ begin
     LocateFirstRecord(FAMILIAS,TEdit(aLabeledEdit),'VA_DESCRICAO');
 end;
 
-procedure TBDODataModule_EquipamentosEFamilias.SetRefreshSQL(const aZQuery: TZQuery; const aDBAction: TDBAction; out aRefreshSQL: String);
+procedure TBDODataModule_EquipamentosEFamilias.SetRefreshSQL(const aZQuery: TZQuery; const aDBAction: TDBAction; out aRefreshSQL: AnsiString);
 begin
     inherited;
     if aZQuery = EQUIPAMENTOS then
