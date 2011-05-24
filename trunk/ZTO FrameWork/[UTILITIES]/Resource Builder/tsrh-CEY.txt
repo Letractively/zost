@@ -1,0 +1,13 @@
+Install the app.
+1. Go to Resource Builder's menu "Help|Register..."
+2. Enter your registration key (you can just copy and paste the next lines):
+
+0ULHqk3i0vvys7N33vQyKQKHtuddYq
+74ApdhDF8uSSx5aJA9auAfHfRvutzU
+FUiCkCYNTJ9AQFfyRljyz11IAJbp4N
+lyPiNRGYOHoqDlFB6if56djpzWM1aU
+4bgwNeTc8+tNKBJU0Jads2TsQ/h/Pu
+6Liux4vfwzBOR2c4k8a300=
+
+3. Press OK button and re-start the application.
+Enjoy!
