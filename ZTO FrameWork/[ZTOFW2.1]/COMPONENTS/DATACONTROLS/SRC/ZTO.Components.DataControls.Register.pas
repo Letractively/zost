@@ -5,7 +5,7 @@ interface
 uses Classes
    , DesignEditors
    , DesignIntf
-   , ZTO.Components.DataControls.ZTODBGrid;
+   , ZTO.Components.DataControls.DBGrid;
 
 type
   TSortedColumnProperty = class(TStringProperty)

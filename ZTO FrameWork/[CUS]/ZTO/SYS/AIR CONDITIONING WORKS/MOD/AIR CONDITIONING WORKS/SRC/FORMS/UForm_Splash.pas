@@ -77,11 +77,11 @@ end;
 
 procedure TForm_Splash.FormShow(Sender: TObject);
 begin
-  Label_Versao.Caption := FileInformation(Application.ExeName,fiMajorVersion).AsShortString + '.' +
-                          FileInformation(Application.ExeName,fiMinorVersion).AsShortString + '.' +
-                          FileInformation(Application.ExeName,fiRelease).AsShortString;
+  Label_Versao.Caption := FileInformation(Application.ExeName,fiMajorVersion).AsString + '.' +
+                          FileInformation(Application.ExeName,fiMinorVersion).AsString + '.' +
+                          FileInformation(Application.ExeName,fiRelease).AsString;
 
-  Label_Compilacao.Caption := 'Compilação ' + FileInformation(Application.ExeName,fiBuild).AsShortString;
+  Label_Compilacao.Caption := 'Compilação ' + FileInformation(Application.ExeName,fiBuild).AsString;
 end;
 
 end.

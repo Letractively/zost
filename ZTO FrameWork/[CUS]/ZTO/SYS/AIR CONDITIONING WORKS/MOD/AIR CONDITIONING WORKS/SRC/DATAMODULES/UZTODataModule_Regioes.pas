@@ -17,10 +17,10 @@ type
   TZTODataModule_Regioes = class(TZTODataModule_Base)
     REGIOES: TZQuery;
     REGIOESTI_REGIOES_ID: TSmallintField;
-    REGIOESVA_REGIAO: TStringField;
-    REGIOESCH_PREFIXODAPROPOSTA: TStringField;
-    REGIOESVA_PRIMEIRORODAPE: TStringField;
-    REGIOESVA_SEGUNDORODAPE: TStringField;
+    REGIOESVA_REGIAO: TWideStringField;
+    REGIOESCH_PREFIXODAPROPOSTA: TWideStringField;
+    REGIOESVA_PRIMEIRORODAPE: TWideStringField;
+    REGIOESVA_SEGUNDORODAPE: TWideStringField;
     UpdateSQL_REG: TZUpdateSQL;
     DataSource_REG: TDataSource;
     CFDBValidationChecks_REG: TCFDBValidationChecks;

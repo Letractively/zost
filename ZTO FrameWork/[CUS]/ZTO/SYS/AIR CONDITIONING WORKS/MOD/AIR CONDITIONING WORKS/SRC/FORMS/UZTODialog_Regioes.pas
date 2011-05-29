@@ -18,10 +18,10 @@ type
     GroupBox_REG_Filtro: TGroupBox;
     LabeledEdit_REG_VA_REGIAO: TLabeledEdit;
     GroupBox_REG_DadosDaRegiao: TGroupBox;
-    LabeledDBEdit_REG_VA_REGIAO: TLabeledDBEdit;
-    LabeledDBEdit_REG_CH_PREFIXODAPROPOSTA: TLabeledDBEdit;
-    LabeledDBEdit_REG_VA_PRIMEIRORODAPE: TLabeledDBEdit;
-    LabeledDBEdit_REG_VA_SEGUNDORODAPE: TLabeledDBEdit;
+    LabeledDBEdit_REG_VA_REGIAO: TZTOLabeledDBEdit;
+    LabeledDBEdit_REG_CH_PREFIXODAPROPOSTA: TZTOLabeledDBEdit;
+    LabeledDBEdit_REG_VA_PRIMEIRORODAPE: TZTOLabeledDBEdit;
+    LabeledDBEdit_REG_VA_SEGUNDORODAPE: TZTOLabeledDBEdit;
     CFDBGrid_REG: TCFDBGrid;
     ToolBar_DBNavigator: TToolBar;
     ToolButton_First: TToolButton;

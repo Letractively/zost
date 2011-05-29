@@ -7,11 +7,11 @@ uses Classes;
 type
   TScriptPart = class (TCollectionItem)
   private
-    FDelimiter: ShortString;
+    FDelimiter: String;
     FScript: String;
   public
     constructor Create(Collection: TCollection); override;
-    property Delimiter: ShortString read FDelimiter write FDelimiter;
+    property Delimiter: String read FDelimiter write FDelimiter;
     property Script: String read FScript write FScript;
   end;
 

@@ -18,6 +18,9 @@
 			<Projects Include="ZTOCL\PRJ\ZTORegExp.dproj">
 				<Dependencies/>
 			</Projects>
+			<Projects Include="COMPONENTS\WEBAPIWRAPPERS\PRJ\ZTOComponentsWebApiWrappers.dproj">
+				<Dependencies/>
+			</Projects>
 			<Projects Include="COMPONENTS\STANDARD\PRJ\ZTOComponentsStandard.dproj">
 				<Dependencies/>
 			</Projects>
@@ -83,6 +86,15 @@
 		<Target Name="ZTORegExp:Make">
 			<MSBuild Targets="Make" Projects="ZTOCL\PRJ\ZTORegExp.dproj"/>
 		</Target>
+		<Target Name="ZTOComponentsWebApiWrappers">
+			<MSBuild Projects="COMPONENTS\WEBAPIWRAPPERS\PRJ\ZTOComponentsWebApiWrappers.dproj"/>
+		</Target>
+		<Target Name="ZTOComponentsWebApiWrappers:Clean">
+			<MSBuild Targets="Clean" Projects="COMPONENTS\WEBAPIWRAPPERS\PRJ\ZTOComponentsWebApiWrappers.dproj"/>
+		</Target>
+		<Target Name="ZTOComponentsWebApiWrappers:Make">
+			<MSBuild Targets="Make" Projects="COMPONENTS\WEBAPIWRAPPERS\PRJ\ZTOComponentsWebApiWrappers.dproj"/>
+		</Target>
 		<Target Name="ZTOComponentsStandard">
 			<MSBuild Projects="COMPONENTS\STANDARD\PRJ\ZTOComponentsStandard.dproj"/>
 		</Target>
@@ -120,13 +132,13 @@
 			<MSBuild Targets="Make" Projects="FWTESTS\PRJ\ZTOFWTests.dproj"/>
 		</Target>
 		<Target Name="Build">
-			<CallTarget Targets="ZTOToolsAPI;ZTOWin32Db;ZTOWin32Rtl;ZTOCrypt;ZTORegExp;ZTOComponentsStandard;ZTOWizardsFormTemplates;ZTOComponentsDataControls;ZTOFWTests"/>
+			<CallTarget Targets="ZTOToolsAPI;ZTOWin32Db;ZTOWin32Rtl;ZTOCrypt;ZTORegExp;ZTOComponentsWebApiWrappers;ZTOComponentsStandard;ZTOWizardsFormTemplates;ZTOComponentsDataControls;ZTOFWTests"/>
 		</Target>
 		<Target Name="Clean">
-			<CallTarget Targets="ZTOToolsAPI:Clean;ZTOWin32Db:Clean;ZTOWin32Rtl:Clean;ZTOCrypt:Clean;ZTORegExp:Clean;ZTOComponentsStandard:Clean;ZTOWizardsFormTemplates:Clean;ZTOComponentsDataControls:Clean;ZTOFWTests:Clean"/>
+			<CallTarget Targets="ZTOToolsAPI:Clean;ZTOWin32Db:Clean;ZTOWin32Rtl:Clean;ZTOCrypt:Clean;ZTORegExp:Clean;ZTOComponentsWebApiWrappers:Clean;ZTOComponentsStandard:Clean;ZTOWizardsFormTemplates:Clean;ZTOComponentsDataControls:Clean;ZTOFWTests:Clean"/>
 		</Target>
 		<Target Name="Make">
-			<CallTarget Targets="ZTOToolsAPI:Make;ZTOWin32Db:Make;ZTOWin32Rtl:Make;ZTOCrypt:Make;ZTORegExp:Make;ZTOComponentsStandard:Make;ZTOWizardsFormTemplates:Make;ZTOComponentsDataControls:Make;ZTOFWTests:Make"/>
+			<CallTarget Targets="ZTOToolsAPI:Make;ZTOWin32Db:Make;ZTOWin32Rtl:Make;ZTOCrypt:Make;ZTORegExp:Make;ZTOComponentsWebApiWrappers:Make;ZTOComponentsStandard:Make;ZTOWizardsFormTemplates:Make;ZTOComponentsDataControls:Make;ZTOFWTests:Make"/>
 		</Target>
 		<Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
 	</Project>

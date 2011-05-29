@@ -22,8 +22,8 @@
 		<PropertyGroup Condition="'$(Base)'!=''">
 			<DCC_SymbolReferenceInfo>1</DCC_SymbolReferenceInfo>
 			<DCC_ImageBase>00400000</DCC_ImageBase>
-			<DCC_DependencyCheckOutputName>..\..\..\..\..\..\..\..\..\..\..\Public\Documents\RAD Studio\6.0\BPL\ZTOWin32Rtl140.bpl</DCC_DependencyCheckOutputName>
-			<DllSuffix>140</DllSuffix>
+			<DCC_DependencyCheckOutputName>C:\Users\Public\Documents\RAD Studio\6.0\BPL\ZTOWin32Rtl120.bpl</DCC_DependencyCheckOutputName>
+			<DllSuffix>120</DllSuffix>
 			<DesignOnlyPackage>false</DesignOnlyPackage>
 			<RuntimeOnlyPackage>true</RuntimeOnlyPackage>
 			<DCC_UnitAlias>WinTypes=Windows;WinProcs=Windows;DbiTypes=BDE;DbiProcs=BDE;DbiErrs=BDE;$(DCC_UnitAlias)</DCC_UnitAlias>
@@ -55,6 +55,8 @@
 			<DCCReference Include="rtl.dcp"/>
 			<DCCReference Include="vcl.dcp"/>
 			<DCCReference Include="vclimg.dcp"/>
+			<DCCReference Include="xmlrtl.dcp"/>
+			<DCCReference Include="..\SRC\Win32\rtl\common\ZTO.Win32.Rtl.Common.DateUtils.pas"/>
 			<DCCReference Include="..\SRC\Win32\rtl\common\ZTO.Win32.Rtl.Common.FileUtils.pas"/>
 			<DCCReference Include="..\SRC\Win32\rtl\common\ZTO.Win32.Rtl.Common.Classes.pas"/>
 			<DCCReference Include="..\SRC\Win32\rtl\common\ZTO.Win32.Rtl.Common.ComponentUtils.pas"/>
@@ -99,7 +101,7 @@
 						<VersionInfo Name="MajorVer">2</VersionInfo>
 						<VersionInfo Name="MinorVer">1</VersionInfo>
 						<VersionInfo Name="Release">0</VersionInfo>
-						<VersionInfo Name="Build">612</VersionInfo>
+						<VersionInfo Name="Build">648</VersionInfo>
 						<VersionInfo Name="Debug">False</VersionInfo>
 						<VersionInfo Name="PreRelease">False</VersionInfo>
 						<VersionInfo Name="Special">False</VersionInfo>
@@ -111,7 +113,7 @@
 					<VersionInfoKeys>
 						<VersionInfoKeys Name="CompanyName"/>
 						<VersionInfoKeys Name="FileDescription"/>
-						<VersionInfoKeys Name="FileVersion">2.1.0.612</VersionInfoKeys>
+						<VersionInfoKeys Name="FileVersion">2.1.0.648</VersionInfoKeys>
 						<VersionInfoKeys Name="InternalName"/>
 						<VersionInfoKeys Name="LegalCopyright"/>
 						<VersionInfoKeys Name="LegalTrademarks"/>

@@ -2,7 +2,8 @@ program Autoitter;
 
 uses
   Forms,
-  UForm_Principal in '..\SRC\UForm_Principal.pas' {Form_Principal};
+  UForm_Principal in '..\SRC\UForm_Principal.pas' {Form_Principal},
+  UConfiguracoes in '..\SRC\UConfiguracoes.pas';
 
 {$R *.res}
 

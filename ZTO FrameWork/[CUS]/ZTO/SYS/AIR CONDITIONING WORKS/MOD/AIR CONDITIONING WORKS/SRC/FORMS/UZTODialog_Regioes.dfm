@@ -14,7 +14,7 @@ inherited ZTODialog_Regioes: TZTODialog_Regioes
   ZTOProperties.FocusControlOnEdit = LabeledDBEdit_REG_VA_PRIMEIRORODAPE
   ZTOProperties.FocusControlOnInsert = LabeledDBEdit_REG_VA_PRIMEIRORODAPE
   ExplicitWidth = 640
-  ExplicitHeight = 480
+  ExplicitHeight = 476
   PixelsPerInch = 96
   TextHeight = 13
   BorderStyle = bsDialog
@@ -71,7 +71,7 @@ inherited ZTODialog_Regioes: TZTODialog_Regioes
       DesignSize = (
         622
         128)
-      object LabeledDBEdit_REG_VA_REGIAO: TLabeledDBEdit
+      object LabeledDBEdit_REG_VA_REGIAO: TZTOLabeledDBEdit
         Left = 8
         Top = 99
         Width = 85
@@ -88,7 +88,7 @@ inherited ZTODialog_Regioes: TZTODialog_Regioes
         EditLabel.ParentColor = False
         LabelSpacing = 1
       end
-      object LabeledDBEdit_REG_CH_PREFIXODAPROPOSTA: TLabeledDBEdit
+      object LabeledDBEdit_REG_CH_PREFIXODAPROPOSTA: TZTOLabeledDBEdit
         Left = 99
         Top = 99
         Width = 49
@@ -105,7 +105,7 @@ inherited ZTODialog_Regioes: TZTODialog_Regioes
         EditLabel.ParentColor = False
         LabelSpacing = 1
       end
-      object LabeledDBEdit_REG_VA_PRIMEIRORODAPE: TLabeledDBEdit
+      object LabeledDBEdit_REG_VA_PRIMEIRORODAPE: TZTOLabeledDBEdit
         Left = 8
         Top = 27
         Width = 606
@@ -119,7 +119,7 @@ inherited ZTODialog_Regioes: TZTODialog_Regioes
         EditLabel.Caption = 'Primeiro rodap'#233
         LabelSpacing = 1
       end
-      object LabeledDBEdit_REG_VA_SEGUNDORODAPE: TLabeledDBEdit
+      object LabeledDBEdit_REG_VA_SEGUNDORODAPE: TZTOLabeledDBEdit
         Left = 8
         Top = 63
         Width = 606
@@ -146,6 +146,7 @@ inherited ZTODialog_Regioes: TZTODialog_Regioes
       Margins.Right = 6
       Align = alClient
       DataSource = ZTODataModule_Regioes.DataSource_REG
+      DefaultDrawing = False
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -11
@@ -322,7 +323,7 @@ inherited ZTODialog_Regioes: TZTODialog_Regioes
   end
   inherited ImageList_Actions: TImageList
     Bitmap = {
-      494C010110001300040010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010110001300080010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000005000000001002000000000000050
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
