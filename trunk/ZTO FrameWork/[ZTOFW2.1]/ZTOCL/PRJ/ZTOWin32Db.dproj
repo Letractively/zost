@@ -22,8 +22,8 @@
 		<PropertyGroup Condition="'$(Base)'!=''">
 			<DCC_SymbolReferenceInfo>1</DCC_SymbolReferenceInfo>
 			<DCC_ImageBase>00400000</DCC_ImageBase>
-			<DCC_DependencyCheckOutputName>..\..\..\..\..\..\..\..\..\..\..\Public\Documents\RAD Studio\6.0\BPL\ZTOWin32Db140.bpl</DCC_DependencyCheckOutputName>
-			<DllSuffix>140</DllSuffix>
+			<DCC_DependencyCheckOutputName>C:\Users\Public\Documents\RAD Studio\6.0\BPL\ZTOWin32Db120.bpl</DCC_DependencyCheckOutputName>
+			<DllSuffix>120</DllSuffix>
 			<DesignOnlyPackage>false</DesignOnlyPackage>
 			<RuntimeOnlyPackage>true</RuntimeOnlyPackage>
 			<DCC_UnitAlias>WinTypes=Windows;WinProcs=Windows;DbiTypes=BDE;DbiProcs=BDE;DbiErrs=BDE;$(DCC_UnitAlias)</DCC_UnitAlias>
@@ -89,7 +89,7 @@
 						<VersionInfo Name="MajorVer">2</VersionInfo>
 						<VersionInfo Name="MinorVer">1</VersionInfo>
 						<VersionInfo Name="Release">0</VersionInfo>
-						<VersionInfo Name="Build">438</VersionInfo>
+						<VersionInfo Name="Build">457</VersionInfo>
 						<VersionInfo Name="Debug">False</VersionInfo>
 						<VersionInfo Name="PreRelease">False</VersionInfo>
 						<VersionInfo Name="Special">False</VersionInfo>
@@ -101,7 +101,7 @@
 					<VersionInfoKeys>
 						<VersionInfoKeys Name="CompanyName"/>
 						<VersionInfoKeys Name="FileDescription"/>
-						<VersionInfoKeys Name="FileVersion">2.1.0.438</VersionInfoKeys>
+						<VersionInfoKeys Name="FileVersion">2.1.0.457</VersionInfoKeys>
 						<VersionInfoKeys Name="InternalName"/>
 						<VersionInfoKeys Name="LegalCopyright"/>
 						<VersionInfoKeys Name="LegalTrademarks"/>
@@ -111,10 +111,7 @@
 						<VersionInfoKeys Name="Comments"/>
 						<VersionInfoKeys Name="LastCompiledTime">17/07/2010 13:09:51</VersionInfoKeys>
 					</VersionInfoKeys>
-					<Excluded_Packages>
-						<Excluded_Packages Name="C:\Backup 007\Tutoriais e projetos\Projetos\Delphi\Projetos {datacurta}\ZTO FrameWork\[ZTOFW2.1]\WIZARDS\FORMTEMPLATES\BIN\BPL\ZTOWizardsFormTemplates.bpl">ZTO Form &amp; DataModule Templates</Excluded_Packages>
-						<Excluded_Packages Name="C:\Documents and Settings\Ðerek Wildstar\Meus documentos\Borland Studio Projects\Bpl\ZTOComponentsStandard.bpl">ZTO Standard Components</Excluded_Packages>
-					</Excluded_Packages>
+					<Excluded_Packages/>
 				</Delphi.Personality>
 			</BorlandProject>
 			<ProjectFileVersion>12</ProjectFileVersion>

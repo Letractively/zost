@@ -71,7 +71,7 @@ begin
                                  ,sseBeforeSplit
                                  ,aScriptParts);
 
-        Statement      := Statements[i];
+        Statement      := String(Statements[i]);
         SpacePostion   := Pos(#32,Statement);
         ReturnPosition := Pos(#13,Statement);
 

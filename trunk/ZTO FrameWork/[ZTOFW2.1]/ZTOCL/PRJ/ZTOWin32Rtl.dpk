@@ -23,14 +23,15 @@ package ZTOWin32Rtl;
 {$MINENUMSIZE 1}
 {$IMAGEBASE $400000}
 {$DESCRIPTION 'ZTO Runtime Library'}
-{$LIBSUFFIX '140'}
+{$LIBSUFFIX '120'}
 {$RUNONLY}
 {$IMPLICITBUILD OFF}
 
 requires
   rtl,
   vcl,
-  vclimg;
+  vclimg,
+  xmlrtl;
 
 contains
   ZTO.Win32.Rtl.Common.DateUtils in '..\SRC\Win32\rtl\common\ZTO.Win32.Rtl.Common.DateUtils.pas',

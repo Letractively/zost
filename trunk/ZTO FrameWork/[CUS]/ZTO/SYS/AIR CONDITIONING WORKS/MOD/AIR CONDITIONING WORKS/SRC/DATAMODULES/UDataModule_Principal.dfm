@@ -8,6 +8,7 @@ object DataModule_Principal: TDataModule_Principal
     Hint = 'O Air Conditioning Works est'#225' em execu'#231#227'o'
     BalloonHint = 'Para come'#231'ar, clique com o bot'#227'o direito do mouse neste '#237'cone'
     BalloonTitle = 'Seja bem vindo ao Air Conditioning Works!'
+    BalloonTimeout = 5000
     BalloonFlags = bfInfo
     Icon.Data = {
       0000010003002020000001001800A80C00003600000010100000010018006803

@@ -4,13 +4,17 @@ unit ZTO.Win32.Rtl.Common.NetworkUtils;
 
 interface
 
+uses SysUtils;
+
 function GetLocalHostName: AnsiString;
 function GetIPAddress(aHostName, aPort: AnsiString): AnsiString;
+function DownloadFile(aRemoteFile, aLocaFile: TFileName): Boolean;
 
 implementation
 
 uses WinSock
-   , Windows;
+   , Windows
+   , URLMon;
 
 type
   Paddrinfo = ^Taddrinfo;
@@ -89,5 +93,15 @@ begin
       WSACleanup;
     end;
 end;
+
+function DownloadFile(aRemoteFile, aLocaFile: TFileName): Boolean;
+begin
+  try
+    Result :=  UrlDownloadToFile(nil, PChar(aRemoteFile), PChar(aLocaFile), 0, nil) = 0;
+  except
+    Result := False;
+  end;
+end;
+
 
 end.

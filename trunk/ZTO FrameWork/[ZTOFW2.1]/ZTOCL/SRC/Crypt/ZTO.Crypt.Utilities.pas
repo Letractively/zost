@@ -21,7 +21,7 @@ uses ZTO.Crypt.Hashes.Haval
    , ZTO.Crypt.Hashes.Sha256
    , ZTO.Crypt.Hashes.Sha512
    , ZTO.Crypt.Hashes.tiger
-   , Sysutils;
+   , SysUtils;
 
 function GetStringCheckSum(const aInputString       : String;
                                  aHashAlgorithms    : THashAlgorithms;

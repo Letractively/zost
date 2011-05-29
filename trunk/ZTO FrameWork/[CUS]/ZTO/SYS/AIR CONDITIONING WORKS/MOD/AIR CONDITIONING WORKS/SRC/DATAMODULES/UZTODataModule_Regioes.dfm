@@ -23,26 +23,26 @@ inherited ZTODataModule_Regioes: TZTODataModule_Regioes
     object REGIOESTI_REGIOES_ID: TSmallintField
       FieldName = 'TI_REGIOES_ID'
     end
-    object REGIOESVA_REGIAO: TStringField
+    object REGIOESVA_REGIAO: TWideStringField
       Alignment = taCenter
       FieldName = 'VA_REGIAO'
       Required = True
       Size = 8
     end
-    object REGIOESCH_PREFIXODAPROPOSTA: TStringField
+    object REGIOESCH_PREFIXODAPROPOSTA: TWideStringField
       Alignment = taCenter
       DisplayWidth = 4
       FieldName = 'CH_PREFIXODAPROPOSTA'
       Required = True
       Size = 4
     end
-    object REGIOESVA_PRIMEIRORODAPE: TStringField
+    object REGIOESVA_PRIMEIRORODAPE: TWideStringField
       Alignment = taCenter
       FieldName = 'VA_PRIMEIRORODAPE'
       Required = True
       Size = 255
     end
-    object REGIOESVA_SEGUNDORODAPE: TStringField
+    object REGIOESVA_SEGUNDORODAPE: TWideStringField
       Alignment = taCenter
       FieldName = 'VA_SEGUNDORODAPE'
       Required = True

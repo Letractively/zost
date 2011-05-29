@@ -8,7 +8,8 @@ uses
   Windows, SysUtils, Classes, Controls, Forms, ExtCtrls,
   Menus, ActnPopup, ActnList, ZConnection, DB, ZAbstractRODataset, ZDataset,
   Sys.Lib.Zeos.Types, Sys.Lib.Types, ZSqlProcessor, UZTODataModule_Regioes,
-  UBalloonToolTip, ZTO.Components.Standard.HotSpots, ZTO.Wizards.FormTemplates.DataModule;
+  UBalloonToolTip, ZTO.Components.Standard.HotSpots, ZTO.Wizards.FormTemplates.DataModule,
+  PlatformDefaultStyleActnCtrls;
 
 type
   TDataModule_Principal = class(TDataModule)
@@ -57,7 +58,7 @@ type
     procedure CancelAllOperations;
   protected
     { Declarações protegidas }
-    FDiretorioAtual: ShortString;
+    FDiretorioAtual: String;
   public
     { Declarações públicas }
   end;

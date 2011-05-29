@@ -22,8 +22,8 @@
 		<PropertyGroup Condition="'$(Base)'!=''">
 			<DCC_SymbolReferenceInfo>1</DCC_SymbolReferenceInfo>
 			<DCC_ImageBase>00400000</DCC_ImageBase>
-			<DCC_DependencyCheckOutputName>C:\Documents and Settings\All Users\Documentos\RAD Studio\6.0\BPL\ZTORegExp140.bpl</DCC_DependencyCheckOutputName>
-			<DllSuffix>140</DllSuffix>
+			<DCC_DependencyCheckOutputName>C:\Users\Public\Documents\RAD Studio\6.0\BPL\ZTORegExp120.bpl</DCC_DependencyCheckOutputName>
+			<DllSuffix>120</DllSuffix>
 			<DesignOnlyPackage>false</DesignOnlyPackage>
 			<RuntimeOnlyPackage>true</RuntimeOnlyPackage>
 			<DCC_UnitAlias>WinTypes=Windows;WinProcs=Windows;DbiTypes=BDE;DbiProcs=BDE;DbiErrs=BDE;$(DCC_UnitAlias)</DCC_UnitAlias>
@@ -109,10 +109,7 @@
 						<VersionInfoKeys Name="Comments"/>
 						<VersionInfoKeys Name="LastCompiledTime">17/07/2010 13:40:17</VersionInfoKeys>
 					</VersionInfoKeys>
-					<Excluded_Packages>
-						<Excluded_Packages Name="$(BDS)\bin\dcloffice2k140.bpl">Microsoft Office 2000 Sample Automation Server Wrapper Components</Excluded_Packages>
-						<Excluded_Packages Name="$(BDS)\bin\dclofficexp140.bpl">Microsoft Office XP Sample Automation Server Wrapper Components</Excluded_Packages>
-					</Excluded_Packages>
+					<Excluded_Packages/>
 				</Delphi.Personality>
 			</BorlandProject>
 			<ProjectFileVersion>12</ProjectFileVersion>
