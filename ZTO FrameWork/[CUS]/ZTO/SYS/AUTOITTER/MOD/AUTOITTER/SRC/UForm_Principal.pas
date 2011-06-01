@@ -60,6 +60,9 @@ type
     Button_EnviarMensagem: TButton;
     Label_CaracteresRestantesMensagemAvulsa: TLabel;
     OpenDialog_Mensagens: TOpenDialog;
+    GroupBox_Twitter: TGroupBox;
+    LabeledEdit_IntervaloEntreTweets: TLabeledEdit;
+    Label1: TLabel;
     procedure Edit_AdicionarMensagemChange(Sender: TObject);
     procedure Button_EnviarMensagemClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -132,6 +135,8 @@ begin
       FConfiguracoes.ProxyUsername := Twitter_Acesso.ProxyUsername;
 
       FConfiguracoes.MensagensAutomaticas.Assign(ListBox_ListaDeMensagens.Items);
+
+      FConfiguracoes.IntervaloEntreTweets := StrToInt(LabeledEdit_IntervaloEntreTweets.Text);
     end;
     acDoObjeto: begin
       Twitter_Acesso.IdentifyUser(FConfiguracoes.AccessToken,FConfiguracoes.AccessTokenSecret);
@@ -155,6 +160,8 @@ begin
       LabeledEdit_ProxyUsername.Text := Twitter_Acesso.ProxyUsername;
 
       ListBox_ListaDeMensagens.Items.Assign(FConfiguracoes.MensagensAutomaticas);
+
+      LabeledEdit_IntervaloEntreTweets.Text := IntToStr(FConfiguracoes.IntervaloEntreTweets);
     end;
   end;
 end;
@@ -212,13 +219,19 @@ begin
     TButton(Sender).Caption := 'Desativar Autoitter';
     MessageIndex := 0;
     SendTweet;
-    SetTimer(Handle,TIMERID,5000,@DoTimer)
+    SetTimer(Handle,TIMERID,FConfiguracoes.IntervaloEntreTweets * 1000,@DoTimer)
   end
   else
   begin
     TButton(Sender).Caption := 'Ativar Autoitter';
     KillTimer(Handle,TIMERID);
   end;
+
+  Edit_AdicionarMensagem.Enabled := TButton(Sender).Caption = 'Ativar Autoitter';
+  Button_AdicionarMensagem.Enabled := TButton(Sender).Caption = 'Ativar Autoitter';
+  ListBox_ListaDeMensagens.Enabled := TButton(Sender).Caption = 'Ativar Autoitter';
+  TabSheet_MensagensAvulsas.TabVisible := TButton(Sender).Caption = 'Ativar Autoitter';
+  TabSheet_Configuracoes.TabVisible := TButton(Sender).Caption = 'Ativar Autoitter';
 end;
 
 procedure TForm_Principal.Button_CarregarMensagensClick(Sender: TObject);
