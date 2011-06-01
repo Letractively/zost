@@ -1,6 +1,7 @@
 object Form_Principal: TForm_Principal
   Left = 0
   Top = 0
+  BorderIcons = [biSystemMenu, biMinimize, biHelp]
   BorderStyle = bsSingle
   Caption = 'Autoitter'
   ClientHeight = 364
@@ -463,6 +464,7 @@ object Form_Principal: TForm_Principal
         Margins.Left = 4
         Margins.Top = 0
         Margins.Right = 6
+        Margins.Bottom = 1
         Align = alTop
         Caption = ' Proxy '
         TabOrder = 0
@@ -539,32 +541,71 @@ object Form_Principal: TForm_Principal
         end
       end
       object Button_SalvarConfiguracoes: TButton
-        Left = 3
-        Top = 63
+        Left = 4
+        Top = 121
         Width = 126
         Height = 25
         Caption = 'Salvar Configura'#231#245'es'
         TabOrder = 1
         OnClick = Button_SalvarConfiguracoesClick
       end
+      object GroupBox_Twitter: TGroupBox
+        AlignWithMargins = True
+        Left = 4
+        Top = 58
+        Width = 776
+        Height = 57
+        Margins.Left = 4
+        Margins.Top = 0
+        Margins.Right = 6
+        Align = alTop
+        Caption = ' Autoitter '
+        TabOrder = 2
+        object LabeledEdit_IntervaloEntreTweets: TLabeledEdit
+          Left = 8
+          Top = 27
+          Width = 127
+          Height = 21
+          EditLabel.Width = 127
+          EditLabel.Height = 13
+          EditLabel.Caption = 'Intervalo entre Tweets (s)'
+          LabelSpacing = 1
+          NumbersOnly = True
+          TabOrder = 0
+        end
+      end
     end
     object TabSheet_Sobre: TTabSheet
       Caption = 'Sobre o Autoitter'
       ImageIndex = 2
+      object Label1: TLabel
+        Left = 0
+        Top = 0
+        Width = 786
+        Height = 26
+        Align = alTop
+        Alignment = taCenter
+        Caption = 
+          'Desenvolvido por Carlos Barreto Feitoza Filho em maio de 2011. '#201 +
+          ' claro que eu tenho os fontes. Caso voc'#234' queira, vai ter que imp' +
+          'lorar. N'#227'o forne'#231'o fontes a programadores Java e ponto final.'
+        WordWrap = True
+        ExplicitWidth = 758
+      end
     end
   end
   object Twitter_Acesso: TTwitter
     OnTwitterRequestDone = Twitter_AcessoTwitterRequestDone
     ProxyAuth = httpAuthNone
     ProxyPort = '80'
-    Left = 48
-    Top = 120
+    Left = 176
+    Top = 192
   end
   object OpenDialog_Mensagens: TOpenDialog
     DefaultExt = 'txt'
     Filter = 'Arquivo de mensagens (*.txt)|*.txt'
     Options = [ofReadOnly, ofHideReadOnly, ofExtensionDifferent, ofPathMustExist, ofFileMustExist, ofEnableSizing]
-    Left = 48
-    Top = 168
+    Left = 224
+    Top = 192
   end
 end
