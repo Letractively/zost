@@ -1,0 +1,47 @@
+<div id="Layer1" style="position:botton; left:381px; top:204px; width:281px; height:19px; z-index:1">
+<script language="Javascript1.2">
+
+
+if(navigator.appName == "Netscape") {
+document.write('<layer id="clock"></layer><br>');
+}
+
+if (navigator.appVersion.indexOf("MSIE") != -1){
+document.write('<span id="clock"></span><br>');
+}
+
+function upclock(){
+var hoje   = new Date();
+var hrs = hoje.getHours();
+var min = hoje.getMinutes();
+var sec = hoje.getSeconds();
+var col = ":";
+var spc = " ";
+var barra = "/";
+var tco = "-";
+var meses  = new Array("01","02","03","04","05","06","07","08","09","10","11","12");
+var diadasemana = new Array("Domingo","Segunda-Feira","Terça-Feira","Quarta-Feira","Quinta-Feira","Sexta-Feira","Sábado");
+var mes    = meses[hoje.getMonth()];
+var ano    = (hoje.getYear() + 0);
+var semana = diadasemana[hoje.getDay()];
+var dia    = hoje.getDate();
+if (hrs  <= "23") var daytime = "Tenha uma boa noite";
+if (hrs  <= "18") var daytime = "Tenha uma boa tarde";
+if (hrs  <= "12") var daytime = "Tenha um bom dia ";
+if (hrs  <= "6") var daytime = "Ainda acordado?!?!?!?!";
+if (min   <= "9")  min = "0"+min;
+if (dia   <= "9")  dia = "0"+dia;
+if (sec   <= "9")  sec = "0"+sec;
+
+if(navigator.appName == "Netscape") {
+document.clock.document.write(dia+barra+mes+barra+ano+spc+tco+spc+hrs+col+min+col+sec+spc+tco+spc+daytime);
+document.clock.document.close();
+}
+
+if (navigator.appVersion.indexOf("MSIE") != -1){
+clock.innerHTML = dia+barra+mes+barra+ano+spc+tco+spc+hrs+col+min+col+sec+spc+tco+spc+semana+" "+daytime;
+}
+}
+
+setInterval("upclock()",1000);
+                          </script></div>

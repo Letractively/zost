@@ -1,0 +1,32 @@
+a.menu{
+width: 150;
+background-color: #efefef;
+display:block;
+padding-left:1px;
+border-left:10px solid #333333;
+border-bottom:1px solid #BBBBBB;
+font-weight:bold;
+color:#666666;
+line-height:175%; }
+
+a.menu:hover{
+background-color: #e3eeff;
+display:block;
+padding-left:0;
+font-weight:bold;
+border-left:10px solid #333333;
+border-bottom:1px solid #006699;
+color:#006699; }
+
+a.Layer1{
+ position:rigth;
+ left:1px;
+ top:1px;
+ width:281px;
+ height:19px;
+ z-index:1;
+ 
+
+
+}
+
