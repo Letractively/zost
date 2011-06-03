@@ -1,8 +1,7 @@
 body {
   text-align: center;
-  margin: 0px;
+  margin: 1px;
   background-repeat: repeat-x;
-
 }
 
 div.site {
@@ -11,13 +10,13 @@ div.site {
 }
 
 div.cabecalho {
-  height: 50px;
+  height: 45px;
   background-repeat: repeat-x;
   text-align: center;
 }
 
 div.menu {
-  height: 41px;
+  height: 25px;
   background-repeat: repeat-x;
   background-position: 0px -120px;
 }
@@ -32,6 +31,7 @@ div.propagandas {
 }
 
 div.conteudo {
+
 }
 
 div.rodape {
@@ -60,3 +60,6 @@ a.menuitem {
 a.menuitem:hover {
   color: #FFFFFF;
 }
+
+
+

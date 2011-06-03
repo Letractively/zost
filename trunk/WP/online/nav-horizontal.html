@@ -1,0 +1,69 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>bernarddeluna.com - menu horizontal</title>
+<style type="text/css">
+
+/* CSS RESET */
+* {margin:0; padding:0; border:0; list-style: none;text-decoration:none;}
+/* corrigindo bug do firefox para o bloco pai contemplar os filhos */
+div:after, ol:after, form:after, ul:after, li:after {content:".";display:block;clear:both;visibility:hidden;height:0;overflow:hidden;}
+
+
+.nav {
+/* não engessar a altura */
+height: 100%;
+
+/* definindo o fundo */
+background: #198aac url(bg-nav.jpg) repeat left top;
+
+font: normal 20px/1em Arial, Helvetica, sans-serif;
+
+margin-top:100px;
+}
+
+.nav li {
+	float:left;
+	margin-right:1px;
+	height: 100%;
+}
+
+.nav li a {
+	/* transforma o a que é uma tag inline em uma tag block */
+	display: block;	
+	
+	/* mesmo conceito já explicado no menu */
+	height:100%;
+	
+	/* espaçamento interno de 10px */
+	padding:10px;
+	
+	/* coloco o item sem cor de fundo e uma imagem (degradee transparent para o branco 30% transparente) para se repetir horizontalmente */
+	background: transparent url(bg-nav-item.png) repeat-x left bottom;
+	
+	/* defino a cor do link branca */
+	color:#fff;
+	
+	position:relative;
+}
+.nav li a:hover, .nav li.active a {	
+	/* coloco uma borda superior de 3 pixels */
+	border-top:3px solid #71c417;
+	
+	/* por causa da borda o objeto se desloca 3px para baixo, o margin-top negativo faz o item retornar a sua posição inicial */
+	margin-top:-3px;
+	
+	background: transparent url(bg-nav-item-ativo.png) repeat-x left bottom;
+}
+</style>
+</head>
+<body>
+<ul class="nav">
+  <li><a href="#" title="Home">Home</a></li>
+  <li class="active"><a href="#" title="Perfil">Perfil</a></li>
+  <li><a href="#" title="Interesses">Interesses</a></li>
+  <li><a href="#" title="Contato">Contato</a></li>
+</ul>
+</body>
+</html>
