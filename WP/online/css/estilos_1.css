@@ -1,0 +1,133 @@
+/* CSS RESET */
+* {margin:1; padding:10; border:1; list-style: none;text-decoration:none;}
+/* corrigindo bug do firefox para o bloco pai contemplar os filhos */
+div:after, ol:after, form:after, ul:after, li:after {content:".";display:block;clear:both;visibility:hidden;height:0;overflow:hidden;}
+
+body {
+  text-align: center;
+  margin: 1px;
+  background-repeat: repeat-x;
+}
+
+
+.nav {
+/* não engessar a altura */
+height: 100%;
+
+/* definindo o fundo */
+background: #198aac url(bg-nav.jpg) repeat left top;
+
+font: normal 15px/1em Arial, Helvetica, sans-serif;
+
+margin-top:5px;
+}
+
+.nav li {
+	float:Left;
+	margin-right:50px;
+	margin-left:5px;
+	height: 85%;
+}
+
+.nav li a {
+	/* transforma o a que é uma tag inline em uma tag block */
+	display: block;
+
+	/* mesmo conceito já explicado no menu */
+	height:100%;
+
+	/* espaçamento interno de 10px */
+	padding:10px;
+
+	/* coloco o item sem cor de fundo e uma imagem (degradee transparent para o branco 30% transparente) para se repetir horizontalmente */
+	background: transparent url(bg-nav-item.png) repeat-x left bottom;
+
+	/* defino a cor do link branca */
+	color:#fff;
+
+	position:relative;
+}
+.nav li a:hover, .nav li.active a {
+	/* coloco uma borda superior de 3 pixels */
+	border-top:3px solid #71c417;
+
+	/* por causa da borda o objeto se desloca 3px para baixo, o margin-top negativo faz o item retornar a sua posição inicial */
+	margin-top:-3px;
+
+	background: transparent url(bg-nav-item-ativo.png) repeat-x left bottom;
+}
+
+div.site {
+  margin: 0px auto 0px auto;
+  width: 100%;
+}
+
+div.cabecalho {
+  height: 200px;
+  background-repeat: repeat-x;
+  text-align: center;
+}
+
+div.menu {
+  height: 105px;
+  background-repeat: repeat-x;
+  background-position: 0px -120px;
+
+}
+
+div.propagandas {
+  height: 200px;
+  background-image: url("../img/azul_wbarra.png");
+  background-repeat: repeat-x;
+  background-position: botton;
+  margin: 0px auto 0px auto;
+
+}
+
+div.conteudo {
+  height: 200px;
+  background-repeat: repeat-x;
+  background-position: 0px -120px;
+margin: 0;
+padding:0;
+list-style-type: none;
+
+  }
+
+div.rodape {
+  height: 100px;
+/*  background-color: gray;*/
+margin: 0;
+padding:0;
+list-style-type: none;
+  }
+
+ul#menu {
+  width:200px;
+  border:0px solid #003399;
+ /*background:#FADE8B;*/
+  margin:0;
+  padding:0;
+  list-style-type:none;
+}
+
+ul#menu li {
+  /*border-bottom:1px solid #A4A0F5;*/
+}
+
+ul#menu li a:link, ul#menu li a:visited {
+  display:block;
+  height:1%;
+  text-decoration:none;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+  font-size:14px;
+  /*color:#5E0F50;*/
+ /* border-left:10px solid #EEC591;*/
+  padding-left:5px;
+}
+
+ul#menu li a:hover {
+ /* background-color: #FFE4B5;*/
+ /* color:#DAA520;*/
+ /*border-left:10px solid #FFD39B;*/
+}

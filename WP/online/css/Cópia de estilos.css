@@ -1,0 +1,65 @@
+body {
+  text-align: center;
+  margin: 0px;
+  background-image: url("../img/fundocabecalho.png");
+  background-repeat: repeat-x;
+
+}
+
+div.site {
+  margin: 0px auto 0px auto;
+  width: 100%;
+}
+
+div.cabecalho {
+  height: 120px;
+  background-image: url("../img/fundocabecalho.png");
+  background-repeat: repeat-x;
+  text-align: center;
+}
+
+div.menu {
+  height: 41px;
+  background-image: url("../img/fundocabecalho.png");
+  background-repeat: repeat-x;
+  background-position: 0px -120px;
+}
+
+div.propagandas {
+  height: 110px;
+  background-image: url("../img/fundocabecalho.png");
+  background-repeat: repeat-x;
+  background-position: botton;
+  margin: 0px auto 0px auto;
+
+}
+
+div.conteudo {
+}
+
+div.rodape {
+ /* height: 50px;
+  background-color: gray;*/
+
+}
+p {
+  text-align: justify;
+}
+
+p:first-letter {
+  margin-left: 1.5cm;
+}
+
+a.menuitem {
+  line-height: 37px;
+  font-family: sans-serif;
+  font-size: 11pt;
+  text-decoration: none;
+  color: #C0C0C0;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+a.menuitem:hover {
+  color: #FFFFFF;
+}
