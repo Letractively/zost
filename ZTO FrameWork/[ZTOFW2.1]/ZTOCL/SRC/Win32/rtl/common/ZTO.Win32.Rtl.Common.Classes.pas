@@ -29,20 +29,32 @@ type
                        const aParameterName: ShortString;
                        const aMsg          : String);
 
-  	property RoutineName  : ShortString read FRoutineName;
-  	property ParameterName: ShortString read FParameterName;
+    property RoutineName  : ShortString read FRoutineName;
+    property ParameterName: ShortString read FParameterName;
   end;
 
-	{ Main class Object File. All file structures must inherit it }
-	{ Cada subclasse na estrutura de arquivo deve ser derivada de }
-	{ TPersistent. TCollection e TCollectionItem, p.e., são       }
-	TObjectFile = class(TComponent)
+  EInvalidArgumentData = class(Exception);
+
+  { A função não lançou nenhuma exceção, mas internamente uma condição de erro
+  foi verificada e por isso o retorno da função não é válido }
+  EUnexpectedInformation = class(Exception);
+
+  ENoPermission = class(Exception);
+
+  { Main class Object File. All file structures must inherit it }
+  { Cada subclasse na estrutura de arquivo deve ser derivada de }
+  { TPersistent. TCollection e TCollectionItem, p.e., são       }
+  TObjectFile = class(TComponent)
   private
   protected
   public
     procedure LoadFromBinaryFile(const aFileName: TFileName);
     procedure LoadFromTextualRepresentation(const aTextualRepresentation: String);
     procedure SaveToBinaryFile(const aFileName: TFileName);
+    { TODO : Criar um metodo publico "SaveBinary" e "SaveText" que usa um campo
+    interno do objeto com o nome de arquivo para salvar usando savetobinaryfile.
+    O campo é preenchido após usar um método Load qualqer e só é limpo com outro
+    método chamado close, que limpa o objeto e limpa a variavel }
     function ToString: String; override;
     function ToXML: String;
   end;
@@ -250,6 +262,16 @@ type
   function MethodToProcedure(aSelf         : TObject;
                              aMethodAddress: Pointer): Pointer; overload;
   function MethodToProcedure(aMethod: TMethod): Pointer; overload;
+
+resourcestring
+  RS_INVALID_ARGUMENT_DATA = 'O parâmetro "%s" está correto quanto ao tipo, mas seus dados não são compatíveis com o método. %s';
+  RS_INVALID_PARAMETER = 'Erro nos dados de um dos parâmetros do método %s.'#13#10#13#10'%s';
+  RS_EXCEPTION = 'Erro desconhecido no método %s. É preciso uma depuração mais detalhada.'#13#10#13#10'%s';
+  RS_ACCESS_VIOLATION = 'Houve um erro de violação de acesso no método %s.'#13#10#13#10'%s';
+  RS_UNEXPECTED_INFORMATION = 'O método obteve internamente uma informação inesperada. %s';
+  RS_ONLY_SELECT_ALLOWED = 'Apenas comandos SQL do tipo SELECT ou SHOW são aceitos';
+//	RS_PAGECHANGENOTALLOWEDNOW = 'Não é possível alternar entre páginas enquanto a operação de inserção/edição atual não tiver sido concluída ou cancelada. Termine a operação atual ou cancele-a para poder mudar de página';
+//	RS_ACTIONNOTALLOWEDNOW = 'Ação não permitida no momento';
 
 implementation
 
