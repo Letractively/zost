@@ -8,7 +8,8 @@ uses SysUtils
    , Sys.Lib.Zeos.Types
    , Sys.Lib.Types
    , ZConnection
-   , ZSQLProcessor;
+   , ZSQLProcessor
+   , ZDataset;
 
 procedure MySQLExecuteScriptFile(const aZConnection          : TZConnection;
                                  const aSQLScriptFile        : TFileName;
@@ -20,11 +21,21 @@ procedure MySQLExecuteScriptText(const aZConnection          : TZConnection;
                                  const aExecuteScriptCallBack: TExecuteScriptCallBack = nil;
                                  const aSplitScriptCallBack  : TSplitScriptCallBack   = nil);
 
+procedure MySQLDataSetConfigure(const aZConnection      : TZConnection;
+                                var   aDataSet          : TZReadOnlyQuery;
+                                      aSQLCommand       : String;
+                                const aAutoCreateDataSet: Boolean = True);
+
 implementation
 
 uses Forms
    , Controls
-   , ZScriptParser;
+   , ZScriptParser
+   , ZDBCIntfs;
+
+resourcestring
+  RS_EZDE = 'Erro ao tentar conectar-se com o banco de dados no método %s.'#13#10#13#10'%s';
+  RS_EZSE = 'Erro ao executar as instruções SQL com o método %s.'#13#10#13#10'%s';
 
 procedure SplitScript(const aZSQLProcessor         : TZSQLProcessor;
                       const aScriptParts           : TScriptParts;
@@ -205,6 +216,73 @@ begin
                         ,aExecuteScriptCallBack
                         ,aSplitScriptCallBack);
 end;
+
+procedure MySQLDataSetConfigure(const aZConnection      : TZConnection;
+                                var   aDataSet          : TZReadOnlyQuery;
+                                      aSQLCommand       : String;
+                                const aAutoCreateDataSet: Boolean = True);
+begin
+  aSQLCommand := Trim(UpperCase(aSQLCommand));
+
+  { Colocando em minúsculo aquilo que tem de ser minúsculo }
+  aSQLCommand := StringReplace(aSQLCommand,'\R','\r',[rfReplaceAll]);
+  aSQLCommand := StringReplace(aSQLCommand,'\N','\n',[rfReplaceAll]);
+
+  try
+    try
+      if (Pos('SELECT',aSQLCommand) <> 1) and (Pos('SHOW',aSQLCommand) <> 1) then
+        raise EInvalidArgumentData.CreateFmt(RS_INVALID_ARGUMENT_DATA,['aSQLCommand',RS_ONLY_SELECT_ALLOWED]);
+
+      if aAutoCreateDataSet then
+      begin
+        if Assigned(aDataSet) then
+          aDataSet.Free;
+
+        aDataSet := TZReadOnlyQuery.Create(aZConnection);
+      end;
+
+      if Assigned(aDataSet) then
+        with aDataSet do
+        begin
+          Close;
+          Connection := aZConnection;
+          SQL.Text := aSQLCommand;
+          Open;
+        end;
+
+    except
+      on EAV: EAccessViolation do
+      begin
+        EAV.Message := Format(RS_ACCESS_VIOLATION,['MySQLDataSetConfigure',EAV.Message]);
+        raise;
+      end;
+
+      on EZSE: EZSQLException do
+      begin
+        EZSE.Message := Format(RS_EZSE,['MySQLDataSetConfigure',EZSE.Message]);
+        raise;
+      end;
+
+      on EIAD: EInvalidArgumentData do
+      begin
+        EIAD.Message := Format(RS_INVALID_ARGUMENT_DATA,['MySQLDataSetConfigure',EIAD.Message]);
+        raise;
+      end;
+
+      on E: Exception do
+      begin
+        E.Message := Format(RS_EXCEPTION,['MySQLDataSetConfigure',E.Message]);
+        raise;
+      end;
+    end;
+  finally
+  	{ Não adianta ter um dataset construído se ele não sair deste
+    procedimento ativado, por isso aqui nós destruímos }
+   if Assigned(aDataSet) and not aDataSet.Active then
+      FreeAndNil(aDataSet);
+  end;
+end;
+
 
 end.
 
