@@ -27,7 +27,7 @@ implementation
 
 uses SysUtils
    , ZTO.Win32.Rtl.Common.Classes
-   , Sys.Lib.Zeos.MySQL.Utils;
+   , ZTO.Win32.Db.ZeosLib.MySQL.Utils;
 
 const
 	SQL_SELECT_LOGIN =
@@ -68,59 +68,18 @@ begin
                                  ,aConfiguracoes.CampoSenha
                                  ,aConfiguracoes.TabelaDeUsuarios]));
 
+    ZTODialog_Login.DataSource_USU.DataSet := USUARIOS;
+
     Result := ZTODialog_Login.ShowModal;
 
     if Result = mrOk then
-    begin
-  //   	SetMySQLUserVariable(aZConnection,'CURRENTLOGGEDUSER',FConfigurations.AuthenticatedUser.Id);
-    end;
+     	MySQLSetUserVariable(aConexao,'CURRENTLOGGEDUSER',aConfiguracoes.UltimoID);
+
   finally
     ZTODialog_Login.Close;
     ZTODialog_Login := nil;
   end;
 end;
-
-
-//	{$IFNDEF LOGINBYPASS}
-//	Result := False;
-//    {$ELSE}
-//    Result := True;
-//    Exit;
-//    {$ENDIF}
-//
-//    try
-//		with FConfigurations do
-//        	try
-//            	ZReadOnlyQuery := nil;
-//                ConfigureDataSet(aZConnection
-//                                ,ZReadOnlyQuery
-//                                ,AnsiString(Format(SQL_SELECT_LOGIN
-//                                       ,[UserTableKeyFieldName
-//                                        ,UserTableRealNameFieldName
-//                                        ,UserTableUserNameFieldName
-//                                        ,UserTablePasswordFieldName
-//                                        ,UserTableTableName
-//                                        ]
-//                                       ))
-//                                );
-//
-//                Form_Login := TXXXForm_Login.Create(Self,Form_Login,FConfigurations);
-//                Form_Login.LoginDataSource.DataSet := ZReadOnlyQuery;
-//                Form_Login.ExpandedMode := aExpandedMode;
-//
-//                Result := Form_Login.ShowModal = mrOk;
-//                if Result then
-//                	SetMySQLUserVariable(aZConnection,'CURRENTLOGGEDUSER',FConfigurations.AuthenticatedUser.Id);
-//            except
-//            	{ O único erro que pode dar aqui é por nomes de campo incorretos }
-//            	NeedsGeneralConfiguration := True;
-//                raise;
-//            end;
-//    finally
-//    	FreeAndNil(ZReadOnlyQuery);
-//        Form_Login.Free;
-//    end;
-
 
 
 end.

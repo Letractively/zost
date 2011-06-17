@@ -7,8 +7,9 @@ interface
 uses
   Windows, SysUtils, Classes, Controls, Forms, ExtCtrls,
   Menus, ActnPopup, ActnList, ZConnection, DB, ZAbstractRODataset, ZDataset,
-  Sys.Lib.Zeos.Types, Sys.Lib.Types, ZSqlProcessor, UBalloonToolTip,
-  ZTO.Wizards.FormTemplates.DataModule, PlatformDefaultStyleActnCtrls,
+  ZSqlProcessor, UBalloonToolTip,
+  ZTO.Wizards.FormTemplates.DataModule, ZTO.Win32.Db.ZeosLib.MySQL.Utils, ZTO.Win32.Db.ZeosLib.MySQL.Types,
+  PlatformDefaultStyleActnCtrls,
   UZTODataModule_Clientes, Mdl.Lib.Configuracoes;
 
 type
@@ -39,10 +40,12 @@ type
     procedure GYMWORKSBeforeConnect(Sender: TObject);
   private
     { Declarações privadas }
-    FProcessorEvents: TProcessorEvents;
+//    FProcessorEvents: TProcessorEvents;
     FModules: TList;
     FConfiguracoes: TConfiguracoes;
     FZTODataModule_Clientes: TZTODataModule_Clientes;
+    procedure DoBeforeExecute(aProcessor: TZSQLProcessor; aStatementIndex: Integer);
+    procedure DoAfterExecute(aProcessor: TZSQLProcessor; aStatementIndex: Integer);
     procedure DoZLibNotification(aSender: TObject);
     procedure DoExecuteSQLScript(const aProcessor: TZSQLProcessor;
                                  const aExecuteSQLScriptEvent: TExecuteScriptEvent;
@@ -55,7 +58,7 @@ type
     procedure AddModule(aModule: PZTODataModule);
     function InsertingOrUpdating: Boolean;
     procedure CancelAllOperations;
-    procedure BancoConfigurado;
+    procedure BancoConfigurado(aSim: Boolean);
     procedure AcessoConfigurado;
   protected
     { Declarações protegidas }
@@ -76,7 +79,6 @@ uses ZTO.Win32.Rtl.Common.FileUtils
    , ZTO.Win32.Rtl.Common.Classes
    , ZTO.Win32.Rtl.Common.Classes.Interposer
    , ZTO.Win32.Db.Controls.Utils
-   , Sys.Lib.Zeos.MySQL.Utils
    , CFDBValidationChecks
    , UForm_Splash
    , UZTODialog_Configuracoes
@@ -178,9 +180,9 @@ begin
 //  end;
 end;
 
-procedure TDataModule_Principal.BancoConfigurado;
+procedure TDataModule_Principal.BancoConfigurado(aSim: Boolean);
 begin
-  FConfiguracoes.BancoConfigurado := True;
+  FConfiguracoes.BancoConfigurado := aSim;
   FConfiguracoes.SaveToBinaryFile(FDiretorioAtual + '\' +CONFIG_FILE);
 end;
 
@@ -203,6 +205,10 @@ begin
   GYMWORKS.Protocol := FConfiguracoes.DBProtocolo;
   GYMWORKS.TransactIsolationLevel := FConfiguracoes.DBIsolamentoTransacional;
   GYMWORKS.User     := FConfiguracoes.DBUsuario;
+
+  { Força a "desconfiguração" do banco de dados de forma que isso seja
+  confirmado ou não no AfterConnect }
+  BancoConfigurado(False);
 end;
 
 procedure TDataModule_Principal.GYMWORKSAfterConnect(Sender: TObject);
@@ -212,7 +218,7 @@ begin
   { Se chegou aqui, conseguiu conectar no banco de dados, logo, confirma que
   está ok a configuração de banco de dados }
   if not FConfiguracoes.BancoConfigurado then
-    BancoConfigurado;
+    BancoConfigurado(True);
 
   with TZReadOnlyQuery.Create(Self) do
     try
@@ -235,9 +241,15 @@ begin
     Form_Splash.Update;
 
     Form_Splash.Label_StatusInicial.Show;
-    MySQLExecuteScriptText(GYMWORKS
-                          ,LoadCompressedTextFile(FDiretorioAtual + '\RES\DBA\SQL\GYMMANAGER.SQL',DoZLibNotification)
-                          ,DoExecuteSQLScript);
+
+    if IsZLibCompressedFile(FDiretorioAtual + '\RES\DBA\SQL\GYMWORKS.SQL') then
+      MySQLExecuteSQLScript(GYMWORKS
+                           ,LoadZLibCompressedTextFile(FDiretorioAtual + '\RES\DBA\SQL\GYMWORKS.SQL',DoZLibNotification)
+                           ,DoExecuteSQLScript)
+    else
+      MySQLExecuteSQLScript(GYMWORKS
+                           ,FDiretorioAtual + '\RES\DBA\SQL\GYMWORKS.SQL'
+                           ,DoExecuteSQLScript);
 
     Form_Splash.Label_StatusInicial.Caption := 'Todos os esquemas criados com sucesso!'#13#10'Continuando a carregar o Gym Works...';
     Form_Splash.Update;
@@ -352,7 +364,7 @@ procedure TDataModule_Principal.DoZLibNotification(aSender: TObject);
 begin
   case TDecompressionStream(aSender).Moment of
     znmBeforeProcess: begin
-      Form_Splash.Label_StatusInicial.Caption := 'Primeira execução: Criando esquema do Gym Manager...'#13#10'Descomprimindo script de criação...';
+      Form_Splash.Label_StatusInicial.Caption := 'Primeira execução: Criando esquema do Gym Works...'#13#10'Descomprimindo script de criação...';
       Form_Splash.ProgressBar_Decompress.Step := 1;
       Form_Splash.ProgressBar_Decompress.Max := TDecompressionStream(aSender).FileSize;
       Form_Splash.ProgressBar_Decompress.Position := 0;
@@ -364,7 +376,7 @@ begin
       Form_Splash.Update;
     end;
     znmAfterProcess: begin
-      Form_Splash.Label_StatusInicial.Caption := 'Primeira execução: Criando esquema do Gym Manager...'#13#10'Executando script de criação...';
+      Form_Splash.Label_StatusInicial.Caption := 'Primeira execução: Criando esquema do Gym Works...'#13#10'Executando script de criação...';
       Form_Splash.ProgressBar_Decompress.Hide;
       Form_Splash.Update;
     end;
@@ -426,15 +438,25 @@ begin
    	Application.ShowException(aE);
 end;
 
+procedure TDataModule_Principal.DoBeforeExecute(aProcessor: TZSQLProcessor; aStatementIndex: Integer);
+begin
+  { Nada ainda }
+end;
+
+procedure TDataModule_Principal.DoAfterExecute(aProcessor: TZSQLProcessor; aStatementIndex: Integer);
+begin
+  Form_Splash.ProgressBar_Instrucoes.StepIt;
+  Application.ProcessMessages;
+end;
+
 procedure TDataModule_Principal.DoExecuteSQLScript(const aProcessor: TZSQLProcessor;
                                                    const aExecuteSQLScriptEvent: TExecuteScriptEvent;
                                                    const aScriptParts: TScriptParts);
 begin
   case aExecuteSQLScriptEvent of
     eseBeforeExecuteScript: begin
-      FProcessorEvents := TProcessorEvents.Create(Form_Splash.ProgressBar_Instrucoes,nil,nil);
-      aProcessor.AfterExecute := FProcessorEvents.DoAfterExecute;
-      aProcessor.BeforeExecute := FProcessorEvents.DoBeforeExecute;
+      aProcessor.AfterExecute := DoAfterExecute;
+      aProcessor.BeforeExecute := DoBeforeExecute;
 
       Form_Splash.ProgressBar_Blocos.Max := aScriptParts.Count;
       Form_Splash.ProgressBar_Blocos.Position := 0;
@@ -446,9 +468,9 @@ begin
 
     eseBeforeExecuteScriptPart: begin
       aProcessor.Parse;
-      Form_Splash.ProgressBar_Instrucoes.Max := aProcessor.StatementCount;
       Form_Splash.ProgressBar_Instrucoes.Position := 0;
       Form_Splash.ProgressBar_Instrucoes.Step := 1;
+      Form_Splash.ProgressBar_Instrucoes.Max := aProcessor.StatementCount;
     end;
 
     eseAfterExecuteScriptPart: begin
@@ -457,9 +479,6 @@ begin
     end;
 
     eseAfterExecuteScript: begin
-      if Assigned(FProcessorEvents) then
-        FProcessorEvents.Free;
-
       Form_Splash.ProgressBar_Blocos.Hide;
       Form_Splash.ProgressBar_Instrucoes.Hide;
     end;
