@@ -2,9 +2,8 @@ unit UForm_Splash;
 
 interface
 
-uses
-  Windows, Messages, Classes, Controls, Forms,
-  ExtCtrls, StdCtrls, ComCtrls, UBalloonToolTip, Graphics, PNGImage;
+uses Windows, UBalloonToolTip, Controls, ComCtrls, StdCtrls, pngimage, Classes,
+  ExtCtrls, Forms, Messages;
 
 type
   TForm_Splash = class(TForm)
@@ -16,7 +15,6 @@ type
     ProgressBar_Blocos: TProgressBar;
     ProgressBar_Decompress: TProgressBar;
     BalloonToolTip: TBalloonToolTip;
-    BalloonHint1: TBalloonHint;
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure FormShow(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);

@@ -32,6 +32,7 @@ inherited ZTODialog_Login: TZTODialog_Login
     Height = 13
     Alignment = taCenter
     Color = clGreen
+    DataField = 'VA_NOME'
     DataSource = DataSource_USU
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
@@ -87,7 +88,7 @@ inherited ZTODialog_Login: TZTODialog_Login
     Height = 95
     DataSource = DataSource_USU
     DefaultDrawing = False
-    Options = [dgEditing, dgColLines, dgRowLines, dgTabs, dgConfirmDelete, dgCancelOnExit]
+    Options = [dgColLines, dgRowLines, dgTabs, dgRowSelect, dgAlwaysShowSelection, dgConfirmDelete, dgCancelOnExit]
     OptionsEx = [dgAutomaticColumSizes]
     ReadOnly = True
     TabOrder = 2
@@ -100,6 +101,15 @@ inherited ZTODialog_Login: TZTODialog_Login
       item
         BackgroundColor = clBtnFace
         ForegroundColor = clBtnText
+      end>
+    VariableWidthColumns = '<VA_LOGIN>'
+    Columns = <
+      item
+        Alignment = taCenter
+        Expanded = False
+        FieldName = 'VA_LOGIN'
+        Width = 320
+        Visible = True
       end>
   end
   inherited ActionList: TActionList

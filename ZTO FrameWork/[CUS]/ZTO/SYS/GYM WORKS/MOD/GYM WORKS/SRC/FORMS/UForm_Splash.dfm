@@ -2754,8 +2754,4 @@ object Form_Splash: TForm_Splash
     Left = 9
     Top = 8
   end
-  object BalloonHint1: TBalloonHint
-    Left = 40
-    Top = 64
-  end
 end

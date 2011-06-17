@@ -26,12 +26,14 @@ type
     FCampoSenha: String;
     FAlgoritmoDeCriptografia: THashAlgorithm;
     FUltimoLogin: String;
+    FUltimoID: Cardinal;
   public
     constructor Create(aOwner: TComponent); override;
   published
     property BancoConfigurado: Boolean read FBancoConfigurado write FBancoConfigurado default False;
     property AcessoConfigurado: Boolean read FAcessoConfigurado write FAcessoConfigurado default False;
     property UltimoLogin: String read FUltimoLogin write FUltimoLogin;
+    property UltimoID: Cardinal read FUltimoID write FUltimoID;
     property DBProtocolo: String read FDBProtocolo write FDBProtocolo;
     property DBIsolamentoTransacional: TZTransactIsolationLevel read FDBIsolamentoTransacional write FDBIsolamentoTransacional default tiReadCommitted;
     property DBHost: String read FDBHost write FDBHost;
