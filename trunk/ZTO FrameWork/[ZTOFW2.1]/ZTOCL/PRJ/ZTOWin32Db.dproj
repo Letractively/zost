@@ -56,7 +56,12 @@
 			<DCCReference Include="vcl.dcp"/>
 			<DCCReference Include="dbrtl.dcp"/>
 			<DCCReference Include="vcldb.dcp"/>
+			<DCCReference Include="ZComponent.dcp"/>
+			<DCCReference Include="xmlrtl.dcp"/>
 			<DCCReference Include="..\SRC\Win32\db\ZTO.Win32.Db.Controls.Utils.pas"/>
+			<DCCReference Include="..\SRC\Win32\db\ZeosLib\ZTO.Win32.Db.ZeosLib.MySQL.Utils.pas"/>
+			<DCCReference Include="..\SRC\Win32\db\ZeosLib\ZTO.Win32.Db.ZeosLib.MySQL.Types.pas"/>
+			<DCCReference Include="..\SRC\Win32\db\ZeosLib\ZTO.Win32.Db.ZeosLib.Types.pas"/>
 			<BuildConfiguration Include="Base">
 				<Key>Base</Key>
 			</BuildConfiguration>
@@ -82,6 +87,8 @@
 						<Parameters Name="UseLauncher">False</Parameters>
 						<Parameters Name="LoadAllSymbols">True</Parameters>
 						<Parameters Name="LoadUnspecifiedSymbols">False</Parameters>
+						<Parameters Name="HostApplication">C:\Backup 009\Tutoriais e projetos\Projetos\Delphi\Projetos {datacurta}\ZTO FrameWork\[CUS]\ZTO\SYS\GYM WORKS\MOD\GYM WORKS\BIN\EXE\GYMWORKS.exe</Parameters>
+						<Parameters Name="DebugCWD">C:\Backup 009\Tutoriais e projetos\Projetos\Delphi\Projetos {datacurta}\ZTO FrameWork\[CUS]\ZTO\SYS\GYM WORKS\MOD\GYM WORKS\BIN\EXE</Parameters>
 					</Parameters>
 					<VersionInfo>
 						<VersionInfo Name="IncludeVerInfo">True</VersionInfo>
@@ -89,7 +96,7 @@
 						<VersionInfo Name="MajorVer">2</VersionInfo>
 						<VersionInfo Name="MinorVer">1</VersionInfo>
 						<VersionInfo Name="Release">0</VersionInfo>
-						<VersionInfo Name="Build">460</VersionInfo>
+						<VersionInfo Name="Build">568</VersionInfo>
 						<VersionInfo Name="Debug">False</VersionInfo>
 						<VersionInfo Name="PreRelease">False</VersionInfo>
 						<VersionInfo Name="Special">False</VersionInfo>
@@ -101,7 +108,7 @@
 					<VersionInfoKeys>
 						<VersionInfoKeys Name="CompanyName"/>
 						<VersionInfoKeys Name="FileDescription"/>
-						<VersionInfoKeys Name="FileVersion">2.1.0.460</VersionInfoKeys>
+						<VersionInfoKeys Name="FileVersion">2.1.0.568</VersionInfoKeys>
 						<VersionInfoKeys Name="InternalName"/>
 						<VersionInfoKeys Name="LegalCopyright"/>
 						<VersionInfoKeys Name="LegalTrademarks"/>

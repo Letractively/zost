@@ -7,12 +7,12 @@ uses ComCtrls
    , ZSQLProcessor
    , Sys.Lib.Types;
 
-type
-  TExecuteScriptEvent    = (eseBeforeExecuteScript
-                           ,eseBeforeExecuteScriptPart
-                           ,eseAfterExecuteScriptPart
-                           ,eseAfterExecuteScript);
-
+//type
+//  TExecuteScriptEvent    = (eseBeforeExecuteScript
+//                           ,eseBeforeExecuteScriptPart
+//                           ,eseAfterExecuteScriptPart
+//                           ,eseAfterExecuteScript);
+(*
   TExecuteScriptCallBack = procedure (const aProcessor            : TZSQLProcessor;
                                       const aExecuteScriptEvent   : TExecuteScriptEvent;
                                       const aScriptParts          : TScriptParts) of object;
@@ -27,6 +27,7 @@ type
   TSplitScriptCallBack = procedure (const aProcessor       : TZSQLProcessor;
                                     const aSplitScriptEvent: TSplitScriptEvent;
                                     const aScriptParts     : TScriptParts) of object;
+
   TProcessorEvents = class
   private
     FProgressBarCurrent: TProgressBar;
@@ -37,7 +38,7 @@ type
     procedure DoAfterExecute(aProcessor: TZSQLProcessor; aStatementIndex: Integer);
     procedure DoBeforeExecute(aProcessor: TZSQLProcessor; aStatementIndex: Integer);
   end;
-
+*)
 
 implementation
 
@@ -46,7 +47,7 @@ uses Forms
    , ZTO.Win32.Rtl.Common.ComponentUtils;
 
 { TProcessorEvents }
-
+(*
 constructor TProcessorEvents.Create(aProgressBarCurrent: TProgressBar; aLabelCurrentValue, aLabelCurrentDescription: TLabel);
 begin
 	FProgressBarCurrent := aProgressBarCurrent;
@@ -73,5 +74,5 @@ begin
     Application.ProcessMessages;
   end;
 end;
-
+*)
 end.

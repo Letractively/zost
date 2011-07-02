@@ -1,9 +1,9 @@
-unit ZTO.Win32.Rtl.Common.FileUtils;
+﻿unit ZTO.Win32.Rtl.Common.FileUtils;
 
 {$WEAKPACKAGEUNIT ON}
 
-{ Ainda n�o entendi bem por que usar a diretiva acima, s� sei que ao fazer isso
-os problemas com instala��o de componentes que usavam fun��es desta unit foram
+{ Ainda não entendi bem por que usar a diretiva acima, só sei que ao fazer isso
+os problemas com instalação de componentes que usavam funções desta unit foram
 resolvidos. VEJA O AVISO ABAIXO }
 
 // Unit files containing the {$WEAKPACKAGEUNIT ON} directive must not have
@@ -21,44 +21,70 @@ type
 
   TFileInformation = (fiUnknown, fiMajorVersion, fiMinorVersion, fiRelease, fiBuild, fiFullVersion);
 
-
 function FileSize(aFileName    : TFileName;
                   aFileSizeUnit: TFileSizeUnit = fsuBytes): Double;
 
-function LoadTextFile(const aFileName: TFileName): String;
-
-procedure SaveTextFile(aText: String; const aFileName: TFileName);
+{ As funções abaixo apenas carregam e salvam de e para arquivos com codificação UTF8 }
+function LoadTextFile(aFileName: TFileName): String;
+procedure SaveTextFile(aText: String; aFileName: TFileName);
 
 function FileInformation(const aFileName       : TFileName;
                          const aFileInformation: TFileInformation): TMultiTypedResult;
 
-function LoadCompressedTextFile(const aFileName         : TFileName;
-                                      OnZlibNotification: TNotifyEvent): String;
+function LoadZLibCompressedTextFile(const aFileName         : TFileName;
+                                          OnZlibNotification: TNotifyEvent): String;
 
-procedure CompressFile(const aInputFile
+procedure ZLibCompressFile(const aInputFile
                            , aOutputFile       : TFileName;
                              OnZlibNotification: TNotifyEvent);
 
-procedure SelfCompressFile(const aFileName         : TFileName;
-                                 OnZlibNotification: TNotifyEvent);
+procedure SelfZLibCompressFile(const aFileName         : TFileName;
+                                     OnZlibNotification: TNotifyEvent);
 
-procedure DecompressFile(const aInputFile
+procedure ZLibDecompressFile(const aInputFile
                              , aOutputFile: TFileName;
                                OnZlibNotification: TNotifyEvent);
 
-procedure SelfDecompressFile(const aFileName     : TFileName;
-                                   OnNotification: TNotifyEvent);
+procedure SelfZLibDecompressFile(const aFileName     : TFileName;
+                                       OnNotification: TNotifyEvent);
 
+function GetTemporaryPath: String;
 
+function GetTemporaryName(aPrefix: String; aExtension: String = ''): String;
+
+function IsZLibCompressedFile(aFileName: TFileName): Boolean;
 
 implementation
 
 uses ZLib
    , ZTO.Win32.Rtl.Common.Classes.Interposer;
 
-procedure CompressFile(const aInputFile
-                           , aOutputFile       : TFileName;
-                             OnZlibNotification: TNotifyEvent);
+function IsZLibCompressedFile(aFileName: TFileName): Boolean;
+var
+  FileToCheck: file of Byte;
+  MagicNumber: Byte;
+begin
+  Result := False;
+  try
+    AssignFile(FileToCheck,aFileName);
+    FileMode := fmOpenRead;
+    Reset(FileToCheck);
+    Read(FileToCheck,MagicNumber);
+
+    if MagicNumber = $78 then
+    begin
+      Read(FileToCheck,MagicNumber);
+      if MagicNumber = $DA then
+        Result := True;
+    end;
+  finally
+    CloseFile(FileToCheck);
+  end;
+end;
+
+procedure ZLibCompressFile(const aInputFile
+                               , aOutputFile       : TFileName;
+                                 OnZlibNotification: TNotifyEvent);
 var
   InputFile, OutputFile: TFileStream;
   CompressionStream: TCompressionStream;
@@ -95,26 +121,26 @@ begin
   end;
 end;
 
-procedure SelfCompressFile(const aFileName         : TFileName;
-                                 OnZlibNotification: TNotifyEvent);
+procedure SelfZLibCompressFile(const aFileName         : TFileName;
+                                     OnZlibNotification: TNotifyEvent);
 begin
-  { Comprime em um arquivo tempor�rio }
-  CompressFile(aFileName
+  { Comprime em um arquivo temporário }
+  ZLibCompressFile(aFileName
               ,aFileName + '.C'
               ,OnZlibNotification);
 
-  { Copia o arquivo tempor�rio no arquivo original }
+  { Copia o arquivo temporário no arquivo original }
   if not CopyFile(PChar(aFileName + '.C')
                  ,PChar(aFileName)
                  ,False) then
-    raise Exception.Create('N�o foi poss�vel substituir o arquivo original (' + ExtractFileName(aFileName) + ') por sua vers�o comprimida')
+    raise Exception.Create('Não foi possível substituir o arquivo original (' + ExtractFileName(aFileName) + ') por sua versão comprimida')
   else
     DeleteFile(aFileName + '.C');
 end;
 
-procedure DecompressFile(const aInputFile
-                             , aOutputFile: TFileName;
-                               OnZlibNotification: TNotifyEvent);
+procedure ZLibDecompressFile(const aInputFile
+                                 , aOutputFile: TFileName;
+                                   OnZlibNotification: TNotifyEvent);
 var
   InputFile, OutputFile: TFileStream;
   DecompressionStream: TDecompressionStream;
@@ -157,28 +183,28 @@ begin
   end;
 end;
 
-procedure SelfDecompressFile(const aFileName     : TFileName;
-                                   OnNotification: TNotifyEvent);
+procedure SelfZLibDecompressFile(const aFileName     : TFileName;
+                                       OnNotification: TNotifyEvent);
 begin
-  { Descomprime em um arquivo tempor�rio }
-  DecompressFile(aFileName
+  { Descomprime em um arquivo temporário }
+  ZLibDecompressFile(aFileName
                 ,aFileName + '.D'
                 ,OnNotification);
 
-  { Copia o arquivo tempor�rio no arquivo original }
+  { Copia o arquivo temporário no arquivo original }
   if not CopyFile(PChar(aFileName + '.D')
                  ,PChar(aFileName)
                  ,False) then
-    raise Exception.Create('N�o foi poss�vel substituir o arquivo original (' + ExtractFileName(aFileName) + ') por sua vers�o descomprimida')
+    raise Exception.Create('Não foi possível substituir o arquivo original (' + ExtractFileName(aFileName) + ') por sua versão descomprimida')
   else
     DeleteFile(aFileName + '.D');
 end;
 
-function LoadCompressedTextFile(const aFileName         : TFileName;
-                                      OnZlibNotification: TNotifyEvent): String;
+function LoadZLibCompressedTextFile(const aFileName         : TFileName;
+                                          OnZlibNotification: TNotifyEvent): String;
 var
   InputFile: TFileStream;
-  OutputStream: TMemoryStream;
+  OutputStream: TStringStream;
   DecompressionStream: TDecompressionStream;
   i: Integer;
   Buffer: array [0..1023] of Byte;
@@ -186,10 +212,15 @@ begin
   Result := '';
   InputFile := nil;
   DecompressionStream := nil;
+  OutputStream := nil;
 
   try
     InputFile := TFileStream.Create(aFileName, fmOpenRead and fmShareExclusive);
-    OutputStream := TMemoryStream.Create;
+    { Por padrão TStringStream é criada com codificação ANSI. Ao criar forçando
+    UTF8 garantimos que tudos será carregado corretamente, mas fará com que esta
+    função precise descomprimir um arquivo codificado em UTF8, do contrário,
+    coisas estranhas podem acontecer }
+    OutputStream := TStringStream.Create('',TEncoding.UTF8);
     DecompressionStream := TDecompressionStream.Create(InputFile);
 
     DecompressionStream.SourceFileName := aFileName;
@@ -215,49 +246,158 @@ begin
 
     try
       OutputStream.Seek(0,soFromBeginning);
-      SetLength(Result, OutputStream.Size);
-      OutputStream.Read(Pointer(Result)^, OutputStream.Size);
+      Result := OutputStream.DataString; { Está codificada como UTF8, ao atribuir para string, nada deve ser perdido, pois unicode tem mais espaço que utf8 }
     except
-      Result := ''; { Desaloca a mem�ria };
+      Result := ''; { Desaloca a memória };
       raise;
     end;
     
   finally
+    OutputStream.Free;
     DecompressionStream.Free;
     InputFile.Free;
   end;
 end;
 
-function LoadTextFile(const aFileName: TFileName): String;
+function LoadTextFile(aFileName: TFileName): String;
 begin
 	Result := '';
 
-	with TFileStream.Create(aFileName, fmOpenRead or fmShareDenyWrite) do
+  { Usando o construtor abaixo faz com que ele tente abrir um arquivo UTF8 sem
+  tentar detectar o BOM. Isso carrega os arquivos corretamente }
+	with TStreamReader.Create(aFileName,TEncoding.UTF8) do
     try
-    	try
-        SetLength(Result, Size);
-        Read(Pointer(Result)^, Size);
-      except
-        Result := ''; { Desaloca a mem�ria };
-        raise;
-      end;
+      if not EndOfStream then
+        Result := ReadToEnd;
     finally
       Free;
     end;
 end;
 
-procedure SaveTextFile(aText: String; const aFileName: TFileName);
+procedure SaveTextFile(aText: String; aFileName: TFileName);
 begin
-  with TFileStream.Create(aFileName, fmCreate) do
+  { Por padrão vai criar em UTF8 sem o BOM, porque ao chamar o construtor desta
+  forma o preâmbulo não será gravado no stream final }
+  with TStreamWriter.Create(aFileName) do
     try
-      Write(Pointer(aText)^, Length(aText));
+      Write(aText);
     finally
      	Free;
     end;
 end;
 
-{ TODO -oCarlos Feitoza : Esta fun��o est� incompleta. Ela s� est� retornando as
-informa��es de vers�o. Por favor complete-a! }
+
+(*
+procedure TMainForm.btLoadClick(Sender: TObject);
+var
+  Reader: TStreamReader;
+  Size: Int64;
+  Line: String;
+  Ch: Char;
+begin
+  { Create a file stream and open a text writer for it. }
+  Reader := TStreamReader.Create(
+    TFileStream.Create('local_file.txt', fmOpenRead),
+    TEncoding.UTF8
+  );
+
+  mmText.Clear();
+
+  { Check for the end of the stream and exit if necessary. }
+  if Reader.EndOfStream then
+  begin
+    MessageDlg('Nothing to read!', mtInformation, [mbOK], 0);
+
+    Reader.BaseStream.Free();
+    Reader.Free();
+  end;
+
+  { Peek at each iteration to see whether there are characters
+    to read from the reader. Peek is identical in its effect as
+    EndOfStream property.
+  }
+  Line := '';
+
+  while Reader.Peek() >= 0 do
+  begin
+    { Read the next character. }
+    Ch := Char(Reader.Read());
+
+    { Check for line termination (Unix-style). }
+    if Ch = #$0A then
+    begin
+      mmText.Lines.Add(Line);
+      Line := '';
+    end
+    else
+      Line := Line + Ch;
+  end;
+
+  { Obtain the size of the data. }
+  Size := Reader.BaseStream.Size;
+
+  { Free the reader and underlying stream. }
+  Reader.Close();
+  Reader.BaseStream.Free;
+  Reader.Free();
+
+  MessageDlg(Format('%d bytes read from the stream using the %s encoding!',
+    [Size, Reader.CurrentEncoding.ClassName]), mtInformation, [mbOK], 0);
+end;
+
+procedure TMainForm.btStoreClick(Sender: TObject);
+var
+  Writer: TStreamWriter;
+  I, J: Integer;
+  Size: Int64;
+  Line: String;
+begin
+  { Create a file stream and open a text writer for it. }
+  Writer := TStreamWriter.Create(
+    TFileStream.Create('local_file.txt', fmCreate),
+    TEncoding.UTF8
+  );
+
+  { Do not flush after each writing, it is done automatically. }
+  Writer.AutoFlush := false;
+
+  { Set the custom new-line to be Unix-compatible. }
+  Writer.NewLine := #$0A;
+
+  { Start storing all the lines in the memo. }
+  for I := 0 to mmText.Lines.Count - 1 do
+  begin
+    { Obtain the line. }
+    Line := mmText.Lines[I];
+
+    { Write char-by-char. }
+    for J := 1 to Length(Line) do
+      Writer.Write(Line[J]);
+
+    { Add a line terminator. }
+    Writer.WriteLine();
+  end;
+
+  { Flush the contents of the writer to the stream. }
+  Writer.Flush();
+
+  { Close the writer. }
+  Writer.Close();
+
+  { Obtain the size of the data. }
+  Size := Writer.BaseStream.Size;
+
+  { Free the writer and underlying stream. }
+  Writer.BaseStream.Free;
+  Writer.Free();
+
+  MessageDlg(Format('%d bytes written to the stream using the %s encoding!',
+    [Size, Writer.Encoding.ClassName]), mtInformation, [mbOK], 0);
+end;
+*)
+
+{ TODO -oCarlos Feitoza : Esta função está incompleta. Ela só está retornando as
+informações de versão. Por favor complete-a! }
 function FileInformation(const aFileName: TFileName; const aFileInformation: TFileInformation): TMultiTypedResult;
 var
   FileInfo: TVSFixedFileInfo;
@@ -331,44 +471,82 @@ end;
 function FileSize(aFileName    : TFileName;
                   aFileSizeUnit: TFileSizeUnit = fsuBytes): Double;
 var
-	FOB: file of 0..255;
-    FOKB: file of 0..1024;
-    FOMB: file of 0..1048576;
-    FOGB: file of 0..1073741824;
+	FOB : file of 0..255;
+  FOKB: file of 0..1023;
+  FOMB: file of 0..1048575;
+  FOGB: file of 0..1073741823;
+  FOTB: file of 0..1099511627775;
 begin
 	Result := 0;
     
 	case aFileSizeUnit of
-    	fsuBytes: try
-            AssignFile(FOB,aFileName);
-            Reset(FOB);
-            Result := System.FileSize(FOB);
-        finally
-            CloseFile(FOB);
-        end;
-    	fsuKBytes: try
-            AssignFile(FOKB,aFileName);
-            Reset(FOKB);
-            Result := System.FileSize(FOKB);
-        finally
-            CloseFile(FOKB);
-        end;
-    	fsuMBytes: try
-            AssignFile(FOMB,aFileName);
-            Reset(FOMB);
-            Result := System.FileSize(FOMB);
-        finally
-            CloseFile(FOMB);
-        end;
-    	fsuGBytes: try
-            AssignFile(FOGB,aFileName);
-            Reset(FOGB);
-            Result := System.FileSize(FOGB);
-        finally
-            CloseFile(FOGB);
-        end;
+    fsuBytes: try
+      AssignFile(FOB,aFileName);
+      Reset(FOB);
+      Result := System.FileSize(FOB);
+    finally
+      CloseFile(FOB);
     end;
+    fsuKBytes: try
+      AssignFile(FOKB,aFileName);
+      Reset(FOKB);
+      Result := System.FileSize(FOKB);
+    finally
+      CloseFile(FOKB);
+    end;
+    fsuMBytes: try
+      AssignFile(FOMB,aFileName);
+      Reset(FOMB);
+      Result := System.FileSize(FOMB);
+    finally
+      CloseFile(FOMB);
+    end;
+    fsuGBytes: try
+      AssignFile(FOGB,aFileName);
+      Reset(FOGB);
+      Result := System.FileSize(FOGB);
+    finally
+      CloseFile(FOGB);
+    end;
+    fsuTBytes: try
+      AssignFile(FOTB,aFileName);
+      Reset(FOTB);
+      Result := System.FileSize(FOTB);
+    finally
+      CloseFile(FOTB);
+    end;
+  end;
 end;
 
+function GetTemporaryPath: String;
+var
+  TempPath: PWideChar;
+begin
+  Result := '';
+  TempPath := nil;
+  try
+    TempPath := AllocMem(Succ(MAX_PATH));
+
+    if GetTempPath(MAX_PATH,TempPath) > MAX_PATH then
+      raise Exception.Create('Erro ao obter o diretório temporário');
+
+    Result := TempPath;
+  finally
+    FreeMem(TempPath);
+  end;
+end;
+
+function GetTemporaryName(aPrefix: String; aExtension: String = ''): String;
+begin
+  Result := '';
+
+  if Trim(aPrefix) = '' then
+    raise Exception.Create('É necessário informar um prefixo para o nome');
+
+  if (Trim(aExtension) <> '') and (Pos('.',aExtension) <> 1) then
+    raise Exception.Create('A extensão, quando usada, tem de começar com um ponto');
+
+  Result := aPrefix + IntToHex(GetTickCount,2) + aExtension;
+end;
 
 end.

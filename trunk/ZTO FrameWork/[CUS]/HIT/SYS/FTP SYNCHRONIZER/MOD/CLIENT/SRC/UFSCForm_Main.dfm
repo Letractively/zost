@@ -64,8 +64,8 @@ object FSCForm_Main: TFSCForm_Main
     Top = 25
     Width = 843
     Height = 172
-    ActivePage = TabSheet1
-    TabOrder = 1
+    ActivePage = TabSheet2
+    TabOrder = 0
     OnChanging = PageControl1Changing
     object TabSheet1: TTabSheet
       Caption = 'Sincroniza'#231#227'o por diferen'#231'as'
@@ -360,7 +360,7 @@ object FSCForm_Main: TFSCForm_Main
     ParentFont = False
     ReadOnly = True
     ScrollBars = ssVertical
-    TabOrder = 2
+    TabOrder = 1
     WordWrap = False
   end
   object SalvarLog: TButton
@@ -381,7 +381,7 @@ object FSCForm_Main: TFSCForm_Main
     AutoSize = True
     BevelOuter = bvNone
     ParentBackground = False
-    TabOrder = 3
+    TabOrder = 2
     Visible = False
     object LabelInstrucoes: TLabel
       Left = 284
