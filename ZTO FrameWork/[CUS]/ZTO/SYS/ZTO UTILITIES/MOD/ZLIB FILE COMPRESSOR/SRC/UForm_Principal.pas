@@ -40,7 +40,7 @@ begin
       Button_Comprimir.Enabled := False;
       Button_Descomprimir.Enabled := False;
 
-      SelfCompressFile(OpenDialog_Abrir.FileName,DoZLibCompress);
+      SelfZLibCompressFile(OpenDialog_Abrir.FileName,DoZLibCompress);
       MessageBox(Handle,'Operação de compressão concluída','Pronto!',MB_ICONINFORMATION);
     finally
       Button_Comprimir.Enabled := True;
@@ -55,7 +55,7 @@ begin
       Button_Comprimir.Enabled := False;
       Button_Descomprimir.Enabled := False;
 
-      SelfDecompressFile(OpenDialog_Abrir.FileName,DoZLibDecompress);
+      SelfZLibDecompressFile(OpenDialog_Abrir.FileName,DoZLibDecompress);
       MessageBox(Handle,'Operação de descompressão concluída','Pronto!',MB_ICONINFORMATION);
     finally
       Button_Comprimir.Enabled := True;

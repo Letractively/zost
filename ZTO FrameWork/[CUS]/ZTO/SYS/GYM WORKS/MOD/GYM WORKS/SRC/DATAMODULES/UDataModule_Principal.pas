@@ -1,6 +1,6 @@
 unit UDataModule_Principal;
 
-{ DataModule comum. Copyright 2010 / 2011 ZTO Soluções Tecnológicas Ltda. }
+{ DataModule comum. Copyright 2010 / 2011 ZTO Soluï¿½ï¿½es Tecnolï¿½gicas Ltda. }
 
 interface
 
@@ -39,7 +39,7 @@ type
     procedure Action_ClientesExecute(Sender: TObject);
     procedure GYMWORKSBeforeConnect(Sender: TObject);
   private
-    { Declarações privadas }
+    { Declaraï¿½ï¿½es privadas }
 //    FProcessorEvents: TProcessorEvents;
     FModules: TList;
     FConfiguracoes: TConfiguracoes;
@@ -61,10 +61,10 @@ type
     procedure BancoConfigurado(aSim: Boolean);
     procedure AcessoConfigurado;
   protected
-    { Declarações protegidas }
+    { Declaraï¿½ï¿½es protegidas }
     FDiretorioAtual: String;
   public
-    { Declarações públicas }
+    { Declaraï¿½ï¿½es pï¿½blicas }
   end;
 
 var
@@ -87,42 +87,42 @@ uses ZTO.Win32.Rtl.Common.FileUtils
 
 const
   { FUNCIONA COM ANSISTRINGS MAS TEM ALGUM LIXO. TENTE USAR SOFTWARE_ID SEPARADO
-  EM QUATRO PARTES NUMERCIAS OU HEXA!!! salve uma versão criptografada, que seja
-  diferente daquilo que é visto na tela, pode ser um sha1 de 1 md5 ou vice versa.
-  vice versa é melhor (md5 de um sha1) COLOQUE ESTAS CONSTANTES COMO RECURSOS
-  DENTRO DE UMA DLL SEPARADA. CADA DLL TERÁ SEU NUMERO DE SERIE. OS EXECUTÁVEIS
-  SERÃO OS MESMOS MAS CADA DLL SO FUNCIONA PARA UM HD E O EXECUTAVEL NAO FUNCIONA
-  SEM A DLL. VOCÊ PODE ANEXAR UMA IMAGEM DE TAMANHO FIXO COM UMA ESTEGANOGRAFIA
-  E AO LER A IMAGEM DO RECURSO VOCÊ TERA UM VALOR CRIPTOGRAFADO QUE É O SERIAL.
-  VOCE PDOE CHAMAR O RECURSO DE IMAGEM DE ETIQUETA, IMEI, ROTULO OU MESMO LICENÇA.
-  NAO ADIANTA A PESSOA SABER QUE EXISTE A IIMAGEM E QUE ELA É A LICENÇA SE ELA NAO
-  SOUBER COMO A IMAGEM ESTÁ CODIFICADA. PODE SER UMA IMAGEM RAW. VOCE PODE USAR
+  EM QUATRO PARTES NUMERCIAS OU HEXA!!! salve uma versï¿½o criptografada, que seja
+  diferente daquilo que ï¿½ visto na tela, pode ser um sha1 de 1 md5 ou vice versa.
+  vice versa ï¿½ melhor (md5 de um sha1) COLOQUE ESTAS CONSTANTES COMO RECURSOS
+  DENTRO DE UMA DLL SEPARADA. CADA DLL TERï¿½ SEU NUMERO DE SERIE. OS EXECUTï¿½VEIS
+  SERï¿½O OS MESMOS MAS CADA DLL SO FUNCIONA PARA UM HD E O EXECUTAVEL NAO FUNCIONA
+  SEM A DLL. VOCï¿½ PODE ANEXAR UMA IMAGEM DE TAMANHO FIXO COM UMA ESTEGANOGRAFIA
+  E AO LER A IMAGEM DO RECURSO VOCï¿½ TERA UM VALOR CRIPTOGRAFADO QUE ï¿½ O SERIAL.
+  VOCE PDOE CHAMAR O RECURSO DE IMAGEM DE ETIQUETA, IMEI, ROTULO OU MESMO LICENï¿½A.
+  NAO ADIANTA A PESSOA SABER QUE EXISTE A IIMAGEM E QUE ELA ï¿½ A LICENï¿½A SE ELA NAO
+  SOUBER COMO A IMAGEM ESTï¿½ CODIFICADA. PODE SER UMA IMAGEM RAW. VOCE PODE USAR
   RCDATA E GRAVAR LA AS INFORMACOES.
 
-  1. USE AS INSTRUÇÕES EM
+  1. USE AS INSTRUï¿½ï¿½ES EM
      http://delphi.about.com/od/objectpascalide/a/embed_resources.htm
      PARA CRIAR UM ARQUIVO RC COM O RCDATA.
-  2. CRIE UM PROGRAMA QUE ALTERE NO DLL ZOLM.DLL O RCDATA. A CADA EXECUÇÃO O
-     RCDATA TERA UM SOFTWAREID DIFERENTE. UMA DAS OPÇÕES DO PROGRAMA É GERAR
-     VARIAS COPIAS DO DLL, CADA UMA COM UM RCDATA DISTINTO. OUTRA OPÇÃO SERIA
+  2. CRIE UM PROGRAMA QUE ALTERE NO DLL ZOLM.DLL O RCDATA. A CADA EXECUï¿½ï¿½O O
+     RCDATA TERA UM SOFTWAREID DIFERENTE. UMA DAS OPï¿½ï¿½ES DO PROGRAMA ï¿½ GERAR
+     VARIAS COPIAS DO DLL, CADA UMA COM UM RCDATA DISTINTO. OUTRA OPï¿½ï¿½O SERIA
      OBTER O RCDATA DE UM DLL.
-  3. O DLL NÃO VAI JUNTO COM A APLICAÇÃO. ELE É RECEBIDO POR FORA COMO PARTE DA
-     LICENÇA
-  4. AO EXECUTAR A APLICAÇÃO PELA PRIMEIRA VEZ, CASO NÃO HAJA UM DLL O MESMO
-     SERÁ BAIXADO, MEDIANTE INFORMAÇÃO DADA PELO USUÁRIO (CLIENTE). CADA CLIENTE
-     TEM APENAS 1 DLL REGISTRADO E ESTE DLL SERÁ AUTORIZADO DE FORMA ONLINE A
+  3. O DLL Nï¿½O VAI JUNTO COM A APLICAï¿½ï¿½O. ELE ï¿½ RECEBIDO POR FORA COMO PARTE DA
+     LICENï¿½A
+  4. AO EXECUTAR A APLICAï¿½ï¿½O PELA PRIMEIRA VEZ, CASO Nï¿½O HAJA UM DLL O MESMO
+     SERï¿½ BAIXADO, MEDIANTE INFORMAï¿½ï¿½O DADA PELO USUï¿½RIO (CLIENTE). CADA CLIENTE
+     TEM APENAS 1 DLL REGISTRADO E ESTE DLL SERï¿½ AUTORIZADO DE FORMA ONLINE A
      RODAR EM UM DETERMINADO HD.
   5. O CLIENTE COPIA O DLL EM UM COMPUTADOR AUTORIZADO E EXECUTA O PROGRAMA.
-     CASO UM ARQUIVO DE LICENÇA EXISTA ELE SERA CONSULTADO PARA SABER SE O HD
-     CRIPTOGRAFADO + SOFTWAREID (LOCAIS) = A LICENÇA SALVA NO ARQUIVO. SE NÃO
-     FOR SERÁ FEITA UMA CONSULTA ONLINE E SE A LICENÇA FOR VALIDA PARA O HD
-     ENTÃO O ARQUIVO DE LICENÇA SERÁ ATUALIZADO
-  6. O ARQUIVO DE LICENÇA DEVE SER UM ARQUIVO DO TIPO TOBJECTFILE COM UMA LISTA
-     INTERNA DE LICENÇAS
-  7. DE FORMA ONLINE CADA LICENÇA COMPRADA SERÁ REGISTRADA. AO ACABAR AS
-     LICENÇAS NAO SERÁ MAIS POSSIVEL REGISTRAR.
-  8. LICENÇAS PODEM SER TROCADAS (PARA EXECUÇÃO EM OUTRO HD) MEDIANTE PAGAMENTO
-  9. O PROCEDIMENTO DE TROCA DE LICENÇA É MUITO COMPLICADO POIS DÁ MARGEM A
+     CASO UM ARQUIVO DE LICENï¿½A EXISTA ELE SERA CONSULTADO PARA SABER SE O HD
+     CRIPTOGRAFADO + SOFTWAREID (LOCAIS) = A LICENï¿½A SALVA NO ARQUIVO. SE Nï¿½O
+     FOR SERï¿½ FEITA UMA CONSULTA ONLINE E SE A LICENï¿½A FOR VALIDA PARA O HD
+     ENTï¿½O O ARQUIVO DE LICENï¿½A SERï¿½ ATUALIZADO
+  6. O ARQUIVO DE LICENï¿½A DEVE SER UM ARQUIVO DO TIPO TOBJECTFILE COM UMA LISTA
+     INTERNA DE LICENï¿½AS
+  7. DE FORMA ONLINE CADA LICENï¿½A COMPRADA SERï¿½ REGISTRADA. AO ACABAR AS
+     LICENï¿½AS NAO SERï¿½ MAIS POSSIVEL REGISTRAR.
+  8. LICENï¿½AS PODEM SER TROCADAS (PARA EXECUï¿½ï¿½O EM OUTRO HD) MEDIANTE PAGAMENTO
+  9. O PROCEDIMENTO DE TROCA DE LICENï¿½A ï¿½ MUITO COMPLICADO POIS Dï¿½ MARGEM A
      FRAUDES
 
    }
@@ -156,7 +156,7 @@ procedure TDataModule_Principal.Action_FecharExecute(Sender: TObject);
 begin
   if InsertingOrUpdating then
   begin
-    if Application.MessageBox('Ainda existem módulos abertos com alterações não confirmadas. Tem certeza de que deseja fechar o ACW e perder todas as alterações não salvas?','Alterações não confirmadas',MB_ICONWARNING or MB_YESNO) = IDYES then
+    if Application.MessageBox('Ainda existem mï¿½dulos abertos com alteraï¿½ï¿½es nï¿½o confirmadas. Tem certeza de que deseja fechar o ACW e perder todas as alteraï¿½ï¿½es nï¿½o salvas?','Alteraï¿½ï¿½es nï¿½o confirmadas',MB_ICONWARNING or MB_YESNO) = IDYES then
     begin
       CancelAllOperations;
       Form_Splash.CloseForm(False);
@@ -168,7 +168,7 @@ end;
 
 procedure TDataModule_Principal.Action_UsuariosExecute(Sender: TObject);
 begin
-  { montar uma coleção de variaveis para guardar todos os forms }
+  { montar uma coleï¿½ï¿½o de variaveis para guardar todos os forms }
 //  if not Assigned(FZTODataModule_Regioes) then
 //  begin
 //    AddModule(@FZTODataModule_Regioes);
@@ -206,8 +206,8 @@ begin
   GYMWORKS.TransactIsolationLevel := FConfiguracoes.DBIsolamentoTransacional;
   GYMWORKS.User     := FConfiguracoes.DBUsuario;
 
-  { Força a "desconfiguração" do banco de dados de forma que isso seja
-  confirmado ou não no AfterConnect }
+  { Forï¿½a a "desconfiguraï¿½ï¿½o" do banco de dados de forma que isso seja
+  confirmado ou nï¿½o no AfterConnect }
   BancoConfigurado(False);
 end;
 
@@ -216,7 +216,7 @@ var
   EsquemaCriado: Boolean;
 begin
   { Se chegou aqui, conseguiu conectar no banco de dados, logo, confirma que
-  está ok a configuração de banco de dados }
+  estï¿½ ok a configuraï¿½ï¿½o de banco de dados }
   if not FConfiguracoes.BancoConfigurado then
     BancoConfigurado(True);
 
@@ -263,7 +263,7 @@ begin
 
   try
     GYMWORKS.Connect;
-    { Executar aqui o form de login no sistema, nos moldes do form de configuração }
+    { Executar aqui o form de login no sistema, nos moldes do form de configuraï¿½ï¿½o }
     if TZTODialog_Login.FazerLogin(GYMWORKS,FConfiguracoes) = mrCancel then
       Form_Splash.CloseForm(False)
     else
@@ -277,9 +277,9 @@ begin
       Application.MessageBox(PWideChar(E.Message),'Erro!',MB_ICONERROR);
       Form_Splash.CloseForm(False)
     end;
-    { Se der pau no connect é porque:
-      1. não criou corretamente o banco anteriormente
-      2. os campos do select na tela de login estão errados }
+    { Se der pau no connect ï¿½ porque:
+      1. nï¿½o criou corretamente o banco anteriormente
+      2. os campos do select na tela de login estï¿½o errados }
   end;
 end;
 
@@ -290,7 +290,7 @@ begin
 //se nao existe conecta obtem e salva
 //em seguida usa (volta pro inicio)
 
-//ao usar compara se é autorizado a rodar no HD onde o programa está atualmente instalado
+//ao usar compara se ï¿½ autorizado a rodar no HD onde o programa estï¿½ atualmente instalado
 //o arquivo deve estar criptografado. A chave de descriptografia deve ser o SOFTWAREID
 //  MessageBox(0,GetAuthorizationFile(PChar(SOFTWARE_ID)),'xxx',0);
   Application.OnException := DoException;
@@ -301,7 +301,7 @@ begin
 
   if TZTODialog_Configuracoes.CarregarConfiguracoes(FConfiguracoes,FDiretorioAtual + '\' + CONFIG_FILE) = mrCancel then
   begin
-    Application.MessageBox('A aplicação não foi configurada e será terminada agora. Para configurá-la em outro momento, execute-a novamente','Aplicação não configurada',MB_ICONINFORMATION);
+    Application.MessageBox('A aplicaï¿½ï¿½o nï¿½o foi configurada e serï¿½ terminada agora. Para configurï¿½-la em outro momento, execute-a novamente','Aplicaï¿½ï¿½o nï¿½o configurada',MB_ICONINFORMATION);
     Form_Splash.CloseForm(False);
   end
   else
@@ -310,7 +310,7 @@ begin
       GYMWORKS.Connect;
       Form_Splash.DelayedHide(3);
     except
-      Application.MessageBox('Não foi possível conectar-se ao banco de dados. Ele pode estar inacessível ou as configurações da aplicação estão incorretas. Por favor, tente executar a aplicação novamente. Se o problema persistir, contate o suporte técnico','Banco de dados inacessível',MB_ICONERROR);
+      Application.MessageBox('Nï¿½o foi possï¿½vel conectar-se ao banco de dados. Ele pode estar inacessï¿½vel ou as configuraï¿½ï¿½es da aplicaï¿½ï¿½o estï¿½o incorretas. Por favor, tente executar a aplicaï¿½ï¿½o novamente. Se o problema persistir, contate o suporte tï¿½cnico','Banco de dados inacessï¿½vel',MB_ICONERROR);
       Form_Splash.CloseForm(False);
     end;
   end;
@@ -364,7 +364,7 @@ procedure TDataModule_Principal.DoZLibNotification(aSender: TObject);
 begin
   case TDecompressionStream(aSender).Moment of
     znmBeforeProcess: begin
-      Form_Splash.Label_StatusInicial.Caption := 'Primeira execução: Criando esquema do Gym Works...'#13#10'Descomprimindo script de criação...';
+      Form_Splash.Label_StatusInicial.Caption := 'Primeira execuï¿½ï¿½o: Criando esquema do Gym Works...'#13#10'Descomprimindo script de criaï¿½ï¿½o...';
       Form_Splash.ProgressBar_Decompress.Step := 1;
       Form_Splash.ProgressBar_Decompress.Max := TDecompressionStream(aSender).FileSize;
       Form_Splash.ProgressBar_Decompress.Position := 0;
@@ -376,7 +376,7 @@ begin
       Form_Splash.Update;
     end;
     znmAfterProcess: begin
-      Form_Splash.Label_StatusInicial.Caption := 'Primeira execução: Criando esquema do Gym Works...'#13#10'Executando script de criação...';
+      Form_Splash.Label_StatusInicial.Caption := 'Primeira execuï¿½ï¿½o: Criando esquema do Gym Works...'#13#10'Executando script de criaï¿½ï¿½o...';
       Form_Splash.ProgressBar_Decompress.Hide;
       Form_Splash.Update;
     end;
@@ -420,20 +420,20 @@ end;
 procedure TDataModule_Principal.DoException(aSender: TObject;
                                             aE     : Exception);
 begin
-	{ TODO : Inclua opções avançadas de Exceção }
-  { Se for um erro de validação, lançado por um componente de validação, exibe
-  o erro adequadamente de acordo com as opções da aplicação }
+	{ TODO : Inclua opï¿½ï¿½es avanï¿½adas de Exceï¿½ï¿½o }
+  { Se for um erro de validaï¿½ï¿½o, lanï¿½ado por um componente de validaï¿½ï¿½o, exibe
+  o erro adequadamente de acordo com as opï¿½ï¿½es da aplicaï¿½ï¿½o }
 	if aE is EInvalidFieldValue then
   begin
     Form_Splash.BalloonToolTip.TipText := aE.Message;
     Form_Splash.BalloonToolTip.TipIcon := tiError;
-    Form_Splash.BalloonToolTip.TipTitle := 'Erro de validação';
+    Form_Splash.BalloonToolTip.TipTitle := 'Erro de validaï¿½ï¿½o';
     ShowBalloonToolTipValidationFor(EInvalidFieldValue(aE).Form
                                    ,EInvalidFieldValue(aE).FieldError.DataSet
                                    ,EInvalidFieldValue(aE).FieldError);
   end
   else if aE is EInvalidExclusionOperation then
-    MessageBox(Application.Handle,PChar(aE.Message),'Erro de validação',MB_ICONERROR)
+    MessageBox(Application.Handle,PChar(aE.Message),'Erro de validaï¿½ï¿½o',MB_ICONERROR)
   else
    	Application.ShowException(aE);
 end;

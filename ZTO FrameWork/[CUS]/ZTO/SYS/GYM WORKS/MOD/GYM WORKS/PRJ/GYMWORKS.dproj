@@ -263,7 +263,7 @@
 						<VersionInfo Name="MajorVer">1</VersionInfo>
 						<VersionInfo Name="MinorVer">0</VersionInfo>
 						<VersionInfo Name="Release">0</VersionInfo>
-						<VersionInfo Name="Build">564</VersionInfo>
+						<VersionInfo Name="Build">669</VersionInfo>
 						<VersionInfo Name="Debug">False</VersionInfo>
 						<VersionInfo Name="PreRelease">False</VersionInfo>
 						<VersionInfo Name="Special">False</VersionInfo>
@@ -275,7 +275,7 @@
 					<VersionInfoKeys>
 						<VersionInfoKeys Name="CompanyName">Zetta Ømnis Soluções Tecnológicas Ltda.</VersionInfoKeys>
 						<VersionInfoKeys Name="FileDescription">Gym Works Main Module</VersionInfoKeys>
-						<VersionInfoKeys Name="FileVersion">1.0.0.564</VersionInfoKeys>
+						<VersionInfoKeys Name="FileVersion">1.0.0.669</VersionInfoKeys>
 						<VersionInfoKeys Name="InternalName">GYMWORKS-MM</VersionInfoKeys>
 						<VersionInfoKeys Name="LegalCopyright">Copyright 2010 Zetta Ømnis Soluções Tecnológicas Ltda. Todos os direitos reservados.</VersionInfoKeys>
 						<VersionInfoKeys Name="LegalTrademarks"/>

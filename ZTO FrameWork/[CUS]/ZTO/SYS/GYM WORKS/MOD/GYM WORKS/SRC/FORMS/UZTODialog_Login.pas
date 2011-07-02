@@ -14,6 +14,7 @@ type
     LabeledEdit_USU_VA_SENHA: TLabeledEdit;
     LabeledEdit_USU_VA_LOGIN: TLabeledEdit;
     DataSource_USU: TDataSource;
+    procedure ZTODialogOkButtonClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -81,5 +82,14 @@ begin
   end;
 end;
 
+
+procedure TZTODialog_Login.ZTODialogOkButtonClick(Sender: TObject);
+begin
+ // inherited;
+// inherited chama OK
+// se o login for bem sucedido, chama inherited do contrario chama cancel ou outra coisa
+
+
+end;
 
 end.
