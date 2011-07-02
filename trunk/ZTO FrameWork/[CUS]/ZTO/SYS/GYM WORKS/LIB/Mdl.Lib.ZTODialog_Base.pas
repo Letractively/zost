@@ -86,10 +86,7 @@ end;
 
 procedure TZTODialog_Base.ZTODialogOkButtonClick(Sender: TObject);
 begin
-  if fsModal in FormState then
-    Action_Ok.Execute
-  else
-    Close;
+  Action_Ok.Execute;
 end;
 
 end.

@@ -29,7 +29,7 @@ inherited ZTODialog_Login: TZTODialog_Login
     Left = 6
     Top = 213
     Width = 342
-    Height = 13
+    Height = 17
     Alignment = taCenter
     Color = clGreen
     DataField = 'VA_NOME'
@@ -43,45 +43,7 @@ inherited ZTODialog_Login: TZTODialog_Login
     ParentFont = False
     Transparent = True
   end
-  object LabeledEdit_USU_VA_LOGIN: TLabeledEdit [2]
-    Left = 6
-    Top = 69
-    Width = 342
-    Height = 21
-    Alignment = taCenter
-    EditLabel.Width = 273
-    EditLabel.Height = 13
-    EditLabel.Caption = 'Digite seu nome de usu'#225'rio ou selecione-o na lista abaixo'
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -11
-    Font.Name = 'Tahoma'
-    Font.Style = []
-    LabelSpacing = 1
-    ParentFont = False
-    TabOrder = 4
-  end
-  object LabeledEdit_USU_VA_SENHA: TLabeledEdit [3]
-    Left = 6
-    Top = 246
-    Width = 342
-    Height = 21
-    Alignment = taCenter
-    AutoSize = False
-    EditLabel.Width = 30
-    EditLabel.Height = 13
-    EditLabel.Caption = 'Senha'
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -11
-    Font.Name = 'Tahoma'
-    Font.Style = [fsBold]
-    LabelSpacing = 1
-    ParentFont = False
-    PasswordChar = #248
-    TabOrder = 3
-  end
-  object ZTODBGrid_Login: TZTODBGrid [4]
+  object ZTODBGrid_Login: TZTODBGrid [2]
     Left = 6
     Top = 96
     Width = 342
@@ -111,6 +73,44 @@ inherited ZTODialog_Login: TZTODialog_Login
         Width = 320
         Visible = True
       end>
+  end
+  object LabeledEdit_USU_VA_SENHA: TLabeledEdit [3]
+    Left = 6
+    Top = 246
+    Width = 342
+    Height = 21
+    Alignment = taCenter
+    AutoSize = False
+    EditLabel.Width = 30
+    EditLabel.Height = 13
+    EditLabel.Caption = 'Senha'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = [fsBold]
+    LabelSpacing = 1
+    ParentFont = False
+    PasswordChar = #248
+    TabOrder = 3
+  end
+  object LabeledEdit_USU_VA_LOGIN: TLabeledEdit [4]
+    Left = 6
+    Top = 69
+    Width = 342
+    Height = 21
+    Alignment = taCenter
+    EditLabel.Width = 273
+    EditLabel.Height = 13
+    EditLabel.Caption = 'Digite seu nome de usu'#225'rio ou selecione-o na lista abaixo'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    LabelSpacing = 1
+    ParentFont = False
+    TabOrder = 4
   end
   inherited ActionList: TActionList
     Left = 275
