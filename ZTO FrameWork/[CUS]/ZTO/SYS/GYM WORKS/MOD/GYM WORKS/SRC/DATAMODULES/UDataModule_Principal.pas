@@ -1,4 +1,4 @@
-unit UDataModule_Principal;
+﻿unit UDataModule_Principal;
 
 { DataModule comum. Copyright 2010 / 2011 ZTO Solu��es Tecnol�gicas Ltda. }
 
@@ -39,7 +39,7 @@ type
     procedure Action_ClientesExecute(Sender: TObject);
     procedure GYMWORKSBeforeConnect(Sender: TObject);
   private
-    { Declara��es privadas }
+    { Declarações privadas }
 //    FProcessorEvents: TProcessorEvents;
     FModules: TList;
     FConfiguracoes: TConfiguracoes;
@@ -61,10 +61,10 @@ type
     procedure BancoConfigurado(aSim: Boolean);
     procedure AcessoConfigurado;
   protected
-    { Declara��es protegidas }
+    { Declarações protegidas }
     FDiretorioAtual: String;
   public
-    { Declara��es p�blicas }
+    { Declarações públicas }
   end;
 
 var

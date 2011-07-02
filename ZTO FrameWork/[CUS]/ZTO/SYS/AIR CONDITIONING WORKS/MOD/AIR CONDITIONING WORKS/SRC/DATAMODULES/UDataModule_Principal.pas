@@ -7,7 +7,7 @@ interface
 uses
   Windows, SysUtils, Classes, Controls, Forms, ExtCtrls,
   Menus, ActnPopup, ActnList, ZConnection, DB, ZAbstractRODataset, ZDataset,
-  Sys.Lib.Zeos.Types, Sys.Lib.Types, ZSqlProcessor, UZTODataModule_Regioes,
+  ZTO.Win32.Db.ZeosLib.MySQL.Types, ZSqlProcessor, UZTODataModule_Regioes,
   UBalloonToolTip, ZTO.Components.Standard.HotSpots, ZTO.Wizards.FormTemplates.DataModule,
   PlatformDefaultStyleActnCtrls;
 
@@ -41,7 +41,6 @@ type
     procedure DataModuleDestroy(Sender: TObject);
   private
     { Declarações privadas }
-    FProcessorEvents: TProcessorEvents;
     FModules: TList;
     FZTODataModule_Regioes: TZTODataModule_Regioes;
     procedure DoZLibNotification(aSender: TObject);
@@ -56,6 +55,8 @@ type
     procedure AddModule(aModule: PZTODataModule);
     function InsertingOrUpdating: Boolean;
     procedure CancelAllOperations;
+    procedure DoAfterExecute(aProcessor: TZSQLProcessor; aStatementIndex: Integer);
+    procedure DoBeforeExecute(aProcessor: TZSQLProcessor; aStatementIndex: Integer);
   protected
     { Declarações protegidas }
     FDiretorioAtual: String;
@@ -73,7 +74,7 @@ uses ZTO.Win32.Rtl.Common.FileUtils
    , ZTO.Win32.Rtl.Common.Classes
    , ZTO.Win32.Rtl.Common.Classes.Interposer
    , ZTO.Win32.Db.Controls.Utils
-   , Sys.Lib.Zeos.MySQL.Utils
+   , ZTO.Win32.Db.ZeosLib.MySQL.Utils
    , CFDBValidationChecks
    , UForm_Splash;
 
@@ -146,34 +147,34 @@ begin
     // Banco De Dados
     Form_Splash.Label_StatusInicial.Caption := 'Primeira execução: Criando esquema do sistema...'#13#10'Criando esquema propriamente dito...';
     Form_Splash.Update;
-    MySQLExecuteScriptText(ACW
-                          ,'DROP DATABASE IF EXISTS MYSQL; CREATE DATABASE IF NOT EXISTS MYSQL DEFAULT CHARACTER SET LATIN1; USE MYSQL;');
+    MySQLExecuteSQLScript(ACW
+                         ,'DROP DATABASE IF EXISTS MYSQL; CREATE DATABASE IF NOT EXISTS MYSQL DEFAULT CHARACTER SET LATIN1; USE MYSQL;');
 
     // Tabelas de Sistema
     Form_Splash.Label_StatusInicial.Caption := 'Primeira execução: Criando esquema do sistema...'#13#10'Criando tabelas do sistema...';
     Form_Splash.Update;
-    MySQLExecuteScriptFile(ACW
-                          ,FDiretorioAtual + '\DAT\SHARE\mysql_system_tables.sql');
+    MySQLExecuteSQLScript(ACW
+                         ,FDiretorioAtual + '\DAT\SHARE\mysql_system_tables.sql');
 
     // Preenchendo Tabelas do sistema
     Form_Splash.Label_StatusInicial.Caption := 'Primeira execução: Criando esquema do sistema...'#13#10'Preenchendo tabelas do sistema...';
     Form_Splash.Update;
-    MySQLExecuteScriptFile(ACW
-                          ,FDiretorioAtual + '\DAT\SHARE\mysql_system_tables_data.sql');
+    MySQLExecuteSQLScript(ACW
+                         ,FDiretorioAtual + '\DAT\SHARE\mysql_system_tables_data.sql');
 
     // Preenchendo Tabelas de ajuda do sistema
     Form_Splash.Label_StatusInicial.Caption := 'Primeira execução: Criando esquema do sistema...'#13#10'Preenchendo tabelas de ajuda do sistema...';
     Form_Splash.Update;
-    MySQLExecuteScriptFile(ACW
-                          ,FDiretorioAtual + '\DAT\SHARE\fill_help_tables.sql');
+    MySQLExecuteSQLScript(ACW
+                         ,FDiretorioAtual + '\DAT\SHARE\fill_help_tables.sql');
   end;
 
   if not DataBaseACWCriada then
   begin
     Form_Splash.Label_StatusInicial.Show;
-    MySQLExecuteScriptText(ACW
-                          ,LoadCompressedTextFile(FDiretorioAtual + '\DAT\SHARE\ACW.SQL',DoZLibNotification)
-                          ,DoExecuteSQLScript);
+    MySQLExecuteSQLScript(ACW
+                         ,LoadZLibCompressedTextFile(FDiretorioAtual + '\DAT\SHARE\ACW.SQL',DoZLibNotification)
+                         ,DoExecuteSQLScript);
   end;
 
   if not (DataBaseMySQLCriada and DataBaseACWCriada) then
@@ -306,15 +307,51 @@ begin
    	Application.ShowException(aE);
 end;
 
+procedure TDataModule_Principal.DoBeforeExecute(aProcessor: TZSQLProcessor; aStatementIndex: Integer);
+begin
+  { Nada ainda }
+end;
+
+procedure TDataModule_Principal.DoAfterExecute(aProcessor: TZSQLProcessor; aStatementIndex: Integer);
+begin
+  Form_Splash.ProgressBar_Instrucoes.StepIt;
+  Application.ProcessMessages;
+end;
+
+(*
+antigamente processor events fazia o abaixo
+mas agora com a nova implementação eu não sei se é necessário
+acima, eu usei exatamente oque existia no GymWorks, mas não sei se funciona bem...
+ainda nao testei
+procedure TProcessorEvents.DoAfterExecute(aProcessor: TZSQLProcessor; aStatementIndex: Integer);
+begin
+	if Assigned(FProgressBarCurrent) then
+  begin
+    FProgressBarCurrent.StepIt;
+    Application.ProcessMessages;
+  end;
+end;
+
+procedure TProcessorEvents.DoBeforeExecute(aProcessor: TZSQLProcessor; aStatementIndex: Integer);
+begin
+  if Assigned(FLabelCurrentDescription) and Assigned(FLabelCurrentValue) then
+  begin
+    SetLabelDescriptionValue(FLabelCurrentDescription
+                            ,FLabelCurrentValue
+                            ,IntToStr(Succ(aStatementIndex)) + ' / ' + IntToStr(aProcessor.StatementCount));
+    Application.ProcessMessages;
+  end;
+end;
+*)
+
 procedure TDataModule_Principal.DoExecuteSQLScript(const aProcessor: TZSQLProcessor;
                                                    const aExecuteSQLScriptEvent: TExecuteScriptEvent;
                                                    const aScriptParts: TScriptParts);
 begin
   case aExecuteSQLScriptEvent of
     eseBeforeExecuteScript: begin
-      FProcessorEvents := TProcessorEvents.Create(Form_Splash.ProgressBar_Instrucoes,nil,nil);
-      aProcessor.AfterExecute := FProcessorEvents.DoAfterExecute;
-      aProcessor.BeforeExecute := FProcessorEvents.DoBeforeExecute;
+      aProcessor.AfterExecute := DoAfterExecute;
+      aProcessor.BeforeExecute := DoBeforeExecute;
 
       Form_Splash.ProgressBar_Blocos.Max := aScriptParts.Count;
       Form_Splash.ProgressBar_Blocos.Position := 0;
@@ -326,9 +363,9 @@ begin
 
     eseBeforeExecuteScriptPart: begin
       aProcessor.Parse;
-      Form_Splash.ProgressBar_Instrucoes.Max := aProcessor.StatementCount;
       Form_Splash.ProgressBar_Instrucoes.Position := 0;
       Form_Splash.ProgressBar_Instrucoes.Step := 1;
+      Form_Splash.ProgressBar_Instrucoes.Max := aProcessor.StatementCount;
     end;
 
     eseAfterExecuteScriptPart: begin
@@ -337,9 +374,6 @@ begin
     end;
 
     eseAfterExecuteScript: begin
-      if Assigned(FProcessorEvents) then
-        FProcessorEvents.Free;
-
       Form_Splash.ProgressBar_Blocos.Hide;
       Form_Splash.ProgressBar_Instrucoes.Hide;
     end;
