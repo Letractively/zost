@@ -54,25 +54,25 @@ type
     procedure ExecuteTarget(Target: TObject); override;
   end;
 
-  TScriptPart = class (TCollectionItem)
-  private
-    FDelimiter: String;
-    FScript: String;
-  public
-    constructor Create(Collection: TCollection); override;
-    property Delimiter: String read FDelimiter write FDelimiter;
-    property Script: String read FScript write FScript;
-  end;
+//  TScriptPart = class (TCollectionItem)
+//  private
+//    FDelimiter: String;
+//    FScript: String;
+//  public
+//    constructor Create(Collection: TCollection); override;
+//    property Delimiter: String read FDelimiter write FDelimiter;
+//    property Script: String read FScript write FScript;
+//  end;
 
-  TScriptParts = class (TCollection)
-  private
-    function GetScriptPart(i: Cardinal): TScriptPart;
-    function GetLast: TScriptPart;
-  public
-    function Add: TScriptPart;
-    property Part[i: Cardinal]: TScriptPart read GetScriptPart; default;
-    property Last: TScriptPart read GetLast;
-  end;
+//  TScriptParts = class (TCollection)
+//  private
+//    function GetScriptPart(i: Cardinal): TScriptPart;
+//    function GetLast: TScriptPart;
+//  public
+//    function Add: TScriptPart;
+//    property Part[i: Cardinal]: TScriptPart read GetScriptPart; default;
+//    property Last: TScriptPart read GetLast;
+//  end;
 
   TQueryEvent = (qeUnknown, qeBeforeCancel, qeBeforeClose, qeBeforeDelete,
                  qeBeforeEdit, qeBeforeInsert, qeBeforeOpen, qeBeforePost,
@@ -186,7 +186,7 @@ begin
 end;
 
 { TScriptPart }
-
+(*
 constructor TScriptPart.Create(Collection: TCollection);
 begin
   inherited;
@@ -213,5 +213,5 @@ function TScriptParts.GetScriptPart(i: Cardinal): TScriptPart;
 begin
 	Result := TScriptPart(inherited Items[i]);
 end;
-
+*)
 end.
