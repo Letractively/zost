@@ -1,0 +1,287 @@
+﻿	<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+		<PropertyGroup>
+			<ProjectGuid>{E1C01410-FB8D-48AE-9835-C73718F2A548}</ProjectGuid>
+			<MainSource>ACW.dpr</MainSource>
+			<Config Condition="'$(Config)'==''">Debug</Config>
+			<DCC_DCCCompiler>DCC32</DCC_DCCCompiler>
+			<ProjectVersion>12.0</ProjectVersion>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Config)'=='Base' or '$(Base)'!=''">
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Config)'=='Release' or '$(Cfg_1)'!=''">
+			<Cfg_1>true</Cfg_1>
+			<CfgParent>Base</CfgParent>
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Config)'=='Debug' or '$(Cfg_2)'!=''">
+			<Cfg_2>true</Cfg_2>
+			<CfgParent>Base</CfgParent>
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Base)'!=''">
+			<DCC_ImageBase>00400000</DCC_ImageBase>
+			<DCC_UsePackage>rtl;vcl;vclx;dbrtl;vcldb;dbxcds;dbexpress;xmlrtl;vclie;inet;inetdbbde;inetdbxpress;IndyCore;IndySystem;dsnap;bdertl;vcldbx;webdsnap;rxctl;VclSmp;rxdb;IcsDel100;adortl;dclOfficeXP;soaprtl;IndyProtocols;teeui;teedb;tee;dsnapcon;websnap;vclactnband;BalloonToolTip;CFEditPack;MozillaActiveXControl;RichEdit2ActionsPackage;ZComponent;ZParseSql;ZCore;ZDbc;ZPlain;rxbde;vclshlctrls;CFDBGridPack;CFDBValidationChecksPack;ZTOComponentsStandard</DCC_UsePackage>
+			<DebugSourcePath>C:\Backup 007\Tutoriais e projetos\Projetos\Delphi\Projetos {datacurta}\ZTO FrameWork\[ZTOFW2.1]\ZTOCL\SRC\Win32\rtl\common\;C:\Arquivos de programas\Borland\BDS\4.0\lib\Componentes\BalloonToolTip\;C:\Backup 007\Tutoriais e projetos\Projetos\Delphi\Projetos {datacurta}\ZTO FrameWork\[ZTOFW2.1]\COMPONENTS\STANDARD\SRC\;C:\Backup 007\Tutoriais e projetos\Projetos\Delphi\Projetos {datacurta}\ZTO FrameWork\[ZTOFW2.1]\ZTOCL\SRC\Win32\rtl\sys\;C:\Arquivos de programas\Borland\BDS\4.0\lib\Componentes\CFDBValidationChecks\prj\src\;$(DebugSourcePath)</DebugSourcePath>
+			<DCC_DependencyCheckOutputName>..\BIN\EXE\REL\ACW.exe</DCC_DependencyCheckOutputName>
+			<DCC_UnitAlias>WinTypes=Windows;WinProcs=Windows;DbiTypes=BDE;DbiProcs=BDE;DbiErrs=BDE;$(DCC_UnitAlias)</DCC_UnitAlias>
+			<DCC_Platform>x86</DCC_Platform>
+			<DCC_ExeOutput>..\BIN\EXE\REL</DCC_ExeOutput>
+			<DCC_K>false</DCC_K>
+			<DCC_N>true</DCC_N>
+			<DCC_S>false</DCC_S>
+			<DCC_F>false</DCC_F>
+			<DCC_SymbolReferenceInfo>1</DCC_SymbolReferenceInfo>
+			<DCC_DcuOutput>..\BIN\DCU</DCC_DcuOutput>
+			<DCC_E>false</DCC_E>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Cfg_1)'!=''">
+			<DCC_LocalDebugSymbols>false</DCC_LocalDebugSymbols>
+			<DCC_Define>RELEASE;$(DCC_Define)</DCC_Define>
+			<DCC_SymbolReferenceInfo>0</DCC_SymbolReferenceInfo>
+			<DCC_DebugInformation>false</DCC_DebugInformation>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Cfg_2)'!=''">
+			<DCC_Define>DEBUG;$(DCC_Define)</DCC_Define>
+		</PropertyGroup>
+		<ItemGroup>
+			<DelphiCompile Include="ACW.dpr">
+				<MainSource>MainSource</MainSource>
+			</DelphiCompile>
+			<DCCReference Include="..\..\..\..\..\LIB\Sys.Lib.Zeos.MySQL.Utils.pas"/>
+			<DCCReference Include="..\..\..\..\..\LIB\Sys.Lib.Zeos.Types.pas"/>
+			<DCCReference Include="..\SRC\FORMS\UForm_Splash.pas">
+				<Form>Form_Splash</Form>
+			</DCCReference>
+			<DCCReference Include="..\SRC\DATAMODULES\UDataModule_Principal.pas">
+				<Form>DataModule_Principal</Form>
+				<DesignClass>TZTODataModule</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\..\..\..\..\LIB\Sys.Lib.Types.pas"/>
+			<DCCReference Include="..\..\..\LIB\Mdl.Lib.ZTOSDIForm_Base.pas">
+				<Form>ZTOSDIForm_Base</Form>
+				<DesignClass>TZTOSDIForm</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\..\..\LIB\Mdl.Lib.ZTODataModule_Base.pas">
+				<Form>ZTODataModule_Base</Form>
+				<DesignClass>TZTODataModule</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\..\..\LIB\Mdl.Lib.ZTODialog_Base.pas">
+				<Form>ZTODialog_Base</Form>
+				<DesignClass>TZTODialog</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\SRC\FORMS\UZTODialog_Situacoes.pas">
+				<Form>ZTODialog_Situacoes</Form>
+				<DesignClass>TZTODialog</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\SRC\FORMS\UZTODialog_Regioes.pas">
+				<Form>ZTODialog_Regioes</Form>
+				<DesignClass>TZTODialog</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\..\..\LIB\Mdl.Lib.ZTODialog_TaskBar.pas">
+				<Form>ZTODialog_TaskBar</Form>
+				<DesignClass>TZTODialog</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\..\..\LIB\Mdl.Lib.ZTOSDIForm_TaskBar.pas">
+				<Form>ZTOSDIForm_TaskBar</Form>
+				<DesignClass>TZTOSDIForm</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\SRC\DATAMODULES\UZTODataModule_Situacoes.pas">
+				<Form>ZTODataModule_Situacoes</Form>
+				<DesignClass>TZTODataModule</DesignClass>
+			</DCCReference>
+			<DCCReference Include="..\SRC\DATAMODULES\UZTODataModule_Regioes.pas">
+				<Form>ZTODataModule_Regioes</Form>
+				<DesignClass>TZTODataModule</DesignClass>
+			</DCCReference>
+			<None Include="ModelSupport_ACW\Mdl\default.txaPackage">
+				<ContainerId>TogetherDiagram</ContainerId>
+			</None>
+			<None Include="ModelSupport_ACW\UDataModule_Principal\default.txaPackage">
+				<ContainerId>TogetherDiagram</ContainerId>
+			</None>
+			<None Include="ModelSupport_ACW\Sys\default.txaPackage">
+				<ContainerId>TogetherDiagram</ContainerId>
+			</None>
+			<None Include="ModelSupport_ACW\UZTODialog_Situacoes\default.txaPackage">
+				<ContainerId>TogetherDiagram</ContainerId>
+			</None>
+			<None Include="ModelSupport_ACW\UZTODataModule_Regioes\default.txaPackage">
+				<ContainerId>TogetherDiagram</ContainerId>
+			</None>
+			<None Include="ModelSupport_ACW\UZTODialog_Regioes\default.txaPackage">
+				<ContainerId>TogetherDiagram</ContainerId>
+			</None>
+			<None Include="ModelSupport_ACW\ACW\default.txaPackage">
+				<ContainerId>TogetherDiagram</ContainerId>
+			</None>
+			<None Include="ModelSupport_ACW\UZTODataModule_Situacoes\default.txaPackage">
+				<ContainerId>TogetherDiagram</ContainerId>
+			</None>
+			<None Include="ModelSupport_ACW\UForm_Splash\default.txaPackage">
+				<ContainerId>TogetherDiagram</ContainerId>
+			</None>
+			<None Include="ModelSupport_ACW\default.txvpck">
+				<ContainerId>TogetherDiagram</ContainerId>
+			</None>
+			<None Include="ModelSupport_ACW\UForm_Splash\default.txvpck">
+				<ContainerId>TogetherDiagram</ContainerId>
+			</None>
+			<None Include="ModelSupport_ACW\ACW\default.txvpck">
+				<ContainerId>TogetherDiagram</ContainerId>
+			</None>
+			<None Include="ModelSupport_ACW\UZTODataModule_Situacoes\default.txvpck">
+				<ContainerId>TogetherDiagram</ContainerId>
+			</None>
+			<None Include="ModelSupport_ACW\UZTODataModule_Regioes\default.txvpck">
+				<ContainerId>TogetherDiagram</ContainerId>
+			</None>
+			<None Include="ModelSupport_ACW\UZTODialog_Situacoes\default.txvpck">
+				<ContainerId>TogetherDiagram</ContainerId>
+			</None>
+			<None Include="ModelSupport_ACW\Sys\Lib\default.txaPackage">
+				<ContainerId>TogetherDiagram</ContainerId>
+			</None>
+			<None Include="ModelSupport_ACW\Sys\default.txvpck">
+				<ContainerId>TogetherDiagram</ContainerId>
+			</None>
+			<None Include="ModelSupport_ACW\Sys\Lib\Zeos\default.txaPackage">
+				<ContainerId>TogetherDiagram</ContainerId>
+			</None>
+			<None Include="ModelSupport_ACW\Sys\Lib\Types\default.txaPackage">
+				<ContainerId>TogetherDiagram</ContainerId>
+			</None>
+			<None Include="ModelSupport_ACW\Sys\Lib\default.txvpck">
+				<ContainerId>TogetherDiagram</ContainerId>
+			</None>
+			<None Include="ModelSupport_ACW\Sys\Lib\Zeos\MySQL\default.txaPackage">
+				<ContainerId>TogetherDiagram</ContainerId>
+			</None>
+			<None Include="ModelSupport_ACW\Sys\Lib\Zeos\Types\default.txaPackage">
+				<ContainerId>TogetherDiagram</ContainerId>
+			</None>
+			<None Include="ModelSupport_ACW\Sys\Lib\Zeos\default.txvpck">
+				<ContainerId>TogetherDiagram</ContainerId>
+			</None>
+			<None Include="ModelSupport_ACW\Sys\Lib\Zeos\MySQL\Utils\default.txaPackage">
+				<ContainerId>TogetherDiagram</ContainerId>
+			</None>
+			<None Include="ModelSupport_ACW\Sys\Lib\Zeos\MySQL\default.txvpck">
+				<ContainerId>TogetherDiagram</ContainerId>
+			</None>
+			<None Include="ModelSupport_ACW\Sys\Lib\Zeos\MySQL\Utils\default.txvpck">
+				<ContainerId>TogetherDiagram</ContainerId>
+			</None>
+			<None Include="ModelSupport_ACW\Sys\Lib\Zeos\Types\default.txvpck">
+				<ContainerId>TogetherDiagram</ContainerId>
+			</None>
+			<None Include="ModelSupport_ACW\Sys\Lib\Types\default.txvpck">
+				<ContainerId>TogetherDiagram</ContainerId>
+			</None>
+			<None Include="ModelSupport_ACW\UZTODialog_Regioes\default.txvpck">
+				<ContainerId>TogetherDiagram</ContainerId>
+			</None>
+			<None Include="ModelSupport_ACW\UDataModule_Principal\default.txvpck">
+				<ContainerId>TogetherDiagram</ContainerId>
+			</None>
+			<None Include="ModelSupport_ACW\Mdl\Lib\default.txaPackage">
+				<ContainerId>TogetherDiagram</ContainerId>
+			</None>
+			<None Include="ModelSupport_ACW\Mdl\default.txvpck">
+				<ContainerId>TogetherDiagram</ContainerId>
+			</None>
+			<None Include="ModelSupport_ACW\Mdl\Lib\ZTODialog_Base\default.txaPackage">
+				<ContainerId>TogetherDiagram</ContainerId>
+			</None>
+			<None Include="ModelSupport_ACW\Mdl\Lib\ZTODialog_TaskBar\default.txaPackage">
+				<ContainerId>TogetherDiagram</ContainerId>
+			</None>
+			<None Include="ModelSupport_ACW\Mdl\Lib\ZTOSDIForm_Base\default.txaPackage">
+				<ContainerId>TogetherDiagram</ContainerId>
+			</None>
+			<None Include="ModelSupport_ACW\Mdl\Lib\ZTODataModule_Base\default.txaPackage">
+				<ContainerId>TogetherDiagram</ContainerId>
+			</None>
+			<None Include="ModelSupport_ACW\Mdl\Lib\ZTOSDIForm_TaskBar\default.txaPackage">
+				<ContainerId>TogetherDiagram</ContainerId>
+			</None>
+			<None Include="ModelSupport_ACW\Mdl\Lib\default.txvpck">
+				<ContainerId>TogetherDiagram</ContainerId>
+			</None>
+			<None Include="ModelSupport_ACW\Mdl\Lib\ZTOSDIForm_Base\default.txvpck">
+				<ContainerId>TogetherDiagram</ContainerId>
+			</None>
+			<None Include="ModelSupport_ACW\Mdl\Lib\ZTOSDIForm_TaskBar\default.txvpck">
+				<ContainerId>TogetherDiagram</ContainerId>
+			</None>
+			<None Include="ModelSupport_ACW\Mdl\Lib\ZTODataModule_Base\default.txvpck">
+				<ContainerId>TogetherDiagram</ContainerId>
+			</None>
+			<None Include="ModelSupport_ACW\Mdl\Lib\ZTODialog_TaskBar\default.txvpck">
+				<ContainerId>TogetherDiagram</ContainerId>
+			</None>
+			<None Include="ModelSupport_ACW\Mdl\Lib\ZTODialog_Base\default.txvpck">
+				<ContainerId>TogetherDiagram</ContainerId>
+			</None>
+			<None Include="ModelSupport_ACW\default.txaPackage">
+				<ContainerId>TogetherDiagram</ContainerId>
+			</None>
+			<BuildConfiguration Include="Base">
+				<Key>Base</Key>
+			</BuildConfiguration>
+			<BuildConfiguration Include="Debug">
+				<Key>Cfg_2</Key>
+				<CfgParent>Base</CfgParent>
+			</BuildConfiguration>
+			<BuildConfiguration Include="Release">
+				<Key>Cfg_1</Key>
+				<CfgParent>Base</CfgParent>
+			</BuildConfiguration>
+		</ItemGroup>
+		<Import Project="$(BDS)\Bin\CodeGear.Delphi.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Delphi.Targets')"/>
+		<ProjectExtensions>
+			<Borland.Personality>Delphi.Personality.12</Borland.Personality>
+			<Borland.ProjectType/>
+			<BorlandProject>
+				<Delphi.Personality>
+					<Source>
+						<Source Name="MainSource">ACW.dpr</Source>
+					</Source>
+					<Parameters>
+						<Parameters Name="UseLauncher">False</Parameters>
+						<Parameters Name="LoadAllSymbols">True</Parameters>
+						<Parameters Name="LoadUnspecifiedSymbols">False</Parameters>
+					</Parameters>
+					<VersionInfo>
+						<VersionInfo Name="IncludeVerInfo">True</VersionInfo>
+						<VersionInfo Name="AutoIncBuild">True</VersionInfo>
+						<VersionInfo Name="MajorVer">1</VersionInfo>
+						<VersionInfo Name="MinorVer">0</VersionInfo>
+						<VersionInfo Name="Release">2</VersionInfo>
+						<VersionInfo Name="Build">415</VersionInfo>
+						<VersionInfo Name="Debug">False</VersionInfo>
+						<VersionInfo Name="PreRelease">False</VersionInfo>
+						<VersionInfo Name="Special">False</VersionInfo>
+						<VersionInfo Name="Private">False</VersionInfo>
+						<VersionInfo Name="DLL">False</VersionInfo>
+						<VersionInfo Name="Locale">1046</VersionInfo>
+						<VersionInfo Name="CodePage">1252</VersionInfo>
+					</VersionInfo>
+					<VersionInfoKeys>
+						<VersionInfoKeys Name="CompanyName">Zetta Ømnis Soluções Tecnológicas Ltda.</VersionInfoKeys>
+						<VersionInfoKeys Name="FileDescription">Air Conditioning Works Main Module</VersionInfoKeys>
+						<VersionInfoKeys Name="FileVersion">1.0.2.415</VersionInfoKeys>
+						<VersionInfoKeys Name="InternalName">ACW-MM</VersionInfoKeys>
+						<VersionInfoKeys Name="LegalCopyright">Copyright 2010 Zetta Ømnis Soluções Tecnológicas Ltda. Todos os direitos reservados.</VersionInfoKeys>
+						<VersionInfoKeys Name="LegalTrademarks"/>
+						<VersionInfoKeys Name="OriginalFilename">ACW.EXE</VersionInfoKeys>
+						<VersionInfoKeys Name="ProductName">Air Conditioning Works</VersionInfoKeys>
+						<VersionInfoKeys Name="ProductVersion">1.0.0.0</VersionInfoKeys>
+						<VersionInfoKeys Name="Comments"/>
+						<VersionInfoKeys Name="LastCompiledTime">23/05/2010 20:57:55</VersionInfoKeys>
+					</VersionInfoKeys>
+				</Delphi.Personality>
+			</BorlandProject>
+			<ProjectFileVersion>12</ProjectFileVersion>
+		</ProjectExtensions>
+	</Project>
