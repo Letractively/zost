@@ -48,8 +48,8 @@ object Form1: TForm1
         OnClick = Button1Click
       end
       object Button14: TButton
-        Left = 64
-        Top = 40
+        Left = 100
+        Top = 20
         Width = 75
         Height = 25
         Caption = 'Button14'
@@ -65,7 +65,7 @@ object Form1: TForm1
         Top = 0
         Width = 680
         Height = 306
-        ActivePage = TabSheet_Sys
+        ActivePage = TabSheet_Common
         Align = alClient
         TabOrder = 0
         object TabSheet_Common: TTabSheet
@@ -74,8 +74,6 @@ object Form1: TForm1
         object TabSheet_Sys: TTabSheet
           Caption = 'Sys'
           ImageIndex = 1
-          ExplicitLeft = -164
-          ExplicitTop = 48
           object Button2: TButton
             Left = 3
             Top = 3
