@@ -189,6 +189,16 @@ begin
   end;
 end;
 
+function MESSCallBack(const aSearchRec: TSearchRec; const aIsDirectory: Boolean): Boolean;
+begin
+  Result := True;
+
+  if aIsDirectory then
+    RemoveDir(aSearchRec.Name)
+  else
+    DeleteFile(aSearchRec.Name);
+end;
+
 procedure MySQLExecuteSQLScript(aZConnection: TZConnection; aSQLScript: String; aExecuteScriptCallBack: TExecuteScriptCallBack = nil; aSplitScriptCallBack: TSplitScriptCallBack   = nil);
 const
   PARTSPERFILE = 120;
@@ -221,7 +231,6 @@ begin
     begin
       ScriptFileName := TempPath + '\SCRIPTFILE000000.SQL';
       SaveTextFile(aSQLScript,ScriptFileName);
-//      UTF8ToString(RawByteString(aText));
     end
     else
       raise Exception.Create('Nenhum arquivo ou texto de script foi informado');
@@ -339,12 +348,10 @@ begin
       end;
   finally
     { Limpa o diretório temporário e exclui }
-    //ClearDirectory(TempPath);
-    //deletedir???
+    ProcessFiles(TempPath,'*.*',MESSCallBack,True);
+    RemoveDir(TempPath);
   end;
 end;
-
-
 
 end.
 

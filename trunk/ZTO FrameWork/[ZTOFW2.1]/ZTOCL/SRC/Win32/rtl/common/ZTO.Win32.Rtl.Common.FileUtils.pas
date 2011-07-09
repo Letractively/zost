@@ -21,6 +21,8 @@ type
 
   TFileInformation = (fiUnknown, fiMajorVersion, fiMinorVersion, fiRelease, fiBuild, fiFullVersion);
 
+  TProcessFilesCallBack = function(const aSearchRec: TSearchRec; const aIsDirectory: Boolean): Boolean;
+
 function FileSize(aFileName    : TFileName;
                   aFileSizeUnit: TFileSizeUnit = fsuBytes): Double;
 
@@ -35,8 +37,8 @@ function LoadZLibCompressedTextFile(const aFileName         : TFileName;
                                           OnZlibNotification: TNotifyEvent): String;
 
 procedure ZLibCompressFile(const aInputFile
-                           , aOutputFile       : TFileName;
-                             OnZlibNotification: TNotifyEvent);
+                               , aOutputFile       : TFileName;
+                                 OnZlibNotification: TNotifyEvent);
 
 procedure SelfZLibCompressFile(const aFileName         : TFileName;
                                      OnZlibNotification: TNotifyEvent);
@@ -53,6 +55,11 @@ function GetTemporaryPath: String;
 function GetTemporaryName(aPrefix: String; aExtension: String = ''): String;
 
 function IsZLibCompressedFile(aFileName: TFileName): Boolean;
+
+procedure ProcessFiles(aRootDir             : TFileName;
+                       aFileMask            : String;
+                       aProcessFilesCallBack: TProcessFilesCallBack;
+                       aIncludeSubdirs      : Boolean = True);
 
 implementation
 
@@ -547,6 +554,69 @@ begin
     raise Exception.Create('A extensão, quando usada, tem de começar com um ponto');
 
   Result := aPrefix + IntToHex(GetTickCount,2) + aExtension;
+end;
+{ TODO -oCarlos Feitoza -cMELHORIA : A função de callback é retorna um valor
+true ou false, isso futuramente pode ser usado para interromper o processamento.
+Isso não está sendo feito abaixo, mas a função de callback dá esta possibilidade }
+procedure ProcessFiles(aRootDir             : TFileName;
+                       aFileMask            : String;
+                       aProcessFilesCallBack: TProcessFilesCallBack;
+                       aIncludeSubdirs      : Boolean = True);
+{ ---------------------------------------------------------------------------- }
+procedure SearchTree;
+var
+  SearchRec: TSearchRec;
+  DosError: integer;
+begin
+  if not Assigned(aProcessFilesCallBack) then
+    raise Exception.Create('O procedure "SearchTree" não pode ser executado sem uma função de callback');
+
+  DosError := FindFirst(aFileMask, 0, SearchRec);
+  while DosError = 0 do
+  begin
+    try
+      aProcessFilesCallBack(SearchRec, False);
+    except
+      on Eoor: EOutOfResources do
+      begin
+        Eoor.Message := Eoor.Message + #13#10'A quantidade de arquivos localizados excede o limite de recursos do seu sistema. Favor limitar seu critério de busca escolhendo diretório(s) de nível mais interno';
+        raise;
+      end;
+    end;
+
+    DosError := FindNext(SearchRec);
+  end;
+
+  if aIncludeSubdirs then
+  begin
+    DosError := FindFirst('*.*', faDirectory, SearchRec);
+
+    while DosError = 0 do
+    begin
+      if ((SearchRec.attr and faDirectory = faDirectory) and (SearchRec.name <> '.') and (SearchRec.name <> '..')) then
+      begin
+        ChDir(SearchRec.Name);
+        SearchTree;
+        ChDir('..');
+        { A colocação da chamada da função de callback aqui tem um comportamento
+        diferente de como seria caso ela fosse chamada antes do primeiro ChDir
+        dentro deste bloco. Aqui, caso estejamos excluindo arquivos, garante que
+        ao ser chamada com o segundo parâmetro = true, indicando que é um
+        diretório, tenhamos o diretório vazio e possamos assim, excluí-lo também.
+        Este comportamento pode não ser útil em outras situações e por isso você
+        deve considerar futuramente executar este callback no início deste bloco
+        também, identificando isso no callback }
+        aProcessFilesCallBack(SearchRec, True);
+      end;
+
+      DosError := FindNext(SearchRec);
+    end;
+  end;
+end;
+{ ---------------------------------------------------------------------------- }
+begin
+	ChDir(aRootDir);
+	SearchTree;
 end;
 
 end.
