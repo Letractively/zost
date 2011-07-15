@@ -121,8 +121,8 @@
 		<Directories>
 			<Directories Name="OutputDir"></Directories>
 			<Directories Name="UnitOutputDir">..\BIN\DCU</Directories>
-			<Directories Name="PackageDLLOutputDir">..\BIN\BPL</Directories>
-			<Directories Name="PackageDCPOutputDir">..\BIN\DCP</Directories>
+			<Directories Name="PackageDLLOutputDir"></Directories>
+			<Directories Name="PackageDCPOutputDir"></Directories>
 			<Directories Name="SearchPath"></Directories>
 			<Directories Name="Packages"></Directories>
 			<Directories Name="Conditionals"></Directories>
@@ -150,7 +150,7 @@
 			<VersionInfo Name="MajorVer">2</VersionInfo>
 			<VersionInfo Name="MinorVer">1</VersionInfo>
 			<VersionInfo Name="Release">0</VersionInfo>
-			<VersionInfo Name="Build">319</VersionInfo>
+			<VersionInfo Name="Build">572</VersionInfo>
 			<VersionInfo Name="Debug">False</VersionInfo>
 			<VersionInfo Name="PreRelease">False</VersionInfo>
 			<VersionInfo Name="Special">False</VersionInfo>
@@ -162,7 +162,7 @@
 		<VersionInfoKeys>
 			<VersionInfoKeys Name="CompanyName"></VersionInfoKeys>
 			<VersionInfoKeys Name="FileDescription"></VersionInfoKeys>
-			<VersionInfoKeys Name="FileVersion">2.1.0.319</VersionInfoKeys>
+			<VersionInfoKeys Name="FileVersion">2.1.0.572</VersionInfoKeys>
 			<VersionInfoKeys Name="InternalName"></VersionInfoKeys>
 			<VersionInfoKeys Name="LegalCopyright"></VersionInfoKeys>
 			<VersionInfoKeys Name="LegalTrademarks"></VersionInfoKeys>
@@ -172,6 +172,8 @@
 			<VersionInfoKeys Name="Comments"></VersionInfoKeys>
 			<VersionInfoKeys Name="LastCompiledTime">17/07/2010 13:09:51</VersionInfoKeys>
 		</VersionInfoKeys>  
+    
+    
     <Excluded_Packages>
       <Excluded_Packages Name="C:\Backup 007\Tutoriais e projetos\Projetos\Delphi\Projetos {datacurta}\ZTO FrameWork\[ZTOFW2.1]\WIZARDS\FORMTEMPLATES\BIN\BPL\ZTOWizardsFormTemplates.bpl">ZTO Form &amp; DataModule Templates</Excluded_Packages>
       <Excluded_Packages Name="C:\Documents and Settings\Ðerek Wildstar\Meus documentos\Borland Studio Projects\Bpl\ZTOComponentsStandard.bpl">ZTO Standard Components</Excluded_Packages>

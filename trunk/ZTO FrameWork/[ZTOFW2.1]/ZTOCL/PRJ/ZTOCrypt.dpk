@@ -23,9 +23,9 @@ package ZTOCrypt;
 {$MINENUMSIZE 1}
 {$IMAGEBASE $400000}
 {$DESCRIPTION 'ZTO Cryptographic Routines'}
-{$LIBSUFFIX '120'}
 {$RUNONLY}
 {$IMPLICITBUILD OFF}
+{$I '..\..\LibSuffixes.inc'}
 
 requires
   rtl;

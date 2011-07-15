@@ -25,6 +25,7 @@ package ZTOComponentsStandard;
 {$IMAGEBASE $400000}
 {$DESCRIPTION 'ZTO Standard Components'}
 {$IMPLICITBUILD OFF}
+{$I '..\..\..\LibSuffixes.inc'}
 
 requires
   rtl,

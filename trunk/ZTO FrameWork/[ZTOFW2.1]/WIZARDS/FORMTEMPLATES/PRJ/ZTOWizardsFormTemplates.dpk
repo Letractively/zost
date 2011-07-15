@@ -26,6 +26,7 @@ package ZTOWizardsFormTemplates;
 {$DESCRIPTION 'ZTO Forms and DataModules'}
 {$DESIGNONLY}
 {$IMPLICITBUILD OFF}
+{$I '..\..\..\LibSuffixes.inc'}
 
 requires
   DesignIDE,
