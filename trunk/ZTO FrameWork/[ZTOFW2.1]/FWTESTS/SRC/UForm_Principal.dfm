@@ -24,10 +24,6 @@ object Form1: TForm1
     TabOrder = 0
     object TabSheet_FormTemplates: TTabSheet
       Caption = 'Form Templates'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Label1: TLabel
         Left = 8
         Top = 232
@@ -64,10 +60,6 @@ object Form1: TForm1
     object TabSheet_ZTOWin32Rtl: TTabSheet
       Caption = 'ZTOWin32Rtl'
       ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object PageControl_ZTOWin32Rtl: TPageControl
         Left = 0
         Top = 0
@@ -78,10 +70,6 @@ object Form1: TForm1
         TabOrder = 0
         object TabSheet_Common: TTabSheet
           Caption = 'Common'
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
         end
         object TabSheet_Sys: TTabSheet
           Caption = 'Sys'
