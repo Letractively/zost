@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+  <PersonalityInfo>
+    <Option>
+      <Option Name="Personality">Default.Personality</Option>
+      <Option Name="ProjectType"></Option>
+      <Option Name="Version">1.0</Option>
+      <Option Name="GUID">{399E6980-CBBC-42CF-8AC5-6722BB43C07D}</Option>
+    </Option>
+  </PersonalityInfo>
+  <Default.Personality>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <Projects>
+      <Projects Name="ZTOToolsAPI100.bpl">ZTOCL\PRJ\ZTOToolsAPI.bdsproj</Projects>
+      <Projects Name="ZTOWin32Db100.bpl">ZTOCL\PRJ\ZTOWin32Db.bdsproj</Projects>
+      <Projects Name="ZTOWin32Rtl100.bpl">ZTOCL\PRJ\ZTOWin32Rtl.bdsproj</Projects>
+      <Projects Name="ZTOCrypt100.bpl">ZTOCL\PRJ\ZTOCrypt.bdsproj</Projects>
+      <Projects Name="ZTORegExp100.bpl">ZTOCL\PRJ\ZTORegExp.bdsproj</Projects>
+      <Projects Name="ZTOComponentsStandard100.bpl">COMPONENTS\STANDARD\PRJ\ZTOComponentsStandard.bdsproj</Projects>
+      <Projects Name="ZTOWizardsFormTemplates100.bpl">WIZARDS\FORMTEMPLATES\PRJ\ZTOWizardsFormTemplates.bdsproj</Projects>
+      <Projects Name="ZTOComponentsDataControls100.bpl">COMPONENTS\DATACONTROLS\PRJ\ZTOComponentsDataControls.bdsproj</Projects>
+      <Projects Name="ZTOFWTests.exe">FWTESTS\PRJ\ZTOFWTests.bdsproj</Projects>
+      <Projects Name="Targets">ZTOToolsAPI100.bpl ZTOWin32Db100.bpl ZTOWin32Rtl100.bpl ZTOCrypt100.bpl ZTORegExp100.bpl ZTOComponentsStandard100.bpl ZTOWizardsFormTemplates100.bpl ZTOComponentsDataControls100.bpl ZTOFWTests.exe</Projects>
+    </Projects>
+    <Dependencies>
+      <Dependency GUID="{CF589D94-B2D9-4BF1-91E9-B59BE1A48D67}">
+        <Dependency GUID="{808F07E4-2214-4B81-9D0E-535F6436BBB2}"/>
+        <Dependency GUID="{54278FD9-AF11-4FA4-8F75-CFD8E85DBBB2}"/>
+        <Dependency GUID="{DAF5C9C1-1AED-458A-B0AE-B5992293CF1E}"/>
+        <Dependency GUID="{91585173-F6D8-4C90-A4D7-904C821A8DB1}"/>
+        <Dependency GUID="{8858D103-01F2-4DD9-B330-D561BC3C7A12}"/>
+        <Dependency GUID="{5F164AEE-F1B2-4D33-82EB-12FE3A375797}"/>
+      </Dependency>
+      <Dependency GUID="{9ECEE2FE-A04A-4BBE-8A5C-007940D7DBE1}">
+        <Dependency GUID="{808F07E4-2214-4B81-9D0E-535F6436BBB2}"/>
+        <Dependency GUID="{54278FD9-AF11-4FA4-8F75-CFD8E85DBBB2}"/>
+        <Dependency GUID="{DAF5C9C1-1AED-458A-B0AE-B5992293CF1E}"/>
+        <Dependency GUID="{91585173-F6D8-4C90-A4D7-904C821A8DB1}"/>
+        <Dependency GUID="{8858D103-01F2-4DD9-B330-D561BC3C7A12}"/>
+        <Dependency GUID="{5F164AEE-F1B2-4D33-82EB-12FE3A375797}"/>
+      </Dependency>
+    </Dependencies>
+  </Default.Personality>
+</BorlandProject>

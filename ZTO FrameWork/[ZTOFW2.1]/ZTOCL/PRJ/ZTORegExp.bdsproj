@@ -121,8 +121,8 @@
 		<Directories>
 			<Directories Name="OutputDir"></Directories>
 			<Directories Name="UnitOutputDir">..\BIN\DCU</Directories>
-			<Directories Name="PackageDLLOutputDir">..\BIN\BPL</Directories>
-			<Directories Name="PackageDCPOutputDir">..\BIN\DCP</Directories>
+			<Directories Name="PackageDLLOutputDir"></Directories>
+			<Directories Name="PackageDCPOutputDir"></Directories>
 			<Directories Name="SearchPath"></Directories>
 			<Directories Name="Packages"></Directories>
 			<Directories Name="Conditionals"></Directories>
