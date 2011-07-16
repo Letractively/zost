@@ -1,10 +1,10 @@
 ﻿	<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 		<PropertyGroup>
-			<ProjectGuid>{8858D103-01F2-4DD9-B330-D561BC3C7A12}</ProjectGuid>
-			<MainSource>ZTORegExp.dpk</MainSource>
+			<ProjectGuid>{8C27CE8D-6258-4A90-9FBB-E0BC74CCC204}</ProjectGuid>
+			<MainSource>ZTOComponentsWebApiWrappers.dpk</MainSource>
+			<ProjectVersion>12.0</ProjectVersion>
 			<Config Condition="'$(Config)'==''">Debug</Config>
 			<DCC_DCCCompiler>DCC32</DCC_DCCCompiler>
-			<ProjectVersion>12.0</ProjectVersion>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Config)'=='Base' or '$(Base)'!=''">
 			<Base>true</Base>
@@ -20,23 +20,21 @@
 			<Base>true</Base>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Base)'!=''">
-			<DCC_SymbolReferenceInfo>1</DCC_SymbolReferenceInfo>
-			<DCC_ImageBase>00400000</DCC_ImageBase>
-			<DCC_DependencyCheckOutputName>C:\Users\Public\Documents\RAD Studio\6.0\BPL\ZTORegExp.bpl</DCC_DependencyCheckOutputName>
 			<DesignOnlyPackage>false</DesignOnlyPackage>
-			<RuntimeOnlyPackage>true</RuntimeOnlyPackage>
-			<DCC_UnitAlias>WinTypes=Windows;WinProcs=Windows;DbiTypes=BDE;DbiProcs=BDE;DbiErrs=BDE;$(DCC_UnitAlias)</DCC_UnitAlias>
-			<DCC_Description>ZTO Regular Expressions Routines (PCRE)</DCC_Description>
-			<DCC_Platform>x86</DCC_Platform>
+			<DCC_DcuOutput>..\BIN\DCU</DCC_DcuOutput>
+			<DCC_Description>ZTO Web API Wrappers Components</DCC_Description>
+			<DCC_ImageBase>00400000</DCC_ImageBase>
+			<DCC_SymbolReferenceInfo>0</DCC_SymbolReferenceInfo>
 			<GenPackage>true</GenPackage>
+			<DCC_UnitAlias>WinTypes=Windows;WinProcs=Windows;DbiTypes=BDE;DbiProcs=BDE;DbiErrs=BDE;$(DCC_UnitAlias)</DCC_UnitAlias>
+			<DCC_Platform>x86</DCC_Platform>
+			<DCC_DependencyCheckOutputName>C:\Users\Public\Documents\RAD Studio\6.0\BPL\ZTOComponentsWebApiWrappers.bpl</DCC_DependencyCheckOutputName>
+			<DCC_N>false</DCC_N>
 			<DCC_S>false</DCC_S>
 			<GenDll>true</GenDll>
-			<DCC_OutputNeverBuildDcps>true</DCC_OutputNeverBuildDcps>
-			<DCC_N>true</DCC_N>
 			<DCC_E>false</DCC_E>
-			<DCC_DcuOutput>..\BIN\DCU</DCC_DcuOutput>
-			<DCC_K>false</DCC_K>
 			<DCC_F>false</DCC_F>
+			<DCC_K>false</DCC_K>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Cfg_1)'!=''">
 			<DCC_LocalDebugSymbols>false</DCC_LocalDebugSymbols>
@@ -48,12 +46,17 @@
 			<DCC_Define>DEBUG;$(DCC_Define)</DCC_Define>
 		</PropertyGroup>
 		<ItemGroup>
-			<DelphiCompile Include="ZTORegExp.dpk">
+			<DelphiCompile Include="ZTOComponentsWebApiWrappers.dpk">
 				<MainSource>MainSource</MainSource>
 			</DelphiCompile>
+			<DCCReference Include="..\RES\ZTOComponentsWebApiWrappers.dcr"/>
 			<DCCReference Include="rtl.dcp"/>
-			<DCCReference Include="..\SRC\RegExp\ZTO.RegExp.PerlRegEx.pas"/>
-			<DCCReference Include="..\SRC\RegExp\ZTO.RegExp.Pcre.pas"/>
+			<DCCReference Include="vcl.dcp"/>
+			<DCCReference Include="OverbyteIcsD2009Run.dcp"/>
+			<DCCReference Include="xmlrtl.dcp"/>
+			<DCCReference Include="..\SRC\ZTO.Components.WebApiWrappers.Register.pas"/>
+			<DCCReference Include="..\SRC\ZTO.Components.WebApiWrappers.Twitter.pas"/>
+			<DCCReference Include="..\RES\ZTOComponentsWebApiWrappers.dcr"/>
 			<BuildConfiguration Include="Base">
 				<Key>Base</Key>
 			</BuildConfiguration>
@@ -73,7 +76,7 @@
 			<BorlandProject>
 				<Delphi.Personality>
 					<Source>
-						<Source Name="MainSource">ZTORegExp.dpk</Source>
+						<Source Name="MainSource">ZTOComponentsWebApiWrappers.dpk</Source>
 					</Source>
 					<Parameters>
 						<Parameters Name="UseLauncher">False</Parameters>
@@ -106,9 +109,7 @@
 						<VersionInfoKeys Name="ProductName"/>
 						<VersionInfoKeys Name="ProductVersion">1.0.0.0</VersionInfoKeys>
 						<VersionInfoKeys Name="Comments"/>
-						<VersionInfoKeys Name="LastCompiledTime">17/07/2010 13:40:17</VersionInfoKeys>
 					</VersionInfoKeys>
-					<Excluded_Packages/>
 				</Delphi.Personality>
 			</BorlandProject>
 			<ProjectFileVersion>12</ProjectFileVersion>
