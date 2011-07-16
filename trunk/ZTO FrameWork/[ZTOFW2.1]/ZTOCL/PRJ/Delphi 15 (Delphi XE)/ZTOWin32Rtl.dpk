@@ -1,0 +1,51 @@
+package ZTOWin32Rtl;
+
+{$R *.res}
+{$ALIGN 8}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO ON}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS ON}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION ON}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
+{$REFERENCEINFO ON}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES OFF}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST OFF}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $400000}
+{$DESCRIPTION 'ZTO Runtime Library'}
+{$LIBSUFFIX '120'}
+{$RUNONLY}
+{$IMPLICITBUILD OFF}
+
+requires
+  rtl,
+  vcl,
+  vclimg,
+  xmlrtl;
+
+contains
+  ZTO.Win32.Rtl.Common.DateUtils in '..\..\SRC\Win32\rtl\common\ZTO.Win32.Rtl.Common.DateUtils.pas',
+  ZTO.Win32.Rtl.Common.FileUtils in '..\..\SRC\Win32\rtl\common\ZTO.Win32.Rtl.Common.FileUtils.pas',
+  ZTO.Win32.Rtl.Common.Classes in '..\..\SRC\Win32\rtl\common\ZTO.Win32.Rtl.Common.Classes.pas',
+  ZTO.Win32.Rtl.Common.ComponentUtils in '..\..\SRC\Win32\rtl\common\ZTO.Win32.Rtl.Common.ComponentUtils.pas',
+  ZTO.Win32.Rtl.Sys.Types in '..\..\SRC\Win32\rtl\sys\ZTO.Win32.Rtl.Sys.Types.pas',
+  ZTO.Win32.Rtl.Common.Classes.Interposer in '..\..\SRC\Win32\rtl\common\ZTO.Win32.Rtl.Common.Classes.Interposer.pas',
+  ZTO.Win32.Rtl.Sys.Utilities.HDDInfo in '..\..\SRC\Win32\rtl\sys\ZTO.Win32.Rtl.Sys.Utilities.HDDInfo.pas',
+  ZTO.Win32.Rtl.Sys.WMI in '..\..\SRC\Win32\rtl\sys\ZTO.Win32.Rtl.Sys.WMI.pas',
+  ZTO.Win32.Rtl.Sys.WMI.Tlb in '..\..\SRC\Win32\rtl\sys\ZTO.Win32.Rtl.Sys.WMI.Tlb.pas',
+  ZTO.Win32.Rtl.Common.StringUtils in '..\..\SRC\Win32\rtl\common\ZTO.Win32.Rtl.Common.StringUtils.pas',
+  ZTO.Win32.Rtl.Sys.Utilities in '..\..\SRC\Win32\rtl\sys\ZTO.Win32.Rtl.Sys.Utilities.pas',
+  ZTO.Win32.Rtl.Common.NetworkUtils in '..\..\SRC\Win32\rtl\common\ZTO.Win32.Rtl.Common.NetworkUtils.pas',
+  ZTO.Win32.Rtl.Common.Registry in '..\..\SRC\Win32\rtl\common\ZTO.Win32.Rtl.Common.Registry.pas';
+
+end.
