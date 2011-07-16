@@ -31,7 +31,7 @@ requires
   DesignIDE;
 
 contains
-  ZTO.ToolsAPI.OTA.Utilities in '..\SRC\ToolsAPI\ZTO.ToolsAPI.OTA.Utilities.pas',
-  ZTO.ToolsAPI.OTA.Creators in '..\SRC\ToolsAPI\ZTO.ToolsAPI.OTA.Creators.pas';
+  ZTO.ToolsAPI.OTA.Utilities in '..\..\SRC\ToolsAPI\ZTO.ToolsAPI.OTA.Utilities.pas',
+  ZTO.ToolsAPI.OTA.Creators in '..\..\SRC\ToolsAPI\ZTO.ToolsAPI.OTA.Creators.pas';
 
 end.

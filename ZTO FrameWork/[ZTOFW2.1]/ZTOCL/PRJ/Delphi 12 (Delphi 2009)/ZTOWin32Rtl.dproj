@@ -35,7 +35,7 @@
 			<DCC_OutputNeverBuildDcps>true</DCC_OutputNeverBuildDcps>
 			<DCC_N>true</DCC_N>
 			<DCC_E>false</DCC_E>
-			<DCC_DcuOutput>..\BIN\DCU</DCC_DcuOutput>
+			<DCC_DcuOutput>..\..\BIN\DCU</DCC_DcuOutput>
 			<DCC_K>false</DCC_K>
 			<DCC_F>false</DCC_F>
 		</PropertyGroup>
@@ -56,19 +56,19 @@
 			<DCCReference Include="vcl.dcp"/>
 			<DCCReference Include="vclimg.dcp"/>
 			<DCCReference Include="xmlrtl.dcp"/>
-			<DCCReference Include="..\SRC\Win32\rtl\common\ZTO.Win32.Rtl.Common.DateUtils.pas"/>
-			<DCCReference Include="..\SRC\Win32\rtl\common\ZTO.Win32.Rtl.Common.FileUtils.pas"/>
-			<DCCReference Include="..\SRC\Win32\rtl\common\ZTO.Win32.Rtl.Common.Classes.pas"/>
-			<DCCReference Include="..\SRC\Win32\rtl\common\ZTO.Win32.Rtl.Common.ComponentUtils.pas"/>
-			<DCCReference Include="..\SRC\Win32\rtl\sys\ZTO.Win32.Rtl.Sys.Types.pas"/>
-			<DCCReference Include="..\SRC\Win32\rtl\common\ZTO.Win32.Rtl.Common.Classes.Interposer.pas"/>
-			<DCCReference Include="..\SRC\Win32\rtl\sys\ZTO.Win32.Rtl.Sys.Utilities.HDDInfo.pas"/>
-			<DCCReference Include="..\SRC\Win32\rtl\sys\ZTO.Win32.Rtl.Sys.WMI.pas"/>
-			<DCCReference Include="..\SRC\Win32\rtl\sys\ZTO.Win32.Rtl.Sys.WMI.Tlb.pas"/>
-			<DCCReference Include="..\SRC\Win32\rtl\common\ZTO.Win32.Rtl.Common.StringUtils.pas"/>
-			<DCCReference Include="..\SRC\Win32\rtl\sys\ZTO.Win32.Rtl.Sys.Utilities.pas"/>
-			<DCCReference Include="..\SRC\Win32\rtl\common\ZTO.Win32.Rtl.Common.NetworkUtils.pas"/>
-			<DCCReference Include="..\SRC\Win32\rtl\common\ZTO.Win32.Rtl.Common.Registry.pas"/>
+			<DCCReference Include="..\..\SRC\Win32\rtl\common\ZTO.Win32.Rtl.Common.DateUtils.pas"/>
+			<DCCReference Include="..\..\SRC\Win32\rtl\common\ZTO.Win32.Rtl.Common.FileUtils.pas"/>
+			<DCCReference Include="..\..\SRC\Win32\rtl\common\ZTO.Win32.Rtl.Common.Classes.pas"/>
+			<DCCReference Include="..\..\SRC\Win32\rtl\common\ZTO.Win32.Rtl.Common.ComponentUtils.pas"/>
+			<DCCReference Include="..\..\SRC\Win32\rtl\sys\ZTO.Win32.Rtl.Sys.Types.pas"/>
+			<DCCReference Include="..\..\SRC\Win32\rtl\common\ZTO.Win32.Rtl.Common.Classes.Interposer.pas"/>
+			<DCCReference Include="..\..\SRC\Win32\rtl\sys\ZTO.Win32.Rtl.Sys.Utilities.HDDInfo.pas"/>
+			<DCCReference Include="..\..\SRC\Win32\rtl\sys\ZTO.Win32.Rtl.Sys.WMI.pas"/>
+			<DCCReference Include="..\..\SRC\Win32\rtl\sys\ZTO.Win32.Rtl.Sys.WMI.Tlb.pas"/>
+			<DCCReference Include="..\..\SRC\Win32\rtl\common\ZTO.Win32.Rtl.Common.StringUtils.pas"/>
+			<DCCReference Include="..\..\SRC\Win32\rtl\sys\ZTO.Win32.Rtl.Sys.Utilities.pas"/>
+			<DCCReference Include="..\..\SRC\Win32\rtl\common\ZTO.Win32.Rtl.Common.NetworkUtils.pas"/>
+			<DCCReference Include="..\..\SRC\Win32\rtl\common\ZTO.Win32.Rtl.Common.Registry.pas"/>
 			<BuildConfiguration Include="Base">
 				<Key>Base</Key>
 			</BuildConfiguration>
@@ -103,7 +103,7 @@
 						<VersionInfo Name="MajorVer">2</VersionInfo>
 						<VersionInfo Name="MinorVer">1</VersionInfo>
 						<VersionInfo Name="Release">0</VersionInfo>
-						<VersionInfo Name="Build">833</VersionInfo>
+						<VersionInfo Name="Build">834</VersionInfo>
 						<VersionInfo Name="Debug">False</VersionInfo>
 						<VersionInfo Name="PreRelease">False</VersionInfo>
 						<VersionInfo Name="Special">False</VersionInfo>
@@ -115,7 +115,7 @@
 					<VersionInfoKeys>
 						<VersionInfoKeys Name="CompanyName"/>
 						<VersionInfoKeys Name="FileDescription"/>
-						<VersionInfoKeys Name="FileVersion">2.1.0.833</VersionInfoKeys>
+						<VersionInfoKeys Name="FileVersion">2.1.0.834</VersionInfoKeys>
 						<VersionInfoKeys Name="InternalName"/>
 						<VersionInfoKeys Name="LegalCopyright"/>
 						<VersionInfoKeys Name="LegalTrademarks"/>

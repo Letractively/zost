@@ -1,0 +1,60 @@
+package ZTOWizardsFormTemplates;
+
+{$R *.res}
+{$R '..\..\RES\ZTOWizardImages.res'}
+{$ALIGN 8}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO ON}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS ON}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION ON}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
+{$REFERENCEINFO ON}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES OFF}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST OFF}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $400000}
+{$DESCRIPTION 'ZTO Forms and DataModules'}
+{$LIBSUFFIX '120'}
+{$DESIGNONLY}
+{$IMPLICITBUILD OFF}
+
+requires
+  DesignIDE,
+  dbrtl,
+  dsnap,
+  ZTOToolsApi,
+  ZTOWin32Rtl,
+  ZTOComponentsStandard,
+  rtl,
+  vcl,
+  xmlrtl,
+  vclactnband,
+  vclx,
+  ZComponent,
+  ZParseSql,
+  ZCore,
+  ZDbc,
+  ZPlain;
+
+contains
+  ZTO.Wizards.FormTemplates.DataModule.Wizard in '..\..\SRC\ZTO.Wizards.FormTemplates.DataModule.Wizard.pas',
+  ZTO.Wizards.FormTemplates.Dialog in '..\..\SRC\ZTO.Wizards.FormTemplates.Dialog.pas',
+  ZTO.Wizards.FormTemplates.Reg in '..\..\SRC\ZTO.Wizards.FormTemplates.Reg.pas',
+  ZTO.Wizards.FormTemplates.Wizards in '..\..\SRC\ZTO.Wizards.FormTemplates.Wizards.pas',
+  ZTO.Wizards.FormTemplates.DataModule in '..\..\SRC\ZTO.Wizards.FormTemplates.DataModule.pas',
+  ZTO.Wizards.FormTemplates.Dialog.Wizard in '..\..\SRC\ZTO.Wizards.FormTemplates.Dialog.Wizard.pas',
+  ZTO.Wizards.FormTemplates.SDIForm.Wizard in '..\..\SRC\ZTO.Wizards.FormTemplates.SDIForm.Wizard.pas',
+  ZTO.Wizards.FormTemplates.SDIForm in '..\..\SRC\ZTO.Wizards.FormTemplates.SDIForm.pas',
+  ZTO.Wizards.FormTemplates.CustomForm in '..\..\SRC\ZTO.Wizards.FormTemplates.CustomForm.pas';
+
+end.

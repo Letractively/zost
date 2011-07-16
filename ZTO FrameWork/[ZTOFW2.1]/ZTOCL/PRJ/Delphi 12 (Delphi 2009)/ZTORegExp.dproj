@@ -35,7 +35,7 @@
 			<DCC_OutputNeverBuildDcps>true</DCC_OutputNeverBuildDcps>
 			<DCC_N>true</DCC_N>
 			<DCC_E>false</DCC_E>
-			<DCC_DcuOutput>..\BIN\DCU</DCC_DcuOutput>
+			<DCC_DcuOutput>..\..\BIN\DCU</DCC_DcuOutput>
 			<DCC_K>false</DCC_K>
 			<DCC_F>false</DCC_F>
 		</PropertyGroup>
@@ -53,8 +53,8 @@
 				<MainSource>MainSource</MainSource>
 			</DelphiCompile>
 			<DCCReference Include="rtl.dcp"/>
-			<DCCReference Include="..\SRC\RegExp\ZTO.RegExp.PerlRegEx.pas"/>
-			<DCCReference Include="..\SRC\RegExp\ZTO.RegExp.Pcre.pas"/>
+			<DCCReference Include="..\..\SRC\RegExp\ZTO.RegExp.PerlRegEx.pas"/>
+			<DCCReference Include="..\..\SRC\RegExp\ZTO.RegExp.Pcre.pas"/>
 			<BuildConfiguration Include="Base">
 				<Key>Base</Key>
 			</BuildConfiguration>

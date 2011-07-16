@@ -3,32 +3,32 @@
 			<ProjectGuid>{649A4AC7-09C1-4C65-8D06-B4ECEA38615C}</ProjectGuid>
 		</PropertyGroup>
 		<ItemGroup>
-			<Projects Include="ZTOCL\PRJ\ZTOToolsAPI.dproj">
+			<Projects Include="ZTOCL\PRJ\DELPHI 12 (DELPHI 2009)\ZTOToolsAPI.dproj">
 				<Dependencies/>
 			</Projects>
-			<Projects Include="ZTOCL\PRJ\ZTOWin32Db.dproj">
+			<Projects Include="ZTOCL\PRJ\DELPHI 12 (DELPHI 2009)\ZTOWin32Db.dproj">
 				<Dependencies/>
 			</Projects>
-			<Projects Include="ZTOCL\PRJ\ZTOWin32Rtl.dproj">
+			<Projects Include="ZTOCL\PRJ\DELPHI 12 (DELPHI 2009)\ZTOWin32Rtl.dproj">
 				<Dependencies/>
 			</Projects>
-			<Projects Include="ZTOCL\PRJ\ZTOCrypt.dproj">
+			<Projects Include="ZTOCL\PRJ\DELPHI 12 (DELPHI 2009)\ZTOCrypt.dproj">
 				<Dependencies/>
 			</Projects>
-			<Projects Include="ZTOCL\PRJ\ZTORegExp.dproj">
+			<Projects Include="ZTOCL\PRJ\DELPHI 12 (DELPHI 2009)\ZTORegExp.dproj">
 				<Dependencies/>
 			</Projects>
-			<Projects Include="COMPONENTS\WEBAPIWRAPPERS\PRJ\ZTOComponentsWebApiWrappers.dproj">
+			<Projects Include="COMPONENTS\WEBAPIWRAPPERS\PRJ\DELPHI 12 (DELPHI 2009)\ZTOComponentsWebApiWrappers.dproj">
 				<Dependencies/>
 			</Projects>
-			<Projects Include="COMPONENTS\STANDARD\PRJ\ZTOComponentsStandard.dproj">
+			<Projects Include="COMPONENTS\STANDARD\PRJ\DELPHI 12 (DELPHI 2009)\ZTOComponentsStandard.dproj">
 				<Dependencies/>
 			</Projects>
-			<Projects Include="WIZARDS\FORMTEMPLATES\PRJ\ZTOWizardsFormTemplates.dproj">
-				<Dependencies>ZTOCL\PRJ\ZTOToolsAPI.dproj;ZTOCL\PRJ\ZTOWin32Db.dproj;ZTOCL\PRJ\ZTOWin32Rtl.dproj;ZTOCL\PRJ\ZTOCrypt.dproj;ZTOCL\PRJ\ZTORegExp.dproj;COMPONENTS\STANDARD\PRJ\ZTOComponentsStandard.dproj</Dependencies>
+			<Projects Include="WIZARDS\FORMTEMPLATES\PRJ\DELPHI 12 (DELPHI 2009)\ZTOWizardsFormTemplates.dproj">
+				<Dependencies>ZTOCL\PRJ\DELPHI 12 (DELPHI 2009)\ZTOToolsAPI.dproj;ZTOCL\PRJ\DELPHI 12 (DELPHI 2009)\ZTOWin32Db.dproj;ZTOCL\PRJ\DELPHI 12 (DELPHI 2009)\ZTOWin32Rtl.dproj;ZTOCL\PRJ\DELPHI 12 (DELPHI 2009)\ZTOCrypt.dproj;ZTOCL\PRJ\DELPHI 12 (DELPHI 2009)\ZTORegExp.dproj;COMPONENTS\STANDARD\PRJ\DELPHI 12 (DELPHI 2009)\ZTOComponentsStandard.dproj</Dependencies>
 			</Projects>
-			<Projects Include="COMPONENTS\DATACONTROLS\PRJ\ZTOComponentsDataControls.dproj">
-				<Dependencies>ZTOCL\PRJ\ZTOToolsAPI.dproj;ZTOCL\PRJ\ZTOWin32Db.dproj;ZTOCL\PRJ\ZTOWin32Rtl.dproj;ZTOCL\PRJ\ZTOCrypt.dproj;ZTOCL\PRJ\ZTORegExp.dproj;COMPONENTS\STANDARD\PRJ\ZTOComponentsStandard.dproj</Dependencies>
+			<Projects Include="COMPONENTS\DATACONTROLS\PRJ\DELPHI 12 (DELPHI 2009)\ZTOComponentsDataControls.dproj">
+				<Dependencies>ZTOCL\PRJ\DELPHI 12 (DELPHI 2009)\ZTOToolsAPI.dproj;ZTOCL\PRJ\DELPHI 12 (DELPHI 2009)\ZTOWin32Db.dproj;ZTOCL\PRJ\DELPHI 12 (DELPHI 2009)\ZTOWin32Rtl.dproj;ZTOCL\PRJ\DELPHI 12 (DELPHI 2009)\ZTOCrypt.dproj;ZTOCL\PRJ\DELPHI 12 (DELPHI 2009)\ZTORegExp.dproj;COMPONENTS\STANDARD\PRJ\DELPHI 12 (DELPHI 2009)\ZTOComponentsStandard.dproj</Dependencies>
 			</Projects>
 			<Projects Include="FWTESTS\PRJ\ZTOFWTests.dproj">
 				<Dependencies/>
@@ -42,85 +42,85 @@
 			</BorlandProject>
 		</ProjectExtensions>
 		<Target Name="ZTOToolsAPI">
-			<MSBuild Projects="ZTOCL\PRJ\ZTOToolsAPI.dproj"/>
+			<MSBuild Projects="ZTOCL\PRJ\DELPHI 12 (DELPHI 2009)\ZTOToolsAPI.dproj"/>
 		</Target>
 		<Target Name="ZTOToolsAPI:Clean">
-			<MSBuild Targets="Clean" Projects="ZTOCL\PRJ\ZTOToolsAPI.dproj"/>
+			<MSBuild Targets="Clean" Projects="ZTOCL\PRJ\DELPHI 12 (DELPHI 2009)\ZTOToolsAPI.dproj"/>
 		</Target>
 		<Target Name="ZTOToolsAPI:Make">
-			<MSBuild Targets="Make" Projects="ZTOCL\PRJ\ZTOToolsAPI.dproj"/>
+			<MSBuild Targets="Make" Projects="ZTOCL\PRJ\DELPHI 12 (DELPHI 2009)\ZTOToolsAPI.dproj"/>
 		</Target>
 		<Target Name="ZTOWin32Db">
-			<MSBuild Projects="ZTOCL\PRJ\ZTOWin32Db.dproj"/>
+			<MSBuild Projects="ZTOCL\PRJ\DELPHI 12 (DELPHI 2009)\ZTOWin32Db.dproj"/>
 		</Target>
 		<Target Name="ZTOWin32Db:Clean">
-			<MSBuild Targets="Clean" Projects="ZTOCL\PRJ\ZTOWin32Db.dproj"/>
+			<MSBuild Targets="Clean" Projects="ZTOCL\PRJ\DELPHI 12 (DELPHI 2009)\ZTOWin32Db.dproj"/>
 		</Target>
 		<Target Name="ZTOWin32Db:Make">
-			<MSBuild Targets="Make" Projects="ZTOCL\PRJ\ZTOWin32Db.dproj"/>
+			<MSBuild Targets="Make" Projects="ZTOCL\PRJ\DELPHI 12 (DELPHI 2009)\ZTOWin32Db.dproj"/>
 		</Target>
 		<Target Name="ZTOWin32Rtl">
-			<MSBuild Projects="ZTOCL\PRJ\ZTOWin32Rtl.dproj"/>
+			<MSBuild Projects="ZTOCL\PRJ\DELPHI 12 (DELPHI 2009)\ZTOWin32Rtl.dproj"/>
 		</Target>
 		<Target Name="ZTOWin32Rtl:Clean">
-			<MSBuild Targets="Clean" Projects="ZTOCL\PRJ\ZTOWin32Rtl.dproj"/>
+			<MSBuild Targets="Clean" Projects="ZTOCL\PRJ\DELPHI 12 (DELPHI 2009)\ZTOWin32Rtl.dproj"/>
 		</Target>
 		<Target Name="ZTOWin32Rtl:Make">
-			<MSBuild Targets="Make" Projects="ZTOCL\PRJ\ZTOWin32Rtl.dproj"/>
+			<MSBuild Targets="Make" Projects="ZTOCL\PRJ\DELPHI 12 (DELPHI 2009)\ZTOWin32Rtl.dproj"/>
 		</Target>
 		<Target Name="ZTOCrypt">
-			<MSBuild Projects="ZTOCL\PRJ\ZTOCrypt.dproj"/>
+			<MSBuild Projects="ZTOCL\PRJ\DELPHI 12 (DELPHI 2009)\ZTOCrypt.dproj"/>
 		</Target>
 		<Target Name="ZTOCrypt:Clean">
-			<MSBuild Targets="Clean" Projects="ZTOCL\PRJ\ZTOCrypt.dproj"/>
+			<MSBuild Targets="Clean" Projects="ZTOCL\PRJ\DELPHI 12 (DELPHI 2009)\ZTOCrypt.dproj"/>
 		</Target>
 		<Target Name="ZTOCrypt:Make">
-			<MSBuild Targets="Make" Projects="ZTOCL\PRJ\ZTOCrypt.dproj"/>
+			<MSBuild Targets="Make" Projects="ZTOCL\PRJ\DELPHI 12 (DELPHI 2009)\ZTOCrypt.dproj"/>
 		</Target>
 		<Target Name="ZTORegExp">
-			<MSBuild Projects="ZTOCL\PRJ\ZTORegExp.dproj"/>
+			<MSBuild Projects="ZTOCL\PRJ\DELPHI 12 (DELPHI 2009)\ZTORegExp.dproj"/>
 		</Target>
 		<Target Name="ZTORegExp:Clean">
-			<MSBuild Targets="Clean" Projects="ZTOCL\PRJ\ZTORegExp.dproj"/>
+			<MSBuild Targets="Clean" Projects="ZTOCL\PRJ\DELPHI 12 (DELPHI 2009)\ZTORegExp.dproj"/>
 		</Target>
 		<Target Name="ZTORegExp:Make">
-			<MSBuild Targets="Make" Projects="ZTOCL\PRJ\ZTORegExp.dproj"/>
+			<MSBuild Targets="Make" Projects="ZTOCL\PRJ\DELPHI 12 (DELPHI 2009)\ZTORegExp.dproj"/>
 		</Target>
 		<Target Name="ZTOComponentsWebApiWrappers">
-			<MSBuild Projects="COMPONENTS\WEBAPIWRAPPERS\PRJ\ZTOComponentsWebApiWrappers.dproj"/>
+			<MSBuild Projects="COMPONENTS\WEBAPIWRAPPERS\PRJ\DELPHI 12 (DELPHI 2009)\ZTOComponentsWebApiWrappers.dproj"/>
 		</Target>
 		<Target Name="ZTOComponentsWebApiWrappers:Clean">
-			<MSBuild Targets="Clean" Projects="COMPONENTS\WEBAPIWRAPPERS\PRJ\ZTOComponentsWebApiWrappers.dproj"/>
+			<MSBuild Targets="Clean" Projects="COMPONENTS\WEBAPIWRAPPERS\PRJ\DELPHI 12 (DELPHI 2009)\ZTOComponentsWebApiWrappers.dproj"/>
 		</Target>
 		<Target Name="ZTOComponentsWebApiWrappers:Make">
-			<MSBuild Targets="Make" Projects="COMPONENTS\WEBAPIWRAPPERS\PRJ\ZTOComponentsWebApiWrappers.dproj"/>
+			<MSBuild Targets="Make" Projects="COMPONENTS\WEBAPIWRAPPERS\PRJ\DELPHI 12 (DELPHI 2009)\ZTOComponentsWebApiWrappers.dproj"/>
 		</Target>
 		<Target Name="ZTOComponentsStandard">
-			<MSBuild Projects="COMPONENTS\STANDARD\PRJ\ZTOComponentsStandard.dproj"/>
+			<MSBuild Projects="COMPONENTS\STANDARD\PRJ\DELPHI 12 (DELPHI 2009)\ZTOComponentsStandard.dproj"/>
 		</Target>
 		<Target Name="ZTOComponentsStandard:Clean">
-			<MSBuild Targets="Clean" Projects="COMPONENTS\STANDARD\PRJ\ZTOComponentsStandard.dproj"/>
+			<MSBuild Targets="Clean" Projects="COMPONENTS\STANDARD\PRJ\DELPHI 12 (DELPHI 2009)\ZTOComponentsStandard.dproj"/>
 		</Target>
 		<Target Name="ZTOComponentsStandard:Make">
-			<MSBuild Targets="Make" Projects="COMPONENTS\STANDARD\PRJ\ZTOComponentsStandard.dproj"/>
+			<MSBuild Targets="Make" Projects="COMPONENTS\STANDARD\PRJ\DELPHI 12 (DELPHI 2009)\ZTOComponentsStandard.dproj"/>
 		</Target>
 		<Target DependsOnTargets="ZTOToolsAPI;ZTOWin32Db;ZTOWin32Rtl;ZTOCrypt;ZTORegExp;ZTOComponentsStandard" Name="ZTOWizardsFormTemplates">
-			<MSBuild Projects="WIZARDS\FORMTEMPLATES\PRJ\ZTOWizardsFormTemplates.dproj"/>
+			<MSBuild Projects="WIZARDS\FORMTEMPLATES\PRJ\DELPHI 12 (DELPHI 2009)\ZTOWizardsFormTemplates.dproj"/>
 		</Target>
 		<Target DependsOnTargets="ZTOToolsAPI:Clean;ZTOWin32Db:Clean;ZTOWin32Rtl:Clean;ZTOCrypt:Clean;ZTORegExp:Clean;ZTOComponentsStandard:Clean" Name="ZTOWizardsFormTemplates:Clean">
-			<MSBuild Targets="Clean" Projects="WIZARDS\FORMTEMPLATES\PRJ\ZTOWizardsFormTemplates.dproj"/>
+			<MSBuild Targets="Clean" Projects="WIZARDS\FORMTEMPLATES\PRJ\DELPHI 12 (DELPHI 2009)\ZTOWizardsFormTemplates.dproj"/>
 		</Target>
 		<Target DependsOnTargets="ZTOToolsAPI:Make;ZTOWin32Db:Make;ZTOWin32Rtl:Make;ZTOCrypt:Make;ZTORegExp:Make;ZTOComponentsStandard:Make" Name="ZTOWizardsFormTemplates:Make">
-			<MSBuild Targets="Make" Projects="WIZARDS\FORMTEMPLATES\PRJ\ZTOWizardsFormTemplates.dproj"/>
+			<MSBuild Targets="Make" Projects="WIZARDS\FORMTEMPLATES\PRJ\DELPHI 12 (DELPHI 2009)\ZTOWizardsFormTemplates.dproj"/>
 		</Target>
 		<Target DependsOnTargets="ZTOToolsAPI;ZTOWin32Db;ZTOWin32Rtl;ZTOCrypt;ZTORegExp;ZTOComponentsStandard" Name="ZTOComponentsDataControls">
-			<MSBuild Projects="COMPONENTS\DATACONTROLS\PRJ\ZTOComponentsDataControls.dproj"/>
+			<MSBuild Projects="COMPONENTS\DATACONTROLS\PRJ\DELPHI 12 (DELPHI 2009)\ZTOComponentsDataControls.dproj"/>
 		</Target>
 		<Target DependsOnTargets="ZTOToolsAPI:Clean;ZTOWin32Db:Clean;ZTOWin32Rtl:Clean;ZTOCrypt:Clean;ZTORegExp:Clean;ZTOComponentsStandard:Clean" Name="ZTOComponentsDataControls:Clean">
-			<MSBuild Targets="Clean" Projects="COMPONENTS\DATACONTROLS\PRJ\ZTOComponentsDataControls.dproj"/>
+			<MSBuild Targets="Clean" Projects="COMPONENTS\DATACONTROLS\PRJ\DELPHI 12 (DELPHI 2009)\ZTOComponentsDataControls.dproj"/>
 		</Target>
 		<Target DependsOnTargets="ZTOToolsAPI:Make;ZTOWin32Db:Make;ZTOWin32Rtl:Make;ZTOCrypt:Make;ZTORegExp:Make;ZTOComponentsStandard:Make" Name="ZTOComponentsDataControls:Make">
-			<MSBuild Targets="Make" Projects="COMPONENTS\DATACONTROLS\PRJ\ZTOComponentsDataControls.dproj"/>
+			<MSBuild Targets="Make" Projects="COMPONENTS\DATACONTROLS\PRJ\DELPHI 12 (DELPHI 2009)\ZTOComponentsDataControls.dproj"/>
 		</Target>
 		<Target Name="ZTOFWTests">
 			<MSBuild Projects="FWTESTS\PRJ\ZTOFWTests.dproj"/>

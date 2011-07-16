@@ -35,9 +35,9 @@ requires
   designide;
 
 contains
-  ZTO.Components.DataControls.LabeledDBEdit in '..\SRC\ZTO.Components.DataControls.LabeledDBEdit.pas',
-  ZTO.Components.DataControls.Register in '..\SRC\ZTO.Components.DataControls.Register.pas',
-  ZTO.Components.DataControls.VariableColumnsEditor in '..\SRC\ZTO.Components.DataControls.VariableColumnsEditor.pas' {Form_VariableColumnsEditor},
-  ZTO.Components.DataControls.DBGrid in '..\SRC\ZTO.Components.DataControls.DBGrid.pas';
+  ZTO.Components.DataControls.LabeledDBEdit in '..\..\SRC\ZTO.Components.DataControls.LabeledDBEdit.pas',
+  ZTO.Components.DataControls.Register in '..\..\SRC\ZTO.Components.DataControls.Register.pas',
+  ZTO.Components.DataControls.VariableColumnsEditor in '..\..\SRC\ZTO.Components.DataControls.VariableColumnsEditor.pas' {Form_VariableColumnsEditor},
+  ZTO.Components.DataControls.DBGrid in '..\..\SRC\ZTO.Components.DataControls.DBGrid.pas';
 
 end.
