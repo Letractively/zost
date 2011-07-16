@@ -1,0 +1,140 @@
+﻿	<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+		<PropertyGroup>
+			<ProjectGuid>{CF589D94-B2D9-4BF1-91E9-B59BE1A48D67}</ProjectGuid>
+			<MainSource>ZTOWizardsFormTemplates.dpk</MainSource>
+			<Config Condition="'$(Config)'==''">Debug</Config>
+			<DCC_DCCCompiler>DCC32</DCC_DCCCompiler>
+			<ProjectVersion>12.0</ProjectVersion>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Config)'=='Base' or '$(Base)'!=''">
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Config)'=='Release' or '$(Cfg_1)'!=''">
+			<Cfg_1>true</Cfg_1>
+			<CfgParent>Base</CfgParent>
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Config)'=='Debug' or '$(Cfg_2)'!=''">
+			<Cfg_2>true</Cfg_2>
+			<CfgParent>Base</CfgParent>
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Base)'!=''">
+			<DllSuffix>120</DllSuffix>
+			<DCC_SymbolReferenceInfo>1</DCC_SymbolReferenceInfo>
+			<DCC_ImageBase>00400000</DCC_ImageBase>
+			<DCC_DependencyCheckOutputName>C:\Users\Public\Documents\RAD Studio\6.0\BPL\ZTOWizardsFormTemplates120.bpl</DCC_DependencyCheckOutputName>
+			<GenPackage>true</GenPackage>
+			<DesignOnlyPackage>true</DesignOnlyPackage>
+			<DCC_UnitAlias>WinTypes=Windows;WinProcs=Windows;DbiTypes=BDE;DbiProcs=BDE;DbiErrs=BDE;$(DCC_UnitAlias)</DCC_UnitAlias>
+			<DCC_Description>ZTO Forms and DataModules</DCC_Description>
+			<DCC_Platform>x86</DCC_Platform>
+			<DCC_DcuOutput>..\..\BIN\DCU</DCC_DcuOutput>
+			<DCC_S>false</DCC_S>
+			<GenDll>true</GenDll>
+			<DCC_OutputNeverBuildDcps>true</DCC_OutputNeverBuildDcps>
+			<DCC_F>false</DCC_F>
+			<DCC_E>false</DCC_E>
+			<DCC_N>true</DCC_N>
+			<DCC_K>false</DCC_K>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Cfg_1)'!=''">
+			<DCC_LocalDebugSymbols>false</DCC_LocalDebugSymbols>
+			<DCC_Define>RELEASE;$(DCC_Define)</DCC_Define>
+			<DCC_SymbolReferenceInfo>0</DCC_SymbolReferenceInfo>
+			<DCC_DebugInformation>false</DCC_DebugInformation>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Cfg_2)'!=''">
+			<DCC_Define>DEBUG;$(DCC_Define)</DCC_Define>
+		</PropertyGroup>
+		<ItemGroup>
+			<DelphiCompile Include="ZTOWizardsFormTemplates.dpk">
+				<MainSource>MainSource</MainSource>
+			</DelphiCompile>
+			<DCCReference Include="..\..\RES\ZTOWizardImages.res"/>
+			<DCCReference Include="DesignIDE.dcp"/>
+			<DCCReference Include="dbrtl.dcp"/>
+			<DCCReference Include="dsnap.dcp"/>
+			<DCCReference Include="ZTOToolsApi.dcp"/>
+			<DCCReference Include="ZTOWin32Rtl.dcp"/>
+			<DCCReference Include="ZTOComponentsStandard.dcp"/>
+			<DCCReference Include="rtl.dcp"/>
+			<DCCReference Include="vcl.dcp"/>
+			<DCCReference Include="xmlrtl.dcp"/>
+			<DCCReference Include="vclactnband.dcp"/>
+			<DCCReference Include="vclx.dcp"/>
+			<DCCReference Include="ZComponent.dcp"/>
+			<DCCReference Include="ZParseSql.dcp"/>
+			<DCCReference Include="ZCore.dcp"/>
+			<DCCReference Include="ZDbc.dcp"/>
+			<DCCReference Include="ZPlain.dcp"/>
+			<DCCReference Include="..\..\SRC\ZTO.Wizards.FormTemplates.DataModule.Wizard.pas"/>
+			<DCCReference Include="..\..\SRC\ZTO.Wizards.FormTemplates.Dialog.pas"/>
+			<DCCReference Include="..\..\SRC\ZTO.Wizards.FormTemplates.Reg.pas"/>
+			<DCCReference Include="..\..\SRC\ZTO.Wizards.FormTemplates.Wizards.pas"/>
+			<DCCReference Include="..\..\SRC\ZTO.Wizards.FormTemplates.DataModule.pas"/>
+			<DCCReference Include="..\..\SRC\ZTO.Wizards.FormTemplates.Dialog.Wizard.pas"/>
+			<DCCReference Include="..\..\SRC\ZTO.Wizards.FormTemplates.SDIForm.Wizard.pas"/>
+			<DCCReference Include="..\..\SRC\ZTO.Wizards.FormTemplates.SDIForm.pas"/>
+			<DCCReference Include="..\..\SRC\ZTO.Wizards.FormTemplates.CustomForm.pas"/>
+			<DCCReference Include="..\..\RES\ZTOWizardImages.res"/>
+			<BuildConfiguration Include="Base">
+				<Key>Base</Key>
+			</BuildConfiguration>
+			<BuildConfiguration Include="Debug">
+				<Key>Cfg_2</Key>
+				<CfgParent>Base</CfgParent>
+			</BuildConfiguration>
+			<BuildConfiguration Include="Release">
+				<Key>Cfg_1</Key>
+				<CfgParent>Base</CfgParent>
+			</BuildConfiguration>
+		</ItemGroup>
+		<Import Project="$(BDS)\Bin\CodeGear.Delphi.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Delphi.Targets')"/>
+		<ProjectExtensions>
+			<Borland.Personality>Delphi.Personality.12</Borland.Personality>
+			<Borland.ProjectType>Package</Borland.ProjectType>
+			<BorlandProject>
+				<Delphi.Personality>
+					<Source>
+						<Source Name="MainSource">ZTOWizardsFormTemplates.dpk</Source>
+					</Source>
+					<Parameters>
+						<Parameters Name="UseLauncher">False</Parameters>
+						<Parameters Name="LoadAllSymbols">True</Parameters>
+						<Parameters Name="LoadUnspecifiedSymbols">False</Parameters>
+					</Parameters>
+					<VersionInfo>
+						<VersionInfo Name="IncludeVerInfo">True</VersionInfo>
+						<VersionInfo Name="AutoIncBuild">True</VersionInfo>
+						<VersionInfo Name="MajorVer">2</VersionInfo>
+						<VersionInfo Name="MinorVer">1</VersionInfo>
+						<VersionInfo Name="Release">0</VersionInfo>
+						<VersionInfo Name="Build">447</VersionInfo>
+						<VersionInfo Name="Debug">False</VersionInfo>
+						<VersionInfo Name="PreRelease">False</VersionInfo>
+						<VersionInfo Name="Special">False</VersionInfo>
+						<VersionInfo Name="Private">False</VersionInfo>
+						<VersionInfo Name="DLL">False</VersionInfo>
+						<VersionInfo Name="Locale">1046</VersionInfo>
+						<VersionInfo Name="CodePage">1252</VersionInfo>
+					</VersionInfo>
+					<VersionInfoKeys>
+						<VersionInfoKeys Name="CompanyName"/>
+						<VersionInfoKeys Name="FileDescription"/>
+						<VersionInfoKeys Name="FileVersion">2.1.0.447</VersionInfoKeys>
+						<VersionInfoKeys Name="InternalName"/>
+						<VersionInfoKeys Name="LegalCopyright"/>
+						<VersionInfoKeys Name="LegalTrademarks"/>
+						<VersionInfoKeys Name="OriginalFilename"/>
+						<VersionInfoKeys Name="ProductName"/>
+						<VersionInfoKeys Name="ProductVersion">1.0.0.0</VersionInfoKeys>
+						<VersionInfoKeys Name="Comments"/>
+						<VersionInfoKeys Name="LastCompiledTime">17/07/2010 13:09:54</VersionInfoKeys>
+					</VersionInfoKeys>
+					<Excluded_Packages/>
+				</Delphi.Personality>
+			</BorlandProject>
+			<ProjectFileVersion>12</ProjectFileVersion>
+		</ProjectExtensions>
+	</Project>

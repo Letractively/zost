@@ -1,0 +1,40 @@
+package ZTOComponentsWebApiWrappers;
+
+{$R *.res}
+{$R '..\..\RES\ZTOComponentsWebApiWrappers.dcr'}
+{$ALIGN 8}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO ON}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS ON}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION ON}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
+{$REFERENCEINFO OFF}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES OFF}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST OFF}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $400000}
+{$DESCRIPTION 'ZTO Web API Wrappers Components'}
+{$LIBSUFFIX '120'}
+{$IMPLICITBUILD ON}
+
+requires
+  rtl,
+  vcl,
+  OverbyteIcsD2009Run,
+  xmlrtl;
+
+contains
+  ZTO.Components.WebApiWrappers.Register in '..\..\SRC\ZTO.Components.WebApiWrappers.Register.pas',
+  ZTO.Components.WebApiWrappers.Twitter in '..\..\SRC\ZTO.Components.WebApiWrappers.Twitter.pas';
+
+end.
