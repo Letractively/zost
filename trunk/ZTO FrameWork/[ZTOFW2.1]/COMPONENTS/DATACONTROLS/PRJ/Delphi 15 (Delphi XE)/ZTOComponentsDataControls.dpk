@@ -24,7 +24,7 @@ package ZTOComponentsDataControls;
 {$MINENUMSIZE 1}
 {$IMAGEBASE $400000}
 {$DESCRIPTION 'ZTO Data Controls Components'}
-{$LIBSUFFIX '120'}
+{$LIBSUFFIX '150'}
 {$IMPLICITBUILD OFF}
 
 requires

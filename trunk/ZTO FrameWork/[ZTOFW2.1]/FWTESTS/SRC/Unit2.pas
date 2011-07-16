@@ -6,8 +6,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms,
-  ZTO.Wizards.FormTemplates.Dialog, Grids, DBGrids,
-  ZTO.Components.DataControls.ZTODBGrid;
+  ZTO.Wizards.FormTemplates.Dialog, Grids, DBGrids, ZTO.Components.DataControls.DBGrid;
 
 type
   TZTODialog2 = class(TZTODialog)
