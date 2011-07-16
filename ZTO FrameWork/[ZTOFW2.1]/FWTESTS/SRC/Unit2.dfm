@@ -58,7 +58,7 @@ object ZTODialog2: TZTODialog2
       item
         Expanded = False
         FieldName = 'VA_NOMEDAOBRA'
-        Width = 578
+        Width = 608
         Visible = True
       end>
   end

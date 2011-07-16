@@ -936,8 +936,8 @@ var
   	SaveSeparator: Char;
 begin
 	Reader := TReader.Create(Input, 4096);
-    SaveSeparator := DecimalSeparator;
-    DecimalSeparator := '.';
+    SaveSeparator := FormatSettings.DecimalSeparator;
+    FormatSettings.DecimalSeparator := '.';
     try
     	Result := NewXMLDocument;
     	Result.Encoding := 'UTF-8';
@@ -945,7 +945,7 @@ begin
 //   	ConvertObject(Result.AddChild('dfm'));
     	ConvertObject(Result.AddChild('ObjectFile'));
 	finally
-    	DecimalSeparator := SaveSeparator;
+    	FormatSettings.DecimalSeparator := SaveSeparator;
     	Reader.Free;
   	end;
 end;

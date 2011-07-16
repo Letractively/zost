@@ -7,9 +7,9 @@ interface
 uses Classes
    , ZConnection
    , ZDataSet
+   , ZTO.Win32.Rtl.Common.Classes
    , ZTO.Win32.Db.ZeosLib.MySQL.Types
-   , ZTO.Win32.Db.ZeosLib.Types
-   , ZTO.Win32.Rtl.Common.Classes;
+   , ZTO.Win32.Db.ZeosLib.Types;
 
 procedure MySQLSetUserVariable(aZConnection: TZConnection; aVariableName: String; aValue: Int64); overload;
 procedure MySQLSetUserVariable(aZConnection: TZConnection; aVariableName, aValue: String); overload;
