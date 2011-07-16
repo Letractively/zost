@@ -35,7 +35,7 @@
 			<DCC_OutputNeverBuildDcps>true</DCC_OutputNeverBuildDcps>
 			<DCC_N>true</DCC_N>
 			<DCC_E>false</DCC_E>
-			<DCC_DcuOutput>..\BIN\DCU</DCC_DcuOutput>
+			<DCC_DcuOutput>..\..\BIN\DCU</DCC_DcuOutput>
 			<DCC_K>false</DCC_K>
 			<DCC_F>false</DCC_F>
 		</PropertyGroup>
@@ -53,8 +53,8 @@
 				<MainSource>MainSource</MainSource>
 			</DelphiCompile>
 			<DCCReference Include="DesignIDE.dcp"/>
-			<DCCReference Include="..\SRC\ToolsAPI\ZTO.ToolsAPI.OTA.Utilities.pas"/>
-			<DCCReference Include="..\SRC\ToolsAPI\ZTO.ToolsAPI.OTA.Creators.pas"/>
+			<DCCReference Include="..\..\SRC\ToolsAPI\ZTO.ToolsAPI.OTA.Utilities.pas"/>
+			<DCCReference Include="..\..\SRC\ToolsAPI\ZTO.ToolsAPI.OTA.Creators.pas"/>
 			<BuildConfiguration Include="Base">
 				<Key>Base</Key>
 			</BuildConfiguration>
@@ -87,7 +87,7 @@
 						<VersionInfo Name="MajorVer">2</VersionInfo>
 						<VersionInfo Name="MinorVer">1</VersionInfo>
 						<VersionInfo Name="Release">0</VersionInfo>
-						<VersionInfo Name="Build">577</VersionInfo>
+						<VersionInfo Name="Build">578</VersionInfo>
 						<VersionInfo Name="Debug">False</VersionInfo>
 						<VersionInfo Name="PreRelease">False</VersionInfo>
 						<VersionInfo Name="Special">False</VersionInfo>
@@ -99,7 +99,7 @@
 					<VersionInfoKeys>
 						<VersionInfoKeys Name="CompanyName"/>
 						<VersionInfoKeys Name="FileDescription"/>
-						<VersionInfoKeys Name="FileVersion">2.1.0.577</VersionInfoKeys>
+						<VersionInfoKeys Name="FileVersion">2.1.0.578</VersionInfoKeys>
 						<VersionInfoKeys Name="InternalName"/>
 						<VersionInfoKeys Name="LegalCopyright"/>
 						<VersionInfoKeys Name="LegalTrademarks"/>

@@ -31,7 +31,7 @@ requires
   rtl;
 
 contains
-  ZTO.RegExp.PerlRegEx in '..\SRC\RegExp\ZTO.RegExp.PerlRegEx.pas',
-  ZTO.RegExp.Pcre in '..\SRC\RegExp\ZTO.RegExp.Pcre.pas';
+  ZTO.RegExp.PerlRegEx in '..\..\SRC\RegExp\ZTO.RegExp.PerlRegEx.pas',
+  ZTO.RegExp.Pcre in '..\..\SRC\RegExp\ZTO.RegExp.Pcre.pas';
 
 end.

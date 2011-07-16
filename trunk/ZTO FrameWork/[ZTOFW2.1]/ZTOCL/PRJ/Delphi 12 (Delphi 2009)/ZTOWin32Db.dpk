@@ -36,9 +36,9 @@ requires
   xmlrtl;
 
 contains
-  ZTO.Win32.Db.Controls.Utils in '..\SRC\Win32\db\ZTO.Win32.Db.Controls.Utils.pas',
-  ZTO.Win32.Db.ZeosLib.MySQL.Utils in '..\SRC\Win32\db\ZeosLib\ZTO.Win32.Db.ZeosLib.MySQL.Utils.pas',
-  ZTO.Win32.Db.ZeosLib.MySQL.Types in '..\SRC\Win32\db\ZeosLib\ZTO.Win32.Db.ZeosLib.MySQL.Types.pas',
-  ZTO.Win32.Db.ZeosLib.Types in '..\SRC\Win32\db\ZeosLib\ZTO.Win32.Db.ZeosLib.Types.pas';
+  ZTO.Win32.Db.Controls.Utils in '..\..\SRC\Win32\db\ZTO.Win32.Db.Controls.Utils.pas',
+  ZTO.Win32.Db.ZeosLib.MySQL.Utils in '..\..\SRC\Win32\db\ZeosLib\ZTO.Win32.Db.ZeosLib.MySQL.Utils.pas',
+  ZTO.Win32.Db.ZeosLib.MySQL.Types in '..\..\SRC\Win32\db\ZeosLib\ZTO.Win32.Db.ZeosLib.MySQL.Types.pas',
+  ZTO.Win32.Db.ZeosLib.Types in '..\..\SRC\Win32\db\ZeosLib\ZTO.Win32.Db.ZeosLib.Types.pas';
 
 end.

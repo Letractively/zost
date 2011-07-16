@@ -35,7 +35,7 @@
 			<DCC_OutputNeverBuildDcps>true</DCC_OutputNeverBuildDcps>
 			<DCC_N>true</DCC_N>
 			<DCC_E>false</DCC_E>
-			<DCC_DcuOutput>..\BIN\DCU</DCC_DcuOutput>
+			<DCC_DcuOutput>..\..\BIN\DCU</DCC_DcuOutput>
 			<DCC_K>false</DCC_K>
 			<DCC_F>false</DCC_F>
 		</PropertyGroup>
@@ -53,38 +53,38 @@
 				<MainSource>MainSource</MainSource>
 			</DelphiCompile>
 			<DCCReference Include="rtl.dcp"/>
-			<DCCReference Include="..\SRC\Crypt\ZTO.Crypt.Types.pas"/>
-			<DCCReference Include="..\SRC\Crypt\ZTO.Crypt.Utilities.pas"/>
-			<DCCReference Include="..\SRC\Crypt\ciphers\ZTO.Ciphers.Blowfish.pas"/>
-			<DCCReference Include="..\SRC\Crypt\ciphers\ZTO.Ciphers.Cast128.pas"/>
-			<DCCReference Include="..\SRC\Crypt\ciphers\ZTO.Ciphers.Cast256.pas"/>
-			<DCCReference Include="..\SRC\Crypt\ciphers\ZTO.Ciphers.Des.pas"/>
-			<DCCReference Include="..\SRC\Crypt\ciphers\ZTO.Ciphers.Gost.pas"/>
-			<DCCReference Include="..\SRC\Crypt\ciphers\ZTO.Ciphers.Ice.pas"/>
-			<DCCReference Include="..\SRC\Crypt\ciphers\ZTO.Ciphers.Idea.pas"/>
-			<DCCReference Include="..\SRC\Crypt\ciphers\ZTO.Ciphers.Mars.pas"/>
-			<DCCReference Include="..\SRC\Crypt\ciphers\ZTO.Ciphers.Misty1.pas"/>
-			<DCCReference Include="..\SRC\Crypt\ciphers\ZTO.Ciphers.Rc2.pas"/>
-			<DCCReference Include="..\SRC\Crypt\ciphers\ZTO.Ciphers.Rc4.pas"/>
-			<DCCReference Include="..\SRC\Crypt\ciphers\ZTO.Ciphers.Rc5.pas"/>
-			<DCCReference Include="..\SRC\Crypt\ciphers\ZTO.Ciphers.Rc6.pas"/>
-			<DCCReference Include="..\SRC\Crypt\ciphers\ZTO.Ciphers.Rijndael.pas"/>
-			<DCCReference Include="..\SRC\Crypt\ciphers\ZTO.Ciphers.Serpent.pas"/>
-			<DCCReference Include="..\SRC\Crypt\ciphers\ZTO.Ciphers.Tea.pas"/>
-			<DCCReference Include="..\SRC\Crypt\ciphers\ZTO.Ciphers.Twofish.pas"/>
-			<DCCReference Include="..\SRC\Crypt\hashes\ZTO.Crypt.Hashes.Haval.pas"/>
-			<DCCReference Include="..\SRC\Crypt\hashes\ZTO.Crypt.Hashes.Md4.pas"/>
-			<DCCReference Include="..\SRC\Crypt\hashes\ZTO.Crypt.Hashes.Md5.pas"/>
-			<DCCReference Include="..\SRC\Crypt\hashes\ZTO.Crypt.Hashes.Ripemd128.pas"/>
-			<DCCReference Include="..\SRC\Crypt\hashes\ZTO.Crypt.Hashes.Ripemd160.pas"/>
-			<DCCReference Include="..\SRC\Crypt\hashes\ZTO.Crypt.Hashes.Sha1.pas"/>
-			<DCCReference Include="..\SRC\Crypt\hashes\ZTO.Crypt.Hashes.Sha256.pas"/>
-			<DCCReference Include="..\SRC\Crypt\hashes\ZTO.Crypt.Hashes.Sha512.pas"/>
-			<DCCReference Include="..\SRC\Crypt\hashes\ZTO.Crypt.Hashes.tiger.pas"/>
-			<DCCReference Include="..\SRC\Crypt\ZTO.Crypt.Consts.pas"/>
-			<DCCReference Include="..\SRC\Crypt\ZTO.Crypt.Common.pas"/>
-			<DCCReference Include="..\SRC\Crypt\ZTO.Crypt.Base64.pas"/>
-			<DCCReference Include="..\SRC\Crypt\ZTO.Crypt.Blockciphers.pas"/>
+			<DCCReference Include="..\..\SRC\Crypt\ZTO.Crypt.Types.pas"/>
+			<DCCReference Include="..\..\SRC\Crypt\ZTO.Crypt.Utilities.pas"/>
+			<DCCReference Include="..\..\SRC\Crypt\ciphers\ZTO.Ciphers.Blowfish.pas"/>
+			<DCCReference Include="..\..\SRC\Crypt\ciphers\ZTO.Ciphers.Cast128.pas"/>
+			<DCCReference Include="..\..\SRC\Crypt\ciphers\ZTO.Ciphers.Cast256.pas"/>
+			<DCCReference Include="..\..\SRC\Crypt\ciphers\ZTO.Ciphers.Des.pas"/>
+			<DCCReference Include="..\..\SRC\Crypt\ciphers\ZTO.Ciphers.Gost.pas"/>
+			<DCCReference Include="..\..\SRC\Crypt\ciphers\ZTO.Ciphers.Ice.pas"/>
+			<DCCReference Include="..\..\SRC\Crypt\ciphers\ZTO.Ciphers.Idea.pas"/>
+			<DCCReference Include="..\..\SRC\Crypt\ciphers\ZTO.Ciphers.Mars.pas"/>
+			<DCCReference Include="..\..\SRC\Crypt\ciphers\ZTO.Ciphers.Misty1.pas"/>
+			<DCCReference Include="..\..\SRC\Crypt\ciphers\ZTO.Ciphers.Rc2.pas"/>
+			<DCCReference Include="..\..\SRC\Crypt\ciphers\ZTO.Ciphers.Rc4.pas"/>
+			<DCCReference Include="..\..\SRC\Crypt\ciphers\ZTO.Ciphers.Rc5.pas"/>
+			<DCCReference Include="..\..\SRC\Crypt\ciphers\ZTO.Ciphers.Rc6.pas"/>
+			<DCCReference Include="..\..\SRC\Crypt\ciphers\ZTO.Ciphers.Rijndael.pas"/>
+			<DCCReference Include="..\..\SRC\Crypt\ciphers\ZTO.Ciphers.Serpent.pas"/>
+			<DCCReference Include="..\..\SRC\Crypt\ciphers\ZTO.Ciphers.Tea.pas"/>
+			<DCCReference Include="..\..\SRC\Crypt\ciphers\ZTO.Ciphers.Twofish.pas"/>
+			<DCCReference Include="..\..\SRC\Crypt\hashes\ZTO.Crypt.Hashes.Haval.pas"/>
+			<DCCReference Include="..\..\SRC\Crypt\hashes\ZTO.Crypt.Hashes.Md4.pas"/>
+			<DCCReference Include="..\..\SRC\Crypt\hashes\ZTO.Crypt.Hashes.Md5.pas"/>
+			<DCCReference Include="..\..\SRC\Crypt\hashes\ZTO.Crypt.Hashes.Ripemd128.pas"/>
+			<DCCReference Include="..\..\SRC\Crypt\hashes\ZTO.Crypt.Hashes.Ripemd160.pas"/>
+			<DCCReference Include="..\..\SRC\Crypt\hashes\ZTO.Crypt.Hashes.Sha1.pas"/>
+			<DCCReference Include="..\..\SRC\Crypt\hashes\ZTO.Crypt.Hashes.Sha256.pas"/>
+			<DCCReference Include="..\..\SRC\Crypt\hashes\ZTO.Crypt.Hashes.Sha512.pas"/>
+			<DCCReference Include="..\..\SRC\Crypt\hashes\ZTO.Crypt.Hashes.tiger.pas"/>
+			<DCCReference Include="..\..\SRC\Crypt\ZTO.Crypt.Consts.pas"/>
+			<DCCReference Include="..\..\SRC\Crypt\ZTO.Crypt.Common.pas"/>
+			<DCCReference Include="..\..\SRC\Crypt\ZTO.Crypt.Base64.pas"/>
+			<DCCReference Include="..\..\SRC\Crypt\ZTO.Crypt.Blockciphers.pas"/>
 			<BuildConfiguration Include="Base">
 				<Key>Base</Key>
 			</BuildConfiguration>
@@ -117,7 +117,7 @@
 						<VersionInfo Name="MajorVer">2</VersionInfo>
 						<VersionInfo Name="MinorVer">1</VersionInfo>
 						<VersionInfo Name="Release">0</VersionInfo>
-						<VersionInfo Name="Build">552</VersionInfo>
+						<VersionInfo Name="Build">553</VersionInfo>
 						<VersionInfo Name="Debug">False</VersionInfo>
 						<VersionInfo Name="PreRelease">False</VersionInfo>
 						<VersionInfo Name="Special">False</VersionInfo>
@@ -129,7 +129,7 @@
 					<VersionInfoKeys>
 						<VersionInfoKeys Name="CompanyName"/>
 						<VersionInfoKeys Name="FileDescription"/>
-						<VersionInfoKeys Name="FileVersion">2.1.0.552</VersionInfoKeys>
+						<VersionInfoKeys Name="FileVersion">2.1.0.553</VersionInfoKeys>
 						<VersionInfoKeys Name="InternalName"/>
 						<VersionInfoKeys Name="LegalCopyright"/>
 						<VersionInfoKeys Name="LegalTrademarks"/>
