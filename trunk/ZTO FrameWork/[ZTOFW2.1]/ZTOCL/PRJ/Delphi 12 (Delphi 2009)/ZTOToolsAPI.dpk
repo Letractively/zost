@@ -1,4 +1,4 @@
-package ZTORegExp;
+package ZTOToolsAPI;
 
 {$R *.res}
 {$ALIGN 8}
@@ -22,16 +22,16 @@ package ZTORegExp;
 {$WRITEABLECONST OFF}
 {$MINENUMSIZE 1}
 {$IMAGEBASE $400000}
-{$DESCRIPTION 'ZTO Regular Expressions Routines (PCRE)'}
+{$DESCRIPTION 'ZTO Tools API'}
+{$LIBSUFFIX '120'}
 {$RUNONLY}
 {$IMPLICITBUILD OFF}
-{$I '..\..\LibSuffixes.inc'}
 
 requires
-  rtl;
+  DesignIDE;
 
 contains
-  ZTO.RegExp.PerlRegEx in '..\SRC\RegExp\ZTO.RegExp.PerlRegEx.pas',
-  ZTO.RegExp.Pcre in '..\SRC\RegExp\ZTO.RegExp.Pcre.pas';
+  ZTO.ToolsAPI.OTA.Utilities in '..\SRC\ToolsAPI\ZTO.ToolsAPI.OTA.Utilities.pas',
+  ZTO.ToolsAPI.OTA.Creators in '..\SRC\ToolsAPI\ZTO.ToolsAPI.OTA.Creators.pas';
 
 end.

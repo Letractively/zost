@@ -20,6 +20,7 @@
 			<Base>true</Base>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Base)'!=''">
+			<DllSuffix>120</DllSuffix>
 			<DesignOnlyPackage>false</DesignOnlyPackage>
 			<DCC_DcuOutput>..\BIN\DCU</DCC_DcuOutput>
 			<DCC_Description>ZTO Web API Wrappers Components</DCC_Description>
@@ -28,7 +29,7 @@
 			<GenPackage>true</GenPackage>
 			<DCC_UnitAlias>WinTypes=Windows;WinProcs=Windows;DbiTypes=BDE;DbiProcs=BDE;DbiErrs=BDE;$(DCC_UnitAlias)</DCC_UnitAlias>
 			<DCC_Platform>x86</DCC_Platform>
-			<DCC_DependencyCheckOutputName>C:\Users\Public\Documents\RAD Studio\6.0\BPL\ZTOComponentsWebApiWrappers.bpl</DCC_DependencyCheckOutputName>
+			<DCC_DependencyCheckOutputName>C:\Users\Public\Documents\RAD Studio\6.0\BPL\ZTOComponentsWebApiWrappers120.bpl</DCC_DependencyCheckOutputName>
 			<DCC_N>false</DCC_N>
 			<DCC_S>false</DCC_S>
 			<GenDll>true</GenDll>

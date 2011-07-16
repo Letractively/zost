@@ -1,7 +1,7 @@
 ﻿	<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 		<PropertyGroup>
-			<ProjectGuid>{8858D103-01F2-4DD9-B330-D561BC3C7A12}</ProjectGuid>
-			<MainSource>ZTORegExp.dpk</MainSource>
+			<ProjectGuid>{DAF5C9C1-1AED-458A-B0AE-B5992293CF1E}</ProjectGuid>
+			<MainSource>ZTOWin32Rtl.dpk</MainSource>
 			<Config Condition="'$(Config)'==''">Debug</Config>
 			<DCC_DCCCompiler>DCC32</DCC_DCCCompiler>
 			<ProjectVersion>12.0</ProjectVersion>
@@ -20,13 +20,14 @@
 			<Base>true</Base>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Base)'!=''">
+			<DllSuffix>120</DllSuffix>
 			<DCC_SymbolReferenceInfo>1</DCC_SymbolReferenceInfo>
 			<DCC_ImageBase>00400000</DCC_ImageBase>
-			<DCC_DependencyCheckOutputName>C:\Users\Public\Documents\RAD Studio\6.0\BPL\ZTORegExp.bpl</DCC_DependencyCheckOutputName>
+			<DCC_DependencyCheckOutputName>C:\Users\Public\Documents\RAD Studio\6.0\BPL\ZTOWin32Rtl120.bpl</DCC_DependencyCheckOutputName>
 			<DesignOnlyPackage>false</DesignOnlyPackage>
 			<RuntimeOnlyPackage>true</RuntimeOnlyPackage>
 			<DCC_UnitAlias>WinTypes=Windows;WinProcs=Windows;DbiTypes=BDE;DbiProcs=BDE;DbiErrs=BDE;$(DCC_UnitAlias)</DCC_UnitAlias>
-			<DCC_Description>ZTO Regular Expressions Routines (PCRE)</DCC_Description>
+			<DCC_Description>ZTO Runtime Library</DCC_Description>
 			<DCC_Platform>x86</DCC_Platform>
 			<GenPackage>true</GenPackage>
 			<DCC_S>false</DCC_S>
@@ -48,12 +49,26 @@
 			<DCC_Define>DEBUG;$(DCC_Define)</DCC_Define>
 		</PropertyGroup>
 		<ItemGroup>
-			<DelphiCompile Include="ZTORegExp.dpk">
+			<DelphiCompile Include="ZTOWin32Rtl.dpk">
 				<MainSource>MainSource</MainSource>
 			</DelphiCompile>
 			<DCCReference Include="rtl.dcp"/>
-			<DCCReference Include="..\SRC\RegExp\ZTO.RegExp.PerlRegEx.pas"/>
-			<DCCReference Include="..\SRC\RegExp\ZTO.RegExp.Pcre.pas"/>
+			<DCCReference Include="vcl.dcp"/>
+			<DCCReference Include="vclimg.dcp"/>
+			<DCCReference Include="xmlrtl.dcp"/>
+			<DCCReference Include="..\SRC\Win32\rtl\common\ZTO.Win32.Rtl.Common.DateUtils.pas"/>
+			<DCCReference Include="..\SRC\Win32\rtl\common\ZTO.Win32.Rtl.Common.FileUtils.pas"/>
+			<DCCReference Include="..\SRC\Win32\rtl\common\ZTO.Win32.Rtl.Common.Classes.pas"/>
+			<DCCReference Include="..\SRC\Win32\rtl\common\ZTO.Win32.Rtl.Common.ComponentUtils.pas"/>
+			<DCCReference Include="..\SRC\Win32\rtl\sys\ZTO.Win32.Rtl.Sys.Types.pas"/>
+			<DCCReference Include="..\SRC\Win32\rtl\common\ZTO.Win32.Rtl.Common.Classes.Interposer.pas"/>
+			<DCCReference Include="..\SRC\Win32\rtl\sys\ZTO.Win32.Rtl.Sys.Utilities.HDDInfo.pas"/>
+			<DCCReference Include="..\SRC\Win32\rtl\sys\ZTO.Win32.Rtl.Sys.WMI.pas"/>
+			<DCCReference Include="..\SRC\Win32\rtl\sys\ZTO.Win32.Rtl.Sys.WMI.Tlb.pas"/>
+			<DCCReference Include="..\SRC\Win32\rtl\common\ZTO.Win32.Rtl.Common.StringUtils.pas"/>
+			<DCCReference Include="..\SRC\Win32\rtl\sys\ZTO.Win32.Rtl.Sys.Utilities.pas"/>
+			<DCCReference Include="..\SRC\Win32\rtl\common\ZTO.Win32.Rtl.Common.NetworkUtils.pas"/>
+			<DCCReference Include="..\SRC\Win32\rtl\common\ZTO.Win32.Rtl.Common.Registry.pas"/>
 			<BuildConfiguration Include="Base">
 				<Key>Base</Key>
 			</BuildConfiguration>
@@ -73,20 +88,22 @@
 			<BorlandProject>
 				<Delphi.Personality>
 					<Source>
-						<Source Name="MainSource">ZTORegExp.dpk</Source>
+						<Source Name="MainSource">ZTOWin32Rtl.dpk</Source>
 					</Source>
 					<Parameters>
 						<Parameters Name="UseLauncher">False</Parameters>
 						<Parameters Name="LoadAllSymbols">True</Parameters>
 						<Parameters Name="LoadUnspecifiedSymbols">False</Parameters>
+						<Parameters Name="HostApplication">C:\Backup 009\Tutoriais e projetos\Projetos\Delphi\Experiências\Salvando String em Arquivo\Project1.exe</Parameters>
+						<Parameters Name="DebugCWD">C:\Backup 009\Tutoriais e projetos\Projetos\Delphi\Experiências\Salvando String em Arquivo</Parameters>
 					</Parameters>
 					<VersionInfo>
 						<VersionInfo Name="IncludeVerInfo">True</VersionInfo>
-						<VersionInfo Name="AutoIncBuild">False</VersionInfo>
-						<VersionInfo Name="MajorVer">1</VersionInfo>
-						<VersionInfo Name="MinorVer">0</VersionInfo>
+						<VersionInfo Name="AutoIncBuild">True</VersionInfo>
+						<VersionInfo Name="MajorVer">2</VersionInfo>
+						<VersionInfo Name="MinorVer">1</VersionInfo>
 						<VersionInfo Name="Release">0</VersionInfo>
-						<VersionInfo Name="Build">0</VersionInfo>
+						<VersionInfo Name="Build">833</VersionInfo>
 						<VersionInfo Name="Debug">False</VersionInfo>
 						<VersionInfo Name="PreRelease">False</VersionInfo>
 						<VersionInfo Name="Special">False</VersionInfo>
@@ -98,7 +115,7 @@
 					<VersionInfoKeys>
 						<VersionInfoKeys Name="CompanyName"/>
 						<VersionInfoKeys Name="FileDescription"/>
-						<VersionInfoKeys Name="FileVersion">1.0.0.0</VersionInfoKeys>
+						<VersionInfoKeys Name="FileVersion">2.1.0.833</VersionInfoKeys>
 						<VersionInfoKeys Name="InternalName"/>
 						<VersionInfoKeys Name="LegalCopyright"/>
 						<VersionInfoKeys Name="LegalTrademarks"/>
@@ -106,9 +123,12 @@
 						<VersionInfoKeys Name="ProductName"/>
 						<VersionInfoKeys Name="ProductVersion">1.0.0.0</VersionInfoKeys>
 						<VersionInfoKeys Name="Comments"/>
-						<VersionInfoKeys Name="LastCompiledTime">17/07/2010 13:40:17</VersionInfoKeys>
+						<VersionInfoKeys Name="LastCompiledTime">17/07/2010 13:09:52</VersionInfoKeys>
 					</VersionInfoKeys>
-					<Excluded_Packages/>
+					<Excluded_Packages>
+						<Excluded_Packages Name="$(BDS)\bin\dcloffice2k140.bpl">Microsoft Office 2000 Sample Automation Server Wrapper Components</Excluded_Packages>
+						<Excluded_Packages Name="$(BDS)\bin\dclofficexp140.bpl">Microsoft Office XP Sample Automation Server Wrapper Components</Excluded_Packages>
+					</Excluded_Packages>
 				</Delphi.Personality>
 			</BorlandProject>
 			<ProjectFileVersion>12</ProjectFileVersion>

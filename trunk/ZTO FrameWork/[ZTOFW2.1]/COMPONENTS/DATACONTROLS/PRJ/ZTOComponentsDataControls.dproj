@@ -20,10 +20,11 @@
 			<Base>true</Base>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Base)'!=''">
+			<DllSuffix>120</DllSuffix>
 			<DCC_SymbolReferenceInfo>1</DCC_SymbolReferenceInfo>
 			<DesignOnlyPackage>false</DesignOnlyPackage>
 			<DCC_ImageBase>00400000</DCC_ImageBase>
-			<DCC_DependencyCheckOutputName>C:\Users\Public\Documents\RAD Studio\6.0\BPL\ZTOComponentsDataControls.bpl</DCC_DependencyCheckOutputName>
+			<DCC_DependencyCheckOutputName>C:\Users\Public\Documents\RAD Studio\6.0\BPL\ZTOComponentsDataControls120.bpl</DCC_DependencyCheckOutputName>
 			<DCC_DcuOutput>..\BIN\DCU</DCC_DcuOutput>
 			<GenPackage>true</GenPackage>
 			<DCC_UnitAlias>WinTypes=Windows;WinProcs=Windows;DbiTypes=BDE;DbiProcs=BDE;DbiErrs=BDE;$(DCC_UnitAlias)</DCC_UnitAlias>
@@ -95,7 +96,7 @@
 						<VersionInfo Name="MajorVer">2</VersionInfo>
 						<VersionInfo Name="MinorVer">1</VersionInfo>
 						<VersionInfo Name="Release">0</VersionInfo>
-						<VersionInfo Name="Build">495</VersionInfo>
+						<VersionInfo Name="Build">496</VersionInfo>
 						<VersionInfo Name="Debug">False</VersionInfo>
 						<VersionInfo Name="PreRelease">False</VersionInfo>
 						<VersionInfo Name="Special">False</VersionInfo>
@@ -107,7 +108,7 @@
 					<VersionInfoKeys>
 						<VersionInfoKeys Name="CompanyName"/>
 						<VersionInfoKeys Name="FileDescription"/>
-						<VersionInfoKeys Name="FileVersion">2.1.0.495</VersionInfoKeys>
+						<VersionInfoKeys Name="FileVersion">2.1.0.496</VersionInfoKeys>
 						<VersionInfoKeys Name="InternalName"/>
 						<VersionInfoKeys Name="LegalCopyright"/>
 						<VersionInfoKeys Name="LegalTrademarks"/>
