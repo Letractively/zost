@@ -4,8 +4,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, StdCtrls, Grids, DBGrids, ZTO.Components.DataControls.ZTODBGrid,
-  ComCtrls, pngimage, ExtCtrls, Buttons;
+  Dialogs, StdCtrls, Grids, DBGrids, ComCtrls, pngimage, ExtCtrls, Buttons;
 
 type
   TForm1 = class(TForm)
