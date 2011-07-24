@@ -11,8 +11,8 @@ uses Classes
    , Graphics
    , SysUtils
    , Controls
-   , ZTO.Win32.Rtl.Sys.Types
-   , ZLib;
+   , XMLIntf
+   , ZTO.Win32.Rtl.Sys.Types;
 
 type
   EInvalidParameter = class (Exception)
@@ -46,6 +46,7 @@ type
   { TPersistent. TCollection e TCollectionItem, p.e., são       }
   TObjectFile = class(TComponent)
   private
+    function ObjectBinaryToXML(Input: TStream): IXMLDocument;
   protected
   public
     procedure LoadFromBinaryFile(const aFileName: TFileName);
@@ -278,7 +279,6 @@ implementation
 uses Windows
    , RTLConsts
    , TypInfo
-   , XMLIntf
    , XMLDoc{, PngImage};
 
 function MethodToProcedure(aSelf         : TObject;
@@ -728,7 +728,7 @@ end;
 
 { TObjectFile }
 
-function ObjectBinaryToXML(Input: TStream): IXMLDocument;
+function TObjectFile.ObjectBinaryToXML(Input: TStream): IXMLDocument;
 var
 	Reader: TReader;
   	ObjectName, PropName: string; //for error reporting
@@ -933,24 +933,23 @@ var
   	end;
 
 var
-  	SaveSeparator: Char;
+  SaveSeparator: Char;
 begin
-	Reader := TReader.Create(Input, 4096);
-    SaveSeparator := FormatSettings.DecimalSeparator;
-    FormatSettings.DecimalSeparator := '.';
-    try
-    	Result := NewXMLDocument;
-    	Result.Encoding := 'UTF-8';
-    	Reader.ReadSignature;
-//   	ConvertObject(Result.AddChild('dfm'));
-    	ConvertObject(Result.AddChild('ObjectFile'));
-	finally
-    	FormatSettings.DecimalSeparator := SaveSeparator;
-    	Reader.Free;
-  	end;
-end;
+  Reader := TReader.Create(Input, 4096);
 
-{ TObjectFile }
+  SaveSeparator := {$IFDEF VER220}FormatSettings.{$ENDIF}DecimalSeparator;
+  {$IFDEF VER220}FormatSettings.{$ENDIF}DecimalSeparator := '.';
+  try
+    Result := NewXMLDocument;
+    Result.Encoding := 'UTF-8';
+    Reader.ReadSignature;
+    //   	ConvertObject(Result.AddChild('dfm'));
+    ConvertObject(Result.AddChild('ObjectFile'));
+  finally
+    {$IFDEF VER220}FormatSettings.{$ENDIF}DecimalSeparator := SaveSeparator;
+    Reader.Free;
+  end;
+end;
 
 {$HINTS OFF}
 procedure TObjectFile.LoadFromBinaryFile(const aFileName: TFileName);

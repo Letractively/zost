@@ -28,7 +28,7 @@
 				<Dependencies>ZTOCL\PRJ\DELPHI 15 (DELPHI XE)\ZTOToolsAPI.dproj;ZTOCL\PRJ\DELPHI 15 (DELPHI XE)\ZTOWin32Db.dproj;ZTOCL\PRJ\DELPHI 15 (DELPHI XE)\ZTOWin32Rtl.dproj;ZTOCL\PRJ\DELPHI 15 (DELPHI XE)\ZTOCrypt.dproj;ZTOCL\PRJ\DELPHI 15 (DELPHI XE)\ZTORegExp.dproj;COMPONENTS\STANDARD\PRJ\DELPHI 15 (DELPHI XE)\ZTOComponentsStandard.dproj</Dependencies>
 			</Projects>
 			<Projects Include="COMPONENTS\DATACONTROLS\PRJ\DELPHI 15 (DELPHI XE)\ZTOComponentsDataControls.dproj">
-				<Dependencies>ZTOCL\PRJ\DELPHI 15 (DELPHI XE)\ZTOToolsAPI.dproj;ZTOCL\PRJ\DELPHI 15 (DELPHI XE)\ZTOWin32Db.dproj;ZTOCL\PRJ\DELPHI 15 (DELPHI XE)\ZTOWin32Rtl.dproj;ZTOCL\PRJ\DELPHI 15 (DELPHI XE)\ZTOCrypt.dproj;ZTOCL\PRJ\DELPHI 15 (DELPHI XE)\ZTORegExp.dproj;COMPONENTS\STANDARD\PRJ\DELPHI 15 (DELPHI XE)\ZTOComponentsStandard.dproj</Dependencies>
+				<Dependencies/>
 			</Projects>
 			<Projects Include="FWTESTS\PRJ\ZTOFWTests.dproj">
 				<Dependencies/>
@@ -113,13 +113,13 @@
 		<Target Name="ZTOWizardsFormTemplates:Make" DependsOnTargets="ZTOToolsAPI:Make;ZTOWin32Db:Make;ZTOWin32Rtl:Make;ZTOCrypt:Make;ZTORegExp:Make;ZTOComponentsStandard:Make">
 			<MSBuild Projects="WIZARDS\FORMTEMPLATES\PRJ\DELPHI 15 (DELPHI XE)\ZTOWizardsFormTemplates.dproj" Targets="Make"/>
 		</Target>
-		<Target Name="ZTOComponentsDataControls" DependsOnTargets="ZTOToolsAPI;ZTOWin32Db;ZTOWin32Rtl;ZTOCrypt;ZTORegExp;ZTOComponentsStandard">
+		<Target Name="ZTOComponentsDataControls">
 			<MSBuild Projects="COMPONENTS\DATACONTROLS\PRJ\DELPHI 15 (DELPHI XE)\ZTOComponentsDataControls.dproj"/>
 		</Target>
-		<Target Name="ZTOComponentsDataControls:Clean" DependsOnTargets="ZTOToolsAPI:Clean;ZTOWin32Db:Clean;ZTOWin32Rtl:Clean;ZTOCrypt:Clean;ZTORegExp:Clean;ZTOComponentsStandard:Clean">
+		<Target Name="ZTOComponentsDataControls:Clean">
 			<MSBuild Projects="COMPONENTS\DATACONTROLS\PRJ\DELPHI 15 (DELPHI XE)\ZTOComponentsDataControls.dproj" Targets="Clean"/>
 		</Target>
-		<Target Name="ZTOComponentsDataControls:Make" DependsOnTargets="ZTOToolsAPI:Make;ZTOWin32Db:Make;ZTOWin32Rtl:Make;ZTOCrypt:Make;ZTORegExp:Make;ZTOComponentsStandard:Make">
+		<Target Name="ZTOComponentsDataControls:Make">
 			<MSBuild Projects="COMPONENTS\DATACONTROLS\PRJ\DELPHI 15 (DELPHI XE)\ZTOComponentsDataControls.dproj" Targets="Make"/>
 		</Target>
 		<Target Name="ZTOFWTests">
