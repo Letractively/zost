@@ -4,7 +4,8 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, StdCtrls, Grids, DBGrids, ComCtrls, pngimage, ExtCtrls, Buttons;
+  Dialogs, StdCtrls, Grids, DBGrids, ComCtrls, pngimage, ExtCtrls, Buttons,
+  ZTO.Components.DataControls.DBGrid, DB, DBClient;
 
 type
   TForm1 = class(TForm)
@@ -31,6 +32,17 @@ type
     Label2: TLabel;
     Timer1: TTimer;
     Button14: TButton;
+    TabSheet_ZTOWin32Db: TTabSheet;
+    ClientDataSet1: TClientDataSet;
+    ClientDataSet1CAMPO1: TIntegerField;
+    ClientDataSet1CAMPO2: TStringField;
+    ClientDataSet1CAMPO3: TDateTimeField;
+    DataSource1: TDataSource;
+    TabSheet_Components: TTabSheet;
+    PageControl_Components: TPageControl;
+    TabSheet_DataControls: TTabSheet;
+    ZTODBGrid1: TZTODBGrid;
+    Memo1: TMemo;
     procedure Button1Click(Sender: TObject);
     procedure Button2Click(Sender: TObject);
     procedure Button3Click(Sender: TObject);
@@ -107,8 +119,18 @@ begin
 end;
 
 procedure TForm1.Button14Click(Sender: TObject);
+var
+  i: integer;
+  x: Pointer;
 begin
-  ShowWindow(65658,SW_hide);
+//  ShowWindow(65658,SW_hide);
+for i := 0 to 4096 do
+  try
+    x := Pointer(Integer(@ZTODBGrid1) + i);
+    Memo1.Lines.Add(TObject(x^).Classname + ' em ' + inttostr(i));
+  except
+    //Memo1.Lines.Add('Nada em ' + inttostr(i));
+  end;
 end;
 
 procedure TForm1.Button1Click(Sender: TObject);

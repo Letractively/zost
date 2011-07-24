@@ -52,13 +52,14 @@ object ZTODialog2: TZTODialog2
     Columns = <
       item
         Expanded = False
-        FieldName = 'IN_OBRAS_PK'
+        FieldName = 'BI_USUARIO_ID'
+        Width = 147
         Visible = True
       end
       item
         Expanded = False
-        FieldName = 'VA_NOMEDAOBRA'
-        Width = 608
+        FieldName = 'VA_NOME'
+        Width = 525
         Visible = True
       end>
   end

@@ -24,6 +24,7 @@
 			<Base>true</Base>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Base)'!=''">
+			<DesignOnlyPackage>true</DesignOnlyPackage>
 			<DllSuffix>150</DllSuffix>
 			<DCC_DcuOutput>..\..\BIN\DCU</DCC_DcuOutput>
 			<DCC_Description>ZTO Web API Wrappers Components</DCC_Description>

@@ -4,12 +4,12 @@ object ZTODataModule3: TZTODataModule3
   Height = 247
   Width = 311
   object ZConnection1: TZConnection
+    Connected = True
     Protocol = 'mysql-5'
     HostName = '127.0.0.1'
-    Database = 'BANCODEOBRAS'
+    Database = 'ACDM'
     User = 'root'
     Password = '123456'
-    Connected = True
     Left = 24
     Top = 24
   end
@@ -22,9 +22,23 @@ object ZTODataModule3: TZTODataModule3
     Connection = ZConnection1
     Active = True
     SQL.Strings = (
-      'SELECT * FROM OBRAS')
+      'SELECT * FROM USUARIO')
     Params = <>
     Left = 24
     Top = 80
+  end
+  object ZQuery1: TZQuery
+    Connection = ZConnection1
+    Active = True
+    SQL.Strings = (
+      'SELECT * FROM USUARIO')
+    Params = <>
+    Left = 114
+    Top = 78
+  end
+  object DataSource2: TDataSource
+    DataSet = ZQuery1
+    Left = 168
+    Top = 84
   end
 end

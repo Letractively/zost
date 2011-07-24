@@ -25,6 +25,7 @@ package ZTOComponentsStandard;
 {$IMAGEBASE $400000}
 {$DESCRIPTION 'ZTO Standard Components'}
 {$LIBSUFFIX '150'}
+{$DESIGNONLY}
 {$IMPLICITBUILD OFF}
 
 requires

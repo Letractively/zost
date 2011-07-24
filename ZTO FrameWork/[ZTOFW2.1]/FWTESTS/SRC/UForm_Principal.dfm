@@ -56,14 +56,20 @@ object Form1: TForm1
         TabOrder = 1
         OnClick = Button14Click
       end
+      object Memo1: TMemo
+        Left = 0
+        Top = 51
+        Width = 680
+        Height = 255
+        Align = alBottom
+        Lines.Strings = (
+          'Memo1')
+        TabOrder = 2
+      end
     end
     object TabSheet_ZTOWin32Rtl: TTabSheet
       Caption = 'ZTOWin32Rtl'
       ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object PageControl_ZTOWin32Rtl: TPageControl
         Left = 0
         Top = 0
@@ -74,18 +80,10 @@ object Form1: TForm1
         TabOrder = 0
         object TabSheet_Common: TTabSheet
           Caption = 'Common'
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
         end
         object TabSheet_Sys: TTabSheet
           Caption = 'Sys'
           ImageIndex = 1
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object Button2: TButton
             Left = 3
             Top = 3
@@ -197,11 +195,104 @@ object Form1: TForm1
         end
       end
     end
+    object TabSheet_ZTOWin32Db: TTabSheet
+      Caption = 'ZTOWin32Db'
+      ImageIndex = 2
+    end
+    object TabSheet_Components: TTabSheet
+      Caption = 'Components'
+      ImageIndex = 3
+      object PageControl_Components: TPageControl
+        Left = 0
+        Top = 0
+        Width = 680
+        Height = 306
+        ActivePage = TabSheet_DataControls
+        Align = alClient
+        TabOrder = 0
+        object TabSheet_DataControls: TTabSheet
+          Caption = 'DataControls'
+          object ZTODBGrid1: TZTODBGrid
+            Left = 0
+            Top = 0
+            Width = 672
+            Height = 120
+            Align = alTop
+            DataSource = ZTODataModule3.DataSource2
+            DefaultDrawing = False
+            Options = [dgEditing, dgTitles, dgIndicator, dgColLines, dgRowLines, dgTabs, dgConfirmDelete, dgCancelOnExit, dgMultiSelect, dgTitleClick, dgTitleHotTrack]
+            OptionsEx = [dgAllowTitleClick, dgAutomaticColumSizes]
+            TabOrder = 0
+            TitleFont.Charset = DEFAULT_CHARSET
+            TitleFont.Color = clWindowText
+            TitleFont.Height = -11
+            TitleFont.Name = 'Tahoma'
+            TitleFont.Style = []
+            RowColors = <>
+            VariableWidthColumns = '<VA_NOME>'
+            Columns = <
+              item
+                Expanded = False
+                FieldName = 'BI_USUARIO_ID'
+                Visible = True
+              end
+              item
+                Expanded = False
+                FieldName = 'VA_NOME'
+                Width = 523
+                Visible = True
+              end>
+          end
+        end
+      end
+    end
   end
   object Timer1: TTimer
     Interval = 100
     OnTimer = Timer1Timer
-    Left = 24
-    Top = 80
+    Left = 6
+    Top = 266
+  end
+  object ClientDataSet1: TClientDataSet
+    Active = True
+    Aggregates = <>
+    FieldDefs = <
+      item
+        Name = 'CAMPO1'
+        DataType = ftInteger
+      end
+      item
+        Name = 'CAMPO2'
+        DataType = ftString
+        Size = 10
+      end
+      item
+        Name = 'CAMPO3'
+        DataType = ftDateTime
+      end>
+    IndexDefs = <>
+    Params = <>
+    StoreDefs = True
+    Left = 48
+    Top = 270
+    Data = {
+      530000009619E0BD01000000180000000300000000000300000053000643414D
+      504F3104000100000000000643414D504F320100490000000100055749445448
+      020002000A000643414D504F3308000800000000000000}
+    object ClientDataSet1CAMPO1: TIntegerField
+      FieldName = 'CAMPO1'
+    end
+    object ClientDataSet1CAMPO2: TStringField
+      FieldName = 'CAMPO2'
+      Size = 10
+    end
+    object ClientDataSet1CAMPO3: TDateTimeField
+      FieldName = 'CAMPO3'
+    end
+  end
+  object DataSource1: TDataSource
+    DataSet = ClientDataSet1
+    Left = 114
+    Top = 270
   end
 end

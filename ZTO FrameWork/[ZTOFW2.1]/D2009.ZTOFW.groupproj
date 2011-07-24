@@ -6,10 +6,10 @@
 			<Projects Include="ZTOCL\PRJ\DELPHI 12 (DELPHI 2009)\ZTOToolsAPI.dproj">
 				<Dependencies/>
 			</Projects>
-			<Projects Include="ZTOCL\PRJ\DELPHI 12 (DELPHI 2009)\ZTOWin32Db.dproj">
+			<Projects Include="ZTOCL\PRJ\DELPHI 12 (DELPHI 2009)\ZTOWin32Rtl.dproj">
 				<Dependencies/>
 			</Projects>
-			<Projects Include="ZTOCL\PRJ\DELPHI 12 (DELPHI 2009)\ZTOWin32Rtl.dproj">
+			<Projects Include="ZTOCL\PRJ\DELPHI 12 (DELPHI 2009)\ZTOWin32Db.dproj">
 				<Dependencies/>
 			</Projects>
 			<Projects Include="ZTOCL\PRJ\DELPHI 12 (DELPHI 2009)\ZTOCrypt.dproj">
@@ -50,15 +50,6 @@
 		<Target Name="ZTOToolsAPI:Make">
 			<MSBuild Targets="Make" Projects="ZTOCL\PRJ\DELPHI 12 (DELPHI 2009)\ZTOToolsAPI.dproj"/>
 		</Target>
-		<Target Name="ZTOWin32Db">
-			<MSBuild Projects="ZTOCL\PRJ\DELPHI 12 (DELPHI 2009)\ZTOWin32Db.dproj"/>
-		</Target>
-		<Target Name="ZTOWin32Db:Clean">
-			<MSBuild Targets="Clean" Projects="ZTOCL\PRJ\DELPHI 12 (DELPHI 2009)\ZTOWin32Db.dproj"/>
-		</Target>
-		<Target Name="ZTOWin32Db:Make">
-			<MSBuild Targets="Make" Projects="ZTOCL\PRJ\DELPHI 12 (DELPHI 2009)\ZTOWin32Db.dproj"/>
-		</Target>
 		<Target Name="ZTOWin32Rtl">
 			<MSBuild Projects="ZTOCL\PRJ\DELPHI 12 (DELPHI 2009)\ZTOWin32Rtl.dproj"/>
 		</Target>
@@ -67,6 +58,15 @@
 		</Target>
 		<Target Name="ZTOWin32Rtl:Make">
 			<MSBuild Targets="Make" Projects="ZTOCL\PRJ\DELPHI 12 (DELPHI 2009)\ZTOWin32Rtl.dproj"/>
+		</Target>
+		<Target Name="ZTOWin32Db">
+			<MSBuild Projects="ZTOCL\PRJ\DELPHI 12 (DELPHI 2009)\ZTOWin32Db.dproj"/>
+		</Target>
+		<Target Name="ZTOWin32Db:Clean">
+			<MSBuild Targets="Clean" Projects="ZTOCL\PRJ\DELPHI 12 (DELPHI 2009)\ZTOWin32Db.dproj"/>
+		</Target>
+		<Target Name="ZTOWin32Db:Make">
+			<MSBuild Targets="Make" Projects="ZTOCL\PRJ\DELPHI 12 (DELPHI 2009)\ZTOWin32Db.dproj"/>
 		</Target>
 		<Target Name="ZTOCrypt">
 			<MSBuild Projects="ZTOCL\PRJ\DELPHI 12 (DELPHI 2009)\ZTOCrypt.dproj"/>
@@ -132,13 +132,13 @@
 			<MSBuild Targets="Make" Projects="FWTESTS\PRJ\ZTOFWTests.dproj"/>
 		</Target>
 		<Target Name="Build">
-			<CallTarget Targets="ZTOToolsAPI;ZTOWin32Db;ZTOWin32Rtl;ZTOCrypt;ZTORegExp;ZTOComponentsWebApiWrappers;ZTOComponentsStandard;ZTOWizardsFormTemplates;ZTOComponentsDataControls;ZTOFWTests"/>
+			<CallTarget Targets="ZTOToolsAPI;ZTOWin32Rtl;ZTOWin32Db;ZTOCrypt;ZTORegExp;ZTOComponentsWebApiWrappers;ZTOComponentsStandard;ZTOWizardsFormTemplates;ZTOComponentsDataControls;ZTOFWTests"/>
 		</Target>
 		<Target Name="Clean">
-			<CallTarget Targets="ZTOToolsAPI:Clean;ZTOWin32Db:Clean;ZTOWin32Rtl:Clean;ZTOCrypt:Clean;ZTORegExp:Clean;ZTOComponentsWebApiWrappers:Clean;ZTOComponentsStandard:Clean;ZTOWizardsFormTemplates:Clean;ZTOComponentsDataControls:Clean;ZTOFWTests:Clean"/>
+			<CallTarget Targets="ZTOToolsAPI:Clean;ZTOWin32Rtl:Clean;ZTOWin32Db:Clean;ZTOCrypt:Clean;ZTORegExp:Clean;ZTOComponentsWebApiWrappers:Clean;ZTOComponentsStandard:Clean;ZTOWizardsFormTemplates:Clean;ZTOComponentsDataControls:Clean;ZTOFWTests:Clean"/>
 		</Target>
 		<Target Name="Make">
-			<CallTarget Targets="ZTOToolsAPI:Make;ZTOWin32Db:Make;ZTOWin32Rtl:Make;ZTOCrypt:Make;ZTORegExp:Make;ZTOComponentsWebApiWrappers:Make;ZTOComponentsStandard:Make;ZTOWizardsFormTemplates:Make;ZTOComponentsDataControls:Make;ZTOFWTests:Make"/>
+			<CallTarget Targets="ZTOToolsAPI:Make;ZTOWin32Rtl:Make;ZTOWin32Db:Make;ZTOCrypt:Make;ZTORegExp:Make;ZTOComponentsWebApiWrappers:Make;ZTOComponentsStandard:Make;ZTOWizardsFormTemplates:Make;ZTOComponentsDataControls:Make;ZTOFWTests:Make"/>
 		</Target>
 		<Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
 	</Project>
