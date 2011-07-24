@@ -1,4 +1,4 @@
-unit ZTO.Components.DataControls.DBGrid;
+ï»¿unit ZTO.Components.DataControls.DBGrid;
 
 interface
 
@@ -75,11 +75,11 @@ type
         ColMoving: Boolean; // currently moving a column
         Indicators: TImageList; // Lista de imagens de indicadores { TODO : CFDBGRID }
         SortArrows: TImageList;
-        IndicatorsWidth: Byte; // Largura da coluna de indicadores. Em estado normal é 17 em estado multiselect é 31 { TODO : CFDBGRID }
+        IndicatorsWidth: Byte; // Largura da coluna de indicadores. Em estado normal ï¿½ 17 em estado multiselect ï¿½ 31 { TODO : CFDBGRID }
     end;
 
     TDBGridOptionEx = (dgAllowTitleClick, dgPersistentSelection, dgAllowAppendAfterEof, dgHideVerticalScrollBar, dgAutomaticColumSizes);
-    //rowselect e autoapend tem interação
+    //rowselect e autoapend tem interaï¿½ï¿½o
     TDBGridOptionsEx = set of TDBGridOptionEx;
 
     TMultiSelectEventTrigger = (msetMouseDown,msetKeyDown);
@@ -91,11 +91,11 @@ type
     TCustomZTODBGrid = class(TCustomDBGrid)
     private { -- Private declarations ---------------------------------------- }
         FPaintInfo: TPaintInfo;
-        { Célula atualmente selecionada}
+        { Cï¿½lula atualmente selecionada}
         FCell: TGridCoord;
-        { Opções adicionais do CFDBGrid }
+        { Opï¿½ï¿½es adicionais do CFDBGrid }
         FOptionsEx: TDBGridOptionsEx;
-        { Coleção de cores alternadas }
+        { Coleï¿½ï¿½o de cores alternadas }
         FRowColors: TRowColors;
 
         FInColExit: Boolean;
@@ -107,8 +107,8 @@ type
         { col offset used for calculations. Is 1 if indicator is being displayed }
         function ColumnOffset: Byte; { TODO : CFDBGRID }
         function TitleOffset: Byte; { TODO : CFDBGRID }
-        { Verifica se é uma célula válida. Basicamente verifica se suas
-        coordenadas não são negativas ou não }
+        { Verifica se ï¿½ uma cï¿½lula vï¿½lida. Basicamente verifica se suas
+        coordenadas nï¿½o sï¿½o negativas ou nï¿½o }
         function ValidCell(ACell: TGridCoord): Boolean;
 
         procedure MoveCol(RawCol, Direction: Integer);
@@ -133,7 +133,7 @@ type
         procedure Paint; override;
         procedure DrawColumnCell(const Rect: TRect; DataCol: Integer; Column: TColumn; State: TGridDrawState); override;
 
-        { TODO : CFDBGRID - INÍCIO }
+        { TODO : CFDBGRID - INï¿½CIO }
         procedure SetColumnAttributes; override;
         procedure KeyDown(var Key: Word; Shift: TShiftState); override;
         procedure UpdateScrollBar; override;
@@ -231,7 +231,8 @@ implementation
 
 uses Themes
    , GraphUtil
-   , Forms;
+   , Forms
+   , ImgList;
 
 {$R ZTODBGrid.res}
 
@@ -252,8 +253,8 @@ const
 { Hack para acessar membros protegidos e privados }
 type
     TBookmarkLst = class(TBookmarkList);
-    { Classe "sombra". Ela é exatamente igual à classe original até o ponto da
-    declaração do campo que queremos acessar. Neste caso, FModified }
+    { Classe "sombra". Ela ï¿½ exatamente igual ï¿½ classe original atï¿½ o ponto da
+    declaraï¿½ï¿½o do campo que queremos acessar. Neste caso, FModified }
     TGridDataLnk = class(TGridDataLink)
     private
         {$HINTS OFF}
@@ -271,7 +272,7 @@ begin
     // Result := 0;  --> Quando BorderStyle = bsNone
     // Result := 2;  --> Quando Ctl3D = False
     // Result := 4;  --> Quando BorderStyle = bsSingle
-    Result := 4; // Valor máximo aceitavel
+    Result := 4; // Valor mï¿½ximo aceitavel
     if BorderStyle = bsNone then
         Dec(Result,4)
     else
@@ -420,7 +421,7 @@ begin
     	Bmp.Free;
     end;
 
-    // Setas de ordenação
+    // Setas de ordenaï¿½ï¿½o
     Bmp := TBitmap.Create;
     try
         Bmp.LoadFromResourceName(HInstance, bmSortAsc);
@@ -446,8 +447,8 @@ begin
     inherited;
 end;
 
-{ Onde está a primeira coluna útil? Estará em 1 se tiver indicadores e em zero
-se não tiver }
+{ Onde estï¿½ a primeira coluna ï¿½til? Estarï¿½ em 1 se tiver indicadores e em zero
+se nï¿½o tiver }
 function TCustomZTODBGrid.ColumnOffset: Byte;
 begin
     if dgIndicator in Options then
@@ -456,7 +457,7 @@ begin
         Result := 0;
 end;
 
-{ Onde está a primeira linha útil? Estará em 1 se tiver títulos e em zero se não
+{ Onde estï¿½ a primeira linha ï¿½til? Estarï¿½ em 1 se tiver tï¿½tulos e em zero se nï¿½o
 tiver }
 function TCustomZTODBGrid.TitleOffset: Byte;
 begin
@@ -549,8 +550,8 @@ begin
     end;
 end;
 
-{ A combinação das duas funções abaixo retorna true quando estamos desenhando a
-primeira célula do grid quando há titulo (célula morta) }
+{ A combinaï¿½ï¿½o das duas funï¿½ï¿½es abaixo retorna true quando estamos desenhando a
+primeira cï¿½lula do grid quando hï¿½ titulo (cï¿½lula morta) }
 function DrawingTitle: Boolean;
 begin
     Result := (dgTitles in Options) and (ARow = 0);
@@ -571,7 +572,7 @@ begin
     begin
         MultiSelected := False;
 
-        { Verificando se esta linha está marcada }
+        { Verificando se esta linha estï¿½ marcada }
         if ARow >= TitleOffset then
             MultiSelected := RowIsMultiselected;
 
@@ -581,7 +582,7 @@ begin
 
         { Indicadores }
         { Caso eu tenha um dataset ativo e, eu esteja pintando o registro ativo
-        ou esteja e modo de multiseleção }
+        ou esteja e modo de multiseleï¿½ï¿½o }
         if (Datalink.Active) and ((ARow - TitleOffset = Datalink.ActiveRecord) or MultiSelected) then
         begin
             Indicator := 0;
@@ -608,7 +609,7 @@ begin
             end;
 
             FPaintInfo.Indicators.BkColor := FixedColor;
-            FPaintInfo.Indicators.Draw(Canvas, ARect.Left + 2 + GetSystemMetrics(SM_CXMENUCHECK) + 1, ARect.Top + 2, Indicator, True);
+            FPaintInfo.Indicators.Draw(Canvas, ARect.Left + 2 + GetSystemMetrics(SM_CXMENUCHECK) + 1, ARect.Top + 2, Indicator, dsTransparent, itImage, True);
         end;
     end;
 end;
@@ -647,12 +648,15 @@ var
 begin
     aMultiSelected := False;
 
-    { Verificando se esta linha está marcada em modo de multiseleção }
+    { Verificando se esta linha estï¿½ marcada em modo de multiseleï¿½ï¿½o }
     if (ARow >= TitleOffset) and (dgMultiselect in Options) then
     begin
         aMultiSelected := RowIsMultiselected;
         { Checkboxes }
-        DrawCheckBox(Canvas,Point(2,ARect.Top + 2),aMultiSelected,0);
+        case Win32MajorVersion of
+          5: DrawCheckBox(Canvas,Point(2,ARect.Top + 2),aMultiSelected,0); // Windows 2000, Windows XP or Windows Server 2003
+          6: DrawCheckBox(Canvas,Point(1,ARect.Top + 1),aMultiSelected,0); // Windows Vista or Windows 7
+        end;
     end;
 
     { Indicadores }
@@ -682,11 +686,17 @@ begin
         end;
 
         FPaintInfo.Indicators.BkColor := FixedColor;
-        
+
         if dgMultiselect in Options then
-            FPaintInfo.Indicators.Draw(Canvas, ARect.Left + 2 + GetSystemMetrics(SM_CXMENUCHECK) + 1, ARect.Top + 2, Indicator, True)
+          case Win32MajorVersion of
+            5: FPaintInfo.Indicators.Draw(Canvas, ARect.Left + 2 + GetSystemMetrics(SM_CXMENUCHECK) + 1, ARect.Top + 2, Indicator, dsTransparent, itImage, True);
+            6: FPaintInfo.Indicators.Draw(Canvas, ARect.Left + 1 + GetSystemMetrics(SM_CXMENUCHECK) + 1, ARect.Top + 2, Indicator, dsTransparent, itImage, True);
+          end
         else
-            FPaintInfo.Indicators.Draw(Canvas, ARect.Left + 2, ARect.Top + 2, Indicator, True);
+          case Win32MajorVersion of
+            5: FPaintInfo.Indicators.Draw(Canvas, ARect.Left + 2, ARect.Top + 2, Indicator, dsTransparent, itImage, True);
+            6: FPaintInfo.Indicators.Draw(Canvas, ARect.Left + 1, ARect.Top + 2, Indicator, dsTransparent, itImage, True);
+          end;
     end;
 end;
 
@@ -709,8 +719,8 @@ begin
         XPos := TEXTXOFFSET;
         YPos := TEXTYOFFSET;
 
-        { Se vou desehar o título em uma coluna que tem seta de ordenação
-        visível tenho de considerar certos aspectos }
+        { Se vou desehar o tï¿½tulo em uma coluna que tem seta de ordenaï¿½ï¿½o
+        visï¿½vel tenho de considerar certos aspectos }
         if (FSortArrow.Direction in [sadDescending, sadAscending]) and (FSortArrow.Column = aColumn.FieldName) then
         begin
             if FSortArrow.Position <> sapCenter then
@@ -771,7 +781,7 @@ begin
     begin
         CellRect := aRect;
 
-        { Linha de títulos }
+        { Linha de tï¿½tulos }
         if DrawingTitle then
         begin
             CaptionRect := ARect;
@@ -781,13 +791,13 @@ begin
             { Coluna de indicadores }
             if DrawingIndicator then
             begin
-                Details := ThemeServices.GetElementDetails(thHeaderItemNormal);
-                ThemeServices.DrawElement(Canvas.Handle, Details, CellRect);
+              Details := ThemeServices.GetElementDetails(thHeaderItemNormal);
+              ThemeServices.DrawElement(Canvas.Handle, Details, CellRect);
             end
             { Colunas de campos }
             else
             begin
-                { Coluna normal (não pressionada) }
+                { Coluna normal (nï¿½o pressionada) }
                 if (not FPaintInfo.ColPressed) or (FPaintInfo.ColPressedIdx <> ACol) then
                 begin
                     if (FPaintInfo.MouseInCol = -1) or (FPaintInfo.MouseInCol <> ACol) or (csDesigning in ComponentState) then
@@ -801,7 +811,7 @@ begin
                     Details := ThemeServices.GetElementDetails(thHeaderItemPressed);
                     InflateRect(CaptionRect, -1, 1);
                 end
-                { Coluna normal (não pressionada) }
+                { Coluna normal (nï¿½o pressionada) }
                 else
                 begin
                     if FPaintInfo.MouseInCol = ACol then
@@ -815,27 +825,37 @@ begin
                 DrawSortArrow(ARow,Columns[ACol - ColumnOffset]);
             end;
         end
-        else if DrawingIndicator then
-        begin
-            DefaultDrawing := True;
-            inherited;
-            DefaultDrawing := False;
-
-            DrawIndicatorsAndMore(MultiSelected);
-        end
-        { Caso não seja um caso especial, pinta de forma default. Isso serve
-        para pintar as células normais, que não sejam headers... }
+        { Linhas normais, isto ï¿½, que nï¿½o sï¿½o o tï¿½tulo. Este bloco serï¿½
+        executado inclusive para colunas fixas (de indicadores) }
         else
         begin
+
+          { Aqui nï¿½o estamos na linha de tï¿½tulo, mas precisamos saber se estamos
+          tentando pintar uma coluna fixa (de indicadores). Se nï¿½o estivermos
+          tentanto pintar uma coluna de indicadores, executamos o procedimento
+          normal, atravï¿½z de inherited }
+          if not DrawingIndicator then
+          begin
             DefaultDrawing := True;
             inherited;
             DefaultDrawing := False;
+          end
+          { Aqui, estamos verdadeiramente na coluna de indicadores, e por este
+          motivo, precisamos pintar o fundo da mesma. Podem ser usadas outras
+          formas de pintura no lugar de DrawCellBackground }
+          else
+            DrawCellBackground(ARect, FixedColor, AState, ACol, ARow);
         end;
+
+        { Caso eu esteja pintando a coluna de indicadores eu tenho de pintar os
+        meus indicadores personalizados }
+        if DrawingIndicator then
+          DrawIndicatorsAndMore(MultiSelected);
     end
-    { Se os temas não estiverem habilitados... }
+    { Se os temas nï¿½o estiverem habilitados... }
     else
     begin
-        { Limpa as células fixas e desenha as bordas 3D }
+        { Limpa as cï¿½lulas fixas e desenha as bordas 3D }
         if DrawingIndicator or DrawingTitle then
         begin
             Canvas.Brush.Color := FixedColor;
@@ -847,9 +867,9 @@ begin
 
         { Se estiver desenhando na coluna de indicadores }
         if DrawingIndicator then
-            DrawIndicatorsAndMore(MultiSelected);
+          DrawIndicatorsAndMore(MultiSelected);
 
-        { Se estiver desenhando nas colunas de título, mas não na de
+        { Se estiver desenhando nas colunas de tï¿½tulo, mas nï¿½o na de
         indicadores }
         if DrawingTitle and not DrawingIndicator then
         begin
@@ -857,9 +877,9 @@ begin
             DrawSortArrow(ARow,Columns[ACol - ColumnOffset]);
         end;
 
-        { Se não estiver desenhando nem o título e nem os indicadores é uma célula normal }
+        { Se nï¿½o estiver desenhando nem o tï¿½tulo e nem os indicadores ï¿½ uma cï¿½lula normal }
         if not DrawingTitle and not DrawingIndicator then
-            inherited;
+          inherited;
     end;
 end;
 
@@ -923,7 +943,7 @@ begin
         if (dgMultiSelect in Options) and Datalink.Active then
             if Select and (ssShift in Shift) then
             begin
-                CanChangeSelection := True; { Por padrão sempre pode mudar a seleção }
+                CanChangeSelection := True; { Por padrï¿½o sempre pode mudar a seleï¿½ï¿½o }
                 if Assigned(FOnBeforeMultiSelect) then
                     FOnBeforeMultiSelect(Self,msetKeyDown,CanChangeSelection);
 
@@ -1143,8 +1163,8 @@ begin
     end;
 end;
 
-{ Esta função era privada na classe pai, por isso tive de redeclara-la aqui. Só
-não pude testar seu funcionamento pois não sei como ela é chamada! }
+{ Esta funï¿½ï¿½o era privada na classe pai, por isso tive de redeclara-la aqui. Sï¿½
+nï¿½o pude testar seu funcionamento pois nï¿½o sei como ela ï¿½ chamada! }
 procedure TCustomZTODBGrid.UpdateData;
 var
   	Field: TField;
@@ -1288,7 +1308,7 @@ begin
 				if (Button = mbLeft) and (dgMultiSelect in Options) and Datalink.Active then
                     if ClickedOnCheckBox(MousePos) then
                     begin
-                        CanChangeSelection := True; { Por padrão sempre pode mudar a seleção }
+                        CanChangeSelection := True; { Por padrï¿½o sempre pode mudar a seleï¿½ï¿½o }
                         if Assigned(FOnBeforeMultiSelect) then
                             FOnBeforeMultiSelect(Self,msetMouseDown,CanChangeSelection);
 
@@ -1409,7 +1429,7 @@ procedure TCustomZTODBGrid.Paint;
 begin
     if ThemeServices.ThemesEnabled then
     begin
-        { Quando os temas estão habilitados removemos as linhas verticais pretas
+        { Quando os temas estï¿½o habilitados removemos as linhas verticais pretas
         existentes em volta das celulas }
         TStringGrid(Self).Options := TStringGrid(Self).Options - [goFixedVertLine];
         TStringGrid(Self).Options := TStringGrid(Self).Options - [goFixedHorzLine];
@@ -1445,7 +1465,7 @@ end;
 
 procedure TCustomZTODBGrid.SetOptions(const Value: TDBGridOptions);
 const
-	{ Estas são as opções que necessitam de refresh no layout }
+	{ Estas sï¿½o as opï¿½ï¿½es que necessitam de refresh no layout }
 	LayoutOptions = [dgEditing, dgAlwaysShowEditor, dgTitles, dgIndicator, dgColLines, dgRowLines, dgRowSelect, dgAlwaysShowSelection, dgMultiSelect];
 var
     NewOptions, ChangedOptions, OldOptions: TDBGridOptions;
@@ -1455,13 +1475,13 @@ begin
 
     if NewOptions <> OldOptions then
     begin
-        { Diferenças entre as opções antigas e as novas opções }
+        { Diferenï¿½as entre as opï¿½ï¿½es antigas e as novas opï¿½ï¿½es }
         ChangedOptions := (OldOptions + NewOptions) - (OldOptions * NewOptions);
 
         if dgMultiSelect in NewOptions then
         begin
             FPaintInfo.IndicatorsWidth := 31;
-            { Agora, quando é multiselect, são necessários os indicadores }
+            { Agora, quando ï¿½ multiselect, sï¿½o necessï¿½rios os indicadores }
             Include(NewOptions,dgIndicator);
         end
         else
@@ -1470,11 +1490,11 @@ begin
         if (dgAutomaticColumSizes in FOptionsEx) and (dgColumnResize in NewOptions) then
         begin
           	Exclude(NewOptions,dgColumnResize);
-            MessageBox(Handle,'Não é possível usar colunas redimensionáveis quando o modo de tamanho automático de colunas está ativado','Opção inválida',MB_ICONWARNING);
+            MessageBox(Handle,'Nï¿½o ï¿½ possï¿½vel usar colunas redimensionï¿½veis quando o modo de tamanho automï¿½tico de colunas estï¿½ ativado','Opï¿½ï¿½o invï¿½lida',MB_ICONWARNING);
         end;
 
         inherited Options := NewOptions;
-        { Se houve mudança em alguma das opções de layout que geram refresh,
+        { Se houve mudanï¿½a em alguma das opï¿½ï¿½es de layout que geram refresh,
         devemos indicar isso chamando LayoutChanged }
         if ChangedOptions * LayoutOptions <> [] then
         	LayoutChanged;
@@ -1483,7 +1503,7 @@ end;
 
 procedure TCustomZTODBGrid.SetOptionsEx(const Value: TDBGridOptionsEx);
 const
-	{ Estas são as opções que necessitam de refresh no layout }
+	{ Estas sï¿½o as opï¿½ï¿½es que necessitam de refresh no layout }
 	LayoutOptions = [dgHideVerticalScrollBar, dgAutomaticColumSizes];
 var
     NewOptions, ChangedOptions, OldOptions: TDBGridOptionsEx;
@@ -1493,7 +1513,7 @@ begin
 
     if NewOptions <> OldOptions then
     begin
-        { Diferenças entre as opções antigas e as novas opções }
+        { Diferenï¿½as entre as opï¿½ï¿½es antigas e as novas opï¿½ï¿½es }
         ChangedOptions := (OldOptions + NewOptions) - (OldOptions * NewOptions);
 
         ShowScrollBar(Handle,SB_VERT,not (dgHideVerticalScrollBar in NewOptions));
@@ -1502,7 +1522,7 @@ begin
           	Options := Options - [dgColumnResize];
         
         FOptionsEx := NewOptions;
-        { Se houve mudança em alguma das opções de layout que geram refresh,
+        { Se houve mudanï¿½a em alguma das opï¿½ï¿½es de layout que geram refresh,
         devemos indicar isso chamando LayoutChanged }
         if ChangedOptions * LayoutOptions <> [] then
         	LayoutChanged;
