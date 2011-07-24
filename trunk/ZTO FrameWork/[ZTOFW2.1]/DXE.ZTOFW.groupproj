@@ -25,7 +25,7 @@
 				<Dependencies/>
 			</Projects>
 			<Projects Include="WIZARDS\FORMTEMPLATES\PRJ\DELPHI 15 (DELPHI XE)\ZTOWizardsFormTemplates.dproj">
-				<Dependencies>ZTOCL\PRJ\DELPHI 15 (DELPHI XE)\ZTOToolsAPI.dproj;ZTOCL\PRJ\DELPHI 15 (DELPHI XE)\ZTOWin32Db.dproj;ZTOCL\PRJ\DELPHI 15 (DELPHI XE)\ZTOWin32Rtl.dproj;ZTOCL\PRJ\DELPHI 15 (DELPHI XE)\ZTOCrypt.dproj;ZTOCL\PRJ\DELPHI 15 (DELPHI XE)\ZTORegExp.dproj;COMPONENTS\STANDARD\PRJ\DELPHI 15 (DELPHI XE)\ZTOComponentsStandard.dproj</Dependencies>
+				<Dependencies/>
 			</Projects>
 			<Projects Include="COMPONENTS\DATACONTROLS\PRJ\DELPHI 15 (DELPHI XE)\ZTOComponentsDataControls.dproj">
 				<Dependencies/>
@@ -104,13 +104,13 @@
 		<Target Name="ZTOComponentsStandard:Make">
 			<MSBuild Projects="COMPONENTS\STANDARD\PRJ\DELPHI 15 (DELPHI XE)\ZTOComponentsStandard.dproj" Targets="Make"/>
 		</Target>
-		<Target Name="ZTOWizardsFormTemplates" DependsOnTargets="ZTOToolsAPI;ZTOWin32Db;ZTOWin32Rtl;ZTOCrypt;ZTORegExp;ZTOComponentsStandard">
+		<Target Name="ZTOWizardsFormTemplates">
 			<MSBuild Projects="WIZARDS\FORMTEMPLATES\PRJ\DELPHI 15 (DELPHI XE)\ZTOWizardsFormTemplates.dproj"/>
 		</Target>
-		<Target Name="ZTOWizardsFormTemplates:Clean" DependsOnTargets="ZTOToolsAPI:Clean;ZTOWin32Db:Clean;ZTOWin32Rtl:Clean;ZTOCrypt:Clean;ZTORegExp:Clean;ZTOComponentsStandard:Clean">
+		<Target Name="ZTOWizardsFormTemplates:Clean">
 			<MSBuild Projects="WIZARDS\FORMTEMPLATES\PRJ\DELPHI 15 (DELPHI XE)\ZTOWizardsFormTemplates.dproj" Targets="Clean"/>
 		</Target>
-		<Target Name="ZTOWizardsFormTemplates:Make" DependsOnTargets="ZTOToolsAPI:Make;ZTOWin32Db:Make;ZTOWin32Rtl:Make;ZTOCrypt:Make;ZTORegExp:Make;ZTOComponentsStandard:Make">
+		<Target Name="ZTOWizardsFormTemplates:Make">
 			<MSBuild Projects="WIZARDS\FORMTEMPLATES\PRJ\DELPHI 15 (DELPHI XE)\ZTOWizardsFormTemplates.dproj" Targets="Make"/>
 		</Target>
 		<Target Name="ZTOComponentsDataControls">
