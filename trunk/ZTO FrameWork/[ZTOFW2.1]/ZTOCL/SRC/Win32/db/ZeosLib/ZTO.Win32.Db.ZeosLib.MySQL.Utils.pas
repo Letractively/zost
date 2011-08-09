@@ -207,8 +207,8 @@ var
   i, FileNumber, PartNumber: Cardinal;
   TempPath, CurrentLine: String;
   ScriptFileName: TFileName;
-  AuxTextFileRead: TStreamReader;
-  AuxTextFileWrite: TStreamWriter;
+  AuxTextFileRead: {$IFDEF VER180}TextFile{$ELSE}TStreamReader{$ENDIF};
+  AuxTextFileWrite: {$IFDEF VER180}TextFile{$ELSE}TStreamWriter{$ENDIF};
   SearchRec: TSearchRec;
   ScriptParts: TScriptParts;
   Processor: TZSQLProcessor;
@@ -236,19 +236,33 @@ begin
       raise Exception.Create('Nenhum arquivo ou texto de script foi informado');
 
     { Aqui, ScriptFileName contém o nome do script inicial que será dividido }
+{$IFNDEF VER180}
     AuxTextFileWrite := nil;
     AuxTextFileRead := nil;
+{$ENDIF}
     FileNumber := 0;
     try
       if Assigned(aExecuteScriptCallBack) then
         aExecuteScriptCallBack(nil,esePreprocessingScript,nil);
 
+{$IFDEF VER180}
+      AssignFile(AuxTextFileRead,ScriptFileName);
+//      SetLineBreakStyle(AuxTextFileRead,tlbsLF); Sera que precisa disso aqui?
+      FileMode := fmOpenRead;
+      Reset(AuxTextFileRead);
+{$ELSE}
       AuxTextFileRead := TStreamReader.Create(ScriptFileName,TEncoding.UTF8);
+{$ENDIF}
 
       PartNumber := 0;
-      while not AuxTextFileRead.EndOfStream do
+
+      while not {$IFDEF VER180}Eof(AuxTextFileRead){$ELSE}AuxTextFileRead.EndOfStream{$ENDIF} do
       begin
+{$IFDEF VER180}
+        ReadLn(AuxTextFileRead,CurrentLine);
+{$ELSE}
         CurrentLine := AuxTextFileRead.ReadLine;
+{$ENDIF}
 
         if Pos(DIVISIONTAG,CurrentLine) = 1 then
           Inc(PartNumber);
@@ -260,30 +274,55 @@ begin
           aberto e fecha ele em seguida }
           if FileNumber > 0 then
           begin
+{$IFDEF VER180}
+            WriteLn(AuxTextFileWrite,CurrentLine);
+            CloseFile(AuxTextFileWrite);
+{$ELSE}
             AuxTextFileWrite.WriteLine(CurrentLine);
             AuxTextFileWrite.Free;
+{$ENDIF}
           end;
 
           { Obtém o próximo número de arquivo, cria-o e vai diretamente para o
           início do loop }
           Inc(FileNumber);
+{$IFDEF VER180}
+          AssignFile(AuxTextFileWrite,TempPath + Format('\SCRIPTFILE%.6U.SQL',[FileNumber]));
+          SetLineBreakStyle(AuxTextFileWrite,tlbsLF);
+          FileMode := fmOpenWrite;
+          Rewrite(AuxTextFileWrite);
+{$ELSE}
           AuxTextFileWrite := TStreamWriter.Create(TempPath + Format('\SCRIPTFILE%.6U.SQL',[FileNumber]));
-          AuxTextFileWrite.NewLine := #$0A; { Cria no formato do unix }
+          AuxTextFileWrite.NewLine := #$0A; { Cria no formato do unix para economizar espaço }
+{$ENDIF}
 
           if FileNumber = 1 then
+{$IFDEF VER180}
+            WriteLn(AuxTextFileWrite,CurrentLine);
+{$ELSE}
             AuxTextFileWrite.WriteLine(CurrentLine);
+{$ENDIF}
 
           Continue;
         end;
 
+{$IFDEF VER180}
+        WriteLn(AuxTextFileWrite,CurrentLine);
+{$ELSE}
         AuxTextFileWrite.WriteLine(CurrentLine);
+{$ENDIF}
       end;
 
      	if Assigned(aExecuteScriptCallBack) then
         aExecuteScriptCallBack(nil,esePostProcessingScript,nil);
     finally
+{$IFDEF VER180}
+      CloseFile(AuxTextFileRead);
+      CloseFile(AuxTextFileWrite);
+{$ELSE}
       AuxTextFileRead.Free;
       AuxTextFileWrite.Free;
+{$ENDIF}
     end;
 
     ScriptParts := nil;
@@ -317,7 +356,7 @@ begin
                   begin
                     Processor.Clear;
                     Processor.Delimiter := ScriptParts[i].Delimiter;
-                    Processor.Script.Text := UTF8ToString(RawByteString(ScriptParts[i].Script));
+                    Processor.Script.Text := {$IFNDEF VER180}UTF8ToString(RawByteString({$ENDIF}ScriptParts[i].Script{$IFNDEF VER180})){$ENDIF};
 
                     if Assigned(aExecuteScriptCallBack) then
                       aExecuteScriptCallBack(Processor,eseBeforeExecuteScriptPart,ScriptParts);

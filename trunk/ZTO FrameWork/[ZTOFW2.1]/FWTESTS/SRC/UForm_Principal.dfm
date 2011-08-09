@@ -70,6 +70,10 @@ object Form1: TForm1
     object TabSheet_ZTOWin32Rtl: TTabSheet
       Caption = 'ZTOWin32Rtl'
       ImageIndex = 1
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object PageControl_ZTOWin32Rtl: TPageControl
         Left = 0
         Top = 0
@@ -80,10 +84,18 @@ object Form1: TForm1
         TabOrder = 0
         object TabSheet_Common: TTabSheet
           Caption = 'Common'
+          ExplicitLeft = 0
+          ExplicitTop = 0
+          ExplicitWidth = 0
+          ExplicitHeight = 0
         end
         object TabSheet_Sys: TTabSheet
           Caption = 'Sys'
           ImageIndex = 1
+          ExplicitLeft = 0
+          ExplicitTop = 0
+          ExplicitWidth = 0
+          ExplicitHeight = 0
           object Button2: TButton
             Left = 3
             Top = 3
@@ -198,10 +210,18 @@ object Form1: TForm1
     object TabSheet_ZTOWin32Db: TTabSheet
       Caption = 'ZTOWin32Db'
       ImageIndex = 2
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
     end
     object TabSheet_Components: TTabSheet
       Caption = 'Components'
       ImageIndex = 3
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object PageControl_Components: TPageControl
         Left = 0
         Top = 0
@@ -212,15 +232,18 @@ object Form1: TForm1
         TabOrder = 0
         object TabSheet_DataControls: TTabSheet
           Caption = 'DataControls'
+          ExplicitLeft = 0
+          ExplicitTop = 0
+          ExplicitWidth = 0
+          ExplicitHeight = 0
           object ZTODBGrid1: TZTODBGrid
             Left = 0
             Top = 0
             Width = 672
             Height = 120
             Align = alTop
-            DataSource = ZTODataModule3.DataSource2
             DefaultDrawing = False
-            Options = [dgEditing, dgTitles, dgIndicator, dgColLines, dgRowLines, dgTabs, dgConfirmDelete, dgCancelOnExit, dgMultiSelect, dgTitleClick, dgTitleHotTrack]
+            Options = [dgEditing, dgTitles, dgIndicator, dgColLines, dgRowLines, dgTabs, dgConfirmDelete, dgCancelOnExit]
             OptionsEx = [dgAllowTitleClick, dgAutomaticColumSizes]
             TabOrder = 0
             TitleFont.Charset = DEFAULT_CHARSET
@@ -239,7 +262,7 @@ object Form1: TForm1
               item
                 Expanded = False
                 FieldName = 'VA_NOME'
-                Width = 523
+                Width = 567
                 Visible = True
               end>
           end

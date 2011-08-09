@@ -28,7 +28,8 @@ uses Windows
    , SysUtils
    , SysConst
    , ComObj
-   , TlHelp32;
+   , TlHelp32
+   , ZTO.Win32.Rtl.Win.Windows;
 
 function CTL_CODE(DeviceType, FunctionNo, Method, Access: Integer): Integer;
 begin

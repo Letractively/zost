@@ -1,0 +1,67 @@
+package ZTOCrypt;
+
+{$R *.res}
+{$ALIGN 8}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO ON}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS ON}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION ON}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
+{$REFERENCEINFO ON}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES OFF}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST OFF}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $400000}
+{$DESCRIPTION 'ZTO Cryptographic Routines'}
+{$LIBSUFFIX '100'}
+{$RUNONLY}
+{$IMPLICITBUILD OFF}
+
+requires
+  rtl;
+
+contains
+  ZTO.Crypt.Types in '..\..\SRC\Crypt\ZTO.Crypt.Types.pas',
+  ZTO.Crypt.Utilities in '..\..\SRC\Crypt\ZTO.Crypt.Utilities.pas',
+  ZTO.Ciphers.Blowfish in '..\..\SRC\Crypt\ciphers\ZTO.Ciphers.Blowfish.pas',
+  ZTO.Ciphers.Cast128 in '..\..\SRC\Crypt\ciphers\ZTO.Ciphers.Cast128.pas',
+  ZTO.Ciphers.Cast256 in '..\..\SRC\Crypt\ciphers\ZTO.Ciphers.Cast256.pas',
+  ZTO.Ciphers.Des in '..\..\SRC\Crypt\ciphers\ZTO.Ciphers.Des.pas',
+  ZTO.Ciphers.Gost in '..\..\SRC\Crypt\ciphers\ZTO.Ciphers.Gost.pas',
+  ZTO.Ciphers.Ice in '..\..\SRC\Crypt\ciphers\ZTO.Ciphers.Ice.pas',
+  ZTO.Ciphers.Idea in '..\..\SRC\Crypt\ciphers\ZTO.Ciphers.Idea.pas',
+  ZTO.Ciphers.Mars in '..\..\SRC\Crypt\ciphers\ZTO.Ciphers.Mars.pas',
+  ZTO.Ciphers.Misty1 in '..\..\SRC\Crypt\ciphers\ZTO.Ciphers.Misty1.pas',
+  ZTO.Ciphers.Rc2 in '..\..\SRC\Crypt\ciphers\ZTO.Ciphers.Rc2.pas',
+  ZTO.Ciphers.Rc4 in '..\..\SRC\Crypt\ciphers\ZTO.Ciphers.Rc4.pas',
+  ZTO.Ciphers.Rc5 in '..\..\SRC\Crypt\ciphers\ZTO.Ciphers.Rc5.pas',
+  ZTO.Ciphers.Rc6 in '..\..\SRC\Crypt\ciphers\ZTO.Ciphers.Rc6.pas',
+  ZTO.Ciphers.Rijndael in '..\..\SRC\Crypt\ciphers\ZTO.Ciphers.Rijndael.pas',
+  ZTO.Ciphers.Serpent in '..\..\SRC\Crypt\ciphers\ZTO.Ciphers.Serpent.pas',
+  ZTO.Ciphers.Tea in '..\..\SRC\Crypt\ciphers\ZTO.Ciphers.Tea.pas',
+  ZTO.Ciphers.Twofish in '..\..\SRC\Crypt\ciphers\ZTO.Ciphers.Twofish.pas',
+  ZTO.Crypt.Hashes.Haval in '..\..\SRC\Crypt\hashes\ZTO.Crypt.Hashes.Haval.pas',
+  ZTO.Crypt.Hashes.Md4 in '..\..\SRC\Crypt\hashes\ZTO.Crypt.Hashes.Md4.pas',
+  ZTO.Crypt.Hashes.Md5 in '..\..\SRC\Crypt\hashes\ZTO.Crypt.Hashes.Md5.pas',
+  ZTO.Crypt.Hashes.Ripemd128 in '..\..\SRC\Crypt\hashes\ZTO.Crypt.Hashes.Ripemd128.pas',
+  ZTO.Crypt.Hashes.Ripemd160 in '..\..\SRC\Crypt\hashes\ZTO.Crypt.Hashes.Ripemd160.pas',
+  ZTO.Crypt.Hashes.Sha1 in '..\..\SRC\Crypt\hashes\ZTO.Crypt.Hashes.Sha1.pas',
+  ZTO.Crypt.Hashes.Sha256 in '..\..\SRC\Crypt\hashes\ZTO.Crypt.Hashes.Sha256.pas',
+  ZTO.Crypt.Hashes.Sha512 in '..\..\SRC\Crypt\hashes\ZTO.Crypt.Hashes.Sha512.pas',
+  ZTO.Crypt.Hashes.tiger in '..\..\SRC\Crypt\hashes\ZTO.Crypt.Hashes.tiger.pas',
+  ZTO.Crypt.Consts in '..\..\SRC\Crypt\ZTO.Crypt.Consts.pas',
+  ZTO.Crypt.Common in '..\..\SRC\Crypt\ZTO.Crypt.Common.pas',
+  ZTO.Crypt.Base64 in '..\..\SRC\Crypt\ZTO.Crypt.Base64.pas',
+  ZTO.Crypt.Blockciphers in '..\..\SRC\Crypt\ZTO.Crypt.Blockciphers.pas';
+
+end.

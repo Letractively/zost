@@ -56,7 +56,7 @@ type
     interno do objeto com o nome de arquivo para salvar usando savetobinaryfile.
     O campo é preenchido após usar um método Load qualqer e só é limpo com outro
     método chamado close, que limpa o objeto e limpa a variavel }
-    function ToString: String; override;
+    function ToString: String; {$IFNDEF VER180}override;{$ENDIF}
     function ToXML: String;
   end;
 

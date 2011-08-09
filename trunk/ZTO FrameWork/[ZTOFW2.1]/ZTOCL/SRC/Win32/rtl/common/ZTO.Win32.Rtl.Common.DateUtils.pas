@@ -40,6 +40,11 @@ implementation
 uses
   SysUtils, Windows, DateUtils;
 
+{$IFDEF VER180}
+const
+  SecsPerHour = SecsPerMin * MinsPerHour;
+{$ENDIF}
+
 { Converts a TDateTime variable to Int64 milliseconds from 0001-01-01.}
 function DateTimeToMilliseconds(aDateTime: TDateTime): Int64;
 var

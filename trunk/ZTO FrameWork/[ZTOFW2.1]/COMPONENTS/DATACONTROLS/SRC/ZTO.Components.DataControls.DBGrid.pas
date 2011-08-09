@@ -808,8 +808,8 @@ begin
                 { Coluna pressionada }
                 else if dgAllowTitleClick in FOptionsEx then
                 begin
-                    Details := ThemeServices.GetElementDetails(thHeaderItemPressed);
-                    InflateRect(CaptionRect, -1, 1);
+                  Details := ThemeServices.GetElementDetails(thHeaderItemPressed);
+                  InflateRect(CaptionRect, -1, 1);
                 end
                 { Coluna normal (n�o pressionada) }
                 else
@@ -844,7 +844,15 @@ begin
           motivo, precisamos pintar o fundo da mesma. Podem ser usadas outras
           formas de pintura no lugar de DrawCellBackground }
           else
+{$IFDEF VER180}
+          begin
+            DefaultDrawing := True;
+            inherited;
+            DefaultDrawing := False;
+          end;
+{$ELSE}
             DrawCellBackground(ARect, FixedColor, AState, ACol, ARow);
+{$ENDIF}
         end;
 
         { Caso eu esteja pintando a coluna de indicadores eu tenho de pintar os
@@ -1039,7 +1047,7 @@ begin
   else
     S := 'Deseja excluir este registro?';
 
-  Result := not (dgConfirmDelete in Options) or (MessageBox(Handle,PWideChar(S),'Por favor confirme...', MB_ICONQUESTION or MB_YESNO or MB_DEFBUTTON2) = IDYES);
+  Result := not (dgConfirmDelete in Options) or (MessageBox(Handle,{$IFDEF VER180}PAnsiChar{$ELSE}PWideChar{$ENDIF}(S),'Por favor confirme...', MB_ICONQUESTION or MB_YESNO or MB_DEFBUTTON2) = IDYES);
 end;
 { ---------------------------------------------------------------------------- }
 const
@@ -1490,7 +1498,7 @@ begin
         if (dgAutomaticColumSizes in FOptionsEx) and (dgColumnResize in NewOptions) then
         begin
           	Exclude(NewOptions,dgColumnResize);
-            MessageBox(Handle,'N�o � poss�vel usar colunas redimension�veis quando o modo de tamanho autom�tico de colunas est� ativado','Op��o inv�lida',MB_ICONWARNING);
+            MessageBox(Handle,'Não é possível usar colunas redimensionáveis quando o modo de tamanho automático de colunas está ativado','Opção inválida',MB_ICONWARNING);
         end;
 
         inherited Options := NewOptions;
