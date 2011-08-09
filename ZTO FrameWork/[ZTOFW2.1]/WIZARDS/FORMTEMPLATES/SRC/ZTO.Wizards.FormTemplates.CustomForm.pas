@@ -57,7 +57,7 @@ function TZTOCustomForm.SetFocusedControl(Control: TWinControl): Boolean;
 var
   FormAtivo: PForm;
 begin
-  Result := inherited;
+  Result := inherited {$IFDEF VER180}SetFocusedControl(Control){$ENDIF};
   FormAtivo := PForm(Integer(@Screen.ActiveForm));
   FormAtivo^ := TForm(Self);
 //  Label1.Caption := Screen.ActiveForm.Caption;

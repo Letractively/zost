@@ -10,7 +10,7 @@ uses
 
 begin
   Application.Initialize;
-  Application.MainFormOnTaskbar := True;
+  {$IFNDEF VER180}Application.MainFormOnTaskbar := True{$ENDIF};
   Application.CreateForm(TForm1, Form1);
   Application.CreateForm(TZTODataModule3, ZTODataModule3);
   Application.Run;

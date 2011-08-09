@@ -24,7 +24,7 @@ uses SysUtils
    , Registry
    , ZTO.Win32.Rtl.Sys.Utilities;
 
-function GetRegDataInfo(aCurrentKey: HKEY; aName: PWideChar): TRegDataInfo;
+function GetRegDataInfo(aCurrentKey: HKEY; aName: {$IFDEF VER180}PAnsiChar{$ELSE}PWideChar{$ENDIF}): TRegDataInfo;
 var
   Res: Integer;
 begin
@@ -52,7 +52,7 @@ begin
     try
       RootKey := aRootKey;
       OpenKeyReadOnly(aSubKey);
-      RegDataInfo := GetRegDataInfo(CurrentKey,PWideChar(aName));
+      RegDataInfo := GetRegDataInfo(CurrentKey,{$IFDEF VER180}PAnsiChar{$ELSE}PWideChar{$ENDIF}(aName));
 
       if RegDataInfo.DataType <> REG_MULTI_SZ then
         raise Exception.Create('O tipo de dados é incompatível');
@@ -90,10 +90,10 @@ begin
 
       { Aparentemente o tamanho precisa ser * 2 porque o tipo string é unicode e tem 2 bytes por caractere }
       Res := RegSetValueEx(CurrentKey
-                          ,PWideChar(aName)
+                          ,{$IFDEF VER180}PAnsiChar{$ELSE}PWideChar{$ENDIF}(aName)
                           ,0
                           ,REG_MULTI_SZ
-                          ,PWideChar(Value)
+                          ,{$IFDEF VER180}PAnsiChar{$ELSE}PWideChar{$ENDIF}(Value)
                           ,Length(Value) * 2);
 
       if Res <> ERROR_SUCCESS then

@@ -227,7 +227,7 @@ begin
     UTF8 garantimos que tudos será carregado corretamente, mas fará com que esta
     função precise descomprimir um arquivo codificado em UTF8, do contrário,
     coisas estranhas podem acontecer }
-    OutputStream := TStringStream.Create('',TEncoding.UTF8);
+    OutputStream := TStringStream.Create(''{$IFNDEF VER180},TEncoding.UTF8{$ENDIF});
     DecompressionStream := TDecompressionStream.Create(InputFile);
 
     DecompressionStream.SourceFileName := aFileName;
@@ -270,6 +270,20 @@ function LoadTextFile(aFileName: TFileName): String;
 begin
 	Result := '';
 
+{$IFDEF VER180}
+	with TFileStream.Create(aFileName, fmOpenRead or fmShareDenyWrite) do
+    try
+    	try
+        SetLength(Result, Size);
+        Read(Pointer(Result)^, Size);
+      except
+        Result := ''; { Desaloca a memória };
+        raise;
+      end;
+    finally
+      Free;
+    end;
+{$ELSE}
   { Usando o construtor abaixo faz com que ele tente abrir um arquivo UTF8 sem
   tentar detectar o BOM. Isso carrega os arquivos corretamente }
 	with TStreamReader.Create(aFileName,TEncoding.UTF8) do
@@ -279,10 +293,19 @@ begin
     finally
       Free;
     end;
+{$ENDIF}
 end;
 
 procedure SaveTextFile(aText: String; aFileName: TFileName);
 begin
+{$IFDEF VER180}
+  with TFileStream.Create(aFileName, fmCreate) do
+    try
+      Write(Pointer(aText)^, Length(aText));
+    finally
+     	Free;
+    end;
+{$ELSE}
   { Por padrão vai criar em UTF8 sem o BOM, porque ao chamar o construtor desta
   forma o preâmbulo não será gravado no stream final }
   with TStreamWriter.Create(aFileName) do
@@ -291,6 +314,7 @@ begin
     finally
      	Free;
     end;
+{$ENDIF}
 end;
 
 
@@ -527,7 +551,7 @@ end;
 
 function GetTemporaryPath: String;
 var
-  TempPath: PWideChar;
+  TempPath: {$IFDEF VER180}PAnsiChar{$ELSE}PWideChar{$ENDIF};
 begin
   Result := '';
   TempPath := nil;

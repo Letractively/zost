@@ -4,7 +4,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, StdCtrls, Grids, DBGrids, ComCtrls, pngimage, ExtCtrls, Buttons,
+  Dialogs, StdCtrls, Grids, DBGrids, ComCtrls, ExtCtrls, Buttons,
   ZTO.Components.DataControls.DBGrid, DB, DBClient;
 
 type

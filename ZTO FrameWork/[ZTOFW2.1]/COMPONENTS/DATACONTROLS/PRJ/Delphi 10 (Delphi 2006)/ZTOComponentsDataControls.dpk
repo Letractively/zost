@@ -1,0 +1,43 @@
+package ZTOComponentsDataControls;
+
+{$R *.res}
+{$R 'ZTODBGrid.dcr'}
+{$ALIGN 8}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO ON}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS ON}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION ON}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
+{$REFERENCEINFO ON}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES OFF}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST OFF}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $400000}
+{$DESCRIPTION 'ZTO Data Controls Components'}
+{$LIBSUFFIX '100'}
+{$IMPLICITBUILD OFF}
+
+requires
+  rtl,
+  vcl,
+  dbrtl,
+  vcldb,
+  designide;
+
+contains
+  ZTO.Components.DataControls.LabeledDBEdit in '..\..\SRC\ZTO.Components.DataControls.LabeledDBEdit.pas',
+  ZTO.Components.DataControls.Register in '..\..\SRC\ZTO.Components.DataControls.Register.pas',
+  ZTO.Components.DataControls.VariableColumnsEditor in '..\..\SRC\ZTO.Components.DataControls.VariableColumnsEditor.pas' {Form_VariableColumnsEditor},
+  ZTO.Components.DataControls.DBGrid in '..\..\SRC\ZTO.Components.DataControls.DBGrid.pas';
+
+end.

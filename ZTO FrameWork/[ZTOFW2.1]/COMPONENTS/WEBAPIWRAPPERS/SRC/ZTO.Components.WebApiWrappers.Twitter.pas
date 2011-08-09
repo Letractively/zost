@@ -272,7 +272,7 @@ end;
 
 procedure TTwitter.GetTimeStamp;
 begin
-  FTimeStamp := UIntToStr(GetUTCUnixTime);
+  FTimeStamp := {$IFDEF VER180}IntToStr{$ELSE}UIntToStr{$ENDIF}(GetUTCUnixTime);
 end;
 
 procedure TTwitter.GetNonce;
