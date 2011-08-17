@@ -23,7 +23,7 @@ object Form_Principal: TForm_Principal
     Top = 0
     Width = 564
     Height = 303
-    ActivePage = TabSheet_Status
+    ActivePage = TabSheet_Configuracao
     Align = alClient
     TabOrder = 0
     object TabSheet_Status: TTabSheet
