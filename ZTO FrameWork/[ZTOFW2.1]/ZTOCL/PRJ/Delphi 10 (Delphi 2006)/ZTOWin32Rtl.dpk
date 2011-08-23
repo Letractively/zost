@@ -46,6 +46,7 @@ contains
   ZTO.Win32.Rtl.Sys.Utilities in '..\..\SRC\Win32\rtl\sys\ZTO.Win32.Rtl.Sys.Utilities.pas',
   ZTO.Win32.Rtl.Common.NetworkUtils in '..\..\SRC\Win32\rtl\common\ZTO.Win32.Rtl.Common.NetworkUtils.pas',
   ZTO.Win32.Rtl.Common.Registry in '..\..\SRC\Win32\rtl\common\ZTO.Win32.Rtl.Common.Registry.pas',
-  ZTO.Win32.Rtl.Win.Windows in '..\..\SRC\Win32\rtl\win\ZTO.Win32.Rtl.Win.Windows.pas';
+  ZTO.Win32.Rtl.Win.Windows in '..\..\SRC\Win32\rtl\win\ZTO.Win32.Rtl.Win.Windows.pas',
+  ZTO.Win32.Rtl.Win.ShellAPI in '..\..\SRC\Win32\rtl\win\ZTO.Win32.Rtl.Win.ShellAPI.pas';
 
 end.
