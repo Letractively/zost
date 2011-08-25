@@ -4,7 +4,6 @@ object ZTODataModule3: TZTODataModule3
   Height = 247
   Width = 311
   object ZConnection1: TZConnection
-    Connected = True
     Protocol = 'mysql-5'
     HostName = '127.0.0.1'
     Database = 'ACDM'
@@ -20,7 +19,6 @@ object ZTODataModule3: TZTODataModule3
   end
   object ZReadOnlyQuery1: TZReadOnlyQuery
     Connection = ZConnection1
-    Active = True
     SQL.Strings = (
       'SELECT * FROM USUARIO')
     Params = <>
@@ -29,7 +27,6 @@ object ZTODataModule3: TZTODataModule3
   end
   object ZQuery1: TZQuery
     Connection = ZConnection1
-    Active = True
     SQL.Strings = (
       'SELECT * FROM USUARIO')
     Params = <>

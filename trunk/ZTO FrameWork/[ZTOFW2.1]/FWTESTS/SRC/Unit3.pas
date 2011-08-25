@@ -7,7 +7,7 @@ interface
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms,
   ZTO.Wizards.FormTemplates.DataModule, ZConnection, DB, ZAbstractRODataset,
-  ZDataset, ZAbstractConnection, ZAbstractDataset;
+  ZDataset, ZAbstractDataset;
 
 type
   TZTODataModule3 = class(TZTODataModule)
