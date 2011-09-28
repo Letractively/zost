@@ -71,6 +71,8 @@
 			<DCCReference Include="..\..\SRC\Win32\rtl\sys\ZTO.Win32.Rtl.Sys.Utilities.pas"/>
 			<DCCReference Include="..\..\SRC\Win32\rtl\common\ZTO.Win32.Rtl.Common.NetworkUtils.pas"/>
 			<DCCReference Include="..\..\SRC\Win32\rtl\common\ZTO.Win32.Rtl.Common.Registry.pas"/>
+			<DCCReference Include="..\..\SRC\Win32\rtl\win\ZTO.Win32.Rtl.Win.Windows.pas"/>
+			<DCCReference Include="..\..\SRC\Win32\rtl\win\ZTO.Win32.Rtl.Win.ShellAPI.pas"/>
 			<BuildConfiguration Include="Debug">
 				<Key>Cfg_2</Key>
 				<CfgParent>Base</CfgParent>
@@ -103,7 +105,7 @@
 						<VersionInfo Name="MajorVer">2</VersionInfo>
 						<VersionInfo Name="MinorVer">1</VersionInfo>
 						<VersionInfo Name="Release">0</VersionInfo>
-						<VersionInfo Name="Build">868</VersionInfo>
+						<VersionInfo Name="Build">869</VersionInfo>
 						<VersionInfo Name="Debug">False</VersionInfo>
 						<VersionInfo Name="PreRelease">False</VersionInfo>
 						<VersionInfo Name="Special">False</VersionInfo>
@@ -115,7 +117,7 @@
 					<VersionInfoKeys>
 						<VersionInfoKeys Name="CompanyName"/>
 						<VersionInfoKeys Name="FileDescription"/>
-						<VersionInfoKeys Name="FileVersion">2.1.0.868</VersionInfoKeys>
+						<VersionInfoKeys Name="FileVersion">2.1.0.869</VersionInfoKeys>
 						<VersionInfoKeys Name="InternalName"/>
 						<VersionInfoKeys Name="LegalCopyright"/>
 						<VersionInfoKeys Name="LegalTrademarks"/>

@@ -147,7 +147,7 @@ function ShellBrowseForFolder(const aHandle: HWND; out aDisplayName: String; con
 var
   SHBrowseInfo: TBrowseInfo;
   ItemIdList: PItemIDList;
-  DisplayName, SelectedPath: PAnsiChar;
+  DisplayName, SelectedPath: {$IFDEF VER220}PWideChar{$ELSE}PAnsiChar{$ENDIF};
 begin
   Result := False;
 
@@ -160,7 +160,7 @@ begin
     SHBrowseInfo.hwndOwner      := aHandle;
     SHBrowseInfo.pidlRoot       := nil; { Um dia exponha um parâmetro }
     SHBrowseInfo.pszDisplayName := DisplayName;
-    SHBrowseInfo.lpszTitle      := PAnsiChar(aTitle);
+    SHBrowseInfo.lpszTitle      := {$IFDEF VER220}PWideChar{$ELSE}PAnsiChar{$ENDIF}(aTitle);
     SHBrowseInfo.ulFlags        := aFlags;
     SHBrowseInfo.lpfn           := nil; { Um dia exponha um parâmetro }
     SHBrowseInfo.lParam         := 0; { Um dia exponha um parâmetro }
