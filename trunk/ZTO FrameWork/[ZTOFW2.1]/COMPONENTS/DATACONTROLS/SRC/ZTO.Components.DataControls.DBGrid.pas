@@ -846,9 +846,8 @@ begin
           else
 {$IFDEF VER180}
           begin
-            DefaultDrawing := True;
-            inherited;
-            DefaultDrawing := False;
+            Canvas.Brush.Color := clBtnFace;
+            Canvas.Rectangle(ARect);
           end;
 {$ELSE}
             DrawCellBackground(ARect, FixedColor, AState, ACol, ARow);
@@ -892,6 +891,15 @@ begin
 end;
 
 procedure TCustomZTODBGrid.DrawColumnCell(const Rect: TRect; DataCol: Integer; Column: TColumn; State: TGridDrawState);
+{ ---------------------------------------------------------------------------- }
+function RecordNumber: Int64;
+begin
+  if (Column.Field.DataSet.RecNo = -1) and Assigned(DataSource.DataSet.FindField('RECNO')) then
+    Result := DataSource.DataSet.FieldByName('RECNO').AsInteger
+  else
+    Result := Column.Field.DataSet.RecNo;
+end;
+{ ---------------------------------------------------------------------------- }
 var
     NeedsDefaultDraw: Boolean;
     Index: -1..255;
@@ -900,10 +908,14 @@ begin
 
 	if (FRowColors.Count > 0) and Assigned(Column.Field) and Assigned(Column.Field.DataSet) then
     begin
-    	Index := Pred(Pred(Column.Field.DataSet.RecNo) mod Succ(FRowColors.Count));
+    Index := Pred(Pred(RecordNumber) mod Succ(FRowColors.Count));
         if Index > -1 then
         begin
         	Canvas.Brush.Color := FRowColors.Items[Index].BackgroundColor;
+      { Caso a cor clNone tenha sido atribuída para ForegroundColor, não devemos
+      mudar a cor da fonte. Isso serve para que tenhamos colunas específicas com
+      cores de fonte específicas. }
+      if FRowColors.Items[Index].ForegroundColor <> clNone then
             Canvas.Font.Color := FRowColors.Items[Index].ForegroundColor;
         	NeedsDefaultDraw := True;
         end;
