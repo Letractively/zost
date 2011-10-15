@@ -19,7 +19,7 @@ object Form1: TForm1
     Top = 0
     Width = 688
     Height = 334
-    ActivePage = TabSheet_FormTemplates
+    ActivePage = TabSheet_Components
     Align = alClient
     TabOrder = 0
     object TabSheet_FormTemplates: TTabSheet
@@ -70,32 +70,20 @@ object Form1: TForm1
     object TabSheet_ZTOWin32Rtl: TTabSheet
       Caption = 'ZTOWin32Rtl'
       ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object PageControl_ZTOWin32Rtl: TPageControl
         Left = 0
         Top = 0
         Width = 680
         Height = 306
-        ActivePage = TabSheet_Common
+        ActivePage = TabSheet_Sys
         Align = alClient
         TabOrder = 0
         object TabSheet_Common: TTabSheet
           Caption = 'Common'
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
         end
         object TabSheet_Sys: TTabSheet
           Caption = 'Sys'
           ImageIndex = 1
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object Button2: TButton
             Left = 3
             Top = 3
@@ -210,18 +198,10 @@ object Form1: TForm1
     object TabSheet_ZTOWin32Db: TTabSheet
       Caption = 'ZTOWin32Db'
       ImageIndex = 2
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
     end
     object TabSheet_Components: TTabSheet
       Caption = 'Components'
       ImageIndex = 3
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object PageControl_Components: TPageControl
         Left = 0
         Top = 0
@@ -232,37 +212,115 @@ object Form1: TForm1
         TabOrder = 0
         object TabSheet_DataControls: TTabSheet
           Caption = 'DataControls'
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object ZTODBGrid1: TZTODBGrid
             Left = 0
             Top = 0
             Width = 672
             Height = 120
             Align = alTop
+            DataSource = DataSource1
             DefaultDrawing = False
-            Options = [dgEditing, dgTitles, dgIndicator, dgColLines, dgRowLines, dgTabs, dgConfirmDelete, dgCancelOnExit]
-            OptionsEx = [dgAllowTitleClick, dgAutomaticColumSizes]
+            Options = [dgTitles, dgIndicator, dgColLines, dgRowLines, dgTabs, dgConfirmDelete, dgCancelOnExit, dgMultiSelect]
             TabOrder = 0
             TitleFont.Charset = DEFAULT_CHARSET
             TitleFont.Color = clWindowText
             TitleFont.Height = -11
             TitleFont.Name = 'Tahoma'
             TitleFont.Style = []
-            RowColors = <>
-            VariableWidthColumns = '<VA_NOME>'
+            RowColors = <
+              item
+                BackgroundColor = clBtnFace
+                ForegroundColor = clNone
+              end>
             Columns = <
               item
                 Expanded = False
-                FieldName = 'BI_USUARIO_ID'
+                FieldName = 'help_topic_id'
                 Visible = True
               end
               item
                 Expanded = False
-                FieldName = 'VA_NOME'
-                Width = 567
+                FieldName = 'name'
+                Visible = True
+              end
+              item
+                Color = clWindow
+                Expanded = False
+                FieldName = 'help_category_id'
+                Font.Charset = DEFAULT_CHARSET
+                Font.Color = clRed
+                Font.Height = -11
+                Font.Name = 'Tahoma'
+                Font.Style = []
+                Visible = True
+              end
+              item
+                Expanded = False
+                FieldName = 'description'
+                Visible = True
+              end
+              item
+                Expanded = False
+                FieldName = 'example'
+                Visible = True
+              end
+              item
+                Expanded = False
+                FieldName = 'url'
+                Visible = True
+              end>
+          end
+          object DBGrid1: TDBGrid
+            Left = 0
+            Top = 120
+            Width = 672
+            Height = 158
+            Align = alClient
+            DataSource = DataSource1
+            GradientEndColor = clRed
+            GradientStartColor = clBlack
+            Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgConfirmDelete, dgCancelOnExit, dgMultiSelect, dgTitleClick, dgTitleHotTrack]
+            TabOrder = 1
+            TitleFont.Charset = DEFAULT_CHARSET
+            TitleFont.Color = clWindowText
+            TitleFont.Height = -11
+            TitleFont.Name = 'Tahoma'
+            TitleFont.Style = []
+            Columns = <
+              item
+                Expanded = False
+                FieldName = 'help_topic_id'
+                Visible = True
+              end
+              item
+                Expanded = False
+                FieldName = 'name'
+                Visible = True
+              end
+              item
+                Color = clInfoBk
+                Expanded = False
+                FieldName = 'help_category_id'
+                Font.Charset = DEFAULT_CHARSET
+                Font.Color = clRed
+                Font.Height = -11
+                Font.Name = 'Tahoma'
+                Font.Style = []
+                Visible = True
+              end
+              item
+                Expanded = False
+                FieldName = 'description'
+                Visible = True
+              end
+              item
+                Expanded = False
+                FieldName = 'example'
+                Visible = True
+              end
+              item
+                Expanded = False
+                FieldName = 'url'
                 Visible = True
               end>
           end
@@ -276,46 +334,29 @@ object Form1: TForm1
     Left = 6
     Top = 266
   end
-  object ClientDataSet1: TClientDataSet
-    Active = True
-    Aggregates = <>
-    FieldDefs = <
-      item
-        Name = 'CAMPO1'
-        DataType = ftInteger
-      end
-      item
-        Name = 'CAMPO2'
-        DataType = ftString
-        Size = 10
-      end
-      item
-        Name = 'CAMPO3'
-        DataType = ftDateTime
-      end>
-    IndexDefs = <>
-    Params = <>
-    StoreDefs = True
-    Left = 48
-    Top = 270
-    Data = {
-      530000009619E0BD01000000180000000300000000000300000053000643414D
-      504F3104000100000000000643414D504F320100490000000100055749445448
-      020002000A000643414D504F3308000800000000000000}
-    object ClientDataSet1CAMPO1: TIntegerField
-      FieldName = 'CAMPO1'
-    end
-    object ClientDataSet1CAMPO2: TStringField
-      FieldName = 'CAMPO2'
-      Size = 10
-    end
-    object ClientDataSet1CAMPO3: TDateTimeField
-      FieldName = 'CAMPO3'
-    end
+  object ZConnection1: TZConnection
+    Connected = True
+    Protocol = 'mysql-5'
+    HostName = '127.0.0.1'
+    Database = 'MYSQL'
+    User = 'root'
+    Password = '123456'
+    Left = 264
+    Top = 184
   end
   object DataSource1: TDataSource
-    DataSet = ClientDataSet1
-    Left = 114
-    Top = 270
+    DataSet = ZQuery1
+    Left = 416
+    Top = 192
+  end
+  object ZQuery1: TZQuery
+    Connection = ZConnection1
+    Active = True
+    SQL.Strings = (
+      'SELECT * FROM help_topic'
+      '')
+    Params = <>
+    Left = 344
+    Top = 232
   end
 end

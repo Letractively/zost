@@ -20,12 +20,12 @@ type
     TRowColor = class(TCollectionItem)
     private
 	    FBackgroundColor: TColor;
-        FForegroundColor: TColor;
+      FForegroundColor: TColor;
 	    procedure SetBackgroundColor(const Value: TColor);
 	    procedure SetForegroundColor(const Value: TColor);
     public
     	constructor Create(Collection: TCollection); override;
-        procedure Assign(aSource: TPersistent); override;
+      procedure Assign(aSource: TPersistent); override;
     published
     	property BackgroundColor: TColor read FBackgroundColor write SetBackgroundColor;
     	property ForegroundColor: TColor read FForegroundColor write SetForegroundColor;
@@ -40,8 +40,8 @@ type
     	procedure Update(Item: TCollectionItem); override;
     public
 	    constructor Create(aGrid: TCustomZTODBGrid);
-        function Add: TRowColor;
-        property Items[Index: Integer]: TRowColor read GetRowColor write SetRowColor; default;
+      function Add: TRowColor;
+      property Items[Index: Integer]: TRowColor read GetRowColor write SetRowColor; default;
     end;
 
     TSortArrowDirection = (sadNone, sadDescending, sadAscending);
@@ -232,7 +232,8 @@ implementation
 uses Themes
    , GraphUtil
    , Forms
-   , ImgList;
+   , ImgList
+   , UxTheme;
 
 {$R ZTODBGrid.res}
 
@@ -690,13 +691,10 @@ begin
         if dgMultiselect in Options then
           case Win32MajorVersion of
             5: FPaintInfo.Indicators.Draw(Canvas, ARect.Left + 2 + GetSystemMetrics(SM_CXMENUCHECK) + 1, ARect.Top + 2, Indicator, dsTransparent, itImage, True);
-            6: FPaintInfo.Indicators.Draw(Canvas, ARect.Left + 1 + GetSystemMetrics(SM_CXMENUCHECK) + 1, ARect.Top + 2, Indicator, dsTransparent, itImage, True);
+            6: FPaintInfo.Indicators.Draw(Canvas, ARect.Left + 0 + GetSystemMetrics(SM_CXMENUCHECK) + 1, ARect.Top + 2, Indicator, dsTransparent, itImage, True);
           end
         else
-          case Win32MajorVersion of
-            5: FPaintInfo.Indicators.Draw(Canvas, ARect.Left + 2, ARect.Top + 2, Indicator, dsTransparent, itImage, True);
-            6: FPaintInfo.Indicators.Draw(Canvas, ARect.Left + 1, ARect.Top + 2, Indicator, dsTransparent, itImage, True);
-          end;
+          FPaintInfo.Indicators.Draw(Canvas, ARect.Left + 2, ARect.Top + 2, Indicator, dsTransparent, itImage, True);
     end;
 end;
 
@@ -766,6 +764,14 @@ begin
         end;
 
     end;
+end;
+
+procedure DrawIndicatorCellBackground;
+begin
+  Canvas.Brush.Color := clBtnFace;
+  Canvas.Pen.Width := 1;
+  Canvas.Pen.Color := clBtnShadow;
+  Canvas.Rectangle(ARect);
 end;
 { ---------------------------------------------------------------------------- }
 const
@@ -841,17 +847,11 @@ begin
             DefaultDrawing := False;
           end
           { Aqui, estamos verdadeiramente na coluna de indicadores, e por este
-          motivo, precisamos pintar o fundo da mesma. Podem ser usadas outras
-          formas de pintura no lugar de DrawCellBackground }
+          motivo, precisamos pintar o fundo da mesma. Veja a definição do método
+          DrawCellBackground em Grids.pas para saber como pintar de 3 formas
+          diferentes: Com temas, sem temas e com gradientes }
           else
-{$IFDEF VER180}
-          begin
-            Canvas.Brush.Color := clBtnFace;
-            Canvas.Rectangle(ARect);
-          end;
-{$ELSE}
-            DrawCellBackground(ARect, FixedColor, AState, ACol, ARow);
-{$ENDIF}
+            DrawIndicatorCellBackground;
         end;
 
         { Caso eu esteja pintando a coluna de indicadores eu tenho de pintar os
@@ -890,6 +890,9 @@ begin
     end;
 end;
 
+{ Este método pinta célula por célula. Qundo uma seleção seleciona todas as
+células de uma linha sem separação, quer dizer que os rects de cada célula foram
+expandidos para que as separações sumissem }
 procedure TCustomZTODBGrid.DrawColumnCell(const Rect: TRect; DataCol: Integer; Column: TColumn; State: TGridDrawState);
 { ---------------------------------------------------------------------------- }
 function RecordNumber: Int64;
@@ -899,59 +902,103 @@ begin
   else
     Result := Column.Field.DataSet.RecNo;
 end;
+
+procedure DrawCellHighlight;
+var
+  LRect: TRect;
+  LTheme: Cardinal;
+  LColor: TColorRef;
+begin
+  if dgRowSelect in Options then
+    Include(State, gdRowSelected);
+
+  if Win32MajorVersion >= 6 then
+  begin
+    Canvas.Brush.Style := bsSolid;
+    Canvas.FillRect(Rect);
+    LTheme := ThemeServices.Theme[teMenu];
+    LRect := Rect;
+
+    { o bloco IF abaixo serve para ajustar o RECT quando a opção RowSelect
+    estiver ativada, de forma a exibir um único highlight. Comente isso para ver
+    um efeito interessante }
+    if (gdRowSelected in State) then
+    begin
+      if (DataCol + IndicatorOffset >= FixedCols + 1) and ((DataCol + IndicatorOffset) < ColCount - 1) then
+        InflateRect(LRect, 4, 0)
+      else if (DataCol + IndicatorOffset) = FixedCols then
+        Inc(LRect.Right, 4)
+      else if (DataCol + IndicatorOffset) = (ColCount - 1) then
+        Dec(LRect.Left, 4);
+    end;
+
+    DrawThemeBackground(LTheme, Canvas.Handle, MENU_POPUPITEM, MPI_HOT, LRect, {$IFNDEF CLR}@{$ENDIF}Rect);
+    GetThemeColor(LTheme, MENU_POPUPITEM, MPI_HOT, TMT_TEXTCOLOR, LColor);
+    Canvas.Font.Color := LColor;
+    Canvas.Brush.Style := bsClear;
+  end
+  else
+  begin
+    Canvas.Brush.Color := clHighlight;
+    Canvas.Font.Color := clHighlightText;
+  end;
+end;
 { ---------------------------------------------------------------------------- }
 var
-    NeedsDefaultDraw: Boolean;
-    Index: -1..255;
+  NeedsDefaultDraw: Boolean;
+  Index: -1..255;
 begin
 	NeedsDefaultDraw := False;
 
 	if (FRowColors.Count > 0) and Assigned(Column.Field) and Assigned(Column.Field.DataSet) then
-    begin
+  begin
     Index := Pred(Pred(RecordNumber) mod Succ(FRowColors.Count));
-        if Index > -1 then
-        begin
-        	Canvas.Brush.Color := FRowColors.Items[Index].BackgroundColor;
+
+    if Index > -1 then
+    begin
+      Canvas.Brush.Color := FRowColors.Items[Index].BackgroundColor;
+
       { Caso a cor clNone tenha sido atribuída para ForegroundColor, não devemos
       mudar a cor da fonte. Isso serve para que tenhamos colunas específicas com
       cores de fonte específicas. }
       if FRowColors.Items[Index].ForegroundColor <> clNone then
-            Canvas.Font.Color := FRowColors.Items[Index].ForegroundColor;
-        	NeedsDefaultDraw := True;
-        end;
+        Canvas.Font.Color := FRowColors.Items[Index].ForegroundColor;
+
+      { Se aqui mudamos o fundo, indica que precisamos escrever o texto}
+      NeedsDefaultDraw := True;
     end;
+  end;
 
 	// aqui deve-se pintar as colunas especiais inteiras, sobrescrevendo sempre a cor colocada pela linha
-    // if FColumnColors.Count > 0 then
+  // if FColumnColors.Count > 0 then
 
-    if NeedsDefaultDraw then
-    begin
-        if gdSelected in State then
-        begin
-            Canvas.Font.Color := clHighlightText;
-            Canvas.Brush.Color := clHighlight;
-        end;
+  if NeedsDefaultDraw then
+  begin
+    { Para que durante o multiselect as linhas de cores diferentes fiquem com highlight ative o comentario abaixo e dentro de DrawCellHighlight faça ajustes para incluir Include(State, gdRowSelected)}
+    if (gdSelected in State){ or ((dgMultiSelect in Options) and Datalink.Active and rowisselected)} then
+      DrawCellHighlight;
 
-	    DefaultDrawColumnCell(Rect, DataCol, Column, State);
-    end;
+    { Escreve o texto na célula }
+	  DefaultDrawColumnCell(Rect, DataCol, Column, State);
+  end;
 
-    inherited;
+  inherited;
 end;
 
 function TCustomZTODBGrid.GetOptions: TDBGridOptions;
 begin
-    Result := inherited Options;
+  Result := inherited Options;
 end;
 
 procedure TCustomZTODBGrid.KeyDown(var Key: Word; Shift: TShiftState);
 { ---------------------------------------------------------------------------- }
 procedure ClearSelection;
 begin
-    if dgMultiSelect in Options then
-    begin
-        if not (dgPersistentSelection in FOptionsEx) then
-            SelectedRows.Clear;
-    end;
+  if dgMultiSelect in Options then
+  begin
+    if not (dgPersistentSelection in FOptionsEx) then
+      SelectedRows.Clear;
+  end;
 end;
 
 procedure DoSelection(Select: Boolean; Direction: Integer);
@@ -1580,26 +1627,26 @@ end;
 procedure TRowColor.Assign(aSource: TPersistent);
 begin
 	FBackgroundColor := TRowColor(aSource).BackgroundColor;
-    FForegroundColor := TRowColor(aSource).ForegroundColor;
+  FForegroundColor := TRowColor(aSource).ForegroundColor;
 end;
 
 constructor TRowColor.Create(Collection: TCollection);
 begin
-    inherited;
-    FBackgroundColor := clBtnFace;
-    FForegroundColor := clBtnText;
+  inherited;
+  FBackgroundColor := clBtnFace;
+  FForegroundColor := clNone;
 end;
 
 procedure TRowColor.SetBackgroundColor(const Value: TColor);
 begin
 	FBackgroundColor := Value;
-    Changed(False);
+  Changed(False);
 end;
 
 procedure TRowColor.SetForegroundColor(const Value: TColor);
 begin
 	FForegroundColor := Value;
-    Changed(False);
+  Changed(False);
 end;
 
 { TRowColors }
@@ -1611,7 +1658,7 @@ end;
 
 constructor TRowColors.Create(aGrid: TCustomZTODBGrid);
 begin
-  	inherited Create(TRowColor);
+	inherited Create(TRowColor);
 	FGrid := aGrid;
 end;
 
@@ -1627,7 +1674,7 @@ end;
 
 procedure TRowColors.Update(Item: TCollectionItem);
 begin
-    inherited;
+  inherited;
 	FGrid.Invalidate;
 end;
 
