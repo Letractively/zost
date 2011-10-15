@@ -5,7 +5,8 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, StdCtrls, Grids, DBGrids, ComCtrls, ExtCtrls, Buttons,
-  ZTO.Components.DataControls.DBGrid, DB, DBClient;
+  ZTO.Components.DataControls.DBGrid, DB, DBClient, ZAbstractConnection,
+  ZConnection, ZAbstractRODataset, ZDataset, ZAbstractDataset;
 
 type
   TForm1 = class(TForm)
@@ -33,16 +34,15 @@ type
     Timer1: TTimer;
     Button14: TButton;
     TabSheet_ZTOWin32Db: TTabSheet;
-    ClientDataSet1: TClientDataSet;
-    ClientDataSet1CAMPO1: TIntegerField;
-    ClientDataSet1CAMPO2: TStringField;
-    ClientDataSet1CAMPO3: TDateTimeField;
-    DataSource1: TDataSource;
     TabSheet_Components: TTabSheet;
     PageControl_Components: TPageControl;
     TabSheet_DataControls: TTabSheet;
     ZTODBGrid1: TZTODBGrid;
     Memo1: TMemo;
+    ZConnection1: TZConnection;
+    DataSource1: TDataSource;
+    DBGrid1: TDBGrid;
+    ZQuery1: TZQuery;
     procedure Button1Click(Sender: TObject);
     procedure Button2Click(Sender: TObject);
     procedure Button3Click(Sender: TObject);
