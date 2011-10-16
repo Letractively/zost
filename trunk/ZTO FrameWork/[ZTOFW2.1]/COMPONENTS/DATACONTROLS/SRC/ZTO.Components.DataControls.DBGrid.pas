@@ -831,15 +831,14 @@ begin
                 DrawSortArrow(ARow,Columns[ACol - ColumnOffset]);
             end;
         end
-        { Linhas normais, isto �, que n�o s�o o t�tulo. Este bloco ser�
+        { Linhas normais, isto é, que não são o título. Este bloco será
         executado inclusive para colunas fixas (de indicadores) }
         else
         begin
-
-          { Aqui n�o estamos na linha de t�tulo, mas precisamos saber se estamos
-          tentando pintar uma coluna fixa (de indicadores). Se n�o estivermos
+          { Aqui não estamos na linha de título, mas precisamos saber se estamos
+          tentando pintar uma coluna fixa (de indicadores). Se não estivermos
           tentanto pintar uma coluna de indicadores, executamos o procedimento
-          normal, atrav�z de inherited }
+          normal, atravéz de inherited }
           if not DrawingIndicator then
           begin
             DefaultDrawing := True;
@@ -859,10 +858,10 @@ begin
         if DrawingIndicator then
           DrawIndicatorsAndMore(MultiSelected);
     end
-    { Se os temas n�o estiverem habilitados... }
+    { Se os temas não estiverem habilitados... }
     else
     begin
-        { Limpa as c�lulas fixas e desenha as bordas 3D }
+        { Limpa as células fixas e desenha as bordas 3D }
         if DrawingIndicator or DrawingTitle then
         begin
             Canvas.Brush.Color := FixedColor;
@@ -876,7 +875,7 @@ begin
         if DrawingIndicator then
           DrawIndicatorsAndMore(MultiSelected);
 
-        { Se estiver desenhando nas colunas de t�tulo, mas n�o na de
+        { Se estiver desenhando nas colunas de t�tulo, mas não na de
         indicadores }
         if DrawingTitle and not DrawingIndicator then
         begin
@@ -884,7 +883,7 @@ begin
             DrawSortArrow(ARow,Columns[ACol - ColumnOffset]);
         end;
 
-        { Se n�o estiver desenhando nem o t�tulo e nem os indicadores � uma c�lula normal }
+        { Se não estiver desenhando nem o título e nem os indicadores é uma célula normal }
         if not DrawingTitle and not DrawingIndicator then
           inherited;
     end;
@@ -903,7 +902,7 @@ begin
     Result := Column.Field.DataSet.RecNo;
 end;
 
-procedure DrawCellHighlight;
+procedure DrawCellHighlightOnColoredRow;
 var
   LRect: TRect;
   LTheme: Cardinal;
@@ -945,11 +944,12 @@ begin
 end;
 { ---------------------------------------------------------------------------- }
 var
-  NeedsDefaultDraw: Boolean;
+  IsColoredRow: Boolean;
   Index: -1..255;
 begin
-	NeedsDefaultDraw := False;
+	IsColoredRow := False;
 
+  { Se tiver cores para pintar linhas, então usa... }
 	if (FRowColors.Count > 0) and Assigned(Column.Field) and Assigned(Column.Field.DataSet) then
   begin
     Index := Pred(Pred(RecordNumber) mod Succ(FRowColors.Count));
@@ -964,23 +964,25 @@ begin
       if FRowColors.Items[Index].ForegroundColor <> clNone then
         Canvas.Font.Color := FRowColors.Items[Index].ForegroundColor;
 
+      { Pinta o retângulo de seleção se a linha for a linha selecionada e se for
+      para mostrar sempre a seleção ou se o nosso grid tiver o foco }
+      if (gdSelected in State) and ((dgAlwaysShowSelection in Options) or Focused) then
+        DrawCellHighlightOnColoredRow;
+
       { Se aqui mudamos o fundo, indica que precisamos escrever o texto}
-      NeedsDefaultDraw := True;
+      IsColoredRow := True;
     end;
   end;
 
 	// aqui deve-se pintar as colunas especiais inteiras, sobrescrevendo sempre a cor colocada pela linha
   // if FColumnColors.Count > 0 then
 
-  if NeedsDefaultDraw then
-  begin
-    { Para que durante o multiselect as linhas de cores diferentes fiquem com highlight ative o comentario abaixo e dentro de DrawCellHighlight faça ajustes para incluir Include(State, gdRowSelected)}
-    if (gdSelected in State){ or ((dgMultiSelect in Options) and Datalink.Active and rowisselected)} then
-      DrawCellHighlight;
-
-    { Escreve o texto na célula }
-	  DefaultDrawColumnCell(Rect, DataCol, Column, State);
-  end;
+  { Isso foi colocado aqui, separadamente, pois algum dia, se fizermos algo para
+  as colunas, precisamos fazer isso apenas no final, ao pintar linhas e colunas.
+  O efeito é aplicar as alterações feitas na coluna em questão, pintando seu
+  fundo e seu texto }
+  if IsColoredRow then
+    DefaultDrawColumnCell(Rect, DataCol, Column, State);
 
   inherited;
 end;
