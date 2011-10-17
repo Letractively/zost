@@ -39,10 +39,10 @@ type
     TabSheet_DataControls: TTabSheet;
     ZTODBGrid1: TZTODBGrid;
     Memo1: TMemo;
-    ZConnection1: TZConnection;
     DataSource1: TDataSource;
     DBGrid1: TDBGrid;
     ZQuery1: TZQuery;
+    ZConnection1: TZConnection;
     procedure Button1Click(Sender: TObject);
     procedure Button2Click(Sender: TObject);
     procedure Button3Click(Sender: TObject);
@@ -58,6 +58,7 @@ type
     procedure Button13Click(Sender: TObject);
     procedure Timer1Timer(Sender: TObject);
     procedure Button14Click(Sender: TObject);
+    procedure CheckBox1Click(Sender: TObject);
   private
     procedure ShowHwndAndClassName(CrPos: TPoint);
     { Private declarations }
@@ -179,6 +180,11 @@ end;
 procedure TForm1.Button9Click(Sender: TObject);
 begin
   ShowMessage(BoolToStr(IsTaskBarEnabled,True))
+end;
+
+procedure TForm1.CheckBox1Click(Sender: TObject);
+begin
+  ShowMessage(Inttostr(GetSystemMetrics(SM_CXMENUCHECK)));
 end;
 
 end.
