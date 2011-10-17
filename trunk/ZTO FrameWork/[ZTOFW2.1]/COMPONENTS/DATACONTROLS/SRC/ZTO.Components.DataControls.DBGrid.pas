@@ -468,67 +468,82 @@ begin
         Result := 0;
 end;
 
+{ TODO : Revise este método. Acho que ele pode ser simplificado na parte de desenho com temas! }
 procedure TCustomZTODBGrid.DrawCell(ACol, ARow: Integer; ARect: TRect; AState: TGridDrawState);
 { ---------------------------------------------------------------------------- }
 procedure DrawCheckBox(Canvas: TCanvas; TopLeft: TPoint; Checked: Boolean; SubStyle: Byte);
 var
-    ThemedElementDetails: TThemedElementDetails;
-    ThemedCheckBox: TThemedButton;
-    CheckBoxProperties: Cardinal;
-    DrawRect: TRect;
+  ThemedElementDetails: TThemedElementDetails;
+  ThemedCheckBox: TThemedButton;
+  CheckBoxProperties: Cardinal;
+  DrawRect: TRect;
+  CheckBoxWidth, CheckBoxHeight: Byte;
 begin
-    if ThemeServices.ThemesEnabled then
-    begin
-        if Checked then
-            case SubStyle of
-                0: ThemedCheckBox := tbCheckBoxCheckedNormal;
-                1: ThemedCheckBox := tbCheckBoxCheckedHot;
-                2: ThemedCheckBox := tbCheckBoxCheckedPressed;
-                3: ThemedCheckBox := tbCheckBoxCheckedDisabled;
-                else
-                    ThemedCheckBox := tbCheckBoxCheckedNormal;
-            end
-        else
-            case SubStyle of
-                0: ThemedCheckBox := tbCheckBoxUncheckedNormal;
-                1: ThemedCheckBox := tbCheckBoxUncheckedHot;
-                2: ThemedCheckBox := tbCheckBoxUncheckedPressed;
-                3: ThemedCheckBox := tbCheckBoxUncheckedDisabled;
-                else
-                    ThemedCheckBox := tbCheckBoxUncheckedNormal;
-            end;
+  CheckBoxWidth := GetSystemMetrics(SM_CXMENUCHECK);
+  CheckBoxHeight := GetSystemMetrics(SM_CYMENUCHECK);
 
-        DrawRect.TopLeft := TopLeft;
-        DrawRect.Right := DrawRect.Left + GetSystemMetrics(SM_CXMENUCHECK);
-        DrawRect.Bottom := DrawRect.Top + GetSystemMetrics(SM_CYMENUCHECK);
-        ThemedElementDetails := ThemeServices.GetElementDetails(ThemedCheckBox);
-        ThemeServices.DrawElement(Canvas.Handle, ThemedElementDetails, DrawRect);
-    end
+  if ThemeServices.ThemesEnabled then
+  begin
+    if Checked then
+      case SubStyle of
+        0: ThemedCheckBox := tbCheckBoxCheckedNormal;
+        1: ThemedCheckBox := tbCheckBoxCheckedHot;
+        2: ThemedCheckBox := tbCheckBoxCheckedPressed;
+        3: ThemedCheckBox := tbCheckBoxCheckedDisabled;
+        else
+          ThemedCheckBox := tbCheckBoxCheckedNormal;
+      end
     else
-    begin
-        if Checked then
-            case SubStyle of
-                0: CheckBoxProperties := DFCS_CHECKED;
-                1: CheckBoxProperties := DFCS_CHECKED or DFCS_HOT;
-                2: CheckBoxProperties := DFCS_CHECKED or DFCS_PUSHED;
-                3: CheckBoxProperties := DFCS_CHECKED or DFCS_INACTIVE;
-                else
-                    CheckBoxProperties := DFCS_CHECKED;
-            end
+      case SubStyle of
+        0: ThemedCheckBox := tbCheckBoxUncheckedNormal;
+        1: ThemedCheckBox := tbCheckBoxUncheckedHot;
+        2: ThemedCheckBox := tbCheckBoxUncheckedPressed;
+        3: ThemedCheckBox := tbCheckBoxUncheckedDisabled;
         else
-            case SubStyle of
-                0: CheckBoxProperties := 0;
-                1: CheckBoxProperties := DFCS_HOT;
-                2: CheckBoxProperties := DFCS_PUSHED;
-                3: CheckBoxProperties := DFCS_INACTIVE;
-                else
-                    CheckBoxProperties := 0;
-            end;
+          ThemedCheckBox := tbCheckBoxUncheckedNormal;
+      end;
 
-        DrawRect.TopLeft := TopLeft;
-        DrawRect.Right := DrawRect.Left + GetSystemMetrics(SM_CXMENUCHECK);
-        DrawRect.Bottom := DrawRect.Top + GetSystemMetrics(SM_CYMENUCHECK);
-        DrawFrameControl(Canvas.Handle, DrawRect, DFC_BUTTON, DFCS_BUTTONCHECK or CheckBoxProperties);
+    DrawRect.TopLeft := TopLeft;
+    DrawRect.Right := DrawRect.Left + CheckBoxWidth;
+    DrawRect.Bottom := DrawRect.Top + CheckBoxHeight;
+    ThemedElementDetails := ThemeServices.GetElementDetails(ThemedCheckBox);
+    ThemeServices.DrawElement(Canvas.Handle, ThemedElementDetails, DrawRect);
+  end
+  else
+  begin
+    { O Windows 7 faz alguns calculos errados com o tamanho do checkbox, por
+    isso as dimensões e posições precisam ser ajustadas }
+    if Win32MajorVersion = 6 then
+    begin
+      CheckBoxWidth := CheckBoxWidth - 2;
+      CheckBoxHeight := CheckBoxHeight - 2;
+      TopLeft.X := TopLeft.X + 1;
+      TopLeft.Y := TopLeft.Y + 1;
+    end;
+
+    if Checked then
+      case SubStyle of
+        0: CheckBoxProperties := DFCS_CHECKED;
+        1: CheckBoxProperties := DFCS_CHECKED or DFCS_HOT;
+        2: CheckBoxProperties := DFCS_CHECKED or DFCS_PUSHED;
+        3: CheckBoxProperties := DFCS_CHECKED or DFCS_INACTIVE;
+        else
+          CheckBoxProperties := DFCS_CHECKED;
+      end
+    else
+      case SubStyle of
+        0: CheckBoxProperties := 0;
+        1: CheckBoxProperties := DFCS_HOT;
+        2: CheckBoxProperties := DFCS_PUSHED;
+        3: CheckBoxProperties := DFCS_INACTIVE;
+        else
+          CheckBoxProperties := 0;
+      end;
+
+      DrawRect.TopLeft := TopLeft;
+      DrawRect.Right := DrawRect.Left + CheckBoxWidth;
+      DrawRect.Bottom := DrawRect.Top + CheckBoxHeight;
+      DrawFrameControl(Canvas.Handle, DrawRect, DFC_BUTTON, DFCS_BUTTONCHECK or CheckBoxProperties);
     end;
 end;
 
@@ -551,16 +566,16 @@ begin
     end;
 end;
 
-{ A combina��o das duas fun��es abaixo retorna true quando estamos desenhando a
-primeira c�lula do grid quando h� titulo (c�lula morta) }
+{ A combinação das duas funções abaixo retorna true quando estamos desenhando a
+primeira célula do grid quando há titulo (célula morta) }
 function DrawingTitle: Boolean;
 begin
-    Result := (dgTitles in Options) and (ARow = 0);
+  Result := (dgTitles in Options) and (ARow = 0);
 end;
 
 function DrawingIndicator: Boolean;
 begin
-    Result := (dgIndicator in Options) and (ACol = 0);
+  Result := (dgIndicator in Options) and (ACol = 0);
 end;
 
 { Desenha os elementos adicionas da coluna de indicadores }
@@ -645,57 +660,57 @@ end;
 
 procedure DrawIndicatorsAndMore(out aMultiSelected: Boolean);
 var
-    Indicator: Integer;
+  Indicator: Integer;
 begin
-    aMultiSelected := False;
+  aMultiSelected := False;
 
-    { Verificando se esta linha est� marcada em modo de multisele��o }
-    if (ARow >= TitleOffset) and (dgMultiselect in Options) then
-    begin
-        aMultiSelected := RowIsMultiselected;
-        { Checkboxes }
-        case Win32MajorVersion of
-          5: DrawCheckBox(Canvas,Point(2,ARect.Top + 2),aMultiSelected,0); // Windows 2000, Windows XP or Windows Server 2003
-          6: DrawCheckBox(Canvas,Point(1,ARect.Top + 1),aMultiSelected,0); // Windows Vista or Windows 7
-        end;
+  { Verificando se esta linha est� marcada em modo de multisele��o }
+  if (ARow >= TitleOffset) and (dgMultiselect in Options) then
+  begin
+    aMultiSelected := RowIsMultiselected;
+    { Checkboxes }
+    case Win32MajorVersion of
+      5: DrawCheckBox(Canvas,Point(2,ARect.Top + 2),aMultiSelected,0); // Windows 2000, Windows XP or Windows Server 2003
+      6: DrawCheckBox(Canvas,Point(1,ARect.Top + 1),aMultiSelected,0); // Windows Vista or Windows 7
     end;
+  end;
 
-    { Indicadores }
-    { Caso eu tenha um dataset ativo e, eu esteja pintando o registro ativo ou
-    esteja em um registro selecionado (marcado) }
-    if (Datalink.Active) and ((ARow - TitleOffset = Datalink.ActiveRecord) or aMultiSelected) then
-    begin
-        Indicator := 0;
+  { Indicadores }
+  { Caso eu tenha um dataset ativo e, eu esteja pintando o registro ativo ou
+  esteja em um registro selecionado (marcado) }
+  if (Datalink.Active) and ((ARow - TitleOffset = Datalink.ActiveRecord) or aMultiSelected) then
+  begin
+    Indicator := 0;
 
-        case Byte(DataLink.DataSet.State) of
-            2: // dsEdit
-                if ARow - TitleOffset = Datalink.ActiveRecord  then
-                    Indicator := 1
-                else
-                    Indicator := 3;
-            3: // dsInsert
-                if ARow - TitleOffset = Datalink.ActiveRecord then
-                    Indicator := 2
-                else
-                    Indicator := 3;
-            1: // dsBrowse
-                if aMultiSelected then
-                    if ARow - TitleOffset <> Datalink.ActiveRecord then
-                        Indicator := 3
-                    else
-                        Indicator := 4;  // multiselected and current row
-        end;
-
-        FPaintInfo.Indicators.BkColor := FixedColor;
-
-        if dgMultiselect in Options then
-          case Win32MajorVersion of
-            5: FPaintInfo.Indicators.Draw(Canvas, ARect.Left + 2 + GetSystemMetrics(SM_CXMENUCHECK) + 1, ARect.Top + 2, Indicator, dsTransparent, itImage, True);
-            6: FPaintInfo.Indicators.Draw(Canvas, ARect.Left + 0 + GetSystemMetrics(SM_CXMENUCHECK) + 1, ARect.Top + 2, Indicator, dsTransparent, itImage, True);
-          end
+    case Byte(DataLink.DataSet.State) of
+      2: // dsEdit
+        if ARow - TitleOffset = Datalink.ActiveRecord  then
+          Indicator := 1
         else
-          FPaintInfo.Indicators.Draw(Canvas, ARect.Left + 2, ARect.Top + 2, Indicator, dsTransparent, itImage, True);
+                  Indicator := 3;
+      3: // dsInsert
+        if ARow - TitleOffset = Datalink.ActiveRecord then
+          Indicator := 2
+        else
+          Indicator := 3;
+      1: // dsBrowse
+        if aMultiSelected then
+          if ARow - TitleOffset <> Datalink.ActiveRecord then
+            Indicator := 3
+          else
+            Indicator := 4;  // multiselected and current row
     end;
+
+    FPaintInfo.Indicators.BkColor := FixedColor;
+
+    if dgMultiselect in Options then
+      case Win32MajorVersion of
+        5: FPaintInfo.Indicators.Draw(Canvas, ARect.Left + 2 + GetSystemMetrics(SM_CXMENUCHECK) + 1, ARect.Top + 2, Indicator, dsTransparent, itImage, True);
+        6: FPaintInfo.Indicators.Draw(Canvas, ARect.Left + 0 + GetSystemMetrics(SM_CXMENUCHECK) + 1, ARect.Top + 2, Indicator, dsTransparent, itImage, True);
+      end
+    else
+      FPaintInfo.Indicators.Draw(Canvas, ARect.Left + 2, ARect.Top + 2, Indicator, dsTransparent, itImage, True);
+  end;
 end;
 
 const
@@ -768,9 +783,14 @@ end;
 
 procedure DrawIndicatorCellBackground;
 begin
-  Canvas.Brush.Color := clBtnFace;
+  if ThemeServices.ThemesEnabled then
+    Canvas.Pen.Color := clBtnShadow
+  else
+    Canvas.Pen.Color := FixedColor;
+
+  Canvas.Pen.Style := psSolid;
   Canvas.Pen.Width := 1;
-  Canvas.Pen.Color := clBtnShadow;
+  Canvas.Brush.Color := FixedColor;
   Canvas.Rectangle(ARect);
 end;
 { ---------------------------------------------------------------------------- }
@@ -782,12 +802,13 @@ var
     CaptionRect: TRect;
     CellRect: TRect;
     MultiSelected: Boolean;
+    OldDefaultDrawing: Boolean;
 begin
     if ThemeServices.ThemesEnabled then
     begin
         CellRect := aRect;
 
-        { Linha de t�tulos }
+        { Linha de títulos }
         if DrawingTitle then
         begin
             CaptionRect := ARect;
@@ -840,11 +861,13 @@ begin
           tentanto pintar uma coluna de indicadores, executamos o procedimento
           normal, atravéz de inherited }
           if not DrawingIndicator then
-          begin
-            DefaultDrawing := True;
-            inherited;
-            DefaultDrawing := False;
-          end
+            try
+              OldDefaultDrawing := DefaultDrawing;
+              DefaultDrawing := True;
+              inherited
+            finally
+              DefaultDrawing := OldDefaultDrawing;
+            end
           { Aqui, estamos verdadeiramente na coluna de indicadores, e por este
           motivo, precisamos pintar o fundo da mesma. Veja a definição do método
           DrawCellBackground em Grids.pas para saber como pintar de 3 formas
@@ -861,31 +884,21 @@ begin
     { Se os temas não estiverem habilitados... }
     else
     begin
-        { Limpa as células fixas e desenha as bordas 3D }
-        if DrawingIndicator or DrawingTitle then
-        begin
-            Canvas.Brush.Color := FixedColor;
-            Canvas.FillRect(ARect);
-
-            DrawEdge(Canvas.Handle, ARect, BDR_RAISEDINNER, BF_BOTTOMRIGHT);
-            DrawEdge(Canvas.Handle, ARect, BDR_RAISEDINNER, BF_TOPLEFT);
+      if DrawingIndicator and not (DrawingIndicator and DrawingTitle) then
+      begin
+        DrawIndicatorCellBackground;
+        DrawIndicatorsAndMore(MultiSelected);
+      end
+      else
+      begin
+        try
+          OldDefaultDrawing := DefaultDrawing;
+          DefaultDrawing := True;
+          inherited
+        finally
+          DefaultDrawing := OldDefaultDrawing;
         end;
-
-        { Se estiver desenhando na coluna de indicadores }
-        if DrawingIndicator then
-          DrawIndicatorsAndMore(MultiSelected);
-
-        { Se estiver desenhando nas colunas de t�tulo, mas não na de
-        indicadores }
-        if DrawingTitle and not DrawingIndicator then
-        begin
-            DrawTitleCellText(ARow,Columns[ACol - ColumnOffset]);
-            DrawSortArrow(ARow,Columns[ACol - ColumnOffset]);
-        end;
-
-        { Se não estiver desenhando nem o título e nem os indicadores é uma célula normal }
-        if not DrawingTitle and not DrawingIndicator then
-          inherited;
+      end;
     end;
 end;
 
@@ -911,7 +924,7 @@ begin
   if dgRowSelect in Options then
     Include(State, gdRowSelected);
 
-  if Win32MajorVersion >= 6 then
+  if ThemeServices.ThemesEnabled and (Win32MajorVersion >= 6) then
   begin
     Canvas.Brush.Style := bsSolid;
     Canvas.FillRect(Rect);
@@ -1534,23 +1547,23 @@ end;
 
 procedure TCustomZTODBGrid.SetOptions(const Value: TDBGridOptions);
 const
-	{ Estas s�o as op��es que necessitam de refresh no layout }
+	{ Estas são as opções que necessitam de refresh no layout }
 	LayoutOptions = [dgEditing, dgAlwaysShowEditor, dgTitles, dgIndicator, dgColLines, dgRowLines, dgRowSelect, dgAlwaysShowSelection, dgMultiSelect];
 var
-    NewOptions, ChangedOptions, OldOptions: TDBGridOptions;
+  NewOptions, ChangedOptions, OldOptions: TDBGridOptions;
 begin
     OldOptions := inherited Options;
     NewOptions := Value;
 
     if NewOptions <> OldOptions then
     begin
-        { Diferen�as entre as op��es antigas e as novas op��es }
+        { Diferen�as entre as opções antigas e as novas op��es }
         ChangedOptions := (OldOptions + NewOptions) - (OldOptions * NewOptions);
 
         if dgMultiSelect in NewOptions then
         begin
             FPaintInfo.IndicatorsWidth := 31;
-            { Agora, quando � multiselect, s�o necess�rios os indicadores }
+            { Agora, quando é multiselect, são necessários os indicadores }
             Include(NewOptions,dgIndicator);
         end
         else

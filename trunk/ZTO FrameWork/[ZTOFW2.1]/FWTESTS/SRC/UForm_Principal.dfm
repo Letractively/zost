@@ -2,7 +2,7 @@ object Form1: TForm1
   Left = 0
   Top = 0
   Caption = 'Form1'
-  ClientHeight = 334
+  ClientHeight = 448
   ClientWidth = 688
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -18,16 +18,12 @@ object Form1: TForm1
     Left = 0
     Top = 0
     Width = 688
-    Height = 334
+    Height = 448
     ActivePage = TabSheet_Components
     Align = alClient
     TabOrder = 0
     object TabSheet_FormTemplates: TTabSheet
       Caption = 'Form Templates'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Label1: TLabel
         Left = 8
         Top = 232
@@ -62,7 +58,7 @@ object Form1: TForm1
       end
       object Memo1: TMemo
         Left = 0
-        Top = 51
+        Top = 165
         Width = 680
         Height = 255
         Align = alBottom
@@ -74,32 +70,20 @@ object Form1: TForm1
     object TabSheet_ZTOWin32Rtl: TTabSheet
       Caption = 'ZTOWin32Rtl'
       ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object PageControl_ZTOWin32Rtl: TPageControl
         Left = 0
         Top = 0
         Width = 680
-        Height = 306
+        Height = 420
         ActivePage = TabSheet_Sys
         Align = alClient
         TabOrder = 0
         object TabSheet_Common: TTabSheet
           Caption = 'Common'
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
         end
         object TabSheet_Sys: TTabSheet
           Caption = 'Sys'
           ImageIndex = 1
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object Button2: TButton
             Left = 3
             Top = 3
@@ -214,10 +198,6 @@ object Form1: TForm1
     object TabSheet_ZTOWin32Db: TTabSheet
       Caption = 'ZTOWin32Db'
       ImageIndex = 2
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
     end
     object TabSheet_Components: TTabSheet
       Caption = 'Components'
@@ -226,7 +206,7 @@ object Form1: TForm1
         Left = 0
         Top = 0
         Width = 680
-        Height = 306
+        Height = 420
         ActivePage = TabSheet_DataControls
         Align = alClient
         TabOrder = 0
@@ -236,11 +216,11 @@ object Form1: TForm1
             Left = 0
             Top = 0
             Width = 672
-            Height = 120
+            Height = 193
             Align = alTop
             DataSource = DataSource1
             DefaultDrawing = False
-            Options = [dgTitles, dgIndicator, dgRowLines, dgTabs, dgConfirmDelete, dgCancelOnExit, dgMultiSelect]
+            Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgConfirmDelete, dgCancelOnExit, dgMultiSelect, dgTitleClick]
             TabOrder = 0
             TitleFont.Charset = DEFAULT_CHARSET
             TitleFont.Color = clWindowText
@@ -249,7 +229,7 @@ object Form1: TForm1
             TitleFont.Style = []
             RowColors = <
               item
-                BackgroundColor = clBtnFace
+                BackgroundColor = clInfoBk
                 ForegroundColor = clNone
               end>
             Columns = <
@@ -264,7 +244,6 @@ object Form1: TForm1
                 Visible = True
               end
               item
-                Color = clWindow
                 Expanded = False
                 FieldName = 'help_category_id'
                 Font.Charset = DEFAULT_CHARSET
@@ -292,14 +271,16 @@ object Form1: TForm1
           end
           object DBGrid1: TDBGrid
             Left = 0
-            Top = 120
+            Top = 193
             Width = 672
-            Height = 158
+            Height = 199
             Align = alClient
+            Ctl3D = True
             DataSource = DataSource1
             GradientEndColor = clRed
             GradientStartColor = clBlack
             Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgConfirmDelete, dgCancelOnExit, dgMultiSelect, dgTitleClick, dgTitleHotTrack]
+            ParentCtl3D = False
             TabOrder = 1
             TitleFont.Charset = DEFAULT_CHARSET
             TitleFont.Color = clWindowText
@@ -354,16 +335,6 @@ object Form1: TForm1
     Left = 6
     Top = 266
   end
-  object ZConnection1: TZConnection
-    Connected = True
-    Protocol = 'mysql-5'
-    HostName = '127.0.0.1'
-    Database = 'MYSQL'
-    User = 'root'
-    Password = '123456'
-    Left = 264
-    Top = 184
-  end
   object DataSource1: TDataSource
     DataSet = ZQuery1
     Left = 416
@@ -378,5 +349,15 @@ object Form1: TForm1
     Params = <>
     Left = 344
     Top = 232
+  end
+  object ZConnection1: TZConnection
+    Connected = True
+    Protocol = 'mysql-5'
+    HostName = '127.0.0.1'
+    Database = 'mysql'
+    User = 'root'
+    Password = '123456'
+    Left = 264
+    Top = 224
   end
 end
