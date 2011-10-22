@@ -76,6 +76,9 @@ const
 
   '{$R *.dfm}'#13#10#13#10 +
 
+  'initialization'#13#10 +
+  '  RegisterClass(T<CLASS_ID>)'#13#10#13#10 +
+
   'end.';
 
 var

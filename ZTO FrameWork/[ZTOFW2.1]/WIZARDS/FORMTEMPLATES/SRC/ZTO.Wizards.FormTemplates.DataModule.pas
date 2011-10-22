@@ -10,11 +10,13 @@ uses Classes
    , DB
    , DBClient
    , ZConnection
-   , ZTO.Win32.Rtl.Common.Classes;
+   , ZTO.Win32.Rtl.Common.Classes
+   , ZTO.Wizards.FormTemplates.CustomForm;
 
 type
   TCreationTime = (ctUndefined, ctDesignTime, ctRunTime);
 
+  { == Coleção de SQLs que são salvas com o DFM ============================== }
   TSQLItem = class (TCollectionItem)
   private
     FSQL: TStrings;
@@ -46,8 +48,11 @@ type
     property SQLItem[aIndex: Word]: TSQLItem read GetSQLItem;
     property SQLItemByName[aName: String]: TSQLItem read GetSQLItemByName; default;
   end;
+  { ========================================================================== }
 
-  { TODO : Crie para cada item de cada coleção propriedades para acessar as propriedades internas e eventos }
+  { TODO : Crie para cada item de cada coleção propriedades para acessar as
+  propriedades internas e eventos }
+  { == Coleção de DataSets =================================================== }
   TDataSetItem = class (TCollectionItem)
   private
     FCreationTime: TCreationTime;
@@ -83,7 +88,9 @@ type
     property ItemsUpdating: String read GetItemsUpdating;
     property ItemsBrowsing: String read GetItemsBrowsing;
   end;
+  { ========================================================================== }
 
+  { == Coleção de DataSources ================================================ }
   TDataSourceItem = class (TCollectionItem)
   private
     FCreationTime: TCreationTime;
@@ -105,7 +112,7 @@ type
   private
     FDataModule: TDataModule;
     function GetDataSourceItem(aIndex: Word): TDataSourceItem;
-    function GetDataSourceItemByDataSourceName(aDataSourceName: String): TDataSourceItem;
+    function GetDataSourceItemByName(aDataSourceName: String): TDataSourceItem;
     function GetItemsBrowsing: String;
     function GetItemsInserting: String;
     function GetItemsUpdating: String;
@@ -116,12 +123,14 @@ type
     function AddDataSource(aDataSourceClass: TDataSourceClass; aName: String): TDataSourceItem;
 
     property DataSourceItem[aIndex: Word]: TDataSourceItem read GetDataSourceItem;
-    property DataSourceItemByDataSourceName[aDataSourceName: String]: TDataSourceItem read GetDataSourceItemByDataSourceName; default;
+    property DataSourceItemByName[aDataSourceName: String]: TDataSourceItem read GetDataSourceItemByName; default;
     property ItemsInserting: String read GetItemsInserting;
     property ItemsUpdating: String read GetItemsUpdating;
     property ItemsBrowsing: String read GetItemsBrowsing;
   end;
+  { ========================================================================== }
 
+  { = Coleção de ClientDataSets ============================================== }
   TClientDataSetItem = class (TCollectionItem)
   private
     FCreationTime: TCreationTime;
@@ -157,7 +166,9 @@ type
     property ItemsUpdating: String read GetItemsUpdating;
     property ItemsBrowsing: String read GetItemsBrowsing;
   end;
+  { ========================================================================== }
 
+  { == Coleção de ZConnections =============================================== }
   TZConnectionItem = class (TCollectionItem)
   private
     FCreationTime: TCreationTime;
@@ -186,6 +197,7 @@ type
     property ZConnectionItem[aIndex: Word]: TZConnectionItem read GetZConnectionItem;
     property ZConnectionItemByZConnectionName[aZConnectionName: String]: TZConnectionItem read GetZConnectionItemByZConnectionName; default;
   end;
+  { ========================================================================== }
 
   TZTODataModuleClass = class of TZTODataModule;
 
@@ -201,16 +213,19 @@ type
     FSQLs: TSQLs;
     FZTODataModuleProperties: TZTODataModuleProperties;
     FCreateMode: TCreateMode;
+    FMyFormClass: String;
+    FMyForm: TZTOCustomForm;
   protected
+    property MyForm: TZTOCustomForm read FMyForm;
     property CreateMode: TCreateMode read FCreateMode write FCreateMode;
   public
     constructor Create(aOwner: TComponent); override;
     destructor Destroy; override;
 
-    class procedure CreateDataModule(    aOwner             : TComponent;
-                                     var aReference;        { não tem tipo! }
-                                         aZTODataModuleClass: TZTODataModuleClass;
-                                         aCreateMode        : TCreateMode); static;
+    class procedure CreateMe(    aOwner             : TComponent;
+                             var aReference;        { não tem tipo! }
+                                 aZTODataModuleClass: TZTODataModuleClass;
+                                 aCreateMode        : TCreateMode); static;
 
     property DataSources: TDataSources read FDataSources;
     property DataSets: TDataSets read FDataSets;
@@ -219,6 +234,7 @@ type
   published
     property ZTOProperties: TZTODataModuleProperties read FZTODataModuleProperties write FZTODataModuleProperties;
     property SQLs: TSQLs read FSQLs write FSQLs;
+    property MyFormClass: String read FMyFormClass write FMyFormClass;
   end;
 
 implementation
@@ -237,6 +253,7 @@ begin
   FClientDataSets          := TClientDataSets.Create(Self);
   FZConnections            := TZConnections.Create(Self);
   FSQLs                    := TSQLs.Create(Self);
+  FMyForm                  := nil;
 
   inherited;
 
@@ -269,6 +286,10 @@ begin
 
   if FZTODataModuleProperties.OpenAllDataSets then
     FDataSets.OpenAll;
+
+  { Cria a instância de meu form e o coloca no campo privado }
+  if FMyFormClass <> '' then
+    FMyForm := TZTOCustomFormClass(GetClass(FMyFormClass)).Create(Self);
 end;
 
 destructor TZTODataModule.Destroy;
@@ -286,10 +307,10 @@ begin
   inherited;
 end;
 
-class procedure TZTODataModule.CreateDataModule(    aOwner             : TComponent;
-                                                var aReference;        { não tem tipo! }
-                                                    aZTODataModuleClass: TZTODataModuleClass;
-                                                    aCreateMode        : TCreateMode);
+class procedure TZTODataModule.CreateMe(    aOwner             : TComponent;
+                                        var aReference;        { não tem tipo! }
+                                            aZTODataModuleClass: TZTODataModuleClass;
+                                            aCreateMode        : TCreateMode);
 begin
   if not Assigned(TZTODataModule(aReference)) then
   begin
@@ -471,7 +492,7 @@ end;
 
 function TDataSources.AddDataSource(aDataSourceClass: TDataSourceClass; aName: String): TDataSourceItem;
 begin
-  Result := DataSourceItemByDataSourceName[aName];
+  Result := DataSourceItemByName[aName];
 
   if not Assigned(Result) then
   begin
@@ -491,7 +512,7 @@ begin
   FDataModule := aDataModule;
 end;
 
-function TDataSources.GetDataSourceItemByDataSourceName(aDataSourceName: String): TDataSourceItem;
+function TDataSources.GetDataSourceItemByName(aDataSourceName: String): TDataSourceItem;
 var
 	DSI: Byte;
 begin
