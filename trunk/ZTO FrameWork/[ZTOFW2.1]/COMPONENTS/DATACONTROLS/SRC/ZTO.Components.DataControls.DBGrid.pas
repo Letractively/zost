@@ -861,13 +861,15 @@ begin
           tentanto pintar uma coluna de indicadores, executamos o procedimento
           normal, atravéz de inherited }
           if not DrawingIndicator then
+          begin
+            OldDefaultDrawing := DefaultDrawing;
             try
-              OldDefaultDrawing := DefaultDrawing;
               DefaultDrawing := True;
               inherited
             finally
               DefaultDrawing := OldDefaultDrawing;
-            end
+            end;
+          end
           { Aqui, estamos verdadeiramente na coluna de indicadores, e por este
           motivo, precisamos pintar o fundo da mesma. Veja a definição do método
           DrawCellBackground em Grids.pas para saber como pintar de 3 formas
@@ -891,8 +893,8 @@ begin
       end
       else
       begin
+        OldDefaultDrawing := DefaultDrawing;
         try
-          OldDefaultDrawing := DefaultDrawing;
           DefaultDrawing := True;
           inherited
         finally

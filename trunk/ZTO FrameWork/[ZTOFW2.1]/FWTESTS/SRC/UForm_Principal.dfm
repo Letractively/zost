@@ -227,11 +227,7 @@ object Form1: TForm1
             TitleFont.Height = -11
             TitleFont.Name = 'Tahoma'
             TitleFont.Style = []
-            RowColors = <
-              item
-                BackgroundColor = clInfoBk
-                ForegroundColor = clNone
-              end>
+            RowColors = <>
             Columns = <
               item
                 Expanded = False

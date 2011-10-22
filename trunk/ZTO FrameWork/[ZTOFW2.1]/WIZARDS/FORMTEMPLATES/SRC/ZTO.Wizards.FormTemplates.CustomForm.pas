@@ -8,7 +8,7 @@ uses Forms
    , ZTO.Win32.Rtl.Common.Classes;
 
 type
-  TZTOCustomFormClass = class of TCustomForm;
+//  TZTOCustomFormClass = class of TCustomForm;
 //  TZTOCustomFormClass = class of TForm;
 //tem de herdar de customform, mas tem de aparecer em screen.activeform
 //tem de criar um hack pra poder mudar FActiveForm
@@ -33,6 +33,8 @@ type
 //    property AutoSize: Boolean read GetAutoSize;
 //    property BorderWidth: Integer read GetBorderWidth;
   end;
+
+  TZTOCustomFormClass = class of TZTOCustomForm;
 
 implementation
 
