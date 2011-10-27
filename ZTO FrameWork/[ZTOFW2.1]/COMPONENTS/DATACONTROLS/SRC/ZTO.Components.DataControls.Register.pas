@@ -28,12 +28,21 @@ type
     procedure SetValue(const Value: string); override;
   end;
 
+//  TZTODBGridEditor = class(TComponentEditor)
+//  public
+//    function GetVerbCount: Integer; override;
+//    function GetVerb(Index: Integer): string; override;
+//    procedure ExecuteVerb(Index: Integer); override;
+//  end;
+
+
 procedure Register;
 
 implementation
 
 uses DBGrids
    , Forms
+//   , ColnEdit
    , ZTO.Components.DataControls.LabeledDBEdit
    , ZTO.Components.DataControls.VariableColumnsEditor;
 
@@ -42,6 +51,10 @@ begin
   RegisterComponents('ZTO Data Controls',[TZTOLabeledDBEdit,TZTODBGrid]);
   RegisterPropertyEditor(TypeInfo(WideString),TSortArrow,'Column',TSortedColumnProperty);
   RegisterPropertyEditor(TypeInfo(WideString),TCustomZTODBGrid,'VariableWidthColumns',TVariableWidthColumnsProperty);
+  { O editor de componentes funcionou, mas ao usá-lo, dando duplo clique no grid
+  apareceu a lista de colunas com a coluna "fantasma", que aparece quando não
+  tem colunas customizadas no grid e isso não é certo }
+//  RegisterComponentEditor(TCustomZTODBGrid, TZTODBGridEditor);
 end;
 
 { TSortedColumnProperty }
@@ -138,5 +151,28 @@ begin
     FGrid.AdjustColumns;
   end;
 end;
+
+{ TZTODBGridEditor }
+
+//procedure TZTODBGridEditor.ExecuteVerb(Index: Integer);
+//begin
+//  inherited;
+//  case Index of
+//    0: ShowCollectionEditor(Designer, Component, TZTODBGrid(Component).Columns, 'Columns');
+//  end;
+//end;
+//
+//function TZTODBGridEditor.GetVerb(Index: Integer): string;
+//begin
+//  Result := '';
+//  case Index of
+//    0: Result := 'Edit Columns';
+//  end;
+//end;
+//
+//function TZTODBGridEditor.GetVerbCount: Integer;
+//begin
+//  Result := 1;
+//end;
 
 end.

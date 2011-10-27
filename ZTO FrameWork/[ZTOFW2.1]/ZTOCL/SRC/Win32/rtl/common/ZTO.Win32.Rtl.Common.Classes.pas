@@ -15,6 +15,8 @@ uses Classes
    , ZTO.Win32.Rtl.Sys.Types;
 
 type
+  TMyFormClassName = String;
+
   EInvalidParameter = class (Exception)
   private
     FRoutineName: ShortString;
@@ -128,7 +130,8 @@ type
   TDialogType = (dtNone,dtInformation,dtError,dtWarning,dtQuestion);
 
   TShowMode = (smNone,smShow,smShowModal,smShowAutoFree,smShowModalAutoFree);
-  TCreateMode = (cmNone,cmManualFree,cmAutoFree);
+
+  TCreateMode = (cmNone,cmManualFree,cmAutoFree,cmAutoNil);
 
   TInfoPanel = class (TPersistent)
   private
@@ -264,6 +267,8 @@ type
                              aMethodAddress: Pointer): Pointer; overload;
   function MethodToProcedure(aMethod: TMethod): Pointer; overload;
 
+  procedure EnumClasses(Strings: TStrings);
+
 resourcestring
   RS_INVALID_ARGUMENT_DATA = 'O parâmetro "%s" está correto quanto ao tipo, mas seus dados não são compatíveis com o método. %s';
   RS_INVALID_PARAMETER = 'Erro nos dados de um dos parâmetros do método %s.'#13#10#13#10'%s';
@@ -328,6 +333,48 @@ function ProcedureToMethod(aSelf       : TObject;
 begin
   result.Data := aSelf;
   result.Code := aProcAddress;
+end;
+
+type
+  TClassesEnum = class(TObject)
+  private
+    FStrings: TStrings;
+    procedure GetClassesProc(AClass: TPersistentClass);
+  public
+    procedure EnumClasses(Strings: TStrings);
+  end;
+
+{ TClassesEnum }
+
+procedure TClassesEnum.EnumClasses(Strings: TStrings);
+begin
+  if not Assigned(Strings) then
+    Exit;
+
+  Strings.Clear;
+
+  FStrings := Strings;
+  with TClassFinder.Create(nil, True) do
+    try
+      GetClasses(GetClassesProc);
+    finally
+      Free;
+    end;
+end;
+
+procedure TClassesEnum.GetClassesProc(AClass: TPersistentClass);
+begin
+  FStrings.Add(AClass.ClassName);
+end;
+
+procedure EnumClasses(Strings: TStrings);
+begin
+  with TClassesEnum.Create do
+    try
+      EnumClasses(Strings);
+    finally
+      Free;
+    end;
 end;
 
 { TZTOSDIFormProperties }
