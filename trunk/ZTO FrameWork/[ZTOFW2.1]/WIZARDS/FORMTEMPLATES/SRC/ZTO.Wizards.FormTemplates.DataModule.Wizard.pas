@@ -14,7 +14,6 @@ type
     function GetName: string; override;
     procedure Execute; override;
 
-    function GetAuthor: string; override;
     function GetComment: string; override;
     function GetPage: string; override;
     function GetGlyph: Cardinal; override;
@@ -25,20 +24,15 @@ type
     property Personality;
   end;
 
-  // Para cada formulário, datamodule ou frame devemos criar aqui uma classe
-  // para manipular seu código-fonte e incluir a Unit correta na cláusula USES
+  { Para cada formulário, datamodule ou frame devemos criar aqui uma classe
+  para manipular seu código-fonte e incluir a Unit correta na cláusula USES }
   TZTODataModuleFileCreator = class(TModuleCreatorFile)
   public
     function GetSource: string; override;
   end;
 
-//    TZTOFormModuleTabedTemplateUnitFile = class(TModuleCreatorFile)
-//    public
-//        function GetSource: string; override;
-//    end;
-
-  // Para cada formulário, datamodule ou frame devemos criar aqui uma classe
-  // para indicar o ancestral e qual o TModuleCreatorFile associado
+  { Para cada formulário, datamodule ou frame devemos criar aqui uma classe
+  para indicar o ancestral e qual o TModuleCreatorFile associado }
   TZTODataModuleModuleCreator = class(TFormCreatorModule)
   public
     function GetAncestorName: string; override;
@@ -51,10 +45,31 @@ uses SysUtils
    , DateUtils;
 
 const
+  { As 3 constantes a seguir definem onde o Wizard vai aparecer. Wizards com
+  estas mesmas informações, aparecem no mesmo lugar no Object Repository }
+  OBJECT_REPOSITORY_CATEGORY_ID = 'ANAKKRAKATOA.WIZARD';
+  OBJECT_REPOSITORY_CATEGORY_NAME = 'Anak Krakatoa Wizards';
+  OBJECT_REPOSITORY_PAGE_NAME = OBJECT_REPOSITORY_CATEGORY_NAME;
+  { As 3 constantes a seguir identificam este Wizard especificamente. Cada
+  Wizard diferente deve ter suas próprias informações nas 3 constantes }
+  WIZARD_ID = 'ZETTAOMNIS.ANAKKRAKATOA.WIZARD.DATAMODULE'; { EMPRESA.PRODUTO.TIPO.NOME }
+  WIZARD_NAME = 'Anak Krakatoa DataModule';
+  WIZARD_COMMENT = 'DataModule com opções avançadas adicionais. Contém coleçõ' +
+  'es automaticamente preenchidas com todos os TDataSet, TDataSource, TClient' +
+  'DataSet e TZConnection de forma a facilitar o acesso interativo a esses co' +
+  'mponentes. Possui também propriedades para manipulação desses componentes ' +
+  'simultaneamente. Contém uma propriedade exclusiva para armazenamento de SQ' +
+  'Ls parametrizados, o que torna o código-fonte mais limpo e legível';
+  WIZARD_ICONS = 'KRK_DATAMODULE_ICONS';
+  { As duas constantes a seguir são substituídas dentro da constante
+  FILE_CONTENT }
+  DEFINITIONUNIT = 'ZTO.Wizards.FormTemplates.DataModule';
+  ANCESTOR_ID = 'ZTODataModule'; { Sem o "T" inicial }
+
   FILE_CONTENT =
   'unit <UNITNAME>;'#13#10#13#10 +
 
-  '{ DataModule comum. Copyright <COPYRIGHTYEAR> ZTO Soluções Tecnológicas Ltda. }'#13#10#13#10 +
+  '{ Anak Krakatoa DataModule. Copyright <COPYRIGHTYEAR> Zetta-Ømnis Soluções Tecnológicas Ltda. }'#13#10#13#10 +
 
   'interface'#13#10#13#10 +
 
@@ -85,7 +100,7 @@ var
 
 function TZTODataModuleModuleCreator.GetAncestorName: string;
 begin
-  Result := 'ZTODataModule';
+  Result := ANCESTOR_ID;
 end;
 
 function TZTODataModuleModuleCreator.GetImplFile: TModuleCreatorFileClass;
@@ -97,7 +112,7 @@ end;
 
 function TZTODataModuleFileCreator.GetSource: string;
 begin
-  Result := StringReplace(FILE_CONTENT, '<DEFINITIONUNIT>', 'ZTO.Wizards.FormTemplates.DataModule', [rfIgnoreCase]);
+  Result := StringReplace(FILE_CONTENT, '<DEFINITIONUNIT>', DEFINITIONUNIT, [rfIgnoreCase]);
   Result := StringReplace(Result,'<COPYRIGHTYEAR>',IntToStr(YearOf(Now)) + ' / ' + IntToStr(YearOf(Now) + 1),[rfIgnoreCase]);
   Result := inherited GetSource;
 end;
@@ -110,29 +125,24 @@ begin
   (BorlandIDEServices as IOTAModuleServices).CreateModule(TZTODataModuleModuleCreator.Create);
 end;
 
-function TZTODataModuleWizard.GetAuthor: string;
-begin
-  Result := 'Wildstar Corporation Limited';
-end;
-
 function TZTODataModuleWizard.GetComment: string;
 begin
-  Result := 'Template de um datamodule padrão';
+  Result := WIZARD_COMMENT;
 end;
 
 function TZTODataModuleWizard.GetIDString: string;
 begin
-  Result := 'TZTODataModuleWizard';
+  Result := WIZARD_ID;
 end;
 
 function TZTODataModuleWizard.GetName: string;
 begin
-  Result := 'ZTO DataModule';
+  Result := WIZARD_NAME;
 end;
 
 function TZTODataModuleWizard.GetPage: string;
 begin
-  Result := 'ZTO Form Templates';
+  Result := OBJECT_REPOSITORY_PAGE_NAME;
 end;
 
 function TZTODataModuleWizard.GetGalleryCategory: IOTAGalleryCategory;
@@ -142,11 +152,11 @@ end;
 
 function TZTODataModuleWizard.GetGlyph: Cardinal;
 begin
-  Result := LoadIcon(hInstance, 'ZTO_DATAMODULE_ICONS');
+  Result := LoadIcon(hInstance, WIZARD_ICONS);
 end;
 
 initialization
-  DelphiCategory := AddDelphiCategory('ZTOFormTemplates', 'ZTO Form Templates');
+  DelphiCategory := AddDelphiCategory(OBJECT_REPOSITORY_CATEGORY_ID, OBJECT_REPOSITORY_CATEGORY_NAME);
 
 finalization
   RemoveCategory(DelphiCategory);
