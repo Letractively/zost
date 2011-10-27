@@ -29,10 +29,11 @@ type
 
     // IOTARepositoryWizard60
     function GetDesigner: string; virtual;
+    property Designer: string read GetDesigner;
 
+    // IOTARepositoryWizard80
     function GetGalleryCategory: IOTAGalleryCategory; virtual; abstract;
     function GetPersonality: string; virtual;
-
     property GalleryCategory: IOTAGalleryCategory read GetGalleryCategory;
     property Personality: string read GetPersonality;
   end;
@@ -43,12 +44,12 @@ implementation
 
 function TZTOWizard.GetAuthor: string;
 begin
-  Result := 'Zetta-Ømnis Soluções Tecnológicas Ltda.';
+  Result := 'Zetta-Ømnis Soluções Tecnológicas Ltda. / Carlos Barreto Feitoza Filho';
 end;
 
 function TZTOWizard.GetComment: string;
 begin
-  Result := 'Zetta-Ømnis Soluções Tecnológicas Ltda. Default Wizard';
+  Result := 'Anak Krakatoa Base Wizard';
 end;
 
 function TZTOWizard.GetDesigner: string;

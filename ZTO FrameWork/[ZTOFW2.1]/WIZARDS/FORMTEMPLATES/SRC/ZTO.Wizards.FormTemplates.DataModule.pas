@@ -20,11 +20,11 @@ type
   TSQLItem = class (TCollectionItem)
   private
     FSQL: TStrings;
-    FName: String;
+    FID: String;
     FDescription: String;
     procedure SetSQL(const Value: TStrings);
     procedure SetDescription(const Value: String);
-    procedure SetName(const Value: String);
+    procedure SetID(const Value: String);
   protected
     function GetDisplayName: string; override;
   public
@@ -32,21 +32,21 @@ type
     destructor Destroy; override;
   published
     property SQL: TStrings read FSQL write SetSQL;
-    property Name: String read FName write SetName;
+    property ID: String read FID write SetID;
     property Description: String read FDescription write SetDescription;
   end;
 
-  TSQLs = class (TCollection)
+  TSQLCollection = class (TCollection)
   private
     FDataModule: TDataModule;
     function GetSQLItem(aIndex: Word): TSQLItem;
-    function GetSQLItemByName(aName: String): TSQLItem;
+    function GetSQLItemByID(aID: String): TSQLItem;
   protected
    	function Add: TSQLItem;
     constructor Create(aDataModule: TDataModule);
   public
     property SQLItem[aIndex: Word]: TSQLItem read GetSQLItem;
-    property SQLItemByName[aName: String]: TSQLItem read GetSQLItemByName; default;
+    property SQLItemByID[aID: String]: TSQLItem read GetSQLItemByID; default;
   end;
   { ========================================================================== }
 
@@ -65,7 +65,7 @@ type
     property DataSet: TDataSet read FDataSet;
   end;
 
-  TDataSets = class (TCollection)
+  TDataSetCollection = class (TCollection)
   private
     FDataModule: TDataModule;
     function GetDataSetItem(aIndex: Word): TDataSetItem;
@@ -108,7 +108,7 @@ type
   { Aqui foram replicadas as propriedades que verificam os datasets ligados aos
   datasources pois nem sempre um dataset está ligado a um datasource. O
   resultado obtido com as propriedades de TDataSets inclui TODOS os datasets. }
-  TDataSources = class (TCollection)
+  TDataSourceCollection = class (TCollection)
   private
     FDataModule: TDataModule;
     function GetDataSourceItem(aIndex: Word): TDataSourceItem;
@@ -145,7 +145,7 @@ type
 
   TClientDataSetClass = class of TClientDataSet;
 
-  TClientDataSets = class (TCollection)
+  TClientDataSetCollection = class (TCollection)
   private
     FDataModule: TDataModule;
     function GetClientDataSetItem(aIndex: Word): TClientDataSetItem;
@@ -183,7 +183,7 @@ type
 
   TZConnectionClass = class of TZConnection;
 
-  TZConnections = class (TCollection)
+  TZConnectionCollection = class (TCollection)
   private
     FDataModule: TDataModule;
     function GetZConnectionItem(aIndex: Word): TZConnectionItem;
@@ -206,34 +206,31 @@ type
   TZTODataModule = class(TDataModule)
   private
     FMyReference: PZTODataModule;
-    FDataSources: TDataSources;
-    FDataSets: TDataSets;
-    FClientDataSets: TClientDataSets;
-    FZConnections: TZConnections;
-    FSQLs: TSQLs;
+    FDataSources: TDataSourceCollection;
+    FDataSets: TDataSetCollection;
+    FClientDataSets: TClientDataSetCollection;
+    FZConnections: TZConnectionCollection;
+    FSQLs: TSQLCollection;
     FZTODataModuleProperties: TZTODataModuleProperties;
-    FCreateMode: TCreateMode;
-    FMyFormClass: String;
     FMyForm: TZTOCustomForm;
+    FMyFormClass: String;
   protected
     property MyForm: TZTOCustomForm read FMyForm;
-    property CreateMode: TCreateMode read FCreateMode write FCreateMode;
   public
     constructor Create(aOwner: TComponent); override;
     destructor Destroy; override;
 
     class procedure CreateMe(    aOwner             : TComponent;
                              var aReference;        { não tem tipo! }
-                                 aZTODataModuleClass: TZTODataModuleClass;
-                                 aCreateMode        : TCreateMode); static;
+                                 aZTODataModuleClass: TZTODataModuleClass); static;
 
-    property DataSources: TDataSources read FDataSources;
-    property DataSets: TDataSets read FDataSets;
-    property ClientDataSets: TClientDataSets read FClientDataSets;
-    property ZConnections: TZConnections read FZConnections;
+    property DataSources: TDataSourceCollection read FDataSources;
+    property DataSets: TDataSetCollection read FDataSets;
+    property ClientDataSets: TClientDataSetCollection read FClientDataSets;
+    property ZConnections: TZConnectionCollection read FZConnections;
   published
     property ZTOProperties: TZTODataModuleProperties read FZTODataModuleProperties write FZTODataModuleProperties;
-    property SQLs: TSQLs read FSQLs write FSQLs;
+    property SQLs: TSQLCollection read FSQLs write FSQLs;
     property MyFormClass: String read FMyFormClass write FMyFormClass;
   end;
 
@@ -248,11 +245,11 @@ var
   i: Word;
 begin
   FZTODataModuleProperties := TZTODataModuleProperties.Create;
-  FDataSources             := TDataSources.Create(Self);
-  FDataSets                := TDataSets.Create(Self);
-  FClientDataSets          := TClientDataSets.Create(Self);
-  FZConnections            := TZConnections.Create(Self);
-  FSQLs                    := TSQLs.Create(Self);
+  FDataSources             := TDataSourceCollection.Create(Self);
+  FDataSets                := TDataSetCollection.Create(Self);
+  FClientDataSets          := TClientDataSetCollection.Create(Self);
+  FZConnections            := TZConnectionCollection.Create(Self);
+  FSQLs                    := TSQLCollection.Create(Self);
   FMyForm                  := nil;
 
   inherited;
@@ -287,41 +284,54 @@ begin
   if FZTODataModuleProperties.OpenAllDataSets then
     FDataSets.OpenAll;
 
-  { Cria a instância de meu form e o coloca no campo privado }
   if FMyFormClass <> '' then
+  begin
+    if not Assigned(GetClass(FMyFormClass)) then
+      raise Exception.Create('A classe ' + FMyFormClass + ' não foi registrada');
+
+    if not GetClass(FMyFormClass).InheritsFrom(TZTOCustomForm) then
+      raise Exception.Create(FMyFormClass + ' não é uma classe descendente de ' + TZTOCustomForm.ClassName);
+
     FMyForm := TZTOCustomFormClass(GetClass(FMyFormClass)).Create(Self);
+  end;
 end;
 
 destructor TZTODataModule.Destroy;
 begin
-  if FCreateMode = cmAutoFree then
+  { Só é preciso destruir as coisas se realmente uma instância deste DM foi
+  criada e isso só não é feito caso exceções sejam lançadas dentro do construtor }
+  if Assigned(FMyReference) then
+  begin
     FMyReference^ := nil;
 
-  FSQLs.Free;
-  FZConnections.Free;
-  FClientDataSets.Free;
-  FDataSets.Free;
-  FDataSources.Free;
+    { Todo Form criado automaticamente com um datamodule é sempre destruído junto
+    com ele. Isso é apenas uma segurança, pois normalmente o Form de um DataModule
+    é quem lança o comando para que o seu datamodule seja destruído e nesta
+    situação, a variável FMyForm já estará NIL }
+    if Assigned(FMyForm) then
+      FMyForm.Free;
 
-  FZTODataModuleProperties.Free;
+    FSQLs.Free;
+    FZConnections.Free;
+    FClientDataSets.Free;
+    FDataSets.Free;
+    FDataSources.Free;
+
+    FZTODataModuleProperties.Free;
+  end;
+
   inherited;
 end;
 
 class procedure TZTODataModule.CreateMe(    aOwner             : TComponent;
                                         var aReference;        { não tem tipo! }
-                                            aZTODataModuleClass: TZTODataModuleClass;
-                                            aCreateMode        : TCreateMode);
+                                            aZTODataModuleClass: TZTODataModuleClass);
 begin
-  if not Assigned(TZTODataModule(aReference)) then
-  begin
-    TZTODataModule(aReference) := aZTODataModuleClass.Create(aOwner);
-  end;
+  if Assigned(TZTODataModule(aReference)) then
+    raise Exception.Create('O parâmetro aReference contém uma variável não vazia');
 
-  with TZTODataModule(aReference) do
-  begin
-    FMyReference := @aReference;
-    CreateMode := aCreateMode;
-  end;
+  TZTODataModule(aReference) := aZTODataModuleClass.Create(aOwner);
+  TZTODataModule(aReference).FMyReference := @aReference;
 end;
 
 
@@ -342,7 +352,7 @@ end;
 
 { TDataSets }
 
-procedure TDataSets.OpenAll;
+procedure TDataSetCollection.OpenAll;
 var
   i: Word;
 begin
@@ -351,12 +361,12 @@ begin
       TDataSetItem(Items[i]).DataSet.Open;
 end;
 
-function TDataSets.Add: TDataSetItem;
+function TDataSetCollection.Add: TDataSetItem;
 begin
 	Result := TDataSetItem(inherited Add);
 end;
 
-function TDataSets.AddDataSet(aDataSetClass: TDataSetClass; aName: String): TDataSetItem;
+function TDataSetCollection.AddDataSet(aDataSetClass: TDataSetClass; aName: String): TDataSetItem;
 begin
   Result := DataSetItemByDataSetName[aName];
 
@@ -372,13 +382,13 @@ begin
   end;
 end;
 
-constructor TDataSets.Create(aDataModule: TDataModule);
+constructor TDataSetCollection.Create(aDataModule: TDataModule);
 begin
   inherited Create(TDataSetItem);
   FDataModule := aDataModule;
 end;
 
-procedure TDataSets.CancelAll;
+procedure TDataSetCollection.CancelAll;
 var
   i: Word;
 begin
@@ -387,7 +397,7 @@ begin
       TDataSetItem(Items[i]).DataSet.Cancel;
 end;
 
-procedure TDataSets.CloseAll;
+procedure TDataSetCollection.CloseAll;
 var
   i: Word;
 begin
@@ -396,12 +406,12 @@ begin
       TDataSetItem(Items[i]).DataSet.Close;
 end;
 
-function TDataSets.GetDataSetItem(aIndex: Word): TDataSetItem;
+function TDataSetCollection.GetDataSetItem(aIndex: Word): TDataSetItem;
 begin
 	Result := TDataSetItem(inherited Items[aIndex]);
 end;
 
-function TDataSets.GetDataSetItemByDataSetName(aDataSetName: String): TDataSetItem;
+function TDataSetCollection.GetDataSetItemByDataSetName(aDataSetName: String): TDataSetItem;
 var
 	DSI: Byte;
 begin
@@ -416,7 +426,7 @@ begin
       end;
 end;
 
-function TDataSets.GetItemsBrowsing: String;
+function TDataSetCollection.GetItemsBrowsing: String;
 var
 	DSB: Byte;
 begin
@@ -433,7 +443,7 @@ begin
       end;
 end;
 
-function TDataSets.GetItemsInserting: String;
+function TDataSetCollection.GetItemsInserting: String;
 var
 	DSI: Byte;
 begin
@@ -450,7 +460,7 @@ begin
       end;
 end;
 
-function TDataSets.GetItemsUpdating: String;
+function TDataSetCollection.GetItemsUpdating: String;
 var
 	DSU: Byte;
 begin
@@ -485,12 +495,12 @@ end;
 
 { TDataSources }
 
-function TDataSources.Add: TDataSourceItem;
+function TDataSourceCollection.Add: TDataSourceItem;
 begin
 	Result := TDataSourceItem(inherited Add);
 end;
 
-function TDataSources.AddDataSource(aDataSourceClass: TDataSourceClass; aName: String): TDataSourceItem;
+function TDataSourceCollection.AddDataSource(aDataSourceClass: TDataSourceClass; aName: String): TDataSourceItem;
 begin
   Result := DataSourceItemByName[aName];
 
@@ -506,13 +516,13 @@ begin
   end;
 end;
 
-constructor TDataSources.Create(aDataModule: TDataModule);
+constructor TDataSourceCollection.Create(aDataModule: TDataModule);
 begin
   inherited Create(TDataSourceItem);
   FDataModule := aDataModule;
 end;
 
-function TDataSources.GetDataSourceItemByName(aDataSourceName: String): TDataSourceItem;
+function TDataSourceCollection.GetDataSourceItemByName(aDataSourceName: String): TDataSourceItem;
 var
 	DSI: Byte;
 begin
@@ -527,7 +537,7 @@ begin
       end;
 end;
 
-function TDataSources.GetItemsBrowsing: String;
+function TDataSourceCollection.GetItemsBrowsing: String;
 var
 	DSB: Byte;
 begin
@@ -544,7 +554,7 @@ begin
       end;
 end;
 
-function TDataSources.GetItemsInserting: String;
+function TDataSourceCollection.GetItemsInserting: String;
 var
 	DSI: Byte;
 begin
@@ -561,7 +571,7 @@ begin
       end;
 end;
 
-function TDataSources.GetItemsUpdating: String;
+function TDataSourceCollection.GetItemsUpdating: String;
 var
 	DSU: Byte;
 begin
@@ -578,7 +588,7 @@ begin
       end;
 end;
 
-function TDataSources.GetDataSourceItem(aIndex: Word): TDataSourceItem;
+function TDataSourceCollection.GetDataSourceItem(aIndex: Word): TDataSourceItem;
 begin
 	Result := TDataSourceItem(inherited Items[aIndex]);
 end;
@@ -601,12 +611,12 @@ end;
 
 { TClientDataSets }
 
-function TClientDataSets.Add: TClientDataSetItem;
+function TClientDataSetCollection.Add: TClientDataSetItem;
 begin
 	Result := TClientDataSetItem(inherited Add);
 end;
 
-function TClientDataSets.AddClientDataSet(aClientDataSetClass: TClientDataSetClass; aName: String): TClientDataSetItem;
+function TClientDataSetCollection.AddClientDataSet(aClientDataSetClass: TClientDataSetClass; aName: String): TClientDataSetItem;
 begin
   Result := ClientDataSetItemByClientDataSetName[aName];
 
@@ -622,7 +632,7 @@ begin
   end;
 end;
 
-procedure TClientDataSets.CancelAll;
+procedure TClientDataSetCollection.CancelAll;
 var
   i: Word;
 begin
@@ -631,18 +641,18 @@ begin
       TClientDataSetItem(Items[i]).ClientDataSet.Cancel;
 end;
 
-constructor TClientDataSets.Create(aDataModule: TDataModule);
+constructor TClientDataSetCollection.Create(aDataModule: TDataModule);
 begin
   inherited Create(TClientDataSetItem);
   FDataModule := aDataModule;
 end;
 
-function TClientDataSets.GetClientDataSetItem(aIndex: Word): TClientDataSetItem;
+function TClientDataSetCollection.GetClientDataSetItem(aIndex: Word): TClientDataSetItem;
 begin
 	Result := TClientDataSetItem(inherited Items[aIndex]);
 end;
 
-function TClientDataSets.GetClientDataSetItemByClientDataSetName(aClientDataSetName: String): TClientDataSetItem;
+function TClientDataSetCollection.GetClientDataSetItemByClientDataSetName(aClientDataSetName: String): TClientDataSetItem;
 var
 	CDI: Byte;
 begin
@@ -657,7 +667,7 @@ begin
       end;
 end;
 
-function TClientDataSets.GetItemsBrowsing: String;
+function TClientDataSetCollection.GetItemsBrowsing: String;
 var
 	DSB: Byte;
 begin
@@ -674,7 +684,7 @@ begin
       end;
 end;
 
-function TClientDataSets.GetItemsInserting: String;
+function TClientDataSetCollection.GetItemsInserting: String;
 var
 	DSI: Byte;
 begin
@@ -691,7 +701,7 @@ begin
       end;
 end;
 
-function TClientDataSets.GetItemsUpdating: String;
+function TClientDataSetCollection.GetItemsUpdating: String;
 var
 	DSU: Byte;
 begin
@@ -726,12 +736,12 @@ end;
 
 { TZConnections }
 
-function TZConnections.Add: TZConnectionItem;
+function TZConnectionCollection.Add: TZConnectionItem;
 begin
 	Result := TZConnectionItem(inherited Add);
 end;
 
-function TZConnections.AddZConnection(aZConnectionClass: TZConnectionClass; aName: String): TZConnectionItem;
+function TZConnectionCollection.AddZConnection(aZConnectionClass: TZConnectionClass; aName: String): TZConnectionItem;
 begin
   Result := ZConnectionItemByZConnectionName[aName];
 
@@ -747,18 +757,18 @@ begin
   end;
 end;
 
-constructor TZConnections.Create(aDataModule: TDataModule);
+constructor TZConnectionCollection.Create(aDataModule: TDataModule);
 begin
   inherited Create(TZConnectionItem);
   FDataModule := aDataModule;
 end;
 
-function TZConnections.GetZConnectionItem(aIndex: Word): TZConnectionItem;
+function TZConnectionCollection.GetZConnectionItem(aIndex: Word): TZConnectionItem;
 begin
   Result := TZConnectionItem(inherited Items[aIndex]);
 end;
 
-function TZConnections.GetZConnectionItemByZConnectionName(aZConnectionName: String): TZConnectionItem;
+function TZConnectionCollection.GetZConnectionItemByZConnectionName(aZConnectionName: String): TZConnectionItem;
 var
 	ZCI: Byte;
 begin
@@ -775,23 +785,23 @@ end;
 
 { TSQLs }
 
-function TSQLs.Add: TSQLItem;
+function TSQLCollection.Add: TSQLItem;
 begin
 	Result := TSQLItem(inherited Add);
 end;
 
-constructor TSQLs.Create(aDataModule: TDataModule);
+constructor TSQLCollection.Create(aDataModule: TDataModule);
 begin
   inherited Create(TSQLItem);
   FDataModule := aDataModule;
 end;
 
-function TSQLs.GetSQLItem(aIndex: Word): TSQLItem;
+function TSQLCollection.GetSQLItem(aIndex: Word): TSQLItem;
 begin
   Result := TSQLItem(inherited Items[aIndex]);
 end;
 
-function TSQLs.GetSQLItemByName(aName: String): TSQLItem;
+function TSQLCollection.GetSQLItemByID(aID: String): TSQLItem;
 var
 	SI: Byte;
 begin
@@ -799,7 +809,7 @@ begin
 
   if Count > 0 then
     for SI := 0 to Pred(Count) do
-      if UpperCase(TSQLItem(Items[SI]).Name) = UpperCase(aName) then
+      if UpperCase(TSQLItem(Items[SI]).ID) = UpperCase(aID) then
       begin
         Result := TSQLItem(Items[SI]);
         Break;
@@ -822,7 +832,7 @@ end;
 
 function TSQLItem.GetDisplayName: string;
 begin
-  Result := FName;
+  Result := FID;
 end;
 
 procedure TSQLItem.SetDescription(const Value: String);
@@ -837,16 +847,20 @@ begin
   FDescription := UpperCase(Value);
 end;
 
-procedure TSQLItem.SetName(const Value: String);
+procedure TSQLItem.SetID(const Value: String);
 var
 	SI: Byte;
 begin
   if Collection.Count > 0 then
     for SI := 0 to Pred(Collection.Count) do
-      if UpperCase(TSQLItem(Collection.Items[SI]).Name) = UpperCase(Value) then
+      if UpperCase(TSQLItem(Collection.Items[SI]).ID) = UpperCase(Value) then
         raise Exception.Create('O nome escolhido já consta na lista de SQLs. Por favor escolha outro nome');
 
-  FName := UpperCase(Value);
+
+  if IsValidIdent(Value,True)  then
+    raise Exception.Create('O nome deve seguir a mesma convenção de nomes das units');
+
+  FID := UpperCase(Value);
 end;
 
 procedure TSQLItem.SetSQL(const Value: TStrings);

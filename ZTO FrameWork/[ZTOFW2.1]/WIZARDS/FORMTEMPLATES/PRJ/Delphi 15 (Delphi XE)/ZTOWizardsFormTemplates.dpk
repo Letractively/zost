@@ -30,31 +30,20 @@ package ZTOWizardsFormTemplates;
 
 requires
   DesignIDE,
-  dbrtl,
   dsnap,
-  ZTOToolsApi,
-  ZTOWin32Rtl,
-  ZTOComponentsStandard,
-  rtl,
-  vcl,
-  xmlrtl,
-  vclactnband,
-  vclx,
+  dbrtl,
   ZComponent,
-  ZParseSql,
-  ZCore,
   ZDbc,
-  ZPlain;
+  ZPlain,
+  ZCore,
+  ZParseSql;
 
 contains
   ZTO.Wizards.FormTemplates.DataModule.Wizard in '..\..\SRC\ZTO.Wizards.FormTemplates.DataModule.Wizard.pas',
-  ZTO.Wizards.FormTemplates.Dialog in '..\..\SRC\ZTO.Wizards.FormTemplates.Dialog.pas',
   ZTO.Wizards.FormTemplates.Reg in '..\..\SRC\ZTO.Wizards.FormTemplates.Reg.pas',
   ZTO.Wizards.FormTemplates.Wizards in '..\..\SRC\ZTO.Wizards.FormTemplates.Wizards.pas',
   ZTO.Wizards.FormTemplates.DataModule in '..\..\SRC\ZTO.Wizards.FormTemplates.DataModule.pas',
-  ZTO.Wizards.FormTemplates.Dialog.Wizard in '..\..\SRC\ZTO.Wizards.FormTemplates.Dialog.Wizard.pas',
-  ZTO.Wizards.FormTemplates.SDIForm.Wizard in '..\..\SRC\ZTO.Wizards.FormTemplates.SDIForm.Wizard.pas',
-  ZTO.Wizards.FormTemplates.SDIForm in '..\..\SRC\ZTO.Wizards.FormTemplates.SDIForm.pas',
   ZTO.Wizards.FormTemplates.CustomForm in '..\..\SRC\ZTO.Wizards.FormTemplates.CustomForm.pas';
 
 end.
+
