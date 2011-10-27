@@ -61,10 +61,17 @@ procedure ProcessFiles(aRootDir             : TFileName;
                        aProcessFilesCallBack: TProcessFilesCallBack;
                        aIncludeSubdirs      : Boolean = True);
 
+function IsValidFileName(const aFileName: String): Boolean;
+
 implementation
 
 uses ZLib
    , ZTO.Win32.Rtl.Common.Classes.Interposer;
+
+function IsValidFileName(const aFileName: String): Boolean;
+begin
+  Result := LastDelimiter('\/:*?"<>|',aFileName) = 0;
+end;
 
 function IsZLibCompressedFile(aFileName: TFileName): Boolean;
 var
